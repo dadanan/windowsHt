@@ -7,7 +7,8 @@
           v-for="item in options3"
           :label="item.label"
           :value="item.value"
-          :disabled="item.disabled">
+          :disabled="item.disabled"
+          :key="item">
         </el-option>
       </el-select>
     </div>
@@ -330,7 +331,8 @@
             v-for="item in otaDeviceType"
             :label="item.label"
             :value="item.value"
-            :disabled="item.disabled">
+            :disabled="item.disabled"
+            :key="item">
           </el-option>
         </el-select>
       </el-form-item>
@@ -349,7 +351,8 @@
             <el-option
               v-for="item in publicNumberList"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+              :key="item">
             </el-option>
           </el-select>
         </el-form-item>
@@ -359,7 +362,8 @@
           <el-option
             v-for="item in typeList"
             :label="item.typeName"
-            :value="item.id">
+            :value="item.id"
+            :key="item">
           </el-option>
         </el-select>
       </el-form-item>

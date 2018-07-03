@@ -1,32 +1,14 @@
 <template>
   <div class="dashboard-container">
-    <component :is="currentRole"></component>
+    <admin-dashboard></admin-dashboard>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import adminDashboard from './admin/index'
-import editorDashboard from './editor/index'
+  import adminDashboard from './admin/index'
 
-export default {
-  name: 'dashboard',
-  components: { adminDashboard, editorDashboard },
-  data() {
-    return {
-      currentRole: 'adminDashboard'
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'roles'
-    ])
-  },
-  created() {
-    if (this.roles.indexOf('admin') >= 0) {
-      return
-    }
-    this.currentRole = 'editorDashboard'
+  export default {
+    name: 'dashboard',
+    components: { adminDashboard }
   }
-}
 </script>
