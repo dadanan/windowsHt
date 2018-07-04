@@ -180,6 +180,7 @@
     }
   }
   .login-header {
+    text-align: center;
     &__logo {
       margin-bottom: 20px;
     }

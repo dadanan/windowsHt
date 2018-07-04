@@ -19,7 +19,7 @@
     </div>
     <el-button type="primary">消息中心</el-button>
     <el-button type="primary" icon="setting">个人设置</el-button>
-    <el-button type="primary">注销</el-button>
+    <el-button type="primary" @click="logout">退出系统</el-button>
     <!--<error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>-->
     <!--<screenfull class="fullscreen"></screenfull>-->
     <!--<el-dropdown class="avatar-container" trigger="click">-->
