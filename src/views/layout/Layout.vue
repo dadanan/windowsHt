@@ -1,8 +1,8 @@
 <template>
 	<div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
 		<sidebar class="sidebar-container"></sidebar>
+    <navbar></navbar>
 		<div class="main-container">
-			<navbar></navbar>
 			<app-main></app-main>
 		</div>
 	</div>
@@ -55,7 +55,12 @@ export default {
  			&::-webkit-scrollbar {display:none}
 		}
 		.main-container {
-			min-height: 100%;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
 			transition: margin-left 0.28s ease-out;
 			margin-left: 180px;
 		}

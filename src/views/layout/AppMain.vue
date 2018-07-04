@@ -1,5 +1,5 @@
 <template>
-	<section class="app-main" style="min-height: 100%">
+	<section class="app-main">
 		<transition name="fade" mode="out-in">
 			<router-view :key="key"></router-view>
 		</transition>
@@ -16,3 +16,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .app-main {
+    padding: 20px;
+  }
+</style>
