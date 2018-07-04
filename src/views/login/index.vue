@@ -1,132 +1,127 @@
 <template>
-  <div class="login-container">
-    <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">系统登录</h3>
-
-      <el-form-item prop="username">
+  <div class="login-container" :style="ui.bgStyle">
+    <el-card class="card-box">
+      <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm"
+               label-position="left">
+        <div class="login-header">
+          <div class="login-header__logo">
+            <img src="/static/images/logo.svg" alt="logo">
+          </div>
+          <div class="login-header__title">空气管理平台</div>
+        </div>
+        <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <icon-svg icon-class="user" />
+          <icon-svg icon-class="user"/>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.name" autoComplete="on" placeholder="请输入用户名" />
-      </el-form-item>
+          <el-input name="username" type="text" v-model="loginForm.name" autoComplete="on" placeholder="请输入用户名"/>
+        </el-form-item>
 
-      <el-form-item prop="password">
+        <el-form-item prop="password">
         <span class="svg-container">
-          <icon-svg icon-class="password" />
+          <icon-svg icon-class="password"/>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="请输入密码" />
-        <span class='show-pwd' @click='showPwd'><icon-svg icon-class="eye" /></span>
-      </el-form-item>
-
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-
-      <div class='tips'>{{loginTips}}</div>
-      <!--
-      <div class='tips'>账号:editor  密码随便填</div>
-
-      <el-button class='thirdparty-button' type="primary" @click='showDialog=true'>打开第三方登录</el-button>
-       -->
-    </el-form>
-  <!--
-    <el-dialog title="第三方验证" :visible.sync="showDialog">
-      本地不能模拟，请结合自己业务进行模拟！！！<br/><br/><br/>
-      邮箱登录成功,请选择第三方验证<br/>
-      <social-sign />
-    </el-dialog>
-    -->
+          <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
+                    autoComplete="on"
+                    placeholder="请输入密码"/>
+          <span class='show-pwd' @click='showPwd'><icon-svg icon-class="eye"/></span>
+        </el-form-item>
+        <div class="text"></div>
+        <el-button type="text">忘记密码?</el-button>
+        <div class="login-btn-group">
+          <el-button class="login-btn" type="primary" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+          <div class='login-tips'>{{loginTips}}</div>
+        </div>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
-import socialSign from './socialsignin'
+  import { isvalidUsername } from '@/utils/validate'
 
-export default {
-  components: { socialSign },
-  name: 'login',
-  data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
-      } else {
-        callback()
-      }
-    }
-    return {
-      loginForm: {
-        name: '',
-        password: ''
-      },
-      loginTips: '',
-      loginRules: {
-        name: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
-      pwdType: 'password',
-      loading: false,
-      showDialog: false
-    }
-  },
-  methods: {
-    showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = ''
-      } else {
-        this.pwdType = 'password'
-      }
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then((succ) => {
-            this.loading = false
-            if (succ) {
-              this.$router.push({ path: '/' })
-            } else {
-              this.loginTips = '用户名或者密码错误'
-            }
-          }).catch(() => {
-            this.loading = false
-          })
+  export default {
+    name: 'login',
+    data() {
+      const validateUsername = (rule, value, callback) => {
+        if (!isvalidUsername(value)) {
+          callback(new Error('请输入正确的用户名'))
         } else {
-          console.log('error submit!!')
-          return false
+          callback()
         }
-      })
+      }
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error('密码不能小于6位'))
+        } else {
+          callback()
+        }
+      }
+      return {
+        ui: {
+          title: '空气管理平台',
+          logo: '',
+          btnStyle: {},
+          bgStyle: {}
+        },
+        loginForm: {
+          name: '',
+          password: ''
+        },
+        loginTips: '',
+        loginRules: {
+          name: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        },
+        pwdType: 'password',
+        loading: false,
+        showDialog: false
+      }
     },
-    afterQRScan() {
-
+    methods: {
+      showPwd() {
+        if (this.pwdType === 'password') {
+          this.pwdType = ''
+        } else {
+          this.pwdType = 'password'
+        }
+      },
+      handleLogin() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('LoginByUsername', this.loginForm).then((succ) => {
+              this.loading = false
+              if (succ) {
+                this.$router.push({ path: '/' })
+              } else {
+                this.loginTips = '用户名或者密码错误'
+              }
+            }).catch(() => {
+              this.loading = false
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     }
-  },
-  created() {
-
-        // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan)
   }
-}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
   @import "src/styles/mixin.scss";
-  $bg:#2d3a4b;
-  $dark_gray:#889aa4;
-  $light_gray:#eee;
+
+  $bg: #2d3a4b;
+  $dark_gray: #889aa4;
+  $light_gray: #eee;
 
   .login-container {
-    @include relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
-    background-color: $bg;
+    background-color: #3b516d;
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
@@ -145,11 +140,6 @@ export default {
       height: 47px;
       width: 85%;
     }
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
-    }
     .svg-container {
       padding: 6px 5px 6px 15px;
       color: $dark_gray;
@@ -160,21 +150,10 @@ export default {
         font-size: 20px;
       }
     }
-    .title {
-      font-size: 26px;
-      font-weight: 400;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-    .login-form {
-      position: absolute;
-      left: 0;
-      right: 0;
-      width: 400px;
-      padding: 35px 35px 15px 35px;
-      margin: 120px auto;
+    .card-box {
+      border: none;
+      background-color: $bg;
+      min-width: 400px;
     }
     .el-form-item {
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -190,10 +169,29 @@ export default {
       color: $dark_gray;
       cursor: pointer;
     }
-    .thirdparty-button{
-      position: absolute;
-      right: 35px;
-      bottom: 28px;
+  }
+  .login-header {
+    &__logo {
+      margin-bottom: 20px;
     }
+    &__title {
+      color: #eee;
+      font-size: 22px;
+      margin-bottom: 22px;
+    }
+  }
+  .login-btn {
+    width: 100%;
+  }
+  .login-tips {
+    position: absolute;
+    color: #ff4949;
+    font-size: 12px;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .login-btn-group {
+    position: relative;
+    margin: 32px 0;
   }
 </style>
