@@ -81,7 +81,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 999999;
+    /*z-index: 999999;*/
     height: 50px;
     line-height: 50px;
     border-radius: 0px !important;

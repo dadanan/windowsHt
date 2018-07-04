@@ -43,9 +43,9 @@ export const asyncRouterMap = [
     path: '/device',
     component: Layout,
     name: '设备管理',
+    icon: 'component',
     meta: {
-      title: '设备管理',
-      icon: 'component'
+      title: '设备管理'
     },
     children: [
       { path: 'deviceList', component: _import('extend/device/index'), name: '设备列表', meta: { title: '设备列表' }},
@@ -59,9 +59,9 @@ export const asyncRouterMap = [
     path: '/system',
     component: Layout,
     name: '系统管理',
+    icon: 'component',
     meta: {
-      title: '系统管理',
-      icon: 'component'
+      title: '系统管理'
     },
     children: [
       { path: 'role', component: _import('systemAdmin/role'), name: '角色管理', meta: { title: '角色管理' }},
@@ -73,9 +73,9 @@ export const asyncRouterMap = [
     path: '/sale',
     component: Layout,
     name: '售后管理',
+    icon: 'component',
     meta: {
-      title: '售后管理',
-      icon: 'component'
+      title: '售后管理'
     },
     children: [
       { path: 'alarm', component: _import('extend/device/warnList'), name: '告警设备列表', meta: { title: '告警设备列表' }},
@@ -87,9 +87,9 @@ export const asyncRouterMap = [
     path: '/data',
     component: Layout,
     name: '数据分析',
+    icon: 'component',
     meta: {
-      title: '数据分析',
-      icon: 'component'
+      title: '数据分析'
     },
     children: [
       { path: 'orderlist', component: _import('extend/empty'), name: 'orderlist', meta: { title: '订单分析' }},
@@ -103,9 +103,9 @@ export const asyncRouterMap = [
     path: '/order',
     component: Layout,
     name: '订单中心',
+    icon: 'component',
     meta: {
-      title: '订单中心',
-      icon: 'component'
+      title: '订单中心'
     },
     children: [
       { path: 'saleOrder12', component: _import('extend/empty'), name: '租赁订单列表', meta: { title: '租赁订单列表' }},
@@ -118,9 +118,9 @@ export const asyncRouterMap = [
     path: '/profit',
     component: Layout,
     name: '分润管理',
+    icon: 'component',
     meta: {
-      title: '分润管理',
-      icon: 'component'
+      title: '分润管理'
     },
     children: [
       { path: 'saleOrder2', component: _import('extend/empty'), name: '租赁分润账单', meta: { title: '租赁分润账单' }},
@@ -134,9 +134,9 @@ export const asyncRouterMap = [
     path: '/chuzu',
     component: Layout,
     name: '租赁管理',
+    icon: 'component',
     meta: {
-      title: '租赁管理',
-      icon: 'component'
+      title: '租赁管理'
     },
     children: []
   },
