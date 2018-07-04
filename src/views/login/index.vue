@@ -26,13 +26,22 @@
           <span class='show-pwd' @click='showPwd'><icon-svg icon-class="eye"/></span>
         </el-form-item>
         <div class="text"></div>
-        <el-button type="text">忘记密码?</el-button>
+        <el-button type="text" @click="showDialog = true">忘记密码?</el-button>
         <div class="login-btn-group">
           <el-button class="login-btn" type="primary" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
           <div class='login-tips'>{{loginTips}}</div>
         </div>
       </el-form>
     </el-card>
+    <el-dialog title="密码找回提示" :visible.sync="showDialog">
+      <p>           *1 若超级管理员忘记密码，可以联系环可平台客服人员；
+
+           *2 若为其它角色忘记密码，可以联系该角色的上级管理员（即该子平台的超级管理员）；
+
+           *3 点击忘记密码应弹出相应的密码找回页面，该页面有上述两个途径可以找回密码；
+
+              （暂不支持线上找回功能，因本平台针对的是专业管理用户，非终端用户） </p>
+    </el-dialog>
   </div>
 </template>
 
