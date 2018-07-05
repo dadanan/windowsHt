@@ -9,7 +9,9 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from 'views/layout'
+import Navbar from './Navbar'
+import Sidebar from './Sidebar'
+import AppMain from './AppMain'
 
 export default {
   name: 'layout',
