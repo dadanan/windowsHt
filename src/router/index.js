@@ -43,118 +43,96 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
+    path: '/analytics',
+    component: DashboardLayout,
+    name: '数据分析',
+    icon: 'component',
+    children: [
+      {
+        path: 'analytics1',
+        component: _import('blank'),
+        name: '订单数据'
+      },
+      {
+        path: 'analytics2',
+        component: _import('blank'),
+        name: '用户数据'
+      },
+      {
+        path: 'analytics3',
+        component: _import('blank'),
+        name: '设备数据'
+      },
+      {
+        path: 'analytics4',
+        component: _import('blank'),
+        name: '系统分析'
+      },
+      {
+        path: 'analytics5',
+        component: _import('blank'),
+        name: '大数据看板'
+      }
+    ]
+  },
+  {
     path: '/device',
     component: DashboardLayout,
     name: '设备管理',
     icon: 'component',
-    meta: {
-      title: '设备管理'
-    },
     children: [
       {
-        path: 'deviceList',
-        component: _import('extend/device/index'),
-        name: '设备列表',
-        meta: { title: '设备列表' }
+        path: '',
+        component: _import('device/index'),
+        name: '设备列表'
       },
       {
-        path: 'deviceGroup',
-        component: _import('extend/device/group'),
-        name: '设备组列表',
-        meta: { title: '设备组列表' }
+        path: 'group',
+        component: _import('device/group'),
+        name: '设备组列表'
       },
       {
-        path: 'deviceType',
-        component: _import('extend/device/type'),
-        name: '设备类型管理',
-        meta: { title: '设备类型管理' }
+        path: 'type',
+        component: _import('device/type'),
+        name: '设备类型管理'
       },
       {
-        path: 'deviceMap',
-        component: _import('extend/device/deviceMap'),
-        name: '设备地图展示',
-        meta: { title: '设备地图展示' }
+        path: 'map',
+        component: _import('device/map'),
+        name: '设备地图展示'
+      },
+      {
+        path: 'device3',
+        component: _import('blank'),
+        name: '设备配置'
+      },
+      {
+        path: 'device4',
+        component: _import('blank'),
+        name: '设备备案'
       }
     ]
   },
   {
-    path: '/system',
-    component: DashboardLayout,
-    name: '系统管理',
-    icon: 'component',
-    meta: {
-      title: '系统管理'
-    },
-    children: [
-      {
-        path: 'role',
-        component: _import('system/role'),
-        name: '角色管理',
-        meta: { title: '角色管理' }
-      },
-      {
-        path: 'systemuser',
-        component: _import('system/system'),
-        name: '系统用户',
-        meta: { title: '系统用户' }
-      }
-    ]
-  },
-  {
-    path: '/sale',
+    path: '/alarm',
     component: DashboardLayout,
     name: '售后管理',
     icon: 'component',
-    meta: {
-      title: '售后管理'
-    },
     children: [
       {
-        path: 'alarm',
-        component: _import('extend/device/warnList'),
-        name: '告警设备列表',
-        meta: { title: '告警设备列表' }
+        path: 'device',
+        component: _import('alarm/device'),
+        name: '告警设备列表'
       },
       {
-        path: 'alarmLevel',
-        component: _import('extend/empty'),
-        name: '告警级别管理',
-        meta: { title: '告警级别管理' }
-      }
-    ]
-  },
-  {
-    path: '/data',
-    component: DashboardLayout,
-    name: '数据分析',
-    icon: 'component',
-    meta: {
-      title: '数据分析'
-    },
-    children: [
-      {
-        path: 'orderlist',
-        component: _import('extend/empty'),
-        name: 'orderlist',
-        meta: { title: '订单分析' }
+        path: 'alarm2',
+        component: _import('blank'),
+        name: '告警级别设置'
       },
       {
-        path: 'userlist',
-        component: _import('extend/empty'),
-        name: 'userlist',
-        meta: { title: '用户分析' }
-      },
-      {
-        path: 'devicedatalist',
-        component: _import('extend/empty'),
-        name: 'devicedatalist',
-        meta: { title: '数据分析' }
-      },
-      {
-        path: 'system',
-        component: _import('extend/empty'),
-        name: 'system',
-        meta: { title: '系统分析' }
+        path: 'alarm3',
+        component: _import('blank'),
+        name: '告警处理'
       }
     ]
   },
@@ -163,86 +141,140 @@ export const asyncRouterMap = [
     component: DashboardLayout,
     name: '订单中心',
     icon: 'component',
-    meta: {
-      title: '订单中心'
-    },
     children: [
       {
-        path: 'saleOrder12',
-        component: _import('extend/empty'),
-        name: '租赁订单列表',
-        meta: { title: '租赁订单列表' }
+        path: 'order1',
+        component: _import('blank'),
+        name: '租凭订单列表'
       },
       {
-        path: 'projectList11',
-        component: _import('extend/empty'),
-        name: '租赁充值列表',
-        meta: { title: '租赁充值列表' }
+        path: 'order2',
+        component: _import('blank'),
+        name: '租凭充值列表'
       },
       {
-        path: 'projectList111',
-        component: _import('extend/empty'),
-        name: '分销订单',
-        meta: { title: '分销订单' }
+        path: 'order3',
+        component: _import('blank'),
+        name: '分销订单'
       },
       {
-        path: 'projectList1111',
-        component: _import('extend/empty'),
-        name: '售后订单',
-        meta: { title: '售后订单' }
+        path: 'order4',
+        component: _import('blank'),
+        name: '售后订单'
       }
     ]
   },
   {
-    path: '/profit',
+    path: '/income',
     component: DashboardLayout,
     name: '分润管理',
     icon: 'component',
-    meta: {
-      title: '分润管理'
-    },
     children: [
       {
-        path: 'saleOrder2',
-        component: _import('extend/empty'),
-        name: '租赁分润账单',
-        meta: { title: '租赁分润账单' }
+        path: 'income1',
+        component: _import('blank'),
+        name: '分润规则'
       },
       {
-        path: 'projectList1',
-        component: _import('extend/empty'),
-        name: '售后分润订单',
-        meta: { title: '售后分润订单' }
-      },
-      {
-        path: 'projectList2',
-        component: _import('extend/empty'),
-        name: '分销分润订单',
-        meta: { title: '分销分润订单' }
-      },
-      {
-        path: 'projectList3',
-        component: _import('extend/empty'),
-        name: '售后订单',
-        meta: { title: '售后分润订单' }
-      },
-      {
-        path: 'projectList4',
-        component: _import('extend/empty'),
-        name: '售后订单',
-        meta: { title: '售后分润账单' }
+        path: 'income2',
+        component: _import('blank'),
+        name: '分润账单'
       }
     ]
   },
   {
-    path: '/chuzu',
+    path: '/rent',
     component: DashboardLayout,
     name: '租赁管理',
     icon: 'component',
-    meta: {
-      title: '租赁管理'
-    },
-    children: []
+    children: [
+      {
+        path: 'rent1',
+        component: _import('blank'),
+        name: '微信用户管理'
+      },
+      {
+        path: 'rent2',
+        component: _import('blank'),
+        name: '用户黑名单'
+      },
+      {
+        path: 'rent3',
+        component: _import('blank'),
+        name: '收费管理'
+      },
+      {
+        path: 'rent4',
+        component: _import('blank'),
+        name: '投放点管理'
+      },
+      {
+        path: 'rent5',
+        component: _import('blank'),
+        name: '运营商管理'
+      },
+      {
+        path: 'rent6',
+        component: _import('blank'),
+        name: '充值设定'
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: DashboardLayout,
+    name: '系统管理',
+    icon: 'component',
+    children: [
+      {
+        path: 'system1',
+        component: _import('blank'),
+        name: '客户管理'
+      },
+      {
+        path: 'role',
+        component: _import('system/role'),
+        name: '角色管理'
+      },
+      {
+        path: 'user',
+        component: _import('system/user'),
+        name: '系统用户'
+      },
+      {
+        path: 'system4',
+        component: _import('blank'),
+        name: '系统设置'
+      }
+    ]
+  },
+  {
+    path: '/message',
+    component: DashboardLayout,
+    name: '消息管理',
+    icon: 'component',
+    children: [
+      {
+        path: 'message1',
+        component: _import('blank'),
+        name: '系统消息'
+      },
+      {
+        path: 'message2',
+        component: _import('blank'),
+        name: '用户/客户反馈'
+      },
+      {
+        path: 'message3',
+        component: _import('blank'),
+        name: '告警消息'
+      },
+      {
+        path: 'message4',
+        component: _import('blank'),
+        name: '售后消息'
+      }
+    ]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -156,7 +156,7 @@
       size="large" style="margin-top: 20px">
       <div class="dilogBox">
         <div class="leftLog">
-           <div class="titleLog">工单信息</div>
+          <div class="titleLog">工单信息</div>
           <el-form ref="form" label-width="150px">
             <el-form-item label="设备Mac">
               <span>13r444444444</span>
@@ -270,85 +270,90 @@
 </template>
 
 <script>
-  import barChart from './barChart'
+  import barChart from '@/views/device/barChart'
   import { queryDeviceList, queryDeviceCount, updateDevice } from '@/api/device'
   import waves from '@/directive/waves' // 水波纹指令
 
   export default {
     name: 'complexTable',
-    components:{barChart},
+    components: { barChart },
     directives: {
       waves
     },
     data() {
       return {
-        dialogVisible:false,
+        dialogVisible: false,
         currentPage: 1,
-        tableData: [{
-          detail: '系统管理员',
-          name: '系统管理员',
-          count: 123,
-        },{
-          detail: '系统管理员',
-          name: '系统管理员',
-          count: 123,
-        },{
-          detail: '系统管理员',
-          name: '系统管理员',
-          count: 123,
-        }],
-        currentPage:1,
-        tableDataList: [{
-          date: '123456',
-          name: '小王',
-        }],
-        svalue1:false,
-        svalue2:false,
+        tableData: [
+          {
+            detail: '系统管理员',
+            name: '系统管理员',
+            count: 123
+          }, {
+            detail: '系统管理员',
+            name: '系统管理员',
+            count: 123
+          }, {
+            detail: '系统管理员',
+            name: '系统管理员',
+            count: 123
+          }],
+        currentPage: 1,
+        tableDataList: [
+          {
+            date: '123456',
+            name: '小王'
+          }],
+        svalue1: false,
+        svalue2: false,
         activeName: 'first',
-        options1: [{
-          value: '设备MAC',
-          label: ''
-        }, {
-          value: '设备序列号',
-          label: '设备序列号',
-        }, {
-          value: '设备名称',
-          label: '设备名称'
-        }, {
-          value: '投放点',
-          label: '投放点'
-        }],
+        options1: [
+          {
+            value: '设备MAC',
+            label: ''
+          }, {
+            value: '设备序列号',
+            label: '设备序列号'
+          }, {
+            value: '设备名称',
+            label: '设备名称'
+          }, {
+            value: '投放点',
+            label: '投放点'
+          }],
         value1: '',
-        options2: [{
-          value: '告警名称',
-          label: ''
-        }, {
-          value: 'PmLose',
-          label: 'PmLose',
-        }, {
-          value: 'Fault1',
-          label: 'Fault1'
-        }, {
-          value: 'Fault2',
-          label: 'Fault2'
-        }, {
-          value: '电子围栏',
-          label: '电子围栏'
-        }],
+        options2: [
+          {
+            value: '告警名称',
+            label: ''
+          }, {
+            value: 'PmLose',
+            label: 'PmLose'
+          }, {
+            value: 'Fault1',
+            label: 'Fault1'
+          }, {
+            value: 'Fault2',
+            label: 'Fault2'
+          }, {
+            value: '电子围栏',
+            label: '电子围栏'
+          }],
         value2: '',
-        options3: [{
-          value: '告警状态',
-          label: ''
-        }, {
-          value: '未修复',
-          label: '未修复',
-        }, {
-          value: '已修复',
-          label: '已修复'
-        }, {
-          value: '障碍',
-          label: '障碍'
-        }],
+        options3: [
+          {
+            value: '告警状态',
+            label: ''
+          }, {
+            value: '未修复',
+            label: '未修复'
+          }, {
+            value: '已修复',
+            label: '已修复'
+          }, {
+            value: '障碍',
+            label: '障碍'
+          }],
         value3: '',
         list: null,
         total: null,
@@ -375,63 +380,75 @@
 </script>
 
 <style scoped>
-  .leftLog{
+  .leftLog {
     width: 45%;
     float: left;
   }
-  .rightLog{
+
+  .rightLog {
     width: 45%;
     float: right;
   }
-  .clear{
+
+  .clear {
     clear: both;
   }
-  .block{
+
+  .block {
     margin-top: 20px;
     text-align: center;
   }
-  .tipshow{
+
+  .tipshow {
     margin-bottom: 30px;
   }
-  .el-form-item .el-input{
+
+  .el-form-item .el-input {
     width: 300px;
   }
-  .selectBox{
+
+  .selectBox {
     margin-bottom: 10px;
   }
-.findBox{
-  margin-top: 5px;
-  margin-bottom: 10px;
-  text-align: right;
-}
-  .el-button i{
+
+  .findBox {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
+  .el-button i {
     margin-right: 5px;
   }
 
   .grid-content {
     border-radius: 4px;
-    height:114px;
+    height: 114px;
     margin-top: 20px;
-    padding:27px;
-    color:white;
+    padding: 27px;
+    color: white;
     display: flex;
   }
-  .grid-content i{
+
+  .grid-content i {
     display: block;
     width: 60px;
     height: 60px;
     margin-right: 25px;
     font-size: 60px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-  .colname{
+
+  .colname {
     font-size: 14px;
     margin-top: 5px;
   }
-  .colcount{
+
+  .colcount {
     font-size: 27px;
   }
 </style>
