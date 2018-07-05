@@ -29,10 +29,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 	@import "src/styles/mixin.scss";
 	.app-wrapper {
-		@include clearfix;
-		position: relative;
-		height: 100%;
-		width: 100%;
 		&.hideSidebar {
 			.sidebar-container{
 				width:36px;
@@ -50,12 +46,11 @@ export default {
 			top: 0;
 			bottom: 0;
 			left: 0;
-			z-index: 1001;
 			overflow-y: auto;
  			&::-webkit-scrollbar {display:none}
 		}
 		.main-container {
-      position: fixed;
+      position: absolute;
       top: 50px;
       left: 0;
       right: 0;
