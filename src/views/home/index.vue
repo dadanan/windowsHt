@@ -1,9 +1,37 @@
 <template>
   <div>
-    <datacard-grid-list>
-      <datacard v-for="datacardData, index in datacardDataList" :key="datacardData.id" @edit="editDatacard($event, index)" :data="datacardData"></datacard>
+    <d-title>运营数据看板</d-title>
+    <datacard-grid-list class="datacard-grid-list">
+      <datacard v-for="datacardData, index in datacardDataList" :key="datacardData.id"
+                @edit="editDatacard($event, index)" :data="datacardData"></datacard>
     </datacard-grid-list>
-    <datacard-edit @save="saveDatacard($event, editDatacardIndex)" :is-open.sync="isEditDatacard" :edit-data="editDatacardData" :select-data="datacardAllDataList"></datacard-edit>
+    <datacard-edit @save="saveDatacard($event, editDatacardIndex)" :is-open.sync="isEditDatacard"
+                   :edit-data="editDatacardData" :select-data="datacardAllDataList"></datacard-edit>
+    <d-title>运营数据图表</d-title>
+    <el-row :gutter="20" style="margin-bottom: 20px">
+      <el-col :span="12">
+        <el-card>
+          <device-increment-chart></device-increment-chart>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          <device-position-chart></device-position-chart>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <el-card>
+          <user-increment-chart></user-increment-chart>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          <!--<device-position-chart></device-position-chart>-->
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -11,12 +39,20 @@
   import DatacardGridList from './components/DatacardGridList'
   import Datacard from './components/Datacard'
   import DatacardEdit from './components/DatacardEdit'
+  import DTitle from '@/components/DTitle'
+  import DeviceIncrementChart from './components/DeviceIncrementChart'
+  import DevicePositionChart from './components/DevicePositionChart'
+  import UserIncrementChart from './components/UserIncrementChart'
 
   export default {
     components: {
       DatacardGridList,
       Datacard,
-      DatacardEdit
+      DatacardEdit,
+      DTitle,
+      DeviceIncrementChart,
+      DevicePositionChart,
+      UserIncrementChart
     },
     data() {
       return {
@@ -61,11 +97,15 @@
         this.isEditDatacard = true
       },
       saveDatacard(data, index) {
-        console.log(index)
         this.datacardDataList[index] = data
         this.isEditDatacard = false
       }
     }
   }
 </script>
-78
+
+<style lang="scss" scoped>
+  .datacard-grid-list {
+    margin-bottom: 20px;
+  }
+</style>
