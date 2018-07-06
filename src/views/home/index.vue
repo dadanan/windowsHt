@@ -20,7 +20,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="margin-bottom: 20px">
       <el-col :span="12">
         <el-card>
           <user-increment-chart></user-increment-chart>
@@ -28,7 +28,31 @@
       </el-col>
       <el-col :span="12">
         <el-card>
-          <!--<device-position-chart></device-position-chart>-->
+          <device-online-chart></device-online-chart>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" style="margin-bottom: 20px">
+      <el-col :span="12">
+        <el-card>
+          <user-active-chart></user-active-chart>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          <device-type-chart></device-type-chart>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" style="margin-bottom: 20px">
+      <el-col :span="12">
+        <el-card>
+          <we-chat-device-chart></we-chat-device-chart>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          <we-chat-device-increment-chart></we-chat-device-increment-chart>
         </el-card>
       </el-col>
     </el-row>
@@ -43,6 +67,11 @@
   import DeviceIncrementChart from './components/DeviceIncrementChart'
   import DevicePositionChart from './components/DevicePositionChart'
   import UserIncrementChart from './components/UserIncrementChart'
+  import DeviceOnlineChart from './components/DeviceOnlineChart'
+  import UserActiveChart from './components/UserActiveChart'
+  import DeviceTypeChart from './components/DeviceTypeChart'
+  import WeChatDeviceChart from './components/WeChatDeviceChart'
+  import WeChatDeviceIncrementChart from './components/WeChatDeviceIncrementChart'
 
   export default {
     components: {
@@ -52,7 +81,12 @@
       DTitle,
       DeviceIncrementChart,
       DevicePositionChart,
-      UserIncrementChart
+      UserIncrementChart,
+      DeviceOnlineChart,
+      UserActiveChart,
+      DeviceTypeChart,
+      WeChatDeviceChart,
+      WeChatDeviceIncrementChart
     },
     data() {
       return {
