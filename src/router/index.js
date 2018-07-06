@@ -82,8 +82,8 @@ export const asyncRouterMap = [
     icon: 'component',
     children: [
       {
-        path: '',
-        component: _import('device/index'),
+        path: 'list',
+        component: _import('device/list'),
         name: '设备列表'
       },
       {

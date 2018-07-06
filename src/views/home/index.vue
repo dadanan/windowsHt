@@ -1,212 +1,71 @@
 <template>
-  <div class="dashboard-editor-container">
-
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div class="grid-content bg-green">
-          <i class="iconSet"></i>
-          <div class="colBox">
-            <div class="colname">当前设备总数</div>
-            <div class="colcount">{{ totalDevcieCount }}</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-green">
-          <i class="iconSet"></i>
-          <div class="colBox">
-            <div class="colname">在线设备总数</div>
-            <div class="colcount">{{ onlineCount }}</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-green">
-          <i class="iconSet"></i>
-          <div class="colBox">
-            <div class="colname">当前设备故障数</div>
-            <div class="colcount">0</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-blue">
-          <i class="iconUser"></i>
-          <div class="colBox">
-            <div class="colname">当前用户人数</div>
-            <div class="colcount">{{userCount}}</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-blue">
-          <i class="iconUser"></i>
-          <div class="colBox">
-            <div class="colname">昨日用户增长数</div>
-            <div class="colcount">0%</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-blue">
-          <i class="iconUser"></i>
-          <div class="colBox">
-            <div class="colname">今日活跃用户数</div>
-            <div class="colcount">373</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-purple">
-          <i class="iconList"></i>
-          <div class="colBox">
-            <div class="colname">今日订单数</div>
-            <div class="colcount">33</div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="grid-content bg-purple">
-          <i class="iconList"></i>
-          <div class="colBox">
-            <div class="colname">本月订单数</div>
-            <div class="colcount">1373</div>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <linebar-chart></linebar-chart>
-      </el-col>
-
-      <el-col :span="12">
-        <bar-chart></bar-chart>
-      </el-col>
-    </el-row>
-
-
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <line-chart></line-chart>
-      </el-col>
-    </el-row>
+  <div>
+    <datacard-grid-list>
+      <datacard v-for="datacardData, index in datacardDataList" :key="datacardData.id" @edit="editDatacard($event, index)" :data="datacardData"></datacard>
+    </datacard-grid-list>
+    <datacard-edit @save="saveDatacard($event, editDatacardIndex)" :is-open.sync="isEditDatacard" :edit-data="editDatacardData" :select-data="datacardAllDataList"></datacard-edit>
   </div>
 </template>
 
 <script>
-  import { obtainIndexVo } from '@/api/index'
-  import { mapGetters } from 'vuex'
-  import countTo from 'vue-count-to'
-  import panThumb from '@/components/PanThumb/index'
-  import todoList from '@/components/TodoList/index'
-  import pieChart from './pieChart'
-  import linebarChart from './linebarChart'
-  import lineChart from './lineChart'
-  import barChart from './barChart.vue'
+  import DatacardGridList from './components/DatacardGridList'
+  import Datacard from './components/Datacard'
+  import DatacardEdit from './components/DatacardEdit'
 
   export default {
-    name: 'dashboard-admin',
-    components: { countTo, panThumb, todoList, pieChart, lineChart, linebarChart, barChart},
+    components: {
+      DatacardGridList,
+      Datacard,
+      DatacardEdit
+    },
     data() {
       return {
-        totalDevcieCount: 0,
-        onlineCount: 0,
-        userCount: 0
+        datacardAllDataList: [
+          { id: 0, text: '当前设备总数', value: '1', color: '#ccc', icon: 'angry' },
+          { id: 1, text: '在线设备总数', value: '4545', color: '#ccc', icon: 'coffee' },
+          { id: 2, text: '当前设备故障数', value: '56', color: '#ccc', icon: 'coffee' },
+          { id: 3, text: '当前用户有人数', value: '78', color: '#ccc', icon: 'coffee' },
+          { id: 4, text: '昨日用户增长数', value: '879', color: '#ccc', icon: 'coffee' },
+          { id: 5, text: '今日活跃用户数', value: '454', color: '#ccc', icon: 'coffee' },
+          { id: 6, text: '本月用户增长数', value: '213', color: '#ccc', icon: 'coffee' },
+          { id: 7, text: '本月活跃用户数', value: '123', color: '#ccc', icon: 'coffee' },
+          { id: 8, text: '当前设备在线率', value: '987', color: '#ccc', icon: 'coffee' },
+          { id: 9, text: '当前用户活跃率', value: '433', color: '#ccc', icon: 'coffee' },
+          { id: 10, text: '传感器总数', value: '87', color: '#ccc', icon: 'coffee' },
+          { id: 11, text: 'PM2.5 传感器总数', value: '67', color: '#ccc', icon: 'coffee' },
+          { id: 12, text: '甲醛传感器总数', value: '5', color: '#ccc', icon: 'coffee' },
+          { id: 13, text: 'CO2 传感器总数', value: '456', color: '#ccc', icon: 'coffee' },
+          { id: 14, text: 'TVOC 传感器数据总数', value: '456', color: '#ccc', icon: 'coffee' },
+          { id: 15, text: '优良环境数', value: '87', color: '#ccc', icon: 'coffee' },
+          { id: 16, text: '优良环境比率', value: '12', color: '#ccc', icon: 'coffee' }
+        ],
+        datacardDataList: [
+          { id: 0, text: '当前设备总数', value: '1', color: '#ccc', icon: 'angry' },
+          { id: 1, text: '在线设备总数', value: '4545', color: '#ccc', icon: 'coffee' },
+          { id: 2, text: '当前设备故障数', value: '56', color: '#ccc', icon: 'coffee' },
+          { id: 3, text: '当前用户有人数', value: '78', color: '#ccc', icon: 'coffee' },
+          { id: 4, text: '昨日用户增长数', value: '879', color: '#ccc', icon: 'coffee' },
+          { id: 5, text: '今日活跃用户数', value: '454', color: '#ccc', icon: 'coffee' },
+          { id: 6, text: '本月用户增长数', value: '213', color: '#ccc', icon: 'coffee' },
+          { id: 7, text: '本月活跃用户数', value: '123', color: '#ccc', icon: 'coffee' }
+        ],
+        isEditDatacard: false,
+        editDatacardData: null,
+        editDatacardIndex: 0
       }
-    },
-    created() {
-      obtainIndexVo().then(response => {
-        this.totalDevcieCount = response.data.data.deviceCount
-        this.onlineCount = response.data.data.onlineCount
-        this.userCount = response.data.data.userCount
-      })
     },
     methods: {
-      getList() {
-
+      editDatacard(data, index) {
+        this.editDatacardIndex = index
+        this.editDatacardData = data
+        this.isEditDatacard = true
+      },
+      saveDatacard(data, index) {
+        console.log(index)
+        this.datacardDataList[index] = data
+        this.isEditDatacard = false
       }
-    },
-    computed: {
-      ...mapGetters([
-        'name',
-        'avatar',
-        'roles'
-      ])
     }
   }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .dashboard-editor-container {
-    margin: 30px;
-    .btn-group {
-      margin-bottom: 60px;
-    }
-    .box-card-header {
-      position: relative;
-      height: 160px;
-    }
-    .panThumb {
-      z-index: 100;
-      height: 150px;
-      width: 150px;
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      margin: auto;
-    }
-    .display_name {
-      font-size: 30px;
-      display: block;
-    }
-    .info-item {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 14px;
-      &:last-of-type {
-        margin-left: 15px;
-      }
-    }
-
-    .el-row {
-      margin-bottom: 20px;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-    .el-col {
-      border-radius: 4px;
-    }
-
-    .grid-content {
-      border-radius: 4px;
-      height: 114px;
-      margin-top: 20px;
-      padding: 27px;
-      color: white;
-      display: flex;
-    }
-    .grid-content i {
-      display: block;
-      width: 60px;
-      height: 60px;
-      margin-right: 25px;
-    }
-    .row-bg {
-      padding: 10px 0;
-      background-color: #f9fafc;
-    }
-    .colname {
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    .colcount {
-      font-size: 27px;
-    }
-    .el-row {
-      margin-top: 50px;
-    }
-  }
-</style>
+78

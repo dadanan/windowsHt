@@ -10,6 +10,14 @@ import './errorLog'// error log
 import './permission' // 权限
 import 'static/global/global.css'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCoffee, faAngry } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faCoffee, faAngry)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.use(ElementUI)
 
 // register global utility filters.
