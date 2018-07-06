@@ -44,7 +44,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20" style="margin-bottom: 20px">
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-card>
           <we-chat-device-chart></we-chat-device-chart>
