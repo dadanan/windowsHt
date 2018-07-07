@@ -91,11 +91,11 @@
     data() {
       return {
         datacardAllDataList: [
-          { id: 0, text: '当前设备总数', value: '1', color: '#ccc', icon: 'angry' },
-          { id: 1, text: '在线设备总数', value: '4545', color: '#ccc', icon: 'coffee' },
-          { id: 2, text: '当前设备故障数', value: '56', color: '#ccc', icon: 'coffee' },
-          { id: 3, text: '当前用户有人数', value: '78', color: '#ccc', icon: 'coffee' },
-          { id: 4, text: '昨日用户增长数', value: '879', color: '#ccc', icon: 'coffee' },
+          { id: 0, text: '当前设备总数', value: '1', color: '#67C23A', icon: 'angry' },
+          { id: 1, text: '在线设备总数', value: '4545', color: '#E6A23C', icon: 'coffee' },
+          { id: 2, text: '当前设备故障数', value: '56', color: '#F56C6C', icon: 'coffee' },
+          { id: 3, text: '当前用户有人数', value: '78', color: '#909399', icon: 'coffee' },
+          { id: 4, text: '昨日用户增长数', value: '879', color: '#409EFF', icon: 'coffee' },
           { id: 5, text: '今日活跃用户数', value: '454', color: '#ccc', icon: 'coffee' },
           { id: 6, text: '本月用户增长数', value: '213', color: '#ccc', icon: 'coffee' },
           { id: 7, text: '本月活跃用户数', value: '123', color: '#ccc', icon: 'coffee' },
@@ -110,11 +110,11 @@
           { id: 16, text: '优良环境比率', value: '12', color: '#ccc', icon: 'coffee' }
         ],
         datacardDataList: [
-          { id: 0, text: '当前设备总数', value: '1', color: '#ccc', icon: 'angry' },
-          { id: 1, text: '在线设备总数', value: '4545', color: '#ccc', icon: 'coffee' },
-          { id: 2, text: '当前设备故障数', value: '56', color: '#ccc', icon: 'coffee' },
-          { id: 3, text: '当前用户有人数', value: '78', color: '#ccc', icon: 'coffee' },
-          { id: 4, text: '昨日用户增长数', value: '879', color: '#ccc', icon: 'coffee' },
+          { id: 0, text: '当前设备总数', value: '1', color: '#67C23A', icon: 'angry' },
+          { id: 1, text: '在线设备总数', value: '4545', color: '#E6A23C', icon: 'coffee' },
+          { id: 2, text: '当前设备故障数', value: '56', color: '#F56C6C', icon: 'coffee' },
+          { id: 3, text: '当前用户有人数', value: '78', color: '#909399', icon: 'coffee' },
+          { id: 4, text: '昨日用户增长数', value: '879', color: '#409EFF', icon: 'coffee' },
           { id: 5, text: '今日活跃用户数', value: '454', color: '#ccc', icon: 'coffee' },
           { id: 6, text: '本月用户增长数', value: '213', color: '#ccc', icon: 'coffee' },
           { id: 7, text: '本月活跃用户数', value: '123', color: '#ccc', icon: 'coffee' }
