@@ -60,9 +60,9 @@
 </template>
 
 <script>
-  import DatacardGridList from './components/DatacardGridList'
-  import Datacard from './components/Datacard'
-  import DatacardEdit from './components/DatacardEdit'
+  import DatacardGridList from '@/components/DatacardGridList'
+  import Datacard from '@/components/Datacard'
+  import DatacardEdit from '@/components/DatacardEdit'
   import DTitle from '@/components/DTitle'
   import DeviceIncrementChart from './components/DeviceIncrementChart'
   import DevicePositionChart from './components/DevicePositionChart'
