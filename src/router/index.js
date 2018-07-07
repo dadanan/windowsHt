@@ -59,8 +59,8 @@ export const asyncRouterMap = [
         name: '用户数据'
       },
       {
-        path: 'analytics3',
-        component: _import('blank'),
+        path: 'device',
+        component: _import('analytics/device/index'),
         name: '设备数据'
       },
       {
