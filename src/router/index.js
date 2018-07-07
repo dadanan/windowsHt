@@ -69,8 +69,8 @@ export const asyncRouterMap = [
         name: '系统分析'
       },
       {
-        path: 'analytics5',
-        component: _import('blank'),
+        path: 'bigDataPanel',
+        component: _import('analytics/bigDataPanel'),
         name: '大数据看板'
       }
     ]
