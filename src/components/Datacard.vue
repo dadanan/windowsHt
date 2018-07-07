@@ -8,7 +8,7 @@
           <div class="datacard__subtitle">{{ data.value }}</div>
         </div>
       </div>
-      <el-button class="datacard__edit" type="success" size="mini" @click="edit">编辑看板</el-button>
+      <el-button class="datacard__edit" type="primary" size="mini" @click="edit" icon="edit"></el-button>
     </div>
   </el-col>
 </template>
