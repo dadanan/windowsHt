@@ -2,7 +2,7 @@
   <div>
     <d-title>设备数据看板</d-title>
     <datacard-grid-list class="datacard-grid-list">
-      <datacard v-for="data, index in allDatacardDataList" :key="index"
+      <datacard v-for="data, index in datacardDataList" :key="index"
                 @edit="editDatacard($event, index)" :data="data"></datacard>
     </datacard-grid-list>
     <datacard-edit @save="saveDatacard($event, editDatacardIndex)" :is-open.sync="isEditDatacard"

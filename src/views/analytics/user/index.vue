@@ -2,36 +2,18 @@
   <div>
     <d-title>用户数据看板</d-title>
     <datacard-grid-list class="datacard-grid-list">
-      <datacard v-for="datacardData, index in datacardDataList" :key="datacardData.id"
-                @edit="editDatacard($event, index)" :data="datacardData"></datacard>
+      <datacard v-for="data, index in datacardDataList" :key="index"
+                @edit="editDatacard($event, index)" :data="data"></datacard>
     </datacard-grid-list>
     <datacard-edit @save="saveDatacard($event, editDatacardIndex)" :is-open.sync="isEditDatacard"
-                   :edit-data="editDatacardData" :select-data="datacardAllDataList"></datacard-edit>
+                   :edit-data="editDatacardData" :select-data="allDatacardDataList"></datacard-edit>
     <d-title>用户数据图表</d-title>
-    <el-row :gutter="20" style="margin-bottom: 20px">
-      <el-col :span="12">
-        <el-card>
-          <new-user-chart></new-user-chart>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card>
-          <active-user-chart></active-user-chart>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20" style="margin-bottom: 20px">
-      <el-col :span="12">
-        <el-card>
-          <total-user-chart></total-user-chart>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card>
-          <user-position-rank-chart></user-position-rank-chart>
-        </el-card>
-      </el-col>
-    </el-row>
+    <chart-grid-list>
+      <chart v-for="option, index in chartOptionList" :key="index" :option="option"
+             @edit="editChart($event, index)"></chart>
+    </chart-grid-list>
+    <chart-edit @save="saveChart($event, editChartIndex)" :is-open.sync="isEditChart" :edit-data="editChartOption"
+                :select-data="allChartOptionList"></chart-edit>
     <d-title>用户数据表</d-title>
     <!--筛选-->
     <div class="filter-bar">
@@ -106,10 +88,9 @@
   import Datacard from '@/components/Datacard'
   import DatacardEdit from '@/components/DatacardEdit'
   import DTitle from '@/components/DTitle'
-  import NewUserChart from './components/NewUserChart'
-  import ActiveUserChart from './components/ActiveUserChart'
-  import TotalUserChart from './components/TotalUserChart'
-  import UserPositionRankChart from './components/UserPositionRankChart'
+  import ChartGridList from '@/components/ChartGridList'
+  import Chart from '@/components/Chart'
+  import ChartEdit from '@/components/ChartEdit'
 
   export default {
     components: {
@@ -117,14 +98,13 @@
       Datacard,
       DatacardEdit,
       DTitle,
-      NewUserChart,
-      ActiveUserChart,
-      TotalUserChart,
-      UserPositionRankChart
+      ChartGridList,
+      Chart,
+      ChartEdit
     },
     data() {
       return {
-        datacardAllDataList: [
+        allDatacardDataList: [
           { id: 0, text: '当前用户总数', value: '1', color: '#67C23A', icon: 'angry' },
           { id: 1, text: '昨日新增用户', value: '2', color: '#E6A23C', icon: 'angry' },
           { id: 2, text: '今日活跃用户', value: '3', color: '#F56C6C', icon: 'angry' },
@@ -142,6 +122,213 @@
         isEditDatacard: false,
         editDatacardData: null,
         editDatacardIndex: 0,
+        allChartOptionList: [
+          {
+            id: 1, text: '新增用户趋势图', option: {
+              title: {
+                text: '新增用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '增长趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 2, text: '活跃用户趋势图', option: {
+              title: {
+                text: '活跃用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '活跃用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '活跃趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 3, text: '用户总数趋势图', option: {
+              title: {
+                text: '用户总数趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户总数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '总数趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 4, text: '用户区域分布图', option: {
+              title: {
+                text: '用户区域分布图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: ['其他', '江苏省', '广东省', '福建省', '湖南省', '河南省', '河北省', '江西省', '青海省', '海南省']
+              },
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
+            }
+          }
+        ],
+        chartOptionList: [
+          {
+            id: 1, text: '新增用户趋势图', option: {
+              title: {
+                text: '新增用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '增长趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 2, text: '活跃用户趋势图', option: {
+              title: {
+                text: '活跃用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '活跃用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '活跃趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 3, text: '用户总数趋势图', option: {
+              title: {
+                text: '用户总数趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户总数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '总数趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            }
+          },
+          {
+            id: 4, text: '用户区域分布图', option: {
+              title: {
+                text: '用户区域分布图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: ['其他', '江苏省', '广东省', '福建省', '湖南省', '河南省', '河北省', '江西省', '青海省', '海南省']
+              },
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
+            }
+          }
+        ],
+        editChartOption: null,
+        editChartIndex: 0,
+        isEditChart: false,
         userTableData: [
           {
             id: '1',
@@ -221,6 +408,15 @@
       saveDatacard(data, index) {
         this.datacardDataList[index] = data
         this.isEditDatacard = false
+      },
+      editChart(data, index) {
+        this.editChartIndex = index
+        this.editChartOption = data
+        this.isEditChart = true
+      },
+      saveChart(data, index) {
+        this.chartOptionList[index] = data
+        this.isEditChart = false
       },
       search() {
       },
