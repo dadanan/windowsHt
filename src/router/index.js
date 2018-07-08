@@ -70,7 +70,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'bigDataPanel',
-        component: _import('analytics/bigDataPanel'),
+        component: _import('analytics/bigDataPanel/bigDataPanel'),
         name: '大数据看板'
       }
     ]
