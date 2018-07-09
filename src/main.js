@@ -11,10 +11,10 @@ import './permission' // 权限
 import 'static/global/global.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faAngry } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faAngry, faCommentAlt, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCoffee, faAngry)
+library.add(faCoffee, faAngry, faCommentAlt, faCog)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
