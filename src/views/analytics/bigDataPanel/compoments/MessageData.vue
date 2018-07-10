@@ -1,16 +1,16 @@
 <template>
 
-    <el-tabs class="message-panel" type="border-card" @tab-click="onTabClick">
-    
+    <el-tabs type="border-card" @tab-click="onTabClick">
         <el-tab-pane label="系统" name=0 >
-            <el-input class="message-area"
-                type="textarea"
-                placeholder="系统讯息"
-                autosize="true"
-                :value="messageDataBuffer">
+          <div style="height: 250px">
+            <el-input
+                      type="textarea"
+                      placeholder="系统讯息"
+                      :value="messageDataBuffer" class="textarea-full">
             </el-input>
+          </div>
         </el-tab-pane>
-        <el-tab-pane label="设备" name=1>设备
+        <el-tab-pane label="设备" name=1>
             <el-input
                 type="textarea"
                 placeholder="系统讯息"
@@ -18,15 +18,14 @@
                 :value="messageDataBuffer">
             </el-input>
         </el-tab-pane>
-        <el-tab-pane label="订单" name=2>订单
+        <el-tab-pane label="订单" name=2>
             <el-input
                 type="textarea"
                 placeholder="系统讯息"
                 autosize="true"
                 :value="messageDataBuffer">
-            </el-input> 
+            </el-input>
         </el-tab-pane>
-        
     </el-tabs>
 
 </template>
@@ -54,7 +53,7 @@ export default {
             this.getMessages(this.selectedType)
         },
         types() {
-            
+
             this.msgTypes = this.msgs
         },
         selectedType(newval,oldval) {
@@ -75,7 +74,7 @@ export default {
                     this.messageDataBuffer = this.messageDataBuffer + this.getMessagesName(element.type) + " : " + element.message + "\n"
                 }
             });
-           
+
         },
         getMessagesName(type) {
             var catName = "";
@@ -110,6 +109,12 @@ export default {
     }
 </style>
 <style lang="scss">
+  .textarea-full {
+    height: 100%;
+    textarea {
+      height: 100%;
+    }
+  }
     .message-panel {
         textarea{
             border: none;
