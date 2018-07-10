@@ -1,41 +1,80 @@
 <template>
   <div>
     <el-dialog
-        title="提示"
+        title="位置设置"
         :visible.sync="dialogVisible"
         size="tiny"
-        :before-close="handleClose">
-        <span>这是一段信息</span>
+        :before-close="cancel"
+        :modal="false">
+    
+            <el-cascader
+                size="large"
+                :options="options"
+                v-model="selectedOptions"
+                @change="handleChange">
+            </el-cascader>
+        
+
         <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
         </span>
     </el-dialog>
   </div>
 </template>
 <script>
+    import axios from 'axios'
+    import { regionData,CodeToText } from 'element-china-area-data'
     export default {
-        //props:['sendData'], 
+        props:['visible','id'], 
+        
         mounted() {
-            let WeatherOptionData = {
-                province: "北京",
-                city: "北京",
-                suburb: "北京",
-            };
-            this.$emit('updateOption',WeatherOptionData);
+           
         },
         data() {
             return {
-                dialogVisible: true
+                dialogVisible: false,
+                /////////////////
+                options: regionData,
+                selectedOptions: [],
+                selectedLocation: null,
             };
         },
-           
+        created() {
+            this.dialogVisible = this.visible
+        },
+        watch :{
+            visible: function(newVal, oldVal) {
+                this.dialogVisible = newVal;
+            }
+        },
         methods:{
-            select(val) {
-            
+            handleChange (value) {
+                this.selectedLocation = value
             },
-            handleClose(done) {
-                done();
+          
+            /////////////////////////
+            updateOption(p,c,s) {
+                let WeatherOptionData = {
+                    province : p,
+                    city : c,
+                    suburb : s,
+                };
+                this.$emit('updateOption',WeatherOptionData);
+            },
+            cancel(val) {
+                this.dialogVisible = false;
+                this.$emit('toggleDialog',this.id);
+            },
+            save() {
+                //如果是直辖区
+                if(CodeToText[this.selectedLocation[1]] === "市辖区")
+                    this.updateOption(CodeToText[this.selectedLocation[0]],CodeToText[this.selectedLocation[0]],CodeToText[this.selectedLocation[2]])
+                else
+                    this.updateOption(CodeToText[this.selectedLocation[0]],CodeToText[this.selectedLocation[1]],CodeToText[this.selectedLocation[2]])
+                
+                this.dialogVisible = false;
+                this.$emit('toggleDialog',this.id);
             }
         }
     }

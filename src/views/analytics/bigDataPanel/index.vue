@@ -4,10 +4,11 @@
       <el-row>
         <el-col :span="5"><div class="grid-content bg-purple"></div>
           <el-col :span="24" id="col">
-              <a id="setting" type="primary" size="mini">设置</a>
+              <a id="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
+              <WeatherOption :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption" @toggleDialog="toggleDialog"></WeatherOption>
               <h3>天气环境</h3>
-              <Weather :option="WeatherOptionData"></Weather>
-              <WeatherOption  @updateOption="updateWeatherOption"></WeatherOption>
+              <Weather :option="OptionData.WeatherOptionData"></Weather>
+              
           </el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartDeviceData></ChartDeviceData></el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartUserData></ChartUserData></el-col>
@@ -59,18 +60,30 @@
     },
     data() {
       return {
-        WeatherOptionData: {
-          province: "上海",
-          city: "上海市",
-          suburb: "普陀区",
-        }
+        OptionData: {
+          WeatherOptionData: {
+            province: "上海",
+            city: "上海市",
+            suburb: "普陀区",
+          }
+        },
+        
+        DialogVisile: [false,false,false,false,false,false,false,false,false,false]
       };
+
     },
+
     methods: {
       updateWeatherOption(options) {
-        this.WeatherOptionData = options;
-        alert(this.WeatherOptionData.city);
+        this.OptionData.WeatherOptionData = options;
+      },
+      toggleDialog(id) {
+        this.DialogVisile.splice(id, 1,  this.DialogVisile[id] ? false : true);
+      },
+      alertTest() {
+        alert("hello world");
       }
+
     }
   }
 
