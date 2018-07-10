@@ -20,12 +20,12 @@
             <el-col :span="24" id="middle-top"><ChartDeviceMap></ChartDeviceMap></el-col>
             <el-col :span="24" id="middle-bottom">
                 <h3>工程案例</h3>
-
             </el-col>
-          
         </el-col>
         <el-col :span="5"><div class="grid-content bg-purple"></div>
-          <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><h3>信息发布</h3></el-col>
+          <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><h3>信息发布</h3>
+          <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
+          </el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><h3>解决方法</h3></el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartOperationData></ChartOperationData></el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><FilteredData></FilteredData></el-col>
@@ -44,10 +44,12 @@
   import ChartOperationData from './compoments/ChartOperationData.vue';
   import FilteredData from './compoments/FilteredData.vue';
   import Weather from './compoments/Weather.vue';
+  import Message from './compoments/MessageData.vue';
 
   import WeatherOption from './compoments/WeatherOption.vue';
   export default {
     components: {
+      //模块
       ChartDeviceMap,
       ChartDeviceData,
       ChartUserData,
@@ -55,7 +57,8 @@
       ChartOperationData,
       FilteredData,
       Weather,
-
+      Message,
+      //弹窗
       WeatherOption,
     },
     data() {
@@ -65,8 +68,32 @@
             province: "上海",
             city: "上海市",
             suburb: "普陀区",
-          }
+          },
+          MessageOptions:  {
+            types :[
+              {id: 0 , name : "系统信息"},
+              {id: 1 , name : "设备信息"},
+              {id: 2 , name : "订单信息"},
+            ],
+            data : [
+              {type: 0,message :"系统讯息测试"},
+              {type: 0,message :"系统讯息测试2"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 0,message :"系统讯息测试3"},
+              {type: 1,message :"设备信息测试数据"},
+              {type: 1,message :"设备信息测试数据2"},
+              {type: 2,message :"订单讯息测试"},
+            ],
+
+          },
+        
         },
+      
         
         DialogVisile: [false,false,false,false,false,false,false,false,false,false]
       };
