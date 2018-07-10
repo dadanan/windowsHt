@@ -1,30 +1,45 @@
 <template>
     <div class="weather">
-        <h1 id="city">{{city}}</h1>
-        <span id="date">{{date}}</span>
+        <div id="city">
+          <h1>{{city}}</h1>
+          <p>{{suburb}}</p>
+        </div>
         
-        <p>{{weather}} ({{temperature}})</p>
-        <p>{{wind}}</p>
+        <p>天气: {{weather}} ({{temperature}})</p>
+        <p>湿度: {{humidity}}%</p>
+        <p>PM2.5: {{weatherQuality}}</p>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
+    props : ["option"],
     data() {
       return {
-        city: "厦门",
-        date: null,
+        city: this.option.city,
+        province: this.option.province,
+        suburb: this.option.suburb,
         weather: null,
-        wind :null,
-        pm25: null,
         temperature: null,
+        humidity: 56,
+        weatherQuality: 12,
       }
     },
-    mounted() {
-      this.requestWeather(this.city);
+    watch:{
+      option: function() {
+        this.requestWeather(this.city);
+      }
+    },
+    created() {
+      this.loadOptions();
     },
     methods:{
+      loadOptions : function() {
+        this.city = this.option.city,
+        this.province = this.option.province,
+        this.suburb = this.option.suburb
+      },
       //请求天气
       requestWeather: function(city) {
         var proxy = 'https://bird.ioliu.cn/v1/?url=';
@@ -32,11 +47,12 @@ export default {
         .then((response)=>{
           this.date = response.data.date;
           this.weather = response.data.results[0].weather_data[0].weather;
-          this.wind = response.data.results[0].weather_data[0].wind;
           this.temperature = response.data.results[0].weather_data[0].temperature;
+          
         })
       }
     }
+    
 }
 </script>
 
