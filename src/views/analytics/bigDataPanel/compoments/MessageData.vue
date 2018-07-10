@@ -2,7 +2,7 @@
 
     <el-tabs type="border-card" @tab-click="onTabClick">
         <el-tab-pane label="系统" name=0 >
-          <div style="height: 250px">
+          <div style="height: 100px">
             <el-input
                       type="textarea"
                       placeholder="系统讯息"
@@ -15,7 +15,7 @@
                 type="textarea"
                 placeholder="系统讯息"
                 autosize="true"
-                :value="messageDataBuffer">
+                :value="messageDataBuffer" class="textarea-full">
             </el-input>
         </el-tab-pane>
         <el-tab-pane label="订单" name=2>
@@ -23,7 +23,7 @@
                 type="textarea"
                 placeholder="系统讯息"
                 autosize="true"
-                :value="messageDataBuffer">
+                :value="messageDataBuffer" class="textarea-full">
             </el-input>
         </el-tab-pane>
     </el-tabs>
@@ -105,16 +105,15 @@ export default {
         height: 100%;
         margin-left: auto;
         margin-right: auto;
-
     }
 </style>
 <style lang="scss">
-  .textarea-full {
-    height: 100%;
-    textarea {
-      height: 100%;
+    .textarea-full {
+        height: 100%;
+        textarea {
+            height: 100%;
+        }
     }
-  }
     .message-panel {
         textarea{
             border: none;
