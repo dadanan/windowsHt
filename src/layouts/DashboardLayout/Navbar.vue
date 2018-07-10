@@ -10,11 +10,7 @@
         :options="options"
         v-model="selectedOptions" style="float: left">
       </el-cascader>
-      <el-cascader
-        expand-trigger="hover"
-        :options="options"
-        v-model="selectedOptions2" style="float: left">
-      </el-cascader>
+      <el-input v-model="input" placeholder="请输入内容" style="width: 217px" class="navbar-search-input"></el-input>
       <el-button icon="search" type="primary"></el-button>
     </div>
     <el-dropdown style="margin-left: 10px; margin-right: 20px;" trigger="click">
@@ -380,19 +376,25 @@
 
 <style lang="scss">
   .filter {
+    display: flex;
+    align-items: center;
     .el-cascader__label {
       line-height: 50px;
     }
     .el-cascader:first-child .el-input__inner {
       border-radius: 4px 0 0 4px;
     }
-    .el-cascader:first-child + .el-cascader .el-input__inner {
-      border-radius: 0;
-      border-right: 0;
-      border-left: 0;
-    }
     .el-button {
       border-radius: 0 4px 4px 0;
+      height: 36px;
+    }
+  }
+
+  .navbar-search-input {
+    .el-input__inner {
+      border-radius: 0;
+      border-right: 0;
+      /*border-left: 0;*/
     }
   }
 </style>
