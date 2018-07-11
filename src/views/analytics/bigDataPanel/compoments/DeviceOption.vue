@@ -14,14 +14,14 @@
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-           
+
             <el-button type="primary" @click="close">关闭</el-button>
         </span>
     </el-dialog>
   </div>
 </template>
 <script>
-    import ECharts from 'vue-echarts/components/ECharts'
+    import EChart from 'vue-echarts/components/ECharts'
     import 'echarts'
     export default {
         components: {
