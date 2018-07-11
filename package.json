@@ -10,7 +10,8 @@
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "commit": "git-cz"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
@@ -77,9 +78,11 @@
     "babel-preset-env": "1.6.1",
     "babel-preset-stage-2": "6.24.1",
     "chalk": "2.3.0",
+    "commitizen": "^2.10.1",
     "copy-webpack-plugin": "4.3.0",
     "cross-env": "5.1.1",
     "css-loader": "0.28.7",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "4.13.1",
     "eslint-friendly-formatter": "3.0.0",
     "eslint-loader": "1.9.0",
@@ -122,5 +125,10 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
