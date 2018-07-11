@@ -8,7 +8,7 @@
         :modal="false">
         <el-row>
             <el-col :span="16">
-                <e-chart></e-chart>
+                <e-chart :options="polar"></e-chart>
             </el-col>
             <el-col :span="8">
             </el-col>
@@ -24,7 +24,7 @@
     import EChart from 'vue-echarts/components/ECharts'
     import 'echarts'
     export default {
-        props:['visible','id'], 
+        props:['visible','id'],
 
         components: {
             EChart
@@ -38,7 +38,7 @@
                 let r = Math.sin(2 * t) * Math.cos(2 * t)
                 data.push([r, i])
             }
-            
+
             return {
                 polar: {
                     title: {
@@ -87,7 +87,7 @@
                 this.data = this.options.alldata
                 this.active = this.options.active
                 this.increase = this.options.increaseRate
-            
+
             },
             findMaxVal(numberData) {
                 return Math.max.apply(Math,numberData)
@@ -101,15 +101,15 @@
                 };
                 this.$emit('updateOption',WeatherOptionData);
             },
-            
+
             close() {
-                
+
                 this.dialogVisible = false;
                 this.$emit('toggleDialog',this.id);
             }
         },
     }
-    
+
 
 </script>
 <style lang="scss" scoped>
