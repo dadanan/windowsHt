@@ -9,6 +9,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
+      <logo></logo>
       <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
   </el-scrollbar>
@@ -17,9 +18,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
+import Logo from './Logo'
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
       'permission_routers',
