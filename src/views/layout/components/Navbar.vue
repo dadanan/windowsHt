@@ -1,44 +1,42 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+    <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
+    <breadcrumb></breadcrumb>
+    <!--<div class="right-menu">-->
+      <!--&lt;!&ndash;<error-log class="errLog-container right-menu-item"></error-log>&ndash;&gt;-->
 
-    <breadcrumb class="breadcrumb-container"></breadcrumb>
+      <!--&lt;!&ndash;<el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">&ndash;&gt;-->
+        <!--&lt;!&ndash;<screenfull class="screenfull right-menu-item"></screenfull>&ndash;&gt;-->
+      <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
 
-    <div class="right-menu">
-      <error-log class="errLog-container right-menu-item"></error-log>
+      <!--&lt;!&ndash;<lang-select class="international right-menu-item"></lang-select>&ndash;&gt;-->
 
-      <el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">
-        <screenfull class="screenfull right-menu-item"></screenfull>
-      </el-tooltip>
+      <!--&lt;!&ndash;<el-tooltip effect="dark" :content="$t('navbar.theme')" placement="bottom">&ndash;&gt;-->
+        <!--&lt;!&ndash;<theme-picker class="theme-switch right-menu-item"></theme-picker>&ndash;&gt;-->
+      <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
 
-      <lang-select class="international right-menu-item"></lang-select>
-
-      <el-tooltip effect="dark" :content="$t('navbar.theme')" placement="bottom">
-        <theme-picker class="theme-switch right-menu-item"></theme-picker>
-      </el-tooltip>
-
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
-        <div class="avatar-wrapper">
-          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-          <i class="el-icon-caret-bottom"></i>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{$t('navbar.dashboard')}}
-            </el-dropdown-item>
-          </router-link>
-          <a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>
-              {{$t('navbar.github')}}
-            </el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
-            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
+      <!--&lt;!&ndash;<el-dropdown class="avatar-container right-menu-item" trigger="click">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="avatar-wrapper">&ndash;&gt;-->
+          <!--&lt;!&ndash;<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">&ndash;&gt;-->
+          <!--&lt;!&ndash;<i class="el-icon-caret-bottom"></i>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<el-dropdown-menu slot="dropdown">&ndash;&gt;-->
+          <!--&lt;!&ndash;<router-link to="/">&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-dropdown-item>&ndash;&gt;-->
+              <!--&lt;!&ndash;{{$t('navbar.dashboard')}}&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
+          <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
+          <!--&lt;!&ndash;<a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-dropdown-item>&ndash;&gt;-->
+              <!--&lt;!&ndash;{{$t('navbar.github')}}&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
+          <!--&lt;!&ndash;</a>&ndash;&gt;-->
+          <!--&lt;!&ndash;<el-dropdown-item divided>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
+        <!--&lt;!&ndash;</el-dropdown-menu>&ndash;&gt;-->
+      <!--&lt;!&ndash;</el-dropdown>&ndash;&gt;-->
+    <!--</div>-->
   </el-menu>
 </template>
 
@@ -80,7 +78,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .navbar {
   height: 50px;
   line-height: 50px;
@@ -88,58 +86,7 @@ export default {
   border-bottom: none;
   position: relative;
   z-index: 1;
-  .hamburger-container {
-    line-height: 58px;
-    height: 50px;
-    float: left;
-    padding: 0 10px;
-  }
-  .breadcrumb-container{
-    float: left;
-  }
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
-  }
-  .right-menu {
-    float: right;
-    height: 100%;
-    &:focus{
-     outline: none;
-    }
-    .right-menu-item {
-      display: inline-block;
-      margin: 0 8px;
-    }
-    .screenfull {
-      height: 20px;
-    }
-    .international{
-      vertical-align: top;
-    }
-    .theme-switch {
-      vertical-align: 15px;
-    }
-    .avatar-container {
-      height: 50px;
-      margin-right: 30px;
-      .avatar-wrapper {
-        cursor: pointer;
-        margin-top: 5px;
-        position: relative;
-        .user-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-        .el-icon-caret-bottom {
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
-    }
-  }
+  display: flex;
+  align-items: center;
 }
 </style>

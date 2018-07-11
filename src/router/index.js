@@ -49,5 +49,381 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  {
+    path: '/analytics',
+    component: Layout,
+    name: 'analytics',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'analytics',
+      icon: 'chart-bar'
+    },
+    children: [
+      {
+        path: 'order',
+        component: () => import('@/views/blank'),
+        name: 'orderAnalytics',
+        meta: {
+          title: 'orderAnalytics'
+        }
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/blank'),
+        name: 'userAnalytics',
+        meta: {
+          title: 'userAnalytics'
+        }
+      },
+      {
+        path: 'device',
+        component: () => import('@/views/blank'),
+        name: 'deviceAnalytics',
+        meta: {
+          title: 'deviceAnalytics'
+        }
+      },
+      {
+        path: 'system',
+        component: () => import('@/views/blank'),
+        name: 'systemAnalytics',
+        meta: {
+          title: 'systemAnalytics'
+        }
+      },
+      {
+        path: 'bigDataPanel',
+        component: () => import('@/views/blank'),
+        name: 'bigDataPanel',
+        meta: {
+          title: 'bigDataPanel'
+        }
+      }
+    ]
+  },
+  {
+    path: '/device',
+    component: Layout,
+    name: 'device',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'device',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/blank'),
+        name: 'deviceList',
+        meta: {
+          title: 'deviceList'
+        }
+      },
+      {
+        path: 'group',
+        component: () => import('@/views/blank'),
+        name: 'deviceGroup',
+        meta: {
+          title: 'deviceGroup'
+        }
+      },
+      {
+        path: 'type',
+        component: () => import('@/views/blank'),
+        name: 'deviceType',
+        meta: {
+          title: 'deviceType'
+        }
+      },
+      {
+        path: 'map',
+        component: () => import('@/views/blank'),
+        name: 'deviceMap',
+        meta: {
+          title: 'deviceMap'
+        }
+      },
+      {
+        path: 'config',
+        component: () => import('@/views/blank'),
+        name: 'deviceConfig',
+        meta: {
+          title: 'deviceConfig'
+        }
+      },
+      {
+        path: 'filing',
+        component: () => import('@/views/blank'),
+        name: 'deviceFiling',
+        meta: {
+          title: 'deviceFiling'
+        }
+      }
+    ]
+  },
+  {
+    path: '/alarm',
+    component: Layout,
+    name: 'alarm',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'alarm',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'device',
+        component: () => import('@/views/blank'),
+        name: 'alarmDevice',
+        meta: {
+          title: 'alarmDevice'
+        }
+      },
+      {
+        path: 'config',
+        component: () => import('@/views/blank'),
+        name: 'alarmConfig',
+        meta: {
+          title: 'alarmConfig'
+        }
+      },
+      {
+        path: 'process',
+        component: () => import('@/views/blank'),
+        name: 'alarmProcess',
+        meta: {
+          title: 'alarmProcess'
+        }
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    name: 'order',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'order',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'rent',
+        component: () => import('@/views/blank'),
+        name: 'rentOrder',
+        meta: {
+          title: 'rentOrder'
+        }
+      },
+      {
+        path: 'payment',
+        component: () => import('@/views/blank'),
+        name: 'paymentOrder',
+        meta: {
+          title: 'paymentOrder'
+        }
+      },
+      {
+        path: 'sales',
+        component: () => import('@/views/blank'),
+        name: 'salesOrder',
+        meta: {
+          title: 'salesOrder'
+        }
+      },
+      {
+        path: 'after-sale',
+        component: () => import('@/views/blank'),
+        name: 'afterSaleOrder',
+        meta: {
+          title: 'afterSaleOrder'
+        }
+      }
+    ]
+  },
+  {
+    path: '/income',
+    component: Layout,
+    name: 'income',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'income',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'rule',
+        component: () => import('@/views/blank'),
+        name: 'incomeRule',
+        meta: {
+          title: 'incomeRule'
+        }
+      },
+      {
+        path: 'bill',
+        component: () => import('@/views/blank'),
+        name: 'incomeBill',
+        meta: {
+          title: 'incomeBill'
+        }
+      }
+    ]
+  },
+  {
+    path: '/rent',
+    component: Layout,
+    name: 'rent',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'rent',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'wechat',
+        component: () => import('@/views/blank'),
+        name: 'rentWechat',
+        meta: {
+          title: 'rentWechat'
+        }
+      },
+      {
+        path: 'blacklist',
+        component: () => import('@/views/blank'),
+        name: 'rentBlacklist',
+        meta: {
+          title: 'rentBlacklist'
+        }
+      },
+      {
+        path: 'toll',
+        component: () => import('@/views/blank'),
+        name: 'rentToll',
+        meta: {
+          title: 'rentToll'
+        }
+      },
+      {
+        path: 'putin',
+        component: () => import('@/views/blank'),
+        name: 'rentPutin',
+        meta: {
+          title: 'rentPutin'
+        }
+      },
+      {
+        path: 'operator',
+        component: () => import('@/views/blank'),
+        name: 'rentOperator',
+        meta: {
+          title: 'rentOperator'
+        }
+      },
+      {
+        path: 'payment',
+        component: () => import('@/views/blank'),
+        name: 'rentPayment',
+        meta: {
+          title: 'rentPayment'
+        }
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    name: 'system',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'system',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'client',
+        component: () => import('@/views/blank'),
+        name: 'systemClient',
+        meta: {
+          title: 'systemClient'
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/blank'),
+        name: 'systemRole',
+        meta: {
+          title: 'systemRole'
+        }
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/blank'),
+        name: 'systemUser',
+        meta: {
+          title: 'systemUser'
+        }
+      },
+      {
+        path: 'setting',
+        component: () => import('@/views/blank'),
+        name: 'systemSetting',
+        meta: {
+          title: 'systemSetting'
+        }
+      }
+    ]
+  },
+  {
+    path: '/message',
+    component: Layout,
+    name: 'message',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'message',
+      icon: 'angry'
+    },
+    children: [
+      {
+        path: 'system',
+        component: () => import('@/views/blank'),
+        name: 'systemMessage',
+        meta: {
+          title: 'systemMessage'
+        }
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/blank'),
+        name: 'userMessage',
+        meta: {
+          title: 'userMessage'
+        }
+      },
+      {
+        path: 'alarm',
+        component: () => import('@/views/blank'),
+        name: 'alarmMessage',
+        meta: {
+          title: 'alarmMessage'
+        }
+      },
+      {
+        path: 'after-sale',
+        component: () => import('@/views/blank'),
+        name: 'afterSaleMessage',
+        meta: {
+          title: 'afterSaleMessage'
+        }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
