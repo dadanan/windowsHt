@@ -1,5 +1,5 @@
 <template>
-  <el-menu-item class="logo">
+  <el-menu-item class="logo" index="logo">
     <img src="/static/images/logo.svg" alt="logo">
   </el-menu-item>
 </template>
