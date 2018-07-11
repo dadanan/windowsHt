@@ -145,7 +145,9 @@
         this.OptionData.WeatherOptionData = options;
       },
       toggleDialog(id) {
+        console.log("is toggle");
         this.DialogVisile.splice(id, 1,  this.DialogVisile[id] ? false : true);
+        
       },
       alertTest() {
         alert("hello world");

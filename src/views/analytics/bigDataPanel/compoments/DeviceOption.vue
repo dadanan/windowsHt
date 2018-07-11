@@ -2,16 +2,39 @@
   <div>
     <el-dialog
         title="设备信息"
-        :visible="true"
+        :visible="dialogVisible"
         size="large"
         :before-close="close"
         :modal="false">
         <el-row>
             <el-col :span="16">
-                <e-chart :options="polar"></e-chart>
+                <e-chart id="main-chart" :options="mainChartOption"></e-chart>
+                
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" >
+                <el-col :span="24">
+                    <el-radio-group v-model="filterIntegrate">
+                        <el-radio-button label="7天"></el-radio-button>
+                        <el-radio-button label="30天"></el-radio-button>
+                        <el-radio-button label="60天"></el-radio-button>
+                        <el-radio-button label="90天"></el-radio-button>
+                    </el-radio-group>
+                    <e-chart id="active-chart" :options="activePieChart"></e-chart>
+                    
+                </el-col>
+                <el-col :span="24">
+                    <e-chart id="increase-chart" :options="monthlyIncreaseRate"></e-chart>
+                    <el-radio-group v-model="filterDevices">
+                        <el-radio :label="1">总设备</el-radio>
+                        <el-radio :label="2">检测设备</el-radio>
+                        <el-radio :label="3">第三方设备</el-radio>
+                        <el-radio :label="4">终端展示设备</el-radio>
+                        <el-radio :label="5">净化设备</el-radio>
+                    </el-radio-group>
+                </el-col>
+                
             </el-col>
+          
         </el-row>
         <span slot="footer" class="dialog-footer">
 
@@ -21,99 +44,231 @@
   </div>
 </template>
 <script>
-    import EChart from 'vue-echarts/components/ECharts'
-    import 'echarts'
-    export default {
-        props:['visible','id'],
+import EChart from "vue-echarts/components/ECharts";
+import "echarts";
+export default {
+  props: ["visible", "id", "options"],
 
-        components: {
-            EChart
-        },
-        /////////////////////////
-        data: function () {
-            let data = []
-
-            for (let i = 0; i <= 360; i++) {
-                let t = i / 180 * Math.PI
-                let r = Math.sin(2 * t) * Math.cos(2 * t)
-                data.push([r, i])
-            }
-
-            return {
-                polar: {
-                    title: {
-                        text: '极坐标双数值轴'
-                    },
-                    legend: {
-                        data: ['line']
-                    },
-                    polar: {
-                        center: ['50%', '54%']
-                    },
-                    tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross'
+  components: {
+    EChart
+  },
+  /////////////////////////
+  data: function() {
+      
+    this.populateData();
+    return {
+        filterIntegrate: "30天",
+        filterDevices: 1,
+        ////////////////////
+        integrals: [],
+        data: [],
+        active: [],
+        increase: [],
+        ////////////////////
+        mainChartOption: {
+            title: {
+                text: "设备数据",
+                left: "center",
+               
+            },
+            legend: {
+                data: ['设备数据', '活跃设备', '增长率'],
+                y: "bottom",
+            },
+            xAxis: {
+                type: 'category',
+                data: this.integrals
+            },
+            
+            yAxis:[ 
+                {
+                    type: "value",
+                    name: '设备数据',
+                    max: this.findMaxVal(this.data),
+                    min: 0,
+                    splitLine:{show: false},
+                    axisLine: {
+                        
                     }
-                    },
-                    angleAxis: {
-                    type: 'value',
-                    startAngle: 0
-                    },
-                    radiusAxis: {
-                    min: 0
-                    },
-                    series: [
-                    {
-                        coordinateSystem: 'polar',
-                        name: 'line',
-                        type: 'line',
-                        showSymbol: false,
-                        data: data
-                    }
-                    ],
-                    animationDuration: 2000
                 },
-                ////////////////////
-                dialogVisible: false,
-
-            }
-
+                {
+                    type: "value",
+                    name: '增长率',
+                    min: 0,
+                    max: this.findMaxVal(this.increase),
+                    axisLabel: {
+                        formatter: '{value}%'
+                    },
+                    
+                }
+            ],
+            series: [
+                {
+                    name: '设备数据',
+                    data: this.data,
+                    type: 'bar'
+                },
+                {
+                    name: '活跃设备',
+                    data: this.active,
+                    type: 'bar'
+                },
+                {
+                    name:'增长率',
+                    type:'line',
+                    data: this.increase,
+                    yAxisIndex: 1,
+                },
+            ]  
         },
-        methods:{
-            //生成数据
-            populateData(){
-                this.integrals = this.options.integrals
-                this.data = this.options.alldata
-                this.active = this.options.active
-                this.increase = this.options.increaseRate
-
+        activePieChart: {
+            title : {
+                text: '活跃比率',
+                x:'center'
             },
-            findMaxVal(numberData) {
-                return Math.max.apply(Math,numberData)
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
-            /////////////////////////
-            updateOption(p,c,s) {
-                let WeatherOptionData = {
-                    province : p,
-                    city : c,
-                    suburb : s,
-                };
-                this.$emit('updateOption',WeatherOptionData);
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:['A','B','C']
             },
-
-            close() {
-
-                this.dialogVisible = false;
-                this.$emit('toggleDialog',this.id);
-            }
+            series: [
+                {
+                    
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:335, name:'A'},
+                        {value:310, name:'B'},
+                        {value:234, name:'C'},
+                 
+                    ]
+                }
+            ]
         },
+      
+        monthlyIncreaseRate: {
+            title : {
+                text: '本月新增',
+                x:'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:['A','B','C']
+            },
+            series: [
+                {
+                    
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:335, name:'A'},
+                        {value:310, name:'B'},
+                        {value:234, name:'C'},
+                 
+                    ]
+                }
+            ]
+        },
+      
+      dialogVisible: false
+    };
+  },
+  created() {
+    this.dialogVisible = this.visible;
+    /////////////////////
+    
+  },
+  watch: {
+    visible: function(newVal, oldVal) {
+      this.dialogVisible = newVal;
     }
+  },
+  methods: {
+    //生成数据
+    populateData() {
+      this.integrals = this.options.integrals;
+      this.data = this.options.alldata;
+      this.active = this.options.active;
+      this.increase = this.options.increaseRate;
+    },
+    findMaxVal(numberData) {
+      return Math.max.apply(Math, numberData);
+    },
+    /////////////////////////
+    updateOption(p, c, s) {
+      let WeatherOptionData = {
+        province: p,
+        city: c,
+        suburb: s
+      };
+      this.$emit("updateOption", WeatherOptionData);
+    },
 
-
+    close() {
+      this.dialogVisible = false;
+      this.$emit("toggleDialog", this.id);
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
     #main-chart {
-        height: 300px;
+        height: 500px;
+        width: 100%;
+    }
+    #active-chart {
+        height: 250px;
+        width: 100%;
+    }
+    #increase-chart {
+        height: 250px;
+        width: 100%;
     }
 </style>
