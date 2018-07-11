@@ -5,16 +5,16 @@ import App from './App'
 import router from './router'
 import store from './store'
 import * as filters from './filters' // 全局filter
-import './icons' // icon
+// import './icons' // icon
 import './errorLog'// error log
 import './permission' // 权限
-import 'static/global/global.css'
+// import 'static/global/global.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faAngry, faCommentAlt, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faAngry, faCommentAlt, faCog, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCoffee, faAngry, faCommentAlt, faCog)
+library.add(faCoffee, faAngry, faCommentAlt, faCog, faUser)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

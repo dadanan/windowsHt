@@ -2,9 +2,9 @@
   <el-menu class="navbar" mode="horizontal">
     <logo></logo>
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <levelbar></levelbar>
-    <tabs-view style="flex: 1;"></tabs-view>
-    <span class="text">设备选择</span>
+    <!--<levelbar></levelbar>-->
+    <!--<tabs-view style="flex: 1;"></tabs-view>-->
+    <span class="text">设备选择：</span>
     <div class="filter clearfix">
       <el-cascader
         :options="options"
@@ -13,6 +13,7 @@
       <el-input v-model="input" placeholder="请输入内容" style="width: 217px" class="navbar-search-input"></el-input>
       <el-button icon="search" type="primary"></el-button>
     </div>
+    <div style="flex: 1"></div>
     <el-dropdown style="margin-left: 10px; margin-right: 20px;" trigger="click">
       <span class="dropdown-text"><font-awesome-icon icon="comment-alt"></font-awesome-icon> 消息中心</span>
       <el-dropdown-menu slot="dropdown">
@@ -24,10 +25,7 @@
       </el-dropdown-menu>
     </el-dropdown>
     <el-dropdown style="margin-right: 10px;" class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-        <span class="text">运维 1</span>
-      </div>
+      <span class="dropdown-text"><font-awesome-icon icon="user"></font-awesome-icon> 运维 1</span>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class='inlineBlock' to="/">
           <el-dropdown-item>个人设置</el-dropdown-item>
@@ -321,7 +319,6 @@
     height: 50px;
     line-height: 50px;
     border-radius: 0px !important;
-    border-bottom: 1px solid #ccc;
     .hamburger-container {
       line-height: 58px;
       height: 50px;

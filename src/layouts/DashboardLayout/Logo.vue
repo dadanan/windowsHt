@@ -11,11 +11,9 @@
     background-color: #eef1f6;
     float: left;
     width: 180px;
-    border-right: 1px solid #ccc;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-content: center;
-    border-bottom: 1px solid #ccc;
   }
 </style>
