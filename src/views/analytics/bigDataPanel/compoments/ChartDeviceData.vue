@@ -2,16 +2,21 @@
     设备数据图表
 -->
 <template>
+  <div class="panel" @click="$emit('click')">
     <div class="chart"></div>
+  </div>
 </template>
 <script>
 import echarts from "echarts";
 export default {
+  props:['options'],
   data() {
     return {
       chart: null,
-      month: ["JAN", "FEB", "MAR", "JUN", "JULY", "AUG", "SEP"],
-      data: [Math.round(Math.random() * 200),Math.round(Math.random() * 200),Math.round(Math.random() * 600), Math.round(Math.random() * 200), Math.round(Math.random() * 500), Math.round(Math.random() * 300), Math.round(Math.random() * 200)]
+      integrals: [],
+      data: [],
+      active: [],
+      increase: []
     };
   },
   mounted() {
@@ -24,12 +29,12 @@ export default {
           color: "#fff",
           textShadowColor: "rgba(73, 217, 252, 1)",
           textShadowBlur: 10,
-         
         }
       },
+   
       xAxis: {
         type: "category",
-        data: this.month,
+        data: this.integrals,
         axisLine: {
           lineStyle: {
             color: "rgba(231, 254, 243, 0.5)",
@@ -38,19 +43,60 @@ export default {
           }
         }
       },
-      yAxis: {
-        type: "value",
-        axisLine: {
-          lineStyle: {
-            color: "rgba(231, 254, 243, 0.5)",
-            shadowColor: "#2cafaf",
-            shadowBlur: 10,
+      yAxis:[ 
+        {
+          type: "value",
+          name: '设备数据',
+          max: this.findMaxVal(this.data),
+          min: 0,
+          splitLine:{show: false},
+          axisLine: {
+            lineStyle: {
+              color: "rgba(231, 254, 243, 0.5)",
+              shadowColor: "#2cafaf",
+              shadowBlur: 10,
+            }
           }
-        }
-      },
+        },
+        {
+          type: "value",
+          name: '增长率',
+          min: 0,
+          
+          max: this.findMaxVal(this.increase),
+  
+          axisLabel: {
+              formatter: '{value}%'
+          },
+          axisLine: {
+            lineStyle: {
+              color: "rgba(231, 254, 243, 0.5)",
+              shadowColor: "#2cafaf",
+              shadowBlur: 10,
+            }
+          }
+        },
+        
+      ],
       series: [
         {
+          name: '设备数据',
           data: this.data,
+          type: "bar",
+          itemStyle: {
+            normal: {
+              color: "#e7fef3",
+              shadowColor: "#49D9FC",
+              shadowBlur: 10
+            },
+            textStyle: {
+              color: "#fff"
+            }
+          }
+        },
+        {
+          name: '活跃设备',
+          data: this.active,
           type: "bar",
           itemStyle: {
             normal: {
@@ -66,7 +112,8 @@ export default {
         {
           name:'增长率',
           type:'line',
-          data: this.data,
+          data: this.increase,
+          yAxisIndex: 1,
            itemStyle: {
             normal: {
               color: "#00fb78",
@@ -84,11 +131,27 @@ export default {
   },
   beforeDestroy() {
     this.chart.dispose();
+  },
+  created(){
+    this.populateData()
+  },
+  methods:{
+    //生成数据
+    populateData(){
+      this.integrals = this.options.integrals
+      this.data = this.options.alldata
+      this.active = this.options.active
+      this.increase = this.options.increaseRate
+      
+    },
+    findMaxVal(numberData) {
+      return Math.max.apply(Math,numberData)
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
-.chart {
+.panel {
   height: 100%;
   width: 90%;
   margin-left: auto;

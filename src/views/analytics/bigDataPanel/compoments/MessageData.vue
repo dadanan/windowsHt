@@ -14,7 +14,6 @@
             <el-input
                 type="textarea"
                 placeholder="系统讯息"
-                autosize="true"
                 :value="messageDataBuffer" class="textarea-full">
             </el-input>
         </el-tab-pane>
@@ -22,7 +21,6 @@
             <el-input
                 type="textarea"
                 placeholder="系统讯息"
-                autosize="true"
                 :value="messageDataBuffer" class="textarea-full">
             </el-input>
         </el-tab-pane>

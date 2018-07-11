@@ -10,7 +10,11 @@
               <Weather :option="OptionData.WeatherOptionData"></Weather>
               
           </el-col>
-          <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartDeviceData></ChartDeviceData></el-col>
+          <el-col :span="24" id="col">
+            <a id="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
+            <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"></DeviceOption>
+            <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
+          </el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartUserData></ChartUserData></el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartDeviceType></ChartDeviceType></el-col>
         </el-col>
@@ -27,7 +31,7 @@
           <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
           </el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><h3>解决方法</h3></el-col>
-          <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartOperationData></ChartOperationData></el-col>
+          <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><ChartOperationData ></ChartOperationData></el-col>
           <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a><FilteredData></FilteredData></el-col>
         </el-col>
       </el-row>
@@ -47,6 +51,7 @@
   import Message from './compoments/MessageData.vue';
 
   import WeatherOption from './compoments/WeatherOption.vue';
+  import DeviceOption from './compoments/DeviceOption.vue';
   export default {
     components: {
       //模块
@@ -60,6 +65,7 @@
       Message,
       //弹窗
       WeatherOption,
+      DeviceOption,
     },
     data() {
       return {
@@ -91,7 +97,41 @@
             ],
 
           },
-        
+          /*
+            柱状图: 设备数据
+            曲线图: 增长率
+            单独标出最近一小时节点设备数据+增长率 ?
+          */
+          DeviceChartOptions: {
+            integrals:[
+              "1月",
+              "2月",
+              "3月",
+              "4月",
+              "5月",
+            ],
+            alldata: [ //设备数据
+              500,
+              1000,
+              2000,
+              3000,
+              4100
+            ],
+            active: [
+              100,
+              500,
+              600,
+              750,
+              800
+            ],
+            increaseRate: [
+              20,
+              40,
+              50,
+              60,
+              100
+            ]
+          },
         },
       
         
@@ -111,7 +151,8 @@
         alert("hello world");
       }
 
-    }
+    },
+    
   }
 
 </script>
