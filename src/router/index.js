@@ -29,7 +29,7 @@ export const constantRouterMap = [
     path: '',
     component: DashboardLayout,
     redirect: 'home',
-    icon: 'component',
+    icon: 'angry',
     noDropdown: true,
     children: [{ path: 'home', component: _import('home/index'), name: '首页' }]
   }
@@ -46,7 +46,7 @@ export const asyncRouterMap = [
     path: '/analytics',
     component: DashboardLayout,
     name: '数据分析',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'analytics1',
@@ -79,7 +79,7 @@ export const asyncRouterMap = [
     path: '/device',
     component: DashboardLayout,
     name: '设备管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'list',
@@ -117,7 +117,7 @@ export const asyncRouterMap = [
     path: '/alarm',
     component: DashboardLayout,
     name: '售后管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'device',
@@ -140,7 +140,7 @@ export const asyncRouterMap = [
     path: '/order',
     component: DashboardLayout,
     name: '订单中心',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'order1',
@@ -168,7 +168,7 @@ export const asyncRouterMap = [
     path: '/income',
     component: DashboardLayout,
     name: '分润管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'income1',
@@ -186,7 +186,7 @@ export const asyncRouterMap = [
     path: '/rent',
     component: DashboardLayout,
     name: '租赁管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'rent1',
@@ -224,7 +224,7 @@ export const asyncRouterMap = [
     path: '/system',
     component: DashboardLayout,
     name: '系统管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'system1',
@@ -252,7 +252,7 @@ export const asyncRouterMap = [
     path: '/message',
     component: DashboardLayout,
     name: '消息管理',
-    icon: 'component',
+    icon: 'angry',
     children: [
       {
         path: 'message1',

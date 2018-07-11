@@ -74,6 +74,7 @@
       overflow: auto;
       transition: margin-left 0.28s ease-out;
       margin-left: 180px;
+      background-color: #fefefe;
     }
   }
 </style>

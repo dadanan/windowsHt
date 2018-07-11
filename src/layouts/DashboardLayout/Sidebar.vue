@@ -1,5 +1,5 @@
 <template>
-  <el-menu class="menu" mode="vertical" unique-opened :default-active="$route.path" :collapse="isCollapse">
+  <el-menu class="menu" mode="vertical" theme="dark" unique-opened :default-active="$route.path" :collapse="isCollapse">
     <sidebar-item :routes='permission_routers'></sidebar-item>
   </el-menu>
 </template>
@@ -27,6 +27,5 @@
   .menu {
     border-radius: 0;
     top: 50px !important;
-    border-right: 1px solid #ccc;
   }
 </style>
