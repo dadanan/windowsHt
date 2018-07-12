@@ -22,6 +22,8 @@ import * as filters from './filters' // global filters
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+const ECharts = require('vue-echarts')
+Vue.component('chart', ECharts)
 
 library.add(fas)
 

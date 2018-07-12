@@ -2,25 +2,20 @@
     设备类型图表
 -->
 <template>
-    <div class="chart"></div>
+    <chart :options="option" class="chart"></chart>
 </template>
 <script>
-import echarts from 'echarts'
 export default {
+  props: ['options'],
   data() {
     return {
-      chart: null,
-      types: ['已处理', '待处理', '总告警'],
-      data: [
-        { value: 335, name: '已处理' },
-        { value: 310, name: '待处理' },
-        { value: 1548, name: '总告警' }
-      ]
+      option: null,
+      allTypes: [],
+      data: []
     }
   },
   mounted() {
-    this.chart = echarts.init(this.$el)
-    this.chart.setOption({
+    this.option = {
       title: [
         {
           text: '告警信息',
@@ -47,7 +42,12 @@ export default {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: this.types
+        data: this.allTypes,
+        textStyle: {
+          color: '#fff',
+          textShadowColor: 'rgba(73, 217, 252, 1)',
+          textShadowBlur: 10
+        }
       },
       color: ['#6DEE18', '#F3CE38', 'rgba(231, 254, 243, 0.8)'],
 
@@ -73,10 +73,19 @@ export default {
           }
         }
       ]
-    })
+    }
   },
   beforeDestroy() {
     this.chart.dispose()
+  },
+  created() {
+    this.populateData()
+  },
+  methods: {
+    populateData() {
+      this.allTypes = this.options.allTypes
+      this.data = this.options.data
+    }
   }
 }
 </script>

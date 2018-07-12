@@ -3,17 +3,16 @@
 -->
 <template>
   <div class="panel" @click="$emit('click')">
-    <div class="chart"></div>
+    <chart :options="option" class="chart"></chart>
   </div>
 </template>
 <script>
-  import echarts from 'echarts'
-
   export default {
     props: ['options'],
     data() {
       return {
-        chart: null,
+
+        option: null,
         integrals: [],
         data: [],
         active: [],
@@ -21,8 +20,7 @@
       }
     },
     mounted() {
-      this.chart = echarts.init(this.$el)
-      this.chart.setOption({
+      this.option = {
         title: {
           text: '设备数据',
           left: 'center',
@@ -101,7 +99,7 @@
             type: 'bar',
             itemStyle: {
               normal: {
-                color: '#e7fef3',
+                color: '#56D6FD',
                 shadowColor: '#49D9FC',
                 shadowBlur: 10
               },
@@ -128,7 +126,7 @@
             }
           }
         ]
-      })
+      }
     },
     beforeDestroy() {
       this.chart.dispose()
@@ -140,9 +138,9 @@
       // 生成数据
       populateData() {
         this.integrals = this.options.integrals
-        this.data = this.options.alldata
-        this.active = this.options.active
-        this.increase = this.options.increaseRate
+        this.data = this.options.data.data
+        this.active = this.options.data.active
+        this.increase = this.options.data.increase
       },
       findMaxVal(numberData) {
         return Math.max.apply(Math, numberData)
@@ -151,7 +149,10 @@
   }
 </script>
 <style lang="scss" scoped>
-  .panel {
+  .panel{
+    height: 100%;
+  }
+  .chart {
     height: 100%;
     width: 90%;
     margin-left: auto;
