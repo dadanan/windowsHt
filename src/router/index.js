@@ -91,15 +91,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'systemAnalytics'
         }
-      },
-      {
-        path: 'bigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel/index'),
-        name: 'bigDataPanel',
-        meta: {
-          title: 'bigDataPanel'
-        }
       }
+      // {
+      //   path: 'bigDataPanel',
+      //   component: () => import('@/views/analytics/bigDataPanel/index'),
+      //   name: 'bigDataPanel',
+      //   meta: {
+      //     title: 'bigDataPanel'
+      //   }
+      // }
     ]
   },
   {

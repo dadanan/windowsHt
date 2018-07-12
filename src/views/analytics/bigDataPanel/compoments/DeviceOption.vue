@@ -44,19 +44,17 @@
   </div>
 </template>
 <script>
-  /*
-    import EChart from "vue-echarts/components/ECharts";
-    import "echarts";
-  */
-  import ECharts from 'vue-echarts/components/ECharts'
-  import 'echarts/lib/chart/bar'
-  import 'echarts/lib/chart/pie'
+  import EChart from 'vue-echarts/components/ECharts'
+  // import 'echarts'
+  // import ECharts from 'vue-echarts/components/ECharts'
+  // import 'echarts/lib/chart/bar'
+  // import 'echarts/lib/chart/pie'
 
   export default {
     props: ['visible', 'id', 'options'],
 
     components: {
-      chart: ECharts
+      chart: EChart
     },
     // ///////////////////////
     data: function() {
