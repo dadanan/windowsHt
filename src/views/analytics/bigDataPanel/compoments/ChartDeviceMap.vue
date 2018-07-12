@@ -5,7 +5,6 @@
   <chart :options="option" class="chart"></chart>
 </template>
 <script>
-  import 'echarts/map/js/china.js'
   export default {
     data() {
       return {

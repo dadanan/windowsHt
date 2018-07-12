@@ -3,6 +3,9 @@
     <el-card>
       <chart :options="polar" class="echarts"></chart>
     </el-card>
+    <el-card>
+      <chart :options="map" class="echarts"></chart>
+    </el-card>
   </div>
 </template>
 
@@ -13,6 +16,8 @@
 </style>
 
 <script>
+  import map from './map'
+
   export default {
     data() {
       const data = []
@@ -57,7 +62,8 @@
             }
           ],
           animationDuration: 2000
-        }
+        },
+        map
       }
     }
   }
