@@ -140,9 +140,9 @@
       // 生成数据
       populateData() {
         this.integrals = this.options.integrals
-        this.data = this.options.alldata
-        this.active = this.options.active
-        this.increase = this.options.increaseRate
+        this.data = this.options.data.data
+        this.active = this.options.data.active
+        this.increase = this.options.data.increase
       },
       findMaxVal(numberData) {
         return Math.max.apply(Math, numberData)
