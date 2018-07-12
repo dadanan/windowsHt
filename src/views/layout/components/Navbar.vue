@@ -2,6 +2,18 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
     <breadcrumb></breadcrumb>
+    <div style="flex: 1"></div>
+    <el-dropdown>
+      <div class="profile"><font-awesome-icon icon="user"></font-awesome-icon> 运维1</div>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item>
+          个人设置
+        </el-dropdown-item>
+        <el-dropdown-item divided>
+          <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
     <!--<div class="right-menu">-->
       <!--&lt;!&ndash;<error-log class="errLog-container right-menu-item"></error-log>&ndash;&gt;-->
 
@@ -88,5 +100,32 @@ export default {
   z-index: 1;
   display: flex;
   align-items: center;
+
+  .profile {
+    position: relative;
+    height: 100%;
+    cursor: pointer;
+    padding: 0 20px;
+    transition: all .3s ease-out;
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: #fff;
+      transition: all .3s ease-out;
+    }
+
+    &:hover {
+      color: #108ee9;
+      /*background-color: rgba(16,142,233,.15);*/
+      &::after {
+        background-color: #108ee9;
+      }
+    }
+  }
 }
 </style>
