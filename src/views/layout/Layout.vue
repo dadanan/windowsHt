@@ -68,4 +68,8 @@ export default {
     position: absolute;
     z-index: 999;
   }
+
+  .main-container {
+    border-left: 1px solid #efefef;
+  }
 </style>
