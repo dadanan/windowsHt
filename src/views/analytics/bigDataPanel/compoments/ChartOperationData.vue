@@ -2,22 +2,20 @@
     设备类型图表
 -->
 <template>
-    <div class="chart"></div>
+    <chart :options="option" class="chart"></chart>
 </template>
 <script>
-import echarts from 'echarts'
 export default {
   props: ['options'],
   data() {
     return {
-      chart: null,
+      option: null,
       allTypes: [],
       data: []
     }
   },
   mounted() {
-    this.chart = echarts.init(this.$el)
-    this.chart.setOption({
+    this.option = {
       title: [
         {
           text: '告警信息',
@@ -75,7 +73,7 @@ export default {
           }
         }
       ]
-    })
+    }
   },
   beforeDestroy() {
     this.chart.dispose()

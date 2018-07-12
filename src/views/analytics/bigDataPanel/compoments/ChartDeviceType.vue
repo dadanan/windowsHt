@@ -2,22 +2,20 @@
     设备类型图表
 -->
 <template>
-    <div class="chart"></div>
+    <chart :options="option" class="chart"></chart>
 </template>
 <script>
-import echarts from 'echarts'
 export default {
   props: ['options'],
   data() {
     return {
-      chart: null,
+      option: null,
       allTypes: [],
       data: []
     }
   },
   mounted() {
-    this.chart = echarts.init(this.$el)
-    this.chart.setOption({
+    this.option = {
       title: {
         text: '设备类型',
         left: 'center',
@@ -63,7 +61,7 @@ export default {
           }
         }
       ]
-    })
+    }
   },
   beforeDestroy() {
     this.chart.dispose()
@@ -80,10 +78,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.chart {
-  height: 100%;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
+
+  .chart {
+    height: 100%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>

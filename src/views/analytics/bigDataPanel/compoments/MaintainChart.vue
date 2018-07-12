@@ -2,15 +2,14 @@
     用户数据图表
 -->
 <template>
-  <div class="chart"></div>
+  <chart :options="option" class="chart"></chart>
 </template>
 <script>
-  import echarts from 'echarts'
   export default {
     props: ['options'],
     data() {
       return {
-        chart: null,
+        option: null,
         intergrals: [],
         data: [],
         data2: [],
@@ -18,8 +17,7 @@
       }
     },
     mounted() {
-      this.chart = echarts.init(this.$el)
-      this.chart.setOption({
+      this.option = {
         title: {
           text: '维护信息',
           left: 'center',
@@ -98,7 +96,7 @@
             }
           }
         ]
-      })
+      }
     },
     beforeDestroy() {
       this.chart.dispose()

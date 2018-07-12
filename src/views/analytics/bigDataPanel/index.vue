@@ -21,7 +21,8 @@
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartUserData :options="OptionData.UserChartOptions"></ChartUserData>
+          <UserOption :id="1" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"></UserOption>
+          <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <ChartDeviceType :options="OptionData.DeviceTypeChartData"></ChartDeviceType>
@@ -59,6 +60,7 @@
 
 </template>
 <script>
+  // 各模块(共10个)
   import ChartDeviceMap from './compoments/ChartDeviceMap.vue'
   import ChartDeviceData from './compoments/ChartDeviceData.vue'
   import ChartUserData from './compoments/ChartUserData.vue'
@@ -69,9 +71,10 @@
   import Message from './compoments/MessageData.vue'
   import MaintainChart from './compoments/MaintainChart.vue'
 
+  // 弹窗
   import WeatherOption from './compoments/WeatherOption.vue'
   import DeviceOption from './compoments/DeviceOption.vue'
-
+  import UserOption from './compoments/UserOption.vue'
   export default {
     created() {
       this.bubbles.length = 10
@@ -89,7 +92,8 @@
       MaintainChart,
       // 弹窗
       WeatherOption,
-      DeviceOption
+      DeviceOption,
+      UserOption
     },
     data() {
       return {
@@ -277,6 +281,9 @@
     #middle-bottom {
       height: 40vh;
     }
+    .col::before{
+      filter: blur(5px);
+    }
     .col {
       height: 23vh;
       -webkit-backdrop-filter: blur(5px);
@@ -284,10 +291,12 @@
       /* Google Chrome */
       backdrop-filter: blur(5px);
 
+
       /* 设置背景半透明黑色 */
       background: rgba(0, 0, 0, 0.2);
       margin-top: 10px;
       margin-bottom: 10px;
+
     }
     .ui-row {
 

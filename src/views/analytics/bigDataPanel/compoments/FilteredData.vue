@@ -2,21 +2,18 @@
     滤网数据图表
 -->
 <template>
-    <div class="chart"></div>
+    <chart :options="option"></chart>
 </template>
 <script>
-import echarts from 'echarts'
 export default {
   data() {
     return {
-      chart: null,
       option: null,
       time: [],
       data: []
     }
   },
   mounted() {
-    this.chart = echarts.init(this.$el)
     this.option = {
       title: {
         text: '滤网数据',

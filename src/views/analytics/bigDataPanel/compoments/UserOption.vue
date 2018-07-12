@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="设备信息"
+      title="用户信息"
       :visible="dialogVisible"
       size="large"
       :before-close="close"
@@ -61,12 +61,12 @@
         // //////////////////
         mainChartOption: {
           title: {
-            text: '设备数据',
+            text: '用户数据',
             left: 'center'
 
           },
           legend: {
-            data: ['设备数据', '活跃设备', '增长率'],
+            data: ['用户数', '活跃用户', '增长率'],
             y: 'bottom'
           },
           xAxis: {
@@ -77,7 +77,7 @@
           yAxis: [
             {
               type: 'value',
-              name: '设备数据',
+              name: '用户数',
               max: this.findMaxVal(this.data),
               min: 0,
               splitLine: { show: false },
@@ -96,12 +96,12 @@
           ],
           series: [
             {
-              name: '设备数据',
+              name: '用户数',
               data: this.data,
               type: 'bar'
             },
             {
-              name: '活跃设备',
+              name: '活跃用户',
               data: this.active,
               type: 'bar'
             },

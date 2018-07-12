@@ -2,17 +2,15 @@
     设备地图 (中间)
 -->
 <template>
-
-  <div class="chart"></div>
+  <chart :options="option" class="chart"></chart>
 </template>
 <script>
-  import echarts from 'echarts'
   import 'echarts/map/js/china.js'
-
   export default {
     data() {
       return {
         chart: null,
+        option: null,
         geoCoordMap: {
           海门: [121.15, 31.89],
           鄂尔多斯: [109.781327, 39.608266],
@@ -213,8 +211,7 @@
       }
     },
     mounted() {
-      this.chart = echarts.init(this.$el)
-      this.chart.setOption({
+      this.option = {
         title: {
           text: '设备地点',
           subtext: 'Live data',
@@ -318,7 +315,7 @@
             zlevel: 1
           }
         ]
-      })
+      }
     },
     methods: {
       convertData: function(data) {
@@ -343,5 +340,6 @@
 <style lang="scss" scoped>
   .chart {
     height: 100%;
+    width: 100%;
   }
 </style>
