@@ -50,7 +50,6 @@
             name: '设备数据',
             max: this.findMaxVal(this.data),
             min: 0,
-            splitLine: { show: false },
             axisLine: {
               lineStyle: {
                 color: 'rgba(231, 254, 243, 0.5)',
@@ -63,9 +62,8 @@
             type: 'value',
             name: '增长率',
             min: 0,
-
+            splitLine: { show: false },
             max: this.findMaxVal(this.increase),
-
             axisLabel: {
               formatter: '{value}%'
             },
@@ -101,7 +99,7 @@
             type: 'bar',
             itemStyle: {
               normal: {
-                color: '#e7fef3',
+                color: '#56D6FD',
                 shadowColor: '#49D9FC',
                 shadowBlur: 10
               },

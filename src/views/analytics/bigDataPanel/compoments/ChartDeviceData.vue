@@ -101,7 +101,7 @@
             type: 'bar',
             itemStyle: {
               normal: {
-                color: '#e7fef3',
+                color: '#56D6FD',
                 shadowColor: '#49D9FC',
                 shadowBlur: 10
               },

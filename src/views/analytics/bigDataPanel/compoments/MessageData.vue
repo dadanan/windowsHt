@@ -1,7 +1,7 @@
 <template>
 
   <el-tabs type="border-card" @tab-click="onTabClick">
-    <el-tab-pane label="系统" name=0>
+    <el-tab-pane label="系统" name="0">
       <div style="height: 100px">
         <el-input
           type="textarea"
@@ -10,14 +10,14 @@
         </el-input>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="设备" name=1>
+    <el-tab-pane label="设备" name="1">
       <el-input
         type="textarea"
         placeholder="系统讯息"
         :value="messageDataBuffer" class="textarea-full">
       </el-input>
     </el-tab-pane>
-    <el-tab-pane label="订单" name=2>
+    <el-tab-pane label="订单" name="2">
       <el-input
         type="textarea"
         placeholder="系统讯息"
@@ -60,14 +60,14 @@
     methods: {
       toogleTab(type) {
         this.selectedType = type
-        // alert("Seleted")
+        this.getMessages(this.selectedType)
       },
       getMessages(type) {
         this.messageDataBuffer = ''
         this.systemMsgs.forEach((element) => {
           // console.log(element.type)
-          if (element.type === this.selectedType) {
-            // console.log(element.message)
+          if (element.type === parseInt(type)) {
+            console.log(element.message)
             this.messageDataBuffer = this.messageDataBuffer + this.getMessagesName(element.type) + ' : ' + element.message + '\n'
           }
         })
@@ -85,7 +85,7 @@
       },
       // Deal wit switching between tabs
       onTabClick: function(tab, event) {
-        // console.log(tab.name)  //获取到
+        console.log(tab.name)
         this.toogleTab(tab.name)
       }
     }
