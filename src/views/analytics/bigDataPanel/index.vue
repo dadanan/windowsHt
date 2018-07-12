@@ -151,6 +151,17 @@
                 50,
                 60,
                 100
+              ],
+              // Pie chart data
+              pieActiveData: [
+                { value: 335, name: 'A' },
+                { value: 34, name: 'B' },
+                { value: 563, name: 'C' }
+              ],
+              pieMonthlyData: [
+                { value: 335, name: 'A' },
+                { value: 323, name: 'B' },
+                { value: 34, name: 'C' }
               ]
             }
 
@@ -189,6 +200,17 @@
                 12,
                 30,
                 20
+              ],
+              // Pie chart data
+              pieActiveData: [
+                { value: 135, name: 'A' },
+                { value: 234, name: 'B' },
+                { value: 563, name: 'C' }
+              ],
+              pieMonthlyData: [
+                { value: 475, name: 'A' },
+                { value: 123, name: 'B' },
+                { value: 34, name: 'C' }
               ]
             }
 

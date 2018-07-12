@@ -26,11 +26,10 @@
           <el-col :span="24">
             <chart id="increase-chart" :options="monthlyIncreaseRate"></chart>
             <el-radio-group v-model="filterType">
-              <el-radio :label="1">总设备</el-radio>
-              <el-radio :label="2">检测设备</el-radio>
-              <el-radio :label="3">第三方设备</el-radio>
-              <el-radio :label="4">终端展示设备</el-radio>
-              <el-radio :label="5">净化设备</el-radio>
+              <el-radio :label="1">总用户</el-radio>
+              <el-radio :label="2">绑定用户</el-radio>
+              <el-radio :label="3">分享用户</el-radio>
+              <el-radio :label="4">订单用户</el-radio>
             </el-radio-group>
           </el-col>
 
@@ -58,6 +57,8 @@
         data: [],
         active: [],
         increase: [],
+        pieActiveData: [],
+        pieMonthlyData: [],
         // //////////////////
         mainChartOption: {
           title: {
@@ -151,12 +152,7 @@
                   show: false
                 }
               },
-              data: [
-                { value: 335, name: 'A' },
-                { value: 310, name: 'B' },
-                { value: 234, name: 'C' }
-
-              ]
+              data: this.pieActiveData
             }
           ]
         },
@@ -199,12 +195,7 @@
                   show: false
                 }
               },
-              data: [
-                { value: 335, name: 'A' },
-                { value: 310, name: 'B' },
-                { value: 234, name: 'C' }
-
-              ]
+              data: this.pieMonthlyData
             }
           ]
         },
@@ -235,6 +226,8 @@
         this.data = this.options.data.data
         this.active = this.options.data.active
         this.increase = this.options.data.increase
+        this.pieActiveData = this.options.data.pieActiveData
+        this.pieMonthlyData = this.options.data.pieMonthlyData
       },
       findMaxVal(numberData) {
         return Math.max.apply(Math, numberData)

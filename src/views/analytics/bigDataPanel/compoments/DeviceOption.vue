@@ -58,6 +58,8 @@
         data: [],
         active: [],
         increase: [],
+        pieActiveData: [],
+        pieMonthlyData: [],
         // //////////////////
         mainChartOption: {
           title: {
@@ -129,7 +131,6 @@
           },
           series: [
             {
-
               type: 'pie',
               radius: ['50%', '70%'],
               avoidLabelOverlap: false,
@@ -151,12 +152,7 @@
                   show: false
                 }
               },
-              data: [
-                { value: 335, name: 'A' },
-                { value: 310, name: 'B' },
-                { value: 234, name: 'C' }
-
-              ]
+              data: this.pieActiveData
             }
           ]
         },
@@ -199,12 +195,7 @@
                   show: false
                 }
               },
-              data: [
-                { value: 335, name: 'A' },
-                { value: 310, name: 'B' },
-                { value: 234, name: 'C' }
-
-              ]
+              data: this.pieMonthlyData
             }
           ]
         },
@@ -235,6 +226,8 @@
         this.data = this.options.data.data
         this.active = this.options.data.active
         this.increase = this.options.data.increase
+        this.pieActiveData = this.options.data.pieActiveData
+        this.pieMonthlyData = this.options.data.pieMonthlyData
       },
       findMaxVal(numberData) {
         return Math.max.apply(Math, numberData)
