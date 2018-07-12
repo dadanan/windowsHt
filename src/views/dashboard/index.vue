@@ -41,7 +41,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog title="编辑看板" :visible.sync="dialogEditKanbanVisible">
+    <el-dialog title="编辑看板" :visible.sync="dialogEditKanbanVisible" class="kanban-edit">
       <d-title>数据展示</d-title>
       <el-form label-position="left" label-width="100px">
         <el-form-item label="设备分析">
@@ -80,10 +80,6 @@
           </el-checkbox>
         </el-form-item>
       </el-form>
-      <!--<div slot="footer">-->
-        <!--<el-button @click="dialogEditKanbanVisible = false">取 消</el-button>-->
-        <!--<el-button type="primary" @click="dialogEditKanbanVisible = false">确 定</el-button>-->
-      <!--</div>-->
     </el-dialog>
   </div>
 </template>
@@ -566,25 +562,20 @@
 </script>
 
 <style lang="scss" scoped>
-  .mb20 {
-    margin-bottom: 20px;
-  }
-
-  .mb-20 {
-    margin-bottom: -20px;
-  }
-
   .chart {
     height: 360px;
     width: 100%;
   }
 </style>
 
-<style>
-  .el-checkbox {
-    margin-right: 30px;
-  }
-  .el-checkbox+.el-checkbox {
-    margin-left: 0;
+<style lang="scss">
+  .kanban-edit {
+    .el-checkbox {
+      margin-right: 30px;
+    }
+
+    .el-checkbox + .el-checkbox {
+      margin-left: 0;
+    }
   }
 </style>

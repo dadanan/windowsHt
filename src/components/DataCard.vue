@@ -69,7 +69,7 @@
       white-space:nowrap
     }
     &__data {
-      font-size: 16px;
+      font-size: 20px;
       white-space:nowrap
     }
   }
