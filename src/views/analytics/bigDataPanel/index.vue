@@ -1,24 +1,29 @@
 <template>
   <div class="big-data-panel">
+    <ul class="bg-bubbles">
+      <li v-for="(item, index) in bubbles" :key="index"></li>
+    </ul>
     <router-link to="/">返回</router-link>
-    <el-row>
+    <el-row class="ui-row">
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" id="col">
-          <a id="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
+        <el-col :span="24" class="col">
+          <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
           <WeatherOption :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
                          @toggleDialog="toggleDialog"></WeatherOption>
           <h3>天气环境</h3>
           <Weather :option="OptionData.WeatherOptionData"></Weather>
 
         </el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
-          <ChartDeviceData></ChartDeviceData>
+        <el-col :span="24" class="col">
+          <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
+          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"></DeviceOption>
+          <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <ChartUserData></ChartUserData>
         </el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <ChartDeviceType></ChartDeviceType>
         </el-col>
       </el-col>
@@ -30,20 +35,20 @@
         </el-col>
         <el-col :span="24" id="middle-bottom">
           <h3>工程案例</h3>
-
         </el-col>
-
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
-          <h3>信息发布</h3></el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+
+          <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
+        </el-col>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <h3>解决方法</h3></el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <ChartOperationData></ChartOperationData>
         </el-col>
-        <el-col :span="24" id="col"><a id="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <FilteredData></FilteredData>
         </el-col>
       </el-col>
@@ -61,11 +66,17 @@
   import ChartOperationData from './compoments/ChartOperationData.vue'
   import FilteredData from './compoments/FilteredData.vue'
   import Weather from './compoments/Weather.vue'
+  import Message from './compoments/MessageData.vue'
 
   import WeatherOption from './compoments/WeatherOption.vue'
+  import DeviceOption from './compoments/DeviceOption.vue'
 
   export default {
+    created() {
+      this.bubbles.length = 10
+    },
     components: {
+      // 模块
       ChartDeviceMap,
       ChartDeviceData,
       ChartUserData,
@@ -73,16 +84,76 @@
       ChartOperationData,
       FilteredData,
       Weather,
-
-      WeatherOption
+      Message,
+      // 弹窗
+      WeatherOption,
+      DeviceOption
     },
     data() {
       return {
+        bubbles: [],
         OptionData: {
           WeatherOptionData: {
             province: '上海',
             city: '上海市',
             suburb: '普陀区'
+          },
+          MessageOptions: {
+            types: [
+              { id: 0, name: '系统信息' },
+              { id: 1, name: '设备信息' },
+              { id: 2, name: '订单信息' }
+            ],
+            data: [
+              { type: 0, message: '系统讯息测试' },
+              { type: 0, message: '系统讯息测试2' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 0, message: '系统讯息测试3' },
+              { type: 1, message: '设备信息测试数据' },
+              { type: 1, message: '设备信息测试数据2' },
+              { type: 2, message: '订单讯息测试' }
+            ]
+
+          },
+          /*
+            柱状图: 设备数据
+            曲线图: 增长率
+            单独标出最近一小时节点设备数据+增长率 ?
+          */
+          DeviceChartOptions: {
+            integrals: [
+              '1月',
+              '2月',
+              '3月',
+              '4月',
+              '5月'
+            ],
+            alldata: [ // 设备数据
+              500,
+              1000,
+              2000,
+              3000,
+              4100
+            ],
+            active: [
+              100,
+              500,
+              600,
+              750,
+              800
+            ],
+            increaseRate: [
+              20,
+              40,
+              50,
+              60,
+              100
+            ]
           }
         },
 
@@ -95,6 +166,7 @@
         this.OptionData.WeatherOptionData = options
       },
       toggleDialog(id) {
+        console.log('is toggle')
         this.DialogVisile.splice(id, 1, !this.DialogVisile[id])
       },
       alertTest() {
@@ -102,12 +174,14 @@
       }
 
     }
+
   }
 
 </script>
 
 <style lang="scss" scoped>
   .big-data-panel {
+
     color: white;
     top: 0;
     position: fixed;
@@ -123,11 +197,25 @@
     #middle-bottom {
       height: 40vh;
     }
-    #col {
-      height: 25vh;
+    .col {
+      height: 23vh;
+      -webkit-backdrop-filter: blur(5px);
+      border-radius: 5px;
+      /* Google Chrome */
+      backdrop-filter: blur(5px);
+
+      /* 设置背景半透明黑色 */
+      background: rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+      margin-bottom: 10px;
 
     }
-    #setting {
+    .ui-row {
+
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .setting {
       float: right;
       &:hover {
         color: #4CD8FC;
@@ -136,7 +224,109 @@
     h1, h2, h3 {
       text-align: center;
     }
-
+    //Duang duang
+    .bg-bubbles {
+      position: absolute;
+      // 使气泡背景充满整个屏幕
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      li {
+        border-radius: 100px;
+        position: absolute;
+        // bottom 的设置是为了营造出气泡从页面底部冒出的效果；
+        bottom: -160px;
+        // 默认的气泡大小；
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.15);
+        list-style: none;
+        // 使用自定义动画使气泡渐现、上升和翻滚；
+        animation: square 15s infinite;
+        transition-timing-function: linear;
+        // 分别设置每个气泡不同的位置、大小、透明度和速度，以显得有层次感；
+        &:nth-child(1) {
+          left: 10%;
+        }
+        &:nth-child(2) {
+          left: 20%;
+          width: 90px;
+          height: 90px;
+          animation-delay: 2s;
+          animation-duration: 7s;
+        }
+        &:nth-child(3) {
+          left: 25%;
+          animation-delay: 4s;
+        }
+        &:nth-child(4) {
+          left: 40%;
+          width: 60px;
+          height: 60px;
+          animation-duration: 8s;
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+        &:nth-child(5) {
+          left: 70%;
+        }
+        &:nth-child(6) {
+          left: 80%;
+          width: 120px;
+          height: 120px;
+          animation-delay: 3s;
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+        &:nth-child(7) {
+          left: 32%;
+          width: 160px;
+          height: 160px;
+          animation-delay: 2s;
+        }
+        &:nth-child(8) {
+          left: 55%;
+          width: 20px;
+          height: 20px;
+          animation-delay: 4s;
+          animation-duration: 15s;
+        }
+        &:nth-child(9) {
+          left: 25%;
+          width: 10px;
+          height: 10px;
+          animation-delay: 2s;
+          animation-duration: 12s;
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+        &:nth-child(10) {
+          left: 85%;
+          width: 160px;
+          height: 160px;
+          animation-delay: 5s;
+        }
+      }
+      // 自定义 square 动画；
+      @keyframes square {
+        0% {
+          opacity: 0.5;
+          transform: translateY(0px) rotate(45deg);
+        }
+        25% {
+          opacity: 0.75;
+          transform: translateY(-400px) rotate(90deg)
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-600px) rotate(135deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-1000px) rotate(180deg);
+        }
+      }
+    }
   }
+
+
 
 </style>
