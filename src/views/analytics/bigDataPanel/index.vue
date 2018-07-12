@@ -21,10 +21,10 @@
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartUserData></ChartUserData>
+          <ChartUserData :options="OptionData.UserChartOptions"></ChartUserData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartDeviceType></ChartDeviceType>
+          <ChartDeviceType :options="OptionData.DeviceTypeChartData"></ChartDeviceType>
         </el-col>
       </el-col>
 
@@ -46,9 +46,9 @@
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <h3>解决方法</h3></el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartOperationData></ChartOperationData>
+          <ChartOperationData :options="OptionData.OperationChartData"></ChartOperationData>
         </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col">
           <MaintainChart :options="OptionData.MaintainChartOptions"></MaintainChart>
         </el-col>
       </el-col>
@@ -111,11 +111,6 @@
               { type: 0, message: '系统讯息测试2' },
               { type: 0, message: '系统讯息测试3' },
               { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
               { type: 1, message: '设备信息测试数据' },
               { type: 1, message: '设备信息测试数据2' },
               { type: 2, message: '订单讯息测试' }
@@ -131,27 +126,68 @@
               '4月',
               '5月'
             ],
-            alldata: [ // 设备数据
-              500,
-              1000,
-              2000,
-              3000,
-              4100
+            data: {
+              data: [ // 设备数据
+                500,
+                1000,
+                2000,
+                3000,
+                4100
+              ],
+              active: [
+                100,
+                500,
+                600,
+                750,
+                800
+              ],
+              increase: [
+                20,
+                40,
+                50,
+                60,
+                100
+              ]
+            }
+
+          },
+          // 用户信息数据
+          UserChartOptions: {
+            integrals: [
+              '1月',
+              '2月',
+              '3月',
+              '4月',
+              '5月',
+              '6月'
             ],
-            active: [
-              100,
-              500,
-              600,
-              750,
-              800
-            ],
-            increaseRate: [
-              20,
-              40,
-              50,
-              60,
-              100
-            ]
+            data: {
+              data: [ // 设备数据
+                100,
+                200,
+                343,
+                650,
+                1000,
+                1100
+              ],
+              active: [
+                100,
+                120,
+                202,
+                320,
+                400,
+                400
+              ],
+              increase: [
+                5,
+                10,
+                11,
+                12,
+                30,
+                20
+              ]
+            }
+
           },
           // 维护信息数据
           MaintainChartOptions: {
@@ -162,20 +198,42 @@
               '4月',
               '5月'
             ],
-            data: [
-              {
-                update: [
-                  100, 200, 300, 400, 500
-                ],
-                maintain: [
-                  100, 300, 400, 600, 800
-                ],
-                calibration: [
-                  20, 50, 40, 80, 43, 67
-                ]
-              }
-            ]
+            data: {
+              update: [
+                100, 200, 300, 400, 500
+              ],
+              maintain: [
+                100, 300, 400, 600, 800
+              ],
+              calibration: [
+                20, 50, 40, 80, 43, 67
+              ]
+            }
 
+          },
+          // 设备类型图表数据
+          DeviceTypeChartData: {
+            allTypes: ['TYPE1', 'TYPE2', 'TYPE3', 'TYPE4', 'TYPE5'],
+            data: [
+              { value: 335, name: 'TYPE1' },
+              { value: 310, name: 'TYPE2' },
+              { value: 234, name: 'TYPE3' },
+              { value: 135, name: 'TYPE4' },
+              { value: 1548, name: 'TYPE5' }
+            ]
+          },
+          // 设备告警信息数据
+          OperationChartData: {
+            allTypes: [
+              '已处理',
+              '待处理',
+              '总告警'
+            ],
+            data: [
+              { value: 335, name: '已处理' },
+              { value: 310, name: '待处理' },
+              { value: 1548, name: '总告警' }
+            ]
           }
         },
 
