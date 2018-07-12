@@ -94,7 +94,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'bigDataPanel',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/analytics/bigDataPanel/index'),
         name: 'bigDataPanel',
         meta: {
           title: 'bigDataPanel'
