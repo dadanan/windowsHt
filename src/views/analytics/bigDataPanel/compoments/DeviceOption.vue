@@ -8,8 +8,8 @@
       :modal="false">
       <el-row>
         <el-col :span="16">
-          <e-chart id="main-chart" :options="mainChartOption"></e-chart>
-
+          <chart id="main-chart" :options="mainChartOption"></chart>
+          {{data}}
         </el-col>
         <el-col :span="8">
           <el-col :span="24">
@@ -19,11 +19,11 @@
               <el-radio-button label="60天"></el-radio-button>
               <el-radio-button label="90天"></el-radio-button>
             </el-radio-group>
-            <e-chart id="active-chart" :options="activePieChart"></e-chart>
+            <chart id="active-chart" :options="activePieChart"></chart>
 
           </el-col>
           <el-col :span="24">
-            <e-chart id="increase-chart" :options="monthlyIncreaseRate"></e-chart>
+            <chart id="increase-chart" :options="monthlyIncreaseRate"></chart>
             <el-radio-group v-model="filterDevices">
               <el-radio :label="1">总设备</el-radio>
               <el-radio :label="2">检测设备</el-radio>
@@ -45,17 +45,18 @@
 </template>
 <script>
   /*
-  import EChart from "vue-echarts/components/ECharts";
-  import "echarts";
+    import EChart from "vue-echarts/components/ECharts";
+    import "echarts";
   */
-
-  import EChart from 'echarts'
+  import ECharts from 'vue-echarts/components/ECharts'
+  import 'echarts/lib/chart/bar'
+  import 'echarts/lib/chart/pie'
 
   export default {
     props: ['visible', 'id', 'options'],
 
     components: {
-      EChart
+      chart: ECharts
     },
     // ///////////////////////
     data: function() {
@@ -224,7 +225,8 @@
     },
     created() {
       this.dialogVisible = this.visible
-      // ///////////////////
+      /* main logic */
+      this.populateData()
     },
     watch: {
       visible: function(newVal, oldVal) {

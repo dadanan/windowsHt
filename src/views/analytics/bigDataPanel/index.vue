@@ -49,7 +49,7 @@
           <ChartOperationData></ChartOperationData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <FilteredData></FilteredData>
+          <MaintainChart :options="OptionData.MaintainChartOptions"></MaintainChart>
         </el-col>
       </el-col>
     </el-row>
@@ -67,6 +67,7 @@
   import FilteredData from './compoments/FilteredData.vue'
   import Weather from './compoments/Weather.vue'
   import Message from './compoments/MessageData.vue'
+  import MaintainChart from './compoments/MaintainChart.vue'
 
   import WeatherOption from './compoments/WeatherOption.vue'
   import DeviceOption from './compoments/DeviceOption.vue'
@@ -85,6 +86,7 @@
       FilteredData,
       Weather,
       Message,
+      MaintainChart,
       // 弹窗
       WeatherOption,
       DeviceOption
@@ -120,11 +122,7 @@
             ]
 
           },
-          /*
-            柱状图: 设备数据
-            曲线图: 增长率
-            单独标出最近一小时节点设备数据+增长率 ?
-          */
+          // 设备信息数据
           DeviceChartOptions: {
             integrals: [
               '1月',
@@ -154,6 +152,30 @@
               60,
               100
             ]
+          },
+          // 维护信息数据
+          MaintainChartOptions: {
+            integrals: [
+              '1月',
+              '2月',
+              '3月',
+              '4月',
+              '5月'
+            ],
+            data: [
+              {
+                update: [
+                  100, 200, 300, 400, 500
+                ],
+                maintain: [
+                  100, 300, 400, 600, 800
+                ],
+                calibration: [
+                  20, 50, 40, 80, 43, 67
+                ]
+              }
+            ]
+
           }
         },
 
@@ -208,7 +230,6 @@
       background: rgba(0, 0, 0, 0.2);
       margin-top: 10px;
       margin-bottom: 10px;
-
     }
     .ui-row {
 
