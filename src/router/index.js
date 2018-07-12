@@ -1,42 +1,49 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const _import = require('./_import_' + process.env.NODE_ENV)
-// in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
-
 Vue.use(Router)
 
-/* layout */
-import DashboardLayout from '@/layouts/DashboardLayout'
+/* Layout */
+import Layout from '@/views/layout/Layout'
+
+/** note: submenu only apppear when children.length>=1
+ *   detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
+ **/
 
 /**
- * icon : the icon show in the sidebar
- * hidden : if `hidden:true` will not show in the sidebar
- * redirect : if `redirect:noredirect` will no redirct in the levelbar
- * noDropdown : if `noDropdown:true` will has no submenu
- * meta : { role: ['admin'] }  will control the page role
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
+    roles: ['admin','editor']     will control the page roles (you can set multiple roles)
+    title: 'title'               the name show in submenu and breadcrumb (recommend set)
+    icon: 'svg-name'             the icon show in the sidebar,
+    noCache: true                if true ,the page will no be cached(default is false)
+  }
  **/
 export const constantRouterMap = [
-  { path: '/login', component: _import('login/index'), hidden: true },
-  {
-    path: '/authredirect',
-    component: _import('login/authredirect'),
-    hidden: true
-  },
-  { path: '/404', component: _import('404'), hidden: true },
-  { path: '/401', component: _import('401'), hidden: true },
+  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true },
+  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
+  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
   {
     path: '',
-    component: DashboardLayout,
-    redirect: 'home',
-    icon: 'component',
-    noDropdown: true,
-    children: [{ path: 'home', component: _import('home/index'), name: '首页' }]
+    component: Layout,
+    redirect: 'dashboard',
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      name: 'dashboard',
+      meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
+    }]
   }
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
@@ -44,235 +51,378 @@ export default new Router({
 export const asyncRouterMap = [
   {
     path: '/analytics',
-    component: DashboardLayout,
-    name: '数据分析',
-    icon: 'component',
+    component: Layout,
+    name: 'analytics',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'analytics',
+      icon: 'chart-bar'
+    },
     children: [
       {
-        path: 'analytics1',
-        component: _import('blank'),
-        name: '订单数据'
+        path: 'order',
+        component: () => import('@/views/blank'),
+        name: 'orderAnalytics',
+        meta: {
+          title: 'orderAnalytics'
+        }
       },
       {
         path: 'user',
-        component: _import('analytics/user/index'),
-        name: '用户数据'
+        component: () => import('@/views/blank'),
+        name: 'userAnalytics',
+        meta: {
+          title: 'userAnalytics'
+        }
       },
       {
         path: 'device',
-        component: _import('analytics/device/index'),
-        name: '设备数据'
+        component: () => import('@/views/blank'),
+        name: 'deviceAnalytics',
+        meta: {
+          title: 'deviceAnalytics'
+        }
       },
       {
-        path: 'analytics4',
-        component: _import('blank'),
-        name: '系统分析'
+        path: 'system',
+        component: () => import('@/views/blank'),
+        name: 'systemAnalytics',
+        meta: {
+          title: 'systemAnalytics'
+        }
       },
       {
         path: 'bigDataPanel',
-        component: _import('analytics/bigDataPanel'),
-        name: '大数据看板'
+        component: () => import('@/views/analytics/bigDataPanel/index'),
+        name: 'bigDataPanel',
+        meta: {
+
+          title: 'bigDataPanel'
+        }
       }
     ]
   },
   {
     path: '/device',
-    component: DashboardLayout,
-    name: '设备管理',
-    icon: 'component',
+    component: Layout,
+    name: 'device',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'device',
+      icon: 'angry'
+    },
     children: [
       {
         path: 'list',
-        component: _import('device/list'),
-        name: '设备列表'
+        component: () => import('@/views/blank'),
+        name: 'deviceList',
+        meta: {
+          title: 'deviceList'
+        }
       },
       {
         path: 'group',
-        component: _import('device/group'),
-        name: '设备组列表'
+        component: () => import('@/views/blank'),
+        name: 'deviceGroup',
+        meta: {
+          title: 'deviceGroup'
+        }
       },
       {
         path: 'type',
-        component: _import('device/type'),
-        name: '设备类型管理'
+        component: () => import('@/views/blank'),
+        name: 'deviceType',
+        meta: {
+          title: 'deviceType'
+        }
       },
       {
         path: 'map',
-        component: _import('device/map'),
-        name: '设备地图展示'
+        component: () => import('@/views/blank'),
+        name: 'deviceMap',
+        meta: {
+          title: 'deviceMap'
+        }
       },
       {
-        path: 'device3',
-        component: _import('blank'),
-        name: '设备配置'
+        path: 'config',
+        component: () => import('@/views/blank'),
+        name: 'deviceConfig',
+        meta: {
+          title: 'deviceConfig'
+        }
       },
       {
-        path: 'device4',
-        component: _import('blank'),
-        name: '设备备案'
+        path: 'filing',
+        component: () => import('@/views/blank'),
+        name: 'deviceFiling',
+        meta: {
+          title: 'deviceFiling'
+        }
       }
     ]
   },
   {
     path: '/alarm',
-    component: DashboardLayout,
-    name: '售后管理',
-    icon: 'component',
+    component: Layout,
+    name: 'alarm',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'alarm',
+      icon: 'angry'
+    },
     children: [
       {
         path: 'device',
-        component: _import('alarm/device'),
-        name: '告警设备列表'
+        component: () => import('@/views/blank'),
+        name: 'alarmDevice',
+        meta: {
+          title: 'alarmDevice'
+        }
       },
       {
-        path: 'alarm2',
-        component: _import('blank'),
-        name: '告警级别设置'
+        path: 'config',
+        component: () => import('@/views/blank'),
+        name: 'alarmConfig',
+        meta: {
+          title: 'alarmConfig'
+        }
       },
       {
-        path: 'alarm3',
-        component: _import('blank'),
-        name: '告警处理'
+        path: 'process',
+        component: () => import('@/views/blank'),
+        name: 'alarmProcess',
+        meta: {
+          title: 'alarmProcess'
+        }
       }
     ]
   },
   {
     path: '/order',
-    component: DashboardLayout,
-    name: '订单中心',
-    icon: 'component',
+    component: Layout,
+    name: 'order',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'order',
+      icon: 'angry'
+    },
     children: [
       {
-        path: 'order1',
-        component: _import('blank'),
-        name: '租凭订单列表'
+        path: 'rent',
+        component: () => import('@/views/blank'),
+        name: 'rentOrder',
+        meta: {
+          title: 'rentOrder'
+        }
       },
       {
-        path: 'order2',
-        component: _import('blank'),
-        name: '租凭充值列表'
+        path: 'payment',
+        component: () => import('@/views/blank'),
+        name: 'paymentOrder',
+        meta: {
+          title: 'paymentOrder'
+        }
       },
       {
-        path: 'order3',
-        component: _import('blank'),
-        name: '分销订单'
+        path: 'sales',
+        component: () => import('@/views/blank'),
+        name: 'salesOrder',
+        meta: {
+          title: 'salesOrder'
+        }
       },
       {
-        path: 'order4',
-        component: _import('blank'),
-        name: '售后订单'
+        path: 'after-sale',
+        component: () => import('@/views/blank'),
+        name: 'afterSaleOrder',
+        meta: {
+          title: 'afterSaleOrder'
+        }
       }
     ]
   },
   {
     path: '/income',
-    component: DashboardLayout,
-    name: '分润管理',
-    icon: 'component',
+    component: Layout,
+    name: 'income',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'income',
+      icon: 'angry'
+    },
     children: [
       {
-        path: 'income1',
-        component: _import('blank'),
-        name: '分润规则'
+        path: 'rule',
+        component: () => import('@/views/blank'),
+        name: 'incomeRule',
+        meta: {
+          title: 'incomeRule'
+        }
       },
       {
-        path: 'income2',
-        component: _import('blank'),
-        name: '分润账单'
+        path: 'bill',
+        component: () => import('@/views/blank'),
+        name: 'incomeBill',
+        meta: {
+          title: 'incomeBill'
+        }
       }
     ]
   },
   {
     path: '/rent',
-    component: DashboardLayout,
-    name: '租赁管理',
-    icon: 'component',
+    component: Layout,
+    name: 'rent',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'rent',
+      icon: 'angry'
+    },
     children: [
       {
-        path: 'rent1',
-        component: _import('blank'),
-        name: '微信用户管理'
+        path: 'wechat',
+        component: () => import('@/views/blank'),
+        name: 'rentWechat',
+        meta: {
+          title: 'rentWechat'
+        }
       },
       {
-        path: 'rent2',
-        component: _import('blank'),
-        name: '用户黑名单'
+        path: 'blacklist',
+        component: () => import('@/views/blank'),
+        name: 'rentBlacklist',
+        meta: {
+          title: 'rentBlacklist'
+        }
       },
       {
-        path: 'rent3',
-        component: _import('blank'),
-        name: '收费管理'
+        path: 'toll',
+        component: () => import('@/views/blank'),
+        name: 'rentToll',
+        meta: {
+          title: 'rentToll'
+        }
       },
       {
-        path: 'rent4',
-        component: _import('blank'),
-        name: '投放点管理'
+        path: 'putin',
+        component: () => import('@/views/blank'),
+        name: 'rentPutin',
+        meta: {
+          title: 'rentPutin'
+        }
       },
       {
-        path: 'rent5',
-        component: _import('blank'),
-        name: '运营商管理'
+        path: 'operator',
+        component: () => import('@/views/blank'),
+        name: 'rentOperator',
+        meta: {
+          title: 'rentOperator'
+        }
       },
       {
-        path: 'rent6',
-        component: _import('blank'),
-        name: '充值设定'
+        path: 'payment',
+        component: () => import('@/views/blank'),
+        name: 'rentPayment',
+        meta: {
+          title: 'rentPayment'
+        }
       }
     ]
   },
   {
     path: '/system',
-    component: DashboardLayout,
-    name: '系统管理',
-    icon: 'component',
+    component: Layout,
+    name: 'system',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'system',
+      icon: 'angry'
+    },
     children: [
       {
-        path: 'system1',
-        component: _import('blank'),
-        name: '客户管理'
+        path: 'client',
+        component: () => import('@/views/blank'),
+        name: 'systemClient',
+        meta: {
+          title: 'systemClient'
+        }
       },
       {
         path: 'role',
-        component: _import('system/role'),
-        name: '角色管理'
+        component: () => import('@/views/blank'),
+        name: 'systemRole',
+        meta: {
+          title: 'systemRole'
+        }
       },
       {
         path: 'user',
-        component: _import('system/user'),
-        name: '系统用户'
+        component: () => import('@/views/blank'),
+        name: 'systemUser',
+        meta: {
+          title: 'systemUser'
+        }
       },
       {
-        path: 'system4',
-        component: _import('blank'),
-        name: '系统设置'
+        path: 'setting',
+        component: () => import('@/views/blank'),
+        name: 'systemSetting',
+        meta: {
+          title: 'systemSetting'
+        }
       }
     ]
   },
   {
     path: '/message',
-    component: DashboardLayout,
-    name: '消息管理',
-    icon: 'component',
+    component: Layout,
+    name: 'message',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'message',
+      icon: 'angry'
+    },
     children: [
       {
-        path: 'message1',
-        component: _import('blank'),
-        name: '系统消息'
+        path: 'system',
+        component: () => import('@/views/blank'),
+        name: 'systemMessage',
+        meta: {
+          title: 'systemMessage'
+        }
       },
       {
-        path: 'message2',
-        component: _import('blank'),
-        name: '用户/客户反馈'
+        path: 'user',
+        component: () => import('@/views/blank'),
+        name: 'userMessage',
+        meta: {
+          title: 'userMessage'
+        }
       },
       {
-        path: 'message3',
-        component: _import('blank'),
-        name: '告警消息'
+        path: 'alarm',
+        component: () => import('@/views/blank'),
+        name: 'alarmMessage',
+        meta: {
+          title: 'alarmMessage'
+        }
       },
       {
-        path: 'message4',
-        component: _import('blank'),
-        name: '售后消息'
+        path: 'after-sale',
+        component: () => import('@/views/blank'),
+        name: 'afterSaleMessage',
+        meta: {
+          title: 'afterSaleMessage'
+        }
       }
     ]
   },

@@ -1,24 +1,42 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+
+import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+import '@/styles/index.scss' // global css
+
 import App from './App'
 import router from './router'
 import store from './store'
-import * as filters from './filters' // 全局filter
+
+import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog'// error log
-import './permission' // 权限
-import 'static/global/global.css'
+import './permission' // permission control
+import './mock' // simulation data
+
+import * as filters from './filters' // global filters
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faAngry } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCoffee, faAngry)
+import ECharts from 'vue-echarts'
+import chinaMap from 'echarts/map/json/china'
+
+ECharts.registerMap('china', chinaMap)
+Vue.component('chart', ECharts)
+
+library.add(fas)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.use(ElementUI)
+Vue.use(Element, {
+  size: 'medium', // set element-ui default size
+  i18n: (key, value) => i18n.t(key, value)
+})
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
@@ -31,6 +49,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: { App }
+  i18n,
+  render: h => h(App)
 })
