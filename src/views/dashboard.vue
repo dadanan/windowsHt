@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px">
+  <div class="dashboard-container">
     <div class="mb20">
       <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true">编辑看板</el-button>
     </div>

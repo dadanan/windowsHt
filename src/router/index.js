@@ -35,7 +35,7 @@ export const constantRouterMap = [
     redirect: 'dashboard',
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/dashboard'),
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
     }]
@@ -62,7 +62,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'order',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/analytics/order'),
         name: 'orderAnalytics',
         meta: {
           title: 'orderAnalytics'
@@ -70,7 +70,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'user',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/analytics/user'),
         name: 'userAnalytics',
         meta: {
           title: 'userAnalytics'
@@ -78,7 +78,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'device',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/analytics/device'),
         name: 'deviceAnalytics',
         meta: {
           title: 'deviceAnalytics'
@@ -86,7 +86,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'system',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/analytics/system'),
         name: 'systemAnalytics',
         meta: {
           title: 'systemAnalytics'
@@ -94,7 +94,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'bigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel/index'),
+        component: () => import('@/views/analytics/bigDataPanel'),
         name: 'bigDataPanel',
         meta: {
 
