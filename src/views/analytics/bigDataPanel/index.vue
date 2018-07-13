@@ -21,11 +21,12 @@
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <UserOption :id="1" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"></UserOption>
+          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"></UserOption>
           <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartDeviceType :options="OptionData.DeviceTypeChartData"></ChartDeviceType>
+          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"></DeviceTypeOption>
+          <ChartDeviceType :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></ChartDeviceType>
         </el-col>
       </el-col>
 
@@ -75,6 +76,7 @@
   import WeatherOption from './compoments/WeatherOption.vue'
   import DeviceOption from './compoments/DeviceOption.vue'
   import UserOption from './compoments/UserOption.vue'
+  import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
   export default {
     created() {
       this.bubbles.length = 10
@@ -93,7 +95,8 @@
       // 弹窗
       WeatherOption,
       DeviceOption,
-      UserOption
+      UserOption,
+      DeviceTypeOption
     },
     data() {
       return {
@@ -239,13 +242,15 @@
           },
           // 设备类型图表数据
           DeviceTypeChartData: {
-            allTypes: ['TYPE1', 'TYPE2', 'TYPE3', 'TYPE4', 'TYPE5'],
+            allTypes: ['检测探头', '净化器', '控制器', '新风机'],
+            allStatus: ['在线', '离线'],
+            totalOnline: [18203, 23489, 29034, 30493],
+            totalOffline: [5203, 43250, 11000, 22202],
             data: [
-              { value: 335, name: 'TYPE1' },
-              { value: 310, name: 'TYPE2' },
-              { value: 234, name: 'TYPE3' },
-              { value: 135, name: 'TYPE4' },
-              { value: 1548, name: 'TYPE5' }
+              { value: 335, name: '检测探头' },
+              { value: 310, name: '净化器' },
+              { value: 234, name: '控制器' },
+              { value: 135, name: '新风机' }
             ]
           },
           // 设备告警信息数据
