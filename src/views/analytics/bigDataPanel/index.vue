@@ -17,15 +17,15 @@
         </el-col>
         <el-col :span="24" class="col">
           <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
-          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"></DeviceOption>
+          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions" @toggleDialog="toggleDialog"></DeviceOption>
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"></UserOption>
+          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></UserOption>
           <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"></DeviceTypeOption>
+          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData" @toggleDialog="toggleDialog"></DeviceTypeOption>
           <ChartDeviceType :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></ChartDeviceType>
         </el-col>
       </el-col>
@@ -46,7 +46,10 @@
           <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <h3>解决方法</h3></el-col>
+          <h3>解决方法</h3>
+          <SolutionOption :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData" @toggleDialog="toggleDialog"></SolutionOption>
+          <SolutionPanel @itemSelected="itemSelected" :options="OptionData.SolutionData"></SolutionPanel>
+        </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <ChartOperationData :options="OptionData.OperationChartData"></ChartOperationData>
         </el-col>
@@ -71,12 +74,15 @@
   import Weather from './compoments/Weather.vue'
   import Message from './compoments/MessageData.vue'
   import MaintainChart from './compoments/MaintainChart.vue'
+  import SolutionPanel from './compoments/SolutionPanel.vue'
 
   // 弹窗
   import WeatherOption from './compoments/WeatherOption.vue'
   import DeviceOption from './compoments/DeviceOption.vue'
   import UserOption from './compoments/UserOption.vue'
   import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
+  import SolutionOption from './compoments/SolutionOption.vue'
+
   export default {
     created() {
       this.bubbles.length = 10
@@ -92,11 +98,13 @@
       Weather,
       Message,
       MaintainChart,
+      SolutionPanel,
       // 弹窗
       WeatherOption,
       DeviceOption,
       UserOption,
-      DeviceTypeOption
+      DeviceTypeOption,
+      SolutionOption
     },
     data() {
       return {
@@ -266,6 +274,60 @@
               { value: 310, name: '待处理' },
               { value: 1548, name: '总告警' }
             ]
+          },
+          // 解决方案数据
+          SolutionData: {
+            selectedId: 0,
+            data: [
+              {
+                id: 0,
+                icon: 'null',
+                name: '别墅',
+                img: '动图....'
+              },
+              {
+                id: 1,
+                icon: 'null',
+                name: '大房',
+                img: '动图....'
+              },
+              {
+                id: 2,
+                icon: 'null',
+                name: '居家',
+                img: '动图....'
+              },
+              {
+                id: 3,
+                icon: 'null',
+                name: '办公',
+                img: '动图....'
+              },
+              {
+                id: 4,
+                icon: 'null',
+                name: '学校',
+                img: '动图....'
+              },
+              {
+                id: 5,
+                icon: 'null',
+                name: '医院',
+                img: '动图....'
+              },
+              {
+                id: 6,
+                icon: 'null',
+                name: '商场',
+                img: '动图....'
+              },
+              {
+                id: 7,
+                icon: 'null',
+                name: '展厅',
+                img: '动图....'
+              }
+            ]
           }
         },
 
@@ -278,11 +340,16 @@
         this.OptionData.WeatherOptionData = options
       },
       toggleDialog(id) {
-        console.log('is toggle')
+        console.log(id + ' is toggle')
         this.DialogVisile.splice(id, 1, !this.DialogVisile[id])
       },
       alertTest() {
         alert('hello world')
+      },
+      itemSelected(id) {
+        console.log('[解决方案选中] 父组件收到id = ' + id)
+        this.OptionData.SolutionData.selectedId = id
+        this.toggleDialog(4)
       }
 
     }
