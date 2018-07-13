@@ -2,7 +2,9 @@
     设备类型图表
 -->
 <template>
+  <div class="panel" @click="$emit('click')">
     <chart :options="option" class="chart"></chart>
+  </div>
 </template>
 <script>
 export default {
@@ -29,6 +31,7 @@ export default {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
+      /*
       legend: {
         orient: 'vertical',
         left: 'left',
@@ -39,6 +42,7 @@ export default {
           textShadowBlur: 10
         }
       },
+      */
       color: ['#DF5E76', '#0CDEFD', '#6DEE18', '#F3CE38', 'rgba(231, 254, 243, 0.8)'],
 
       series: [
@@ -78,7 +82,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+  .panel{
+    height: 100%;
+  }
   .chart {
     height: 100%;
     width: 90%;
