@@ -246,6 +246,7 @@
             allStatus: ['在线', '离线'],
             totalOnline: [18203, 23489, 29034, 30493],
             totalOffline: [5203, 43250, 11000, 22202],
+            totalDevices: 3052,
             data: [
               { value: 335, name: '检测探头' },
               { value: 310, name: '净化器' },

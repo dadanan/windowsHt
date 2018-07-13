@@ -47,6 +47,7 @@
         // //////////////////
         allTypes: [],
         data: [],
+        totalDevices: null,
         // 侧边数据
         chartSideCat: [],
         chartSideType: [],
@@ -54,14 +55,17 @@
         chartSideData2: [],
         // //////////////////
         mainChartOption: {
-          title: {
-            text: '设备类型',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
+          title: [
+            {
+              text: '设备类型',
+              left: 'center'
+            },
+            {
+              text: '设备总数\n' + this.totalDevices + '台',
+              top: '45%',
+              left: 'center'
+            }
+          ],
           legend: {
             y: 'bottom',
             data: this.allTypes
@@ -70,8 +74,7 @@
             {
               name: '设备类型',
               type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
+              radius: ['50%', '70%'],
               data: this.data
             }
           ]
@@ -137,6 +140,7 @@
       populateData() {
         this.allTypes = this.options.allTypes
         this.data = this.options.data
+        this.totalDevices = this.options.totalDevices
         this.chartSideCat = this.options.allTypes
         this.chartSideType = this.options.allStatus
         this.chartSideData1 = this.options.totalOnline
