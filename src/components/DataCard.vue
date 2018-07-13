@@ -48,6 +48,7 @@
     margin-bottom: 20px;
     background-color: #d3dce6;
     color: #fff;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     &__body {
       display: flex;
     }
