@@ -1,6 +1,6 @@
 <template>
   <div class="blank-container">
-    <div class="blank-text">正在建设中... 敬请期待!</div>
+    <div class="blank-text"><i class="wi wi-night-sleet"></i> 正在建设中... 敬请期待!</div>
   </div>
 </template>
 
