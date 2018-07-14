@@ -39,13 +39,14 @@
           <ChartDeviceMap></ChartDeviceMap>
         </el-col>
         <el-col :span="24" id="middle-bottom">
-          <ProjectSample :options="OptionData.ProjectSampleData"></ProjectSample>
+          <ProjectSample :id="5" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></ProjectSample>
+          <ProjectSampleOption :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
+                               @toggleDialog="toggleDialog"></ProjectSampleOption>
         </el-col>
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-
           <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
@@ -87,6 +88,7 @@
   import UserOption from './compoments/UserOption.vue'
   import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
   import SolutionOption from './compoments/SolutionOption.vue'
+  import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
 
   export default {
     created() {
@@ -110,7 +112,8 @@
       DeviceOption,
       UserOption,
       DeviceTypeOption,
-      SolutionOption
+      SolutionOption,
+      ProjectSampleOption
     },
     data() {
       return {
@@ -339,6 +342,7 @@
           ProjectSampleData: {
             data: [
               {
+                id: 0,
                 name: '龙湖一期',
                 icon: '工程示意图地址',
                 imgs: [
@@ -350,6 +354,7 @@
                 ]
               },
               {
+                id: 1,
                 name: '九亭工坊',
                 icon: '工程示意图地址',
                 imgs: [
@@ -361,6 +366,7 @@
                 ]
               },
               {
+                id: 2,
                 name: '桃浦智创',
                 icon: '工程示意图地址',
                 imgs: [
@@ -372,6 +378,7 @@
                 ]
               },
               {
+                id: 3,
                 name: '恒大丽宫',
                 icon: '工程示意图地址',
                 imgs: [
@@ -383,6 +390,7 @@
                 ]
               },
               {
+                id: 4,
                 name: '新汇大厦',
                 icon: '工程示意图地址',
                 imgs: [
@@ -394,6 +402,7 @@
                 ]
               },
               {
+                id: 5,
                 name: '万科横桥',
                 icon: '工程示意图地址',
                 imgs: [
@@ -405,17 +414,16 @@
                 ]
               },
               {
+                id: 6,
                 name: '绿地大厦',
                 icon: '工程示意图地址',
                 imgs: [
                   { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
+                  { id: 1, url: '案列图片2' }
                 ]
               },
               {
+                id: 7,
                 name: '万达武汉',
                 icon: '工程示意图地址',
                 imgs: [
