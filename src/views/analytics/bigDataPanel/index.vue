@@ -17,15 +17,18 @@
         </el-col>
         <el-col :span="24" class="col">
           <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
-          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions" @toggleDialog="toggleDialog"></DeviceOption>
+          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
+                        @toggleDialog="toggleDialog"></DeviceOption>
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></UserOption>
+          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
+                      @toggleDialog="toggleDialog"></UserOption>
           <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData" @toggleDialog="toggleDialog"></DeviceTypeOption>
+          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
+                            @toggleDialog="toggleDialog"></DeviceTypeOption>
           <ChartDeviceType :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></ChartDeviceType>
         </el-col>
       </el-col>
@@ -37,6 +40,7 @@
         </el-col>
         <el-col :span="24" id="middle-bottom">
           <h3>工程案例</h3>
+          <ProjectSample :options="OptionData.ProjectSampleData"></ProjectSample>
         </el-col>
       </el-col>
       <el-col :span="5">
@@ -47,7 +51,8 @@
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <h3>解决方法</h3>
-          <SolutionOption :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData" @toggleDialog="toggleDialog"></SolutionOption>
+          <SolutionOption :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
+                          @toggleDialog="toggleDialog"></SolutionOption>
           <SolutionPanel @itemSelected="itemSelected" :options="OptionData.SolutionData"></SolutionPanel>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
@@ -75,6 +80,7 @@
   import Message from './compoments/MessageData.vue'
   import MaintainChart from './compoments/MaintainChart.vue'
   import SolutionPanel from './compoments/SolutionPanel.vue'
+  import ProjectSample from './compoments/ProjectSample.vue'
 
   // 弹窗
   import WeatherOption from './compoments/WeatherOption.vue'
@@ -99,6 +105,7 @@
       Message,
       MaintainChart,
       SolutionPanel,
+      ProjectSample,
       // 弹窗
       WeatherOption,
       DeviceOption,
@@ -328,6 +335,99 @@
                 img: '动图....'
               }
             ]
+          },
+          // 工程案列数据
+          ProjectSampleData: {
+            data: [
+              {
+                name: '龙湖一期',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '九亭工坊',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '桃浦智创',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '恒大丽宫',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '新汇大厦',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '万科横桥',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '绿地大厦',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                name: '万达武汉',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              }
+            ]
           }
         },
 
@@ -376,7 +476,7 @@
     #middle-bottom {
       height: 40vh;
     }
-    .col::before{
+    .col::before {
       filter: blur(5px);
     }
     .col {
@@ -385,7 +485,6 @@
       border-radius: 5px;
       /* Google Chrome */
       backdrop-filter: blur(5px);
-
 
       /* 设置背景半透明黑色 */
       background: rgba(0, 0, 0, 0.2);
@@ -509,7 +608,6 @@
       }
     }
   }
-
 
 
 </style>
