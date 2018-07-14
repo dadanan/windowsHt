@@ -5,11 +5,11 @@
       <!--<breadcrumb></breadcrumb>-->
       <div class="search">
         <div class="search__label">设备选择：</div>
-        <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input" style="width: 300px">
+        <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input">
           <el-cascader
             slot="prepend"
             :options="options"
-            v-model="selectedOptions" placeholder="请选择条件" style="width: 120px">
+            v-model="selectedOptions" placeholder="请选择条件" style="width: 202px">
           </el-cascader>
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
