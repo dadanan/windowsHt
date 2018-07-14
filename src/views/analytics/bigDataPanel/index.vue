@@ -39,7 +39,6 @@
           <ChartDeviceMap></ChartDeviceMap>
         </el-col>
         <el-col :span="24" id="middle-bottom">
-          <h3>工程案例</h3>
           <ProjectSample :options="OptionData.ProjectSampleData"></ProjectSample>
         </el-col>
       </el-col>
