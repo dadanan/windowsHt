@@ -1,34 +1,58 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
-    <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
-    <!--<breadcrumb></breadcrumb>-->
-    <div class="search">
-      <div class="search__label">设备选择：</div>
-      <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input" style="width: 300px">
-        <el-cascader
-          slot="prepend"
-          :options="options"
-          v-model="selectedOptions" placeholder="请选择条件" style="width: 120px">
-        </el-cascader>
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-    </div>
-    <div style="flex: 1"></div>
-    <el-dropdown>
-      <div class="profile">
-        <font-awesome-icon icon="user"></font-awesome-icon>
-        运维1
+  <div>
+    <el-menu class="navbar" mode="horizontal">
+      <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
+      <!--<breadcrumb></breadcrumb>-->
+      <div class="search">
+        <div class="search__label">设备选择：</div>
+        <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input" style="width: 300px">
+          <el-cascader
+            slot="prepend"
+            :options="options"
+            v-model="selectedOptions" placeholder="请选择条件" style="width: 120px">
+          </el-cascader>
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
       </div>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>
-          个人设置
-        </el-dropdown-item>
-        <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </el-menu>
+      <div style="flex: 1"></div>
+      <el-dropdown>
+        <div class="profile">
+          <font-awesome-icon icon="user"></font-awesome-icon>
+          运维1
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <span @click="dialogEditProfileVisible = true" style="display: block">个人设置</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-menu>
+    <el-dialog
+      title="个人设置"
+      :visible.sync="dialogEditProfileVisible">
+      <el-form :model="profileForm" label-width="80px" label-position="left">
+        <el-form-item label="账号">
+          <el-input v-model="profileForm.username" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="profileForm.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="角色类型">
+          <el-input v-model="profileForm.role" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="手机">
+          <el-input v-model="profileForm.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogEditProfileVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogEditProfileVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -255,7 +279,14 @@
             }]
           }],
         selectedOptions: [],
-        keywords: ''
+        keywords: '',
+        dialogEditProfileVisible: false,
+        profileForm: {
+          username: 'admin',
+          nickname: '测试用户',
+          role: '超级管理员',
+          mobile: '13997252879'
+        }
       }
     },
     methods: {
