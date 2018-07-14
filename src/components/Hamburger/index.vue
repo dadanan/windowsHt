@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .hamburger-btn {
+  color: #606266;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,6 +30,7 @@ export default {
   height: 50px;
   cursor: pointer;
   transition: all .3s ease-out;
+  border-right: 1px solid #efefef;
   &:hover {
      color: #108ee9;
      background-color: rgba(16,142,233,.15);

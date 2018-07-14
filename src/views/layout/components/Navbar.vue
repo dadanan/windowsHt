@@ -1,10 +1,24 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
-    <breadcrumb></breadcrumb>
+    <!--<breadcrumb></breadcrumb>-->
+    <div class="search">
+      <div class="search__label">设备选择：</div>
+      <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input" style="width: 300px">
+        <el-cascader
+          slot="prepend"
+          :options="options"
+          v-model="selectedOptions" placeholder="请选择条件" style="width: 120px">
+        </el-cascader>
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
+    </div>
     <div style="flex: 1"></div>
     <el-dropdown>
-      <div class="profile"><font-awesome-icon icon="user"></font-awesome-icon> 运维1</div>
+      <div class="profile">
+        <font-awesome-icon icon="user"></font-awesome-icon>
+        运维1
+      </div>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>
           个人设置
@@ -14,118 +28,315 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <!--<div class="right-menu">-->
-      <!--&lt;!&ndash;<error-log class="errLog-container right-menu-item"></error-log>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;<el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">&ndash;&gt;-->
-        <!--&lt;!&ndash;<screenfull class="screenfull right-menu-item"></screenfull>&ndash;&gt;-->
-      <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;<lang-select class="international right-menu-item"></lang-select>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;<el-tooltip effect="dark" :content="$t('navbar.theme')" placement="bottom">&ndash;&gt;-->
-        <!--&lt;!&ndash;<theme-picker class="theme-switch right-menu-item"></theme-picker>&ndash;&gt;-->
-      <!--&lt;!&ndash;</el-tooltip>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;<el-dropdown class="avatar-container right-menu-item" trigger="click">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div class="avatar-wrapper">&ndash;&gt;-->
-          <!--&lt;!&ndash;<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">&ndash;&gt;-->
-          <!--&lt;!&ndash;<i class="el-icon-caret-bottom"></i>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<el-dropdown-menu slot="dropdown">&ndash;&gt;-->
-          <!--&lt;!&ndash;<router-link to="/">&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-dropdown-item>&ndash;&gt;-->
-              <!--&lt;!&ndash;{{$t('navbar.dashboard')}}&ndash;&gt;-->
-            <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
-          <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
-          <!--&lt;!&ndash;<a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-dropdown-item>&ndash;&gt;-->
-              <!--&lt;!&ndash;{{$t('navbar.github')}}&ndash;&gt;-->
-            <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
-          <!--&lt;!&ndash;</a>&ndash;&gt;-->
-          <!--&lt;!&ndash;<el-dropdown-item divided>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;</el-dropdown-item>&ndash;&gt;-->
-        <!--&lt;!&ndash;</el-dropdown-menu>&ndash;&gt;-->
-      <!--&lt;!&ndash;</el-dropdown>&ndash;&gt;-->
-    <!--</div>-->
   </el-menu>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
-import Screenfull from '@/components/Screenfull'
-import LangSelect from '@/components/LangSelect'
-import ThemePicker from '@/components/ThemePicker'
+  import { mapGetters } from 'vuex'
+  import Breadcrumb from '@/components/Breadcrumb'
+  import Hamburger from '@/components/Hamburger'
+  import ErrorLog from '@/components/ErrorLog'
+  import Screenfull from '@/components/Screenfull'
+  import LangSelect from '@/components/LangSelect'
+  import ThemePicker from '@/components/ThemePicker'
 
-export default {
-  components: {
-    Breadcrumb,
-    Hamburger,
-    ErrorLog,
-    Screenfull,
-    LangSelect,
-    ThemePicker
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'name',
-      'avatar'
-    ])
-  },
-  methods: {
-    toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
+  export default {
+    components: {
+      Breadcrumb,
+      Hamburger,
+      ErrorLog,
+      Screenfull,
+      LangSelect,
+      ThemePicker
     },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-      })
-    }
-  }
-}
-</script>
-
-<style lang="scss" scoped>
-.navbar {
-  height: 50px;
-  line-height: 50px;
-  border-radius: 0px !important;
-  border-bottom: none;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-
-  .profile {
-    position: relative;
-    height: 100%;
-    cursor: pointer;
-    padding: 0 20px;
-    transition: all .3s ease-out;
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: #fff;
-      transition: all .3s ease-out;
-    }
-
-    &:hover {
-      color: #108ee9;
-      /*background-color: rgba(16,142,233,.15);*/
-      &::after {
-        background-color: #108ee9;
+    computed: {
+      ...mapGetters([
+        'sidebar',
+        'name',
+        'avatar'
+      ])
+    },
+    data() {
+      return {
+        options: [
+          {
+            value: 'zhinan',
+            label: '指南',
+            children: [{
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }, {
+              value: 'daohang',
+              label: '导航',
+              children: [{
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              }, {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }]
+            }]
+          }, {
+            value: 'zujian',
+            label: '组件',
+            children: [{
+              value: 'basic',
+              label: 'Basic',
+              children: [{
+                value: 'layout',
+                label: 'Layout 布局'
+              }, {
+                value: 'color',
+                label: 'Color 色彩'
+              }, {
+                value: 'typography',
+                label: 'Typography 字体'
+              }, {
+                value: 'icon',
+                label: 'Icon 图标'
+              }, {
+                value: 'button',
+                label: 'Button 按钮'
+              }]
+            }, {
+              value: 'form',
+              label: 'Form',
+              children: [{
+                value: 'radio',
+                label: 'Radio 单选框'
+              }, {
+                value: 'checkbox',
+                label: 'Checkbox 多选框'
+              }, {
+                value: 'input',
+                label: 'Input 输入框'
+              }, {
+                value: 'input-number',
+                label: 'InputNumber 计数器'
+              }, {
+                value: 'select',
+                label: 'Select 选择器'
+              }, {
+                value: 'cascader',
+                label: 'Cascader 级联选择器'
+              }, {
+                value: 'switch',
+                label: 'Switch 开关'
+              }, {
+                value: 'slider',
+                label: 'Slider 滑块'
+              }, {
+                value: 'time-picker',
+                label: 'TimePicker 时间选择器'
+              }, {
+                value: 'date-picker',
+                label: 'DatePicker 日期选择器'
+              }, {
+                value: 'datetime-picker',
+                label: 'DateTimePicker 日期时间选择器'
+              }, {
+                value: 'upload',
+                label: 'Upload 上传'
+              }, {
+                value: 'rate',
+                label: 'Rate 评分'
+              }, {
+                value: 'form',
+                label: 'Form 表单'
+              }]
+            }, {
+              value: 'data',
+              label: 'Data',
+              children: [{
+                value: 'table',
+                label: 'Table 表格'
+              }, {
+                value: 'tag',
+                label: 'Tag 标签'
+              }, {
+                value: 'progress',
+                label: 'Progress 进度条'
+              }, {
+                value: 'tree',
+                label: 'Tree 树形控件'
+              }, {
+                value: 'pagination',
+                label: 'Pagination 分页'
+              }, {
+                value: 'badge',
+                label: 'Badge 标记'
+              }]
+            }, {
+              value: 'notice',
+              label: 'Notice',
+              children: [{
+                value: 'alert',
+                label: 'Alert 警告'
+              }, {
+                value: 'loading',
+                label: 'Loading 加载'
+              }, {
+                value: 'message',
+                label: 'Message 消息提示'
+              }, {
+                value: 'message-box',
+                label: 'MessageBox 弹框'
+              }, {
+                value: 'notification',
+                label: 'Notification 通知'
+              }]
+            }, {
+              value: 'navigation',
+              label: 'Navigation',
+              children: [{
+                value: 'menu',
+                label: 'NavMenu 导航菜单'
+              }, {
+                value: 'tabs',
+                label: 'Tabs 标签页'
+              }, {
+                value: 'breadcrumb',
+                label: 'Breadcrumb 面包屑'
+              }, {
+                value: 'dropdown',
+                label: 'Dropdown 下拉菜单'
+              }, {
+                value: 'steps',
+                label: 'Steps 步骤条'
+              }]
+            }, {
+              value: 'others',
+              label: 'Others',
+              children: [{
+                value: 'dialog',
+                label: 'Dialog 对话框'
+              }, {
+                value: 'tooltip',
+                label: 'Tooltip 文字提示'
+              }, {
+                value: 'popover',
+                label: 'Popover 弹出框'
+              }, {
+                value: 'card',
+                label: 'Card 卡片'
+              }, {
+                value: 'carousel',
+                label: 'Carousel 走马灯'
+              }, {
+                value: 'collapse',
+                label: 'Collapse 折叠面板'
+              }]
+            }]
+          }, {
+            value: 'ziyuan',
+            label: '资源',
+            children: [{
+              value: 'axure',
+              label: 'Axure Components'
+            }, {
+              value: 'sketch',
+              label: 'Sketch Templates'
+            }, {
+              value: 'jiaohu',
+              label: '组件交互文档'
+            }]
+          }],
+        selectedOptions: [],
+        keywords: ''
+      }
+    },
+    methods: {
+      toggleSideBar() {
+        this.$store.dispatch('toggleSideBar')
+      },
+      logout() {
+        this.$store.dispatch('LogOut').then(() => {
+          location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        })
       }
     }
   }
-}
+</script>
+
+<style lang="scss" scoped>
+  .navbar {
+    height: 50px;
+    line-height: 50px;
+    border-radius: 0px !important;
+    border-bottom: none;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+
+    .search {
+      margin-right: 10px;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      &__label {
+        white-space: nowrap;
+        font-size: 14px;
+        color: #606266;
+        margin-right: 10px;
+      }
+    }
+
+    .profile {
+      position: relative;
+      height: 100%;
+      cursor: pointer;
+      padding: 0 20px;
+      transition: all .3s ease-out;
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #fff;
+        transition: all .3s ease-out;
+      }
+
+      &:hover {
+        color: #108ee9;
+        /*background-color: rgba(16,142,233,.15);*/
+        &::after {
+          background-color: #108ee9;
+        }
+      }
+    }
+  }
+</style>
+
+<style lang="scss">
+  .el-input-group__prepend .el-cascader {
+    display: inline-block;
+    margin: -10px -20px;
+  }
+
+  .cascader-with-input {
+    .el-input-group__prepend {
+      overflow: hidden;
+    }
+
+    .el-cascader input {
+      border-color: transparent;
+    }
+  }
 </style>
