@@ -9,57 +9,57 @@
         <div class="grid-content bg-purple"></div>
         <el-col :span="24" class="col">
           <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
-          <WeatherOption :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
-                         @toggleDialog="toggleDialog"></WeatherOption>
+          <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
+                         @toggleDialog="toggleDialog"></weather-option>
           <h3>天气环境</h3>
-          <Weather :option="OptionData.WeatherOptionData"></Weather>
+          <weather :option="OptionData.WeatherOptionData"></weather>
 
         </el-col>
         <el-col :span="24" class="col">
           <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
-          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
-                        @toggleDialog="toggleDialog"></DeviceOption>
-          <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
+          <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
+                        @toggleDialog="toggleDialog"></device-option>
+          <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
-                      @toggleDialog="toggleDialog"></UserOption>
-          <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
+          <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
+                      @toggleDialog="toggleDialog"></user-option>
+          <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
-                            @toggleDialog="toggleDialog"></DeviceTypeOption>
-          <ChartDeviceType :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></ChartDeviceType>
+          <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
+                            @toggleDialog="toggleDialog"></device-type-option>
+          <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></chart-device-type>
         </el-col>
       </el-col>
 
       <el-col :span="14">
         <h1>大数据看板</h1>
         <el-col :span="24" id="middle-top">
-          <ChartDeviceMap></ChartDeviceMap>
+          <chart-device-map></chart-device-map>
         </el-col>
         <el-col :span="24" id="middle-bottom">
-          <ProjectSample :id="5" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></ProjectSample>
-          <ProjectSampleOption :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
-                               @toggleDialog="toggleDialog"></ProjectSampleOption>
+          <project-sample :id="5" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></project-sample>
+          <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
+                               @toggleDialog="toggleDialog"></project-sample-option>
         </el-col>
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
+          <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
           <h3>解决方法</h3>
-          <SolutionOption :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
-                          @toggleDialog="toggleDialog"></SolutionOption>
-          <SolutionPanel @itemSelected="itemSelected" :options="OptionData.SolutionData"></SolutionPanel>
+          <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
+                          @toggleDialog="toggleDialog"></solution-option>
+          <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
         </el-col>
         <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartOperationData :options="OptionData.OperationChartData"></ChartOperationData>
+          <chart-operation-data :options="OptionData.OperationChartData"></chart-operation-data>
         </el-col>
         <el-col :span="24" class="col">
-          <MaintainChart :options="OptionData.MaintainChartOptions"></MaintainChart>
+          <maintain-chart :options="OptionData.MaintainChartOptions"></maintain-chart>
         </el-col>
       </el-col>
     </el-row>
@@ -90,7 +90,16 @@
   import SolutionOption from './compoments/SolutionOption.vue'
   import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
 
-  export default {
+  // 特效
+  /*
+  import VanillaTilt from 'vanilla-tilt'
+
+  VanillaTilt.init(this.$refs.weather.$el, {
+    max: 25,
+    speed: 400
+  })
+  */
+export default {
     created() {
       this.bubbles.length = 10
     },
