@@ -1,6 +1,6 @@
 <template>
   <el-row class="project-samples">
-    <a class="setting" @click="popupSettingDialog" size="mini">设置</a>
+    <a class="setting" @click="popupSettingDialog" size="mini"><font-awesome-icon icon="cog" /></a>
     <h3>工程案例</h3>
     <el-col v-for="project in data" :key="project.id" :span="6">
       <span>{{project.icon}}</span>
