@@ -17,8 +17,8 @@
       </el-col>
     </el-row>
     <el-card>
-      <div class="filter-form-container">
-        <el-form :inline="true" :model="form" ref="form">
+      <div class="table-opts">
+        <el-form :inline="true" :model="form" ref="form" class="el-form--flex">
           <el-form-item>
             <el-select v-model="form.type" placeholder="搜索条件">
               <el-option label="类型" value="1"></el-option>
@@ -38,8 +38,9 @@
               <el-option label="全部" value="3"></el-option>
             </el-select>
           </el-form-item>
+          <div style="flex: 1;"></div>
           <el-form-item>
-            <el-button type="primary" @click="search">搜索</el-button>
+            <el-button type="primary" @click="search" icon="el-icon-search">搜索</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>

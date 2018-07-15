@@ -349,7 +349,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'client',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/client'),
         name: 'systemClient',
         meta: {
           title: 'systemClient'
