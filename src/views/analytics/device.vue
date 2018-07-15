@@ -47,7 +47,7 @@
       </div>
       <el-table
         :data="tableData"
-        style="width: 100%" class="mb20">
+        style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
         <el-table-column
           prop="type"
