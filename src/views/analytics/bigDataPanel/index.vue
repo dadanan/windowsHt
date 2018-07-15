@@ -11,7 +11,7 @@
           <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
                           @toggleDialog="toggleDialog"></weather-option>
           <div ref="weather" class="col" data-tilt>
-            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
+            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)"><font-awesome-icon icon="cog" /></a>
             <weather :option="OptionData.WeatherOptionData"></weather>
           </div>
         </el-col>
@@ -20,7 +20,6 @@
           <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
                          @toggleDialog="toggleDialog"></device-option>
           <div ref="device" class="col" data-tilt>
-            <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
 
             <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
           </div>
@@ -28,7 +27,6 @@
 
         <el-col :span="24">
           <div ref="users" class="col" data-tilt>
-            <a class="setting" type="primary" size="mini">设置</a>
             <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
           </div>
           <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></user-option>
@@ -36,7 +34,7 @@
         </el-col>
 
         <div ref="type" class="duang" data-tilt>
-          <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+          <el-col :span="24" class="col">
             <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
                                 @toggleDialog="toggleDialog"></device-type-option>
             <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></chart-device-type>
@@ -61,16 +59,16 @@
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col">
           <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col">
           <h3>解决方法</h3>
           <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
                            @toggleDialog="toggleDialog"></solution-option>
           <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
         </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
+        <el-col :span="24" class="col">
           <chart-operation-data :options="OptionData.OperationChartData"></chart-operation-data>
         </el-col>
         <el-col :span="24" class="col">
@@ -529,6 +527,7 @@
       background: rgba(0, 0, 0, 0.2);
       margin-top: 10px;
       margin-bottom: 10px;
+
 
     }
     .ui-row {
