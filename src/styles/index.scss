@@ -218,3 +218,21 @@ code {
   justify-content: space-between;
   align-content: center;
 }
+
+.table-opts {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.el-form.el-form--inline.el-form--flex {
+  margin-bottom: -22px;
+  display: flex;
+  width: 100%;
+  .el-form-item__content {
+    display: flex;
+  }
+  .el-form-item:last-of-type {
+    margin-right: 0;
+  }
+}
