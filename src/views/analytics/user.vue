@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="mb20">
-      <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true">编辑看板</el-button>
+      <el-button icon="el-icon-edit" type="primary" @click="isEditKanbanDialogVisible = true">编辑看板</el-button>
     </div>
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanData.数据展示" :key="item.id" v-if="item.isVisible">
@@ -47,7 +47,7 @@
       </div>
       <el-table
         :data="tableData"
-        style="width: 100%" class="mb20">
+        style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
         <el-table-column
           prop="name"
@@ -81,7 +81,7 @@
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
-    <el-dialog title="编辑看板" :visible.sync="dialogEditKanbanVisible" class="kanban-edit">
+    <el-dialog title="编辑看板" :visible.sync="isEditKanbanDialogVisible" class="kanban-edit">
       <el-form label-position="left" label-width="100px">
         <el-form-item label="数据展示">
           <el-checkbox v-model="item.isVisible" v-for="item in kanbanData.数据展示" :key="item.id">{{ item.name }}
@@ -93,8 +93,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditKanbanVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogEditKanbanVisible = false">确 定</el-button>
+        <el-button @click="isEditKanbanDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="isEditKanbanDialogVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -290,7 +290,7 @@
             }
           ]
         },
-        dialogEditKanbanVisible: false,
+        isEditKanbanDialogVisible: false,
         form: {
           type: '',
           keywords: '',
