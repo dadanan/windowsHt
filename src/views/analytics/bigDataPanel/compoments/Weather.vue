@@ -59,7 +59,17 @@
           })
       },
       getWeatherIcon(weather) {
-        return 'wi wi-night-sleet'
+        const allType = [
+          { weather: '晴', icon: 'wi wi-day-sunny' },
+          { weather: '多云', icon: 'wi wi-day-cloudy' },
+          { weather: '阴', icon: 'wi wi-day-cloudy-gusts' },
+          { weather: '阵雨', icon: 'wi wi-day-hail' }
+        ]
+        var result = allType.filter(elem => {
+          if (String(elem.weather) === String(weather)) return elem.icon
+        })
+        if (result.length > 0) return result
+        else return 'wi wi-day-sunny'
       }
     }
 
