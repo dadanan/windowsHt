@@ -177,7 +177,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'device',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/alarm/device'),
         name: 'alarmDevice',
         meta: {
           title: 'alarmDevice'
