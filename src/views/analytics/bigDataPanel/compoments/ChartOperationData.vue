@@ -2,7 +2,9 @@
     设备类型图表
 -->
 <template>
+
     <chart :options="option" class="chart"></chart>
+
 </template>
 <script>
 export default {
