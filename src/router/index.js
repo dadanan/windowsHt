@@ -349,7 +349,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'client',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/client'),
         name: 'systemClient',
         meta: {
           title: 'systemClient'
@@ -357,7 +357,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'role',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/role'),
         name: 'systemRole',
         meta: {
           title: 'systemRole'
@@ -365,7 +365,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'user',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/user'),
         name: 'systemUser',
         meta: {
           title: 'systemUser'
