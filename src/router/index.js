@@ -184,8 +184,8 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'config',
-        component: () => import('@/views/blank'),
+        path: 'level',
+        component: () => import('@/views/alarm/level'),
         name: 'alarmConfig',
         meta: {
           title: 'alarmConfig'
