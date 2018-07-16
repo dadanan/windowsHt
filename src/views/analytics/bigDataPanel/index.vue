@@ -36,7 +36,7 @@
         <div ref="type" class="duang" data-tilt>
           <el-col :span="24" class="col">
             <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
-                                @toggleDialog="toggleDialog"></device-type-option>
+
             <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></chart-device-type>
           </el-col>
         </div>
@@ -69,6 +69,8 @@
           <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
         </el-col>
         <el-col :span="24" class="col">
+          <chart-operation-option :id="6" :visible.sync="DialogVisile[6]" :options="OptionData.OperationChartData"
+                                  @toggleDialog="toggleDialog"></chart-operation-option>
           <chart-operation-data :options="OptionData.OperationChartData"></chart-operation-data>
         </el-col>
         <el-col :span="24" class="col">
@@ -102,6 +104,7 @@
   import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
   import SolutionOption from './compoments/SolutionOption.vue'
   import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
+  import ChartOperationOption from './compoments/ChartOperationOption.vue'
 
   // 特效
 
@@ -142,7 +145,8 @@
       UserOption,
       DeviceTypeOption,
       SolutionOption,
-      ProjectSampleOption
+      ProjectSampleOption,
+      ChartOperationOption
     },
     data() {
       return {
@@ -311,7 +315,11 @@
               { value: 335, name: '已处理' },
               { value: 310, name: '待处理' },
               { value: 1548, name: '总告警' }
-            ]
+            ],
+            lineChart: {
+              intergrals: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }
           },
           // 解决方案数据
           SolutionData: {
