@@ -51,9 +51,11 @@
           </el-col>
         </div>
         <el-col :span="24" id="middle-bottom">
-          <project-sample :id="5" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></project-sample>
+          <project-sample :id="5" :detailid="7" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></project-sample>
           <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
                                  @toggleDialog="toggleDialog"></project-sample-option>
+          <sample-detail-prompt :id="7" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[7]"
+                                @toggleDialog="toggleDialog"></sample-detail-prompt>
         </el-col>
 
       </el-col>
@@ -63,7 +65,7 @@
           <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
         <el-col :span="24" class="col">
-          <h3>解决方法</h3>
+          <h3>解决方案</h3>
           <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
                            @toggleDialog="toggleDialog"></solution-option>
           <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
@@ -71,7 +73,7 @@
         <el-col :span="24" class="col">
           <chart-operation-option :id="6" :visible.sync="DialogVisile[6]" :options="OptionData.OperationChartData"
                                   @toggleDialog="toggleDialog"></chart-operation-option>
-          <chart-operation-data :options="OptionData.OperationChartData"></chart-operation-data>
+          <chart-operation-data @click="toggleDialog(6)" :options="OptionData.OperationChartData"></chart-operation-data>
         </el-col>
         <el-col :span="24" class="col">
           <maintain-chart :options="OptionData.MaintainChartOptions"></maintain-chart>
@@ -105,6 +107,7 @@
   import SolutionOption from './compoments/SolutionOption.vue'
   import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
   import ChartOperationOption from './compoments/ChartOperationOption.vue'
+  import SampleDetailPrompt from './compoments/SampleDetailPrompt.vue'
 
   // 特效
 
@@ -146,7 +149,8 @@
       DeviceTypeOption,
       SolutionOption,
       ProjectSampleOption,
-      ChartOperationOption
+      ChartOperationOption,
+      SampleDetailPrompt
     },
     data() {
       return {
