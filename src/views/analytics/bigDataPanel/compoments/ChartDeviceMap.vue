@@ -2,7 +2,7 @@
     设备地图 (中间)
 -->
 <template>
-  <chart :options="option" class="chart"></chart>
+  <chart @click="onProvienceClick" :options="option" class="chart"></chart>
 </template>
 <script>
   export default {
@@ -329,6 +329,9 @@
           }
         }
         return res
+      },
+      onProvienceClick(event, instance, ECharts) {
+        console.log('provicence click + ' + instance)
       }
     },
     beforeDestroy() {

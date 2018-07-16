@@ -26,8 +26,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import ECharts from 'vue-echarts'
 import chinaMap from 'echarts/map/json/china'
-
+import anhuiMap from 'echarts/map/json/province/anhui'
 ECharts.registerMap('china', chinaMap)
+ECharts.registerMap('anhui', anhuiMap)
 Vue.component('chart', ECharts)
 
 library.add(fas)
