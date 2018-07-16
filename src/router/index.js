@@ -116,7 +116,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'list',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/list'),
         name: 'deviceList',
         meta: {
           title: 'deviceList'
@@ -124,7 +124,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'group',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/group'),
         name: 'deviceGroup',
         meta: {
           title: 'deviceGroup'
@@ -156,7 +156,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'filing',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/filing'),
         name: 'deviceFiling',
         meta: {
           title: 'deviceFiling'
