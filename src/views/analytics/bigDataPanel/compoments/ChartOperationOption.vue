@@ -4,7 +4,7 @@
     :visible.sync="dialogVisible"
     :before-close="close"
     :modal="false"
-    width="60%">
+    width="80%">
     <el-row>
 
       <el-col :span="8">
@@ -24,7 +24,9 @@
         <chart class="chart" :options="roseChartOption"></chart>
       </el-col>
       <el-col :span="24">
-       <table class="table">
+        <h2 class="center">最长处理时间: {{maxProcessTime}}</h2>
+
+        <table class="table">
          <th>已处理</th>
          <th>未处理</th>
          <th>处理中</th>
@@ -47,7 +49,7 @@
        </table>
       </el-col>
     </el-row>
-    <h2 class="center">最长处理时间: {{maxProcessTime}}</h2>
+
     <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="dialogVisible = false">返回</el-button>
   </span>
@@ -173,6 +175,11 @@ export default {
   created() {
     this.populateData()
   },
+  watch: {
+    visible(newVal) {
+      this.dialogVisible = newVal
+    }
+  },
   methods: {
     populateData() {
       this.allTypes = this.options.allTypes
@@ -194,7 +201,7 @@ export default {
   }
   .chart {
     width: 100%;
-    height: 300px;
+    height: 200px;
   }
   .table {
     width: 100%;
