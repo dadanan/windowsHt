@@ -365,7 +365,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'user',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/user'),
         name: 'systemUser',
         meta: {
           title: 'systemUser'

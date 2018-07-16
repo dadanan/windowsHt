@@ -3,9 +3,8 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="isCreateClientDialogVisible = true">创建</el-button>
+          <el-button type="primary" @click="isCreateClientDialogVisible = true">添加</el-button>
           <el-button type="primary" @click="suspendSelected">挂起</el-button>
-          <el-button type="primary" @click="deleteSelected">删除</el-button>
           <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
@@ -68,6 +67,7 @@
           label="操作">
           <template slot-scope="scope">
             <el-button type="text">详情</el-button>
+            <el-button type="text" @click="deleteClient">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -489,7 +489,7 @@
           this.createStep = 0
         }
       },
-      deleteSelected() {
+      deleteClient() {
         this.$confirm('此操作将永久解除客户管理权限, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

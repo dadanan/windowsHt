@@ -3,12 +3,13 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="isCreateRoleDialogVisible = true">添加角色</el-button>
+          <el-button type="primary" @click="isCreateRoleDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
       <el-table
         :data="roleList"
         style="width: 100%" class="mb20" border>
+        <el-table-column type="index"></el-table-column>
         <el-table-column
           prop="name"
           label="角色名称" show-overflow-tooltip sortable>
@@ -25,7 +26,7 @@
           label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="isEditRoleDialogVisible = true">编辑</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="deleteRole">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -197,6 +198,25 @@
         demoForm: {
           name: '管理员'
         }
+      }
+    },
+    methods: {
+      deleteRole() {
+        this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       }
     }
   }
