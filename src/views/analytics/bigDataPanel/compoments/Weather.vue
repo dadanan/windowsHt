@@ -4,8 +4,11 @@
       <h1>{{city}}</h1>
       <p>{{suburb}}</p>
     </div>
-
-    <p>天气: {{weather}} ({{temperature}})</p>
+    <!--
+      <p>{{weather}}</p>
+    -->
+    <span class="weather-icon"><i :class="getWeatherIcon('weather')"></i></span>
+    <div class="temperature">{{temperature}}</div>
     <p>紫外线强度: {{UV}}</p>
     <p>PM2.5: {{weatherQuality}} ug/m3</p>
   </div>
@@ -13,7 +16,6 @@
 
 <script>
   import axios from 'axios'
-
   export default {
     props: ['option'],
     data() {
@@ -55,6 +57,19 @@
             this.weatherQuality = response.data.results[0].pm25
             this.UV = response.data.results[0].index[4].zs
           })
+      },
+      getWeatherIcon(weather) {
+        const allType = [
+          { weather: '晴', icon: 'wi wi-day-sunny' },
+          { weather: '多云', icon: 'wi wi-day-cloudy' },
+          { weather: '阴', icon: 'wi wi-day-cloudy-gusts' },
+          { weather: '阵雨', icon: 'wi wi-day-hail' }
+        ]
+        var result = allType.filter(elem => {
+          if (String(elem.weather) === String(weather)) return elem.icon
+        })
+        if (result.length > 0) return result
+        else return 'wi wi-day-sunny'
       }
     }
 
@@ -63,6 +78,7 @@
 
 <style lang="scss" scoped>
   .weather {
+    padding-top: 30px;
     height: 100%;
     width: 90%;
     margin-left: auto;
@@ -72,9 +88,15 @@
       margin: 0px;
     }
     #city {
-
       position: relative;
       float: right;
+    }
+    .temperature {
+      font-size: 25px;
+    }
+    .weather-icon {
+      font-size: 50px;
+      margin-bottom: 10px;
     }
   }
 </style>

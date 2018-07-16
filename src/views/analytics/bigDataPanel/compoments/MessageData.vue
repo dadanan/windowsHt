@@ -1,6 +1,6 @@
 <template>
 
-  <el-tabs type="border-card" @tab-click="onTabClick">
+  <el-tabs class="main-tabs" type="border-card" @tab-click="onTabClick">
     <el-tab-pane label="系统" name="0">
       <div style="height: 100px">
         <el-input
@@ -100,15 +100,25 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .main-tabs {
+    background-color: transparent;
+    border: none;
+  }
 </style>
 <style lang="scss">
   .textarea-full {
     height: 100%;
     textarea {
       height: 100%;
+      background-color: transparent;
+      border: none;
+      color: white;
     }
   }
-
+  .el-tabs__header{
+    background-color: transparent !important;
+    border: none;
+  }
   .message-panel {
     textarea {
       border: none;
