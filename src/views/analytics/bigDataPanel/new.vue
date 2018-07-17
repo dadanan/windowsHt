@@ -1,92 +1,122 @@
 <template>
-  <div class="big-data-panel">
-    <ul class="bg-bubbles">
-      <li v-for="(item, index) in bubbles" :key="index"></li>
-    </ul>
-    <router-link to="/">返回</router-link>
-    <el-row class="ui-row">
-      <el-col :span="5">
-        <div class="grid-content bg-purple"></div>
-        <el-col :span="24">
-          <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
-                          @toggleDialog="toggleDialog"></weather-option>
-          <div ref="weather" class="col" data-tilt>
-            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">
-              <font-awesome-icon icon="cog"/>
-            </a>
+  <div class="bdp">
+    <div class="bdp__container">
+      <div class="bdp__column">
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            <font-awesome-icon icon="cog" @click="toggleDialog(0)" class="bdp__card__setting"/>
             <weather :option="OptionData.WeatherOptionData"></weather>
+            <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
+                            @toggleDialog="toggleDialog"></weather-option>
           </div>
-        </el-col>
-
-        <el-col :span="24">
-          <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
-                         @toggleDialog="toggleDialog"></device-option>
-          <div ref="device" class="col" data-tilt>
-
+        </div>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            <!--<chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>-->
             <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
+            <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
+                           @toggleDialog="toggleDialog"></device-option>
           </div>
-        </el-col>
-
-        <el-col :span="24">
-          <div ref="users" class="col" data-tilt>
-            <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
+        </div>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            3
           </div>
-          <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
-                       @toggleDialog="toggleDialog"></user-option>
-
-        </el-col>
-
-        <div ref="type" class="duang" data-tilt>
-          <el-col :span="24" class="col">
-            <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
-
-            <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></chart-device-type>
-          </el-col>
         </div>
-      </el-col>
-
-      <el-col :span="14">
-
-        <h1>大数据看板</h1>
-        <div ref="main" data-tilt>
-          <el-col :span="24" id="middle-top">
-            <chart-device-map></chart-device-map>
-          </el-col>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            4
+          </div>
         </div>
-        <el-col :span="24" id="middle-bottom">
-          <project-sample :id="5" :detailid="7" :options="OptionData.ProjectSampleData"
-                          @toggleDialog="toggleDialog"></project-sample>
-          <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
-                                 @toggleDialog="toggleDialog"></project-sample-option>
-          <sample-detail-prompt :id="7" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[7]"
-                                @toggleDialog="toggleDialog"></sample-detail-prompt>
-        </el-col>
-
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple"></div>
-        <el-col :span="24" class="col">
-          <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
-        </el-col>
-        <el-col :span="24" class="col">
-          <h3>解决方案</h3>
-          <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
-                           @toggleDialog="toggleDialog"></solution-option>
-          <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
-        </el-col>
-        <el-col :span="24" class="col">
-          <chart-operation-option :id="6" :visible.sync="DialogVisile[6]" :options="OptionData.OperationChartData"
-                                  @toggleDialog="toggleDialog"></chart-operation-option>
-          <chart-operation-data @click="toggleDialog(6)"
-                                :options="OptionData.OperationChartData"></chart-operation-data>
-        </el-col>
-        <el-col :span="24" class="col">
-          <maintain-chart :options="OptionData.MaintainChartOptions"></maintain-chart>
-        </el-col>
-      </el-col>
-    </el-row>
+      </div>
+      <div class="bdp__full">
+        <div class="bdp__card">
+          2
+        </div>
+      </div>
+      <div class="bdp__column">
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            1
+          </div>
+        </div>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            2
+          </div>
+        </div>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            3
+          </div>
+        </div>
+        <div class="bdp__column__item">
+          <div class="bdp__card">
+            4
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  .bdp {
+    padding: 10px;
+    position: fixed;
+    color: #fff;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(173deg, rgba(14, 92, 141, 1) 0%, rgba(3, 10, 39, 1) 100%);
+    z-index: 2001;
+
+    &__container {
+      display: flex;
+      height: 100%;
+    }
+
+    &__full {
+      flex: 1;
+    }
+
+    &__column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      &__item {
+        flex-basis: 25%;
+        display: flex;
+        width: 400px;
+      }
+    }
+
+    &__card {
+      flex-grow: 1;
+      margin: 10px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+
+      &__setting {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        opacity: 0;
+        cursor: pointer;
+        transition: opacity .3s;
+      }
+
+      &:hover &__setting {
+        opacity: 1;
+      }
+    }
+  }
+</style>
+
 <script>
   // 各模块(共10个)
   import ChartDeviceMap from './compoments/ChartDeviceMap.vue'
@@ -508,157 +538,155 @@
 
 </script>
 
-<style lang="scss" scoped>
+<!--<style lang="scss" scoped>-->
 
-  .big-data-panel {
+<!--.big-data-panel {-->
+<!--position: fixed;-->
+<!--color: white;-->
+<!--top: 0;-->
+<!--left: 0;-->
+<!--right: 0;-->
+<!--bottom: 0;-->
+<!--background: linear-gradient(173deg, rgba(14, 92, 141, 1) 0%, rgba(3, 10, 39, 1) 100%);-->
+<!--z-index: 2001;-->
+<!--#middle-top {-->
+<!--height: 60vh;-->
+<!--}-->
+<!--#middle-bottom {-->
+<!--height: 40vh;-->
+<!--}-->
+<!--.col::before {-->
+<!--filter: blur(5px);-->
+<!--}-->
+<!--.col {-->
+<!--height: 23vh;-->
+<!-- -webkit-backdrop-filter: blur(5px);-->
+<!--border-radius: 5px;-->
+<!--/* Google Chrome */-->
+<!--backdrop-filter: blur(5px);-->
 
-    color: white;
-    top: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    background-color: #041a32;
-    background: linear-gradient(173deg, rgba(14, 92, 141, 1) 0%, rgba(3, 10, 39, 1) 100%);
-    bottom: 0;
-    z-index: 2001;
-    #middle-top {
-      height: 60vh;
-    }
-    #middle-bottom {
-      height: 40vh;
-    }
-    .col::before {
-      filter: blur(5px);
-    }
-    .col {
-      height: 23vh;
-      -webkit-backdrop-filter: blur(5px);
-      border-radius: 5px;
-      /* Google Chrome */
-      backdrop-filter: blur(5px);
+<!--/* 设置背景半透明黑色 */-->
+<!--background: rgba(0, 0, 0, 0.2);-->
+<!--margin-top: 10px;-->
+<!--margin-bottom: 10px;-->
 
-      /* 设置背景半透明黑色 */
-      background: rgba(0, 0, 0, 0.2);
-      margin-top: 10px;
-      margin-bottom: 10px;
+<!--}-->
+<!--.ui-row {-->
 
-    }
-    .ui-row {
-
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-    .setting {
-      float: right;
-      &:hover {
-        color: #4CD8FC;
-      }
-    }
-    h1, h2, h3 {
-      text-align: center;
-    }
-    //Duang duang
-    .bg-bubbles {
-      position: absolute;
-      // 使气泡背景充满整个屏幕
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      li {
-        border-radius: 100px;
-        position: absolute;
-        // bottom 的设置是为了营造出气泡从页面底部冒出的效果；
-        bottom: -160px;
-        // 默认的气泡大小；
-        width: 40px;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.15);
-        list-style: none;
-        // 使用自定义动画使气泡渐现、上升和翻滚；
-        animation: square 15s infinite;
-        transition-timing-function: linear;
-        // 分别设置每个气泡不同的位置、大小、透明度和速度，以显得有层次感；
-        &:nth-child(1) {
-          left: 10%;
-        }
-        &:nth-child(2) {
-          left: 20%;
-          width: 90px;
-          height: 90px;
-          animation-delay: 2s;
-          animation-duration: 7s;
-        }
-        &:nth-child(3) {
-          left: 25%;
-          animation-delay: 4s;
-        }
-        &:nth-child(4) {
-          left: 40%;
-          width: 60px;
-          height: 60px;
-          animation-duration: 8s;
-          background-color: rgba(255, 255, 255, 0.3);
-        }
-        &:nth-child(5) {
-          left: 70%;
-        }
-        &:nth-child(6) {
-          left: 80%;
-          width: 120px;
-          height: 120px;
-          animation-delay: 3s;
-          background-color: rgba(255, 255, 255, 0.2);
-        }
-        &:nth-child(7) {
-          left: 32%;
-          width: 160px;
-          height: 160px;
-          animation-delay: 2s;
-        }
-        &:nth-child(8) {
-          left: 55%;
-          width: 20px;
-          height: 20px;
-          animation-delay: 4s;
-          animation-duration: 15s;
-        }
-        &:nth-child(9) {
-          left: 25%;
-          width: 10px;
-          height: 10px;
-          animation-delay: 2s;
-          animation-duration: 12s;
-          background-color: rgba(255, 255, 255, 0.3);
-        }
-        &:nth-child(10) {
-          left: 85%;
-          width: 160px;
-          height: 160px;
-          animation-delay: 5s;
-        }
-      }
-      // 自定义 square 动画；
-      @keyframes square {
-        0% {
-          opacity: 0.5;
-          transform: translateY(0px) rotate(45deg);
-        }
-        25% {
-          opacity: 0.75;
-          transform: translateY(-400px) rotate(90deg)
-        }
-        50% {
-          opacity: 1;
-          transform: translateY(-600px) rotate(135deg);
-        }
-        100% {
-          opacity: 0;
-          transform: translateY(-1000px) rotate(180deg);
-        }
-      }
-    }
-  }
+<!--margin-left: 10px;-->
+<!--margin-right: 10px;-->
+<!--}-->
+<!--.setting {-->
+<!--float: right;-->
+<!--&:hover {-->
+<!--color: #4CD8FC;-->
+<!--}-->
+<!--}-->
+<!--h1, h2, h3 {-->
+<!--text-align: center;-->
+<!--}-->
+<!--//Duang duang-->
+<!--.bg-bubbles {-->
+<!--position: absolute;-->
+<!--// 使气泡背景充满整个屏幕-->
+<!--top: 0;-->
+<!--left: 0;-->
+<!--width: 100%;-->
+<!--height: 100%;-->
+<!--li {-->
+<!--border-radius: 100px;-->
+<!--position: absolute;-->
+<!--// bottom 的设置是为了营造出气泡从页面底部冒出的效果；-->
+<!--bottom: -160px;-->
+<!--// 默认的气泡大小；-->
+<!--width: 40px;-->
+<!--height: 40px;-->
+<!--background-color: rgba(255, 255, 255, 0.15);-->
+<!--list-style: none;-->
+<!--// 使用自定义动画使气泡渐现、上升和翻滚；-->
+<!--animation: square 15s infinite;-->
+<!--transition-timing-function: linear;-->
+<!--// 分别设置每个气泡不同的位置、大小、透明度和速度，以显得有层次感；-->
+<!--&:nth-child(1) {-->
+<!--left: 10%;-->
+<!--}-->
+<!--&:nth-child(2) {-->
+<!--left: 20%;-->
+<!--width: 90px;-->
+<!--height: 90px;-->
+<!--animation-delay: 2s;-->
+<!--animation-duration: 7s;-->
+<!--}-->
+<!--&:nth-child(3) {-->
+<!--left: 25%;-->
+<!--animation-delay: 4s;-->
+<!--}-->
+<!--&:nth-child(4) {-->
+<!--left: 40%;-->
+<!--width: 60px;-->
+<!--height: 60px;-->
+<!--animation-duration: 8s;-->
+<!--background-color: rgba(255, 255, 255, 0.3);-->
+<!--}-->
+<!--&:nth-child(5) {-->
+<!--left: 70%;-->
+<!--}-->
+<!--&:nth-child(6) {-->
+<!--left: 80%;-->
+<!--width: 120px;-->
+<!--height: 120px;-->
+<!--animation-delay: 3s;-->
+<!--background-color: rgba(255, 255, 255, 0.2);-->
+<!--}-->
+<!--&:nth-child(7) {-->
+<!--left: 32%;-->
+<!--width: 160px;-->
+<!--height: 160px;-->
+<!--animation-delay: 2s;-->
+<!--}-->
+<!--&:nth-child(8) {-->
+<!--left: 55%;-->
+<!--width: 20px;-->
+<!--height: 20px;-->
+<!--animation-delay: 4s;-->
+<!--animation-duration: 15s;-->
+<!--}-->
+<!--&:nth-child(9) {-->
+<!--left: 25%;-->
+<!--width: 10px;-->
+<!--height: 10px;-->
+<!--animation-delay: 2s;-->
+<!--animation-duration: 12s;-->
+<!--background-color: rgba(255, 255, 255, 0.3);-->
+<!--}-->
+<!--&:nth-child(10) {-->
+<!--left: 85%;-->
+<!--width: 160px;-->
+<!--height: 160px;-->
+<!--animation-delay: 5s;-->
+<!--}-->
+<!--}-->
+<!--// 自定义 square 动画；-->
+<!--@keyframes square {-->
+<!--0% {-->
+<!--opacity: 0.5;-->
+<!--transform: translateY(0px) rotate(45deg);-->
+<!--}-->
+<!--25% {-->
+<!--opacity: 0.75;-->
+<!--transform: translateY(-400px) rotate(90deg)-->
+<!--}-->
+<!--50% {-->
+<!--opacity: 1;-->
+<!--transform: translateY(-600px) rotate(135deg);-->
+<!--}-->
+<!--100% {-->
+<!--opacity: 0;-->
+<!--transform: translateY(-1000px) rotate(180deg);-->
+<!--}-->
+<!--}-->
+<!--}-->
+<!--}-->
 
 
-</style>
+<!--</style>-->
