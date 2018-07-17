@@ -192,6 +192,10 @@ code {
   z-index: 1000 !important;
 }
 
+.mr10 {
+  margin-right: 10px;
+}
+
 .mb20 {
   margin-bottom: 20px;
 }
@@ -240,4 +244,13 @@ code {
 .table-pic {
   display: block;
   height: 46px;
+}
+
+.input-group {
+  display: flex;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
 }

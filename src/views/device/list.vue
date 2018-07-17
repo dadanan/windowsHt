@@ -3,13 +3,19 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary">分配</el-button>
-          <el-button type="primary">导入</el-button>
+          <el-button type="primary" @click="importDialogVisible = true">导入</el-button>
           <el-button type="primary">添加</el-button>
+          <el-button type="primary">分配</el-button>
+          <el-button type="primary">召回</el-button>
           <el-button type="primary">删除</el-button>
-          <el-button type="primary">解绑</el-button>
+          <el-button type="primary">恢复</el-button>
           <el-button type="primary">禁用</el-button>
+          <el-button type="primary">启用</el-button>
           <el-button type="primary">集群</el-button>
+          <el-button type="primary">群控</el-button>
+          <el-button type="primary">绑定</el-button>
+          <el-button type="primary">解绑</el-button>
+          <el-button type="primary">导出</el-button>
           <el-button type="primary">自定义</el-button>
         </el-button-group>
       </div>
@@ -64,22 +70,25 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="excel-container">
-        <el-pagination
-          :current-page="1"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
-        </el-pagination>
-        <el-button type="primary">导出 Excel</el-button>
-      </div>
+      <el-pagination
+        :current-page="1"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400">
+      </el-pagination>
     </el-card>
+    <import-dialog :visible.sync="importDialogVisible"></import-dialog>
   </div>
 </template>
 
 <script>
+  import ImportDialog from './components/import-dialog'
+
   export default {
+    components: {
+      ImportDialog
+    },
     data() {
       const deviceList = []
 
@@ -106,7 +115,8 @@
         })
       }
       return {
-        deviceList
+        deviceList,
+        importDialogVisible: false
       }
     }
   }
