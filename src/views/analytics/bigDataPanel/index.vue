@@ -65,7 +65,7 @@
           <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
         <el-col :span="24" class="col">
-          <h3>解决方案</h3>
+
           <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
                            @toggleDialog="toggleDialog"></solution-option>
           <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
@@ -529,7 +529,7 @@
       filter: blur(5px);
     }
     .col {
-      height: 23vh;
+      height: 22vh;
       -webkit-backdrop-filter: blur(5px);
       border-radius: 5px;
       /* Google Chrome */

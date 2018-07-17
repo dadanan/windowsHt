@@ -5,7 +5,9 @@
 
     <el-col v-for="project in data" :key="project.id" :span="6" >
       <a @click="popupDetailDialog" href="#">
+      <!--
       <span>{{project.icon}}</span>
+      --><img src="http://via.placeholder.com/350x150" height="80px" width="80px"/>
       <p>{{project.name}}</p>
       </a>
     </el-col>
@@ -42,7 +44,7 @@
     text-align: center;
     margin-left: 10px;
     margin-right: 10px;
-
+    text-shadow: 0px 0px 10px rgba(73, 217, 252, 1);
   }
   .setting{
     float: right;

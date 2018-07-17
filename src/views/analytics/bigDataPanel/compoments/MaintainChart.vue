@@ -120,5 +120,6 @@
     width: 100%;
     margin-left: 10px;
     margin-right: 10px;
+    padding-top: 10px;
   }
 </style>
