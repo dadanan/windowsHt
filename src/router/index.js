@@ -177,15 +177,15 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'device',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/alarm/device'),
         name: 'alarmDevice',
         meta: {
           title: 'alarmDevice'
         }
       },
       {
-        path: 'config',
-        component: () => import('@/views/blank'),
+        path: 'level',
+        component: () => import('@/views/alarm/level'),
         name: 'alarmConfig',
         meta: {
           title: 'alarmConfig'
@@ -214,7 +214,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'rent',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/rent'),
         name: 'rentOrder',
         meta: {
           title: 'rentOrder'
@@ -222,7 +222,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'payment',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/payment'),
         name: 'paymentOrder',
         meta: {
           title: 'paymentOrder'
