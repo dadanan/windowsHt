@@ -157,5 +157,6 @@
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 10px;
   }
 </style>

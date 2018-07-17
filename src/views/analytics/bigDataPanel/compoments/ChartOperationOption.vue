@@ -120,11 +120,7 @@ export default {
       }]
     }
     this.roseChartOption = {
-      title: {
-        text: '南丁格尔玫瑰图',
-        subtext: '纯属虚构',
-        x: 'center'
-      },
+
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
