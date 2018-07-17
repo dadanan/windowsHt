@@ -214,7 +214,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'rent',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/rent'),
         name: 'rentOrder',
         meta: {
           title: 'rentOrder'
@@ -222,7 +222,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'payment',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/payment'),
         name: 'paymentOrder',
         meta: {
           title: 'paymentOrder'
