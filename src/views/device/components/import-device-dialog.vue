@@ -41,6 +41,15 @@
         label="硬件版本" show-overflow-tooltip sortable>
       </el-table-column>
     </el-table>
+    <el-form>
+      <el-form-item label="导入备注">
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 4, maxRows: 4}"
+          v-model="description">
+        </el-input>
+      </el-form-item>
+    </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取 消</el-button>
       <el-button type="primary" @click="$emit('update:visible', false)">导入选中项</el-button>
@@ -72,6 +81,7 @@
       }
       return {
         file: '/usr/device.xsl',
+        description: '',
         importList
       }
     }

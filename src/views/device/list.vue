@@ -3,8 +3,8 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="importDialogVisible = true">导入</el-button>
-          <el-button type="primary">添加</el-button>
+          <el-button type="primary" @click="importDeviceDialogVisible = true">导入</el-button>
+          <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
           <el-button type="primary">分配</el-button>
           <el-button type="primary">召回</el-button>
           <el-button type="primary">删除</el-button>
@@ -78,16 +78,19 @@
         :total="400">
       </el-pagination>
     </el-card>
-    <import-dialog :visible.sync="importDialogVisible"></import-dialog>
+    <import-device-dialog :visible.sync="importDeviceDialogVisible"></import-device-dialog>
+    <add-device-dialog :visible.sync="addDeviceDialogVisible"></add-device-dialog>
   </div>
 </template>
 
 <script>
-  import ImportDialog from './components/import-dialog'
+  import ImportDeviceDialog from './components/import-device-dialog'
+  import AddDeviceDialog from './components/add-device-dialog'
 
   export default {
     components: {
-      ImportDialog
+      ImportDeviceDialog,
+      AddDeviceDialog
     },
     data() {
       const deviceList = []
@@ -116,7 +119,8 @@
       }
       return {
         deviceList,
-        importDialogVisible: false
+        importDeviceDialogVisible: false,
+        addDeviceDialogVisible: false
       }
     }
   }
