@@ -196,6 +196,10 @@ code {
   margin-right: 10px;
 }
 
+.mb10 {
+  margin-bottom: 10px;
+}
+
 .mb20 {
   margin-bottom: 20px;
 }
@@ -206,6 +210,10 @@ code {
 
 .mb-22 {
   margin-bottom: -22px;
+}
+
+.mb0 {
+  margin-bottom: 0;
 }
 
 .dashboard-container {
@@ -262,4 +270,19 @@ code {
 .alert-text {
   color: #F56C6C;
   font-size: 12px;
+}
+
+.image-upload {
+  display: flex;
+  flex-direction: column;
+
+  &__image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  &__btn {
+    width: 100px;
+  }
 }
