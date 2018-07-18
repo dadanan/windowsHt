@@ -61,20 +61,16 @@
       visible: {
         type: Boolean,
         default: false
+      },
+      allocateList: {
+        type: Array,
+        default() {
+          return []
+        }
       }
     },
     data() {
-      const allocateList = []
-
-      for (let i = 0; i < 15; i++) {
-        allocateList.push({
-          name: '测试设备',
-          typeID: 'ewr132311',
-          mac: 'wqe1231cffd'
-        })
-      }
       return {
-        allocateList,
         allocateForm: {
           client: '',
           appID: '',
