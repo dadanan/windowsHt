@@ -51,7 +51,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('update:visible', false)">取 消</el-button>
+      <el-button @click="$emit('update:visible', false)">取消</el-button>
       <el-button type="primary" @click="$emit('update:visible', false)">导入选中项</el-button>
       <el-button type="primary" @click="$emit('update:visible', false)">导入全部</el-button>
     </div>

@@ -135,8 +135,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button @click="orderListColumnDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="orderListColumnDialogVisible = false">确 定</el-button>
+        <el-button @click="orderListColumnDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="orderListColumnDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
   </div>

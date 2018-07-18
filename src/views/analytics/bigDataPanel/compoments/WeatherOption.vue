@@ -16,8 +16,8 @@
 
 
         <span slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
+            <el-button @click="cancel">取消</el-button>
+            <el-button type="primary" @click="save">确定</el-button>
         </span>
     </el-dialog>
   </div>

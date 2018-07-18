@@ -48,7 +48,7 @@
       </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('update:visible', false)">取 消</el-button>
+      <el-button @click="$emit('update:visible', false)">取消</el-button>
       <el-button type="primary" @click="$emit('update:visible', false)">分配选中项</el-button>
       <el-button type="primary" @click="$emit('update:visible', false)">分配全部</el-button>
     </div>

@@ -7,7 +7,7 @@
           <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
           <el-button type="primary" @click="allocateDeviceDialogVisible = true">分配</el-button>
           <el-button type="primary">召回</el-button>
-          <el-button type="primary">删除</el-button>
+          <el-button type="primary" @click="deleteDeviceDialogVisible = true">删除</el-button>
           <el-button type="primary">恢复</el-button>
           <el-button type="primary">禁用</el-button>
           <el-button type="primary">启用</el-button>
@@ -21,7 +21,7 @@
       </div>
       <el-table
         :data="deviceList"
-        style="width: 100%" class="mb20" border>
+        style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column
@@ -81,6 +81,7 @@
     <import-device-dialog :visible.sync="importDeviceDialogVisible"></import-device-dialog>
     <add-device-dialog :visible.sync="addDeviceDialogVisible"></add-device-dialog>
     <allocate-device-dialog :visible.sync="allocateDeviceDialogVisible"></allocate-device-dialog>
+    <delete-device-dialog :visible.sync="deleteDeviceDialogVisible" :delete-list="selectedDeviceList"></delete-device-dialog>
   </div>
 </template>
 
@@ -88,12 +89,14 @@
   import ImportDeviceDialog from './components/import-device-dialog'
   import AddDeviceDialog from './components/add-device-dialog'
   import AllocateDeviceDialog from './components/allocate-device-dialog'
+  import DeleteDeviceDialog from './components/delete-device-dialog'
 
   export default {
     components: {
       ImportDeviceDialog,
       AddDeviceDialog,
-      AllocateDeviceDialog
+      AllocateDeviceDialog,
+      DeleteDeviceDialog
     },
     data() {
       const deviceList = []
@@ -124,7 +127,14 @@
         deviceList,
         importDeviceDialogVisible: false,
         addDeviceDialogVisible: false,
-        allocateDeviceDialogVisible: false
+        allocateDeviceDialogVisible: false,
+        deleteDeviceDialogVisible: false,
+        selectedDeviceList: []
+      }
+    },
+    methods: {
+      handleSelectionChange(selection) {
+        this.selectedDeviceList = selection
       }
     }
   }
