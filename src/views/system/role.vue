@@ -72,8 +72,8 @@
         </el-col>
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isCreateRoleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="isCreateRoleDialogVisible = false">确 定</el-button>
+        <el-button @click="isCreateRoleDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="isCreateRoleDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="编辑角色" :visible.sync="isEditRoleDialogVisible">
@@ -119,8 +119,8 @@
         </el-col>
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isEditRoleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="isEditRoleDialogVisible = false">确 定</el-button>
+        <el-button @click="isEditRoleDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="isEditRoleDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
   </div>

@@ -104,8 +104,8 @@ export default {
     publish: '发布',
     draft: '草稿',
     delete: '删除',
-    cancel: '取 消',
-    confirm: '确 定'
+    cancel: '取消',
+    confirm: '确定'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

@@ -50,7 +50,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="$emit('update:visible', false)">取 消</el-button>
+        <el-button @click="$emit('update:visible', false)">取消</el-button>
         <el-button type="primary" @click="$emit('update:visible', false)">确认添加</el-button>
       </div>
     </el-dialog>
@@ -79,8 +79,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addDeviceDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDevice">确 定</el-button>
+        <el-button @click="addDeviceDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addDevice">确定</el-button>
       </div>
     </el-dialog>
   </div>

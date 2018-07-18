@@ -280,9 +280,9 @@
         </div>
       </div>
       <div slot="footer">
-        <el-button @click="isCreateClientDialogVisible = false">取 消</el-button>
+        <el-button @click="isCreateClientDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="nextStep" v-if="createStep < 4">下一步</el-button>
-        <el-button type="primary" @click="nextStep" v-else>确 定</el-button>
+        <el-button type="primary" @click="nextStep" v-else>确定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="创建设备" :visible.sync="isCreateClientDeviceDialogVisible">
@@ -332,8 +332,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button @click="isCreateClientDeviceDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="isCreateClientDeviceDialogVisible = false">确 定</el-button>
+        <el-button @click="isCreateClientDeviceDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="isCreateClientDeviceDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
@@ -376,8 +376,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button @click="isClientColumnVisibleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="isClientColumnVisibleDialogVisible = false">确 定</el-button>
+        <el-button @click="isClientColumnVisibleDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="isClientColumnVisibleDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
   </div>
