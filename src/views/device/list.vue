@@ -12,7 +12,7 @@
           <el-button type="primary" @click="deviceDisableDialogVisible = true">禁用</el-button>
           <el-button type="primary">启用</el-button>
           <el-button type="primary" @click="deviceClusterDialogVisible = true">集群</el-button>
-          <el-button type="primary">群控</el-button>
+          <el-button type="primary" @click="DeviceClusterControlDialogVisible = true">群控</el-button>
           <el-button type="primary">绑定</el-button>
           <el-button type="primary">解绑</el-button>
           <el-button type="primary">导出</el-button>
@@ -85,6 +85,7 @@
     <device-free-dialog :visible.sync="deviceFreeDialogVisible" :device-list="selectedDeviceList"></device-free-dialog>
     <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :device-list="selectedDeviceList"></device-disable-dialog>
     <device-cluster-dialog :visible.sync="deviceClusterDialogVisible" :device-list="selectedDeviceList"></device-cluster-dialog>
+    <device-cluster-control-dialog :visible.sync="DeviceClusterControlDialogVisible"></device-cluster-control-dialog>
   </div>
 </template>
 
@@ -96,6 +97,7 @@
   import DeviceFreeDialog from './components/DeviceFreeDialog'
   import DeviceDisableDialog from './components/DeviceDisableDialog'
   import DeviceClusterDialog from './components/DeviceClusterDialog'
+  import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 
   export default {
     components: {
@@ -105,7 +107,8 @@
       DeviceDeleteDialog,
       DeviceFreeDialog,
       DeviceDisableDialog,
-      DeviceClusterDialog
+      DeviceClusterDialog,
+      DeviceClusterControlDialog
     },
     data() {
       const deviceList = []
@@ -141,6 +144,7 @@
         deviceFreeDialogVisible: false,
         deviceDisableDialogVisible: false,
         deviceClusterDialogVisible: false,
+        DeviceClusterControlDialogVisible: false,
         selectedDeviceList: []
       }
     },
