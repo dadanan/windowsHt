@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="设备禁用" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-table
-      :data="disableList"
+      :data="deviceList"
       style="width: 100%" border>
       <el-table-column type="selection"></el-table-column>
       <el-table-column type="index"></el-table-column>
@@ -45,7 +45,7 @@
         type: Boolean,
         default: false
       },
-      disableList: {
+      deviceList: {
         type: Array,
         default() {
           return []

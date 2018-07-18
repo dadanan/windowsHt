@@ -1,7 +1,27 @@
 <template>
   <el-dialog title="设备分配" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-row :gutter="20">
-      <el-col :span="10">
+      <el-col :span="12">
+        <el-table
+          :data="deviceList"
+          style="width: 100%" border>
+          <el-table-column type="selection"></el-table-column>
+          <el-table-column type="index"></el-table-column>
+          <el-table-column
+            prop="name"
+            label="名称" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column
+            prop="typeID"
+            label="typeID" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column
+            prop="mac"
+            label="MAC" show-overflow-tooltip sortable>
+          </el-table-column>
+        </el-table>
+      </el-col>
+      <el-col :span="12">
         <el-form label-width="100px" class="mb-22" label-position="left">
           <el-form-item label="客户">
             <el-select v-model="allocateForm.client" style="width: 100%">
@@ -26,26 +46,6 @@
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col :span="14">
-        <el-table
-          :data="allocateList"
-          style="width: 100%" border>
-          <el-table-column type="selection"></el-table-column>
-          <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="名称" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column
-            prop="typeID"
-            label="typeID" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column
-            prop="mac"
-            label="MAC" show-overflow-tooltip sortable>
-          </el-table-column>
-        </el-table>
-      </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
@@ -62,7 +62,7 @@
         type: Boolean,
         default: false
       },
-      allocateList: {
+      deviceList: {
         type: Array,
         default() {
           return []
