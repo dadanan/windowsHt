@@ -5,7 +5,7 @@
         <el-button-group>
           <el-button type="primary" @click="importDeviceDialogVisible = true">导入</el-button>
           <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
-          <el-button type="primary">分配</el-button>
+          <el-button type="primary" @click="allocateDeviceDialogVisible = true">分配</el-button>
           <el-button type="primary">召回</el-button>
           <el-button type="primary">删除</el-button>
           <el-button type="primary">恢复</el-button>
@@ -80,17 +80,20 @@
     </el-card>
     <import-device-dialog :visible.sync="importDeviceDialogVisible"></import-device-dialog>
     <add-device-dialog :visible.sync="addDeviceDialogVisible"></add-device-dialog>
+    <allocate-device-dialog :visible.sync="allocateDeviceDialogVisible"></allocate-device-dialog>
   </div>
 </template>
 
 <script>
   import ImportDeviceDialog from './components/import-device-dialog'
   import AddDeviceDialog from './components/add-device-dialog'
+  import AllocateDeviceDialog from './components/allocate-device-dialog'
 
   export default {
     components: {
       ImportDeviceDialog,
-      AddDeviceDialog
+      AddDeviceDialog,
+      AllocateDeviceDialog
     },
     data() {
       const deviceList = []
@@ -120,7 +123,8 @@
       return {
         deviceList,
         importDeviceDialogVisible: false,
-        addDeviceDialogVisible: false
+        addDeviceDialogVisible: false,
+        allocateDeviceDialogVisible: false
       }
     }
   }
