@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-table
           :data="deviceList"
-          style="width: 100%" border>
+          style="width: 100%" highlight-current-row border>
           <el-table-column type="selection"></el-table-column>
           <el-table-column type="index"></el-table-column>
           <el-table-column
