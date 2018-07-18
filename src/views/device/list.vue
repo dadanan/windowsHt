@@ -3,15 +3,15 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="importDeviceDialogVisible = true">导入</el-button>
-          <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
-          <el-button type="primary" @click="allocateDeviceDialogVisible = true">分配</el-button>
-          <el-button type="primary" @click="freeDeviceDialogVisible = true">召回</el-button>
-          <el-button type="primary" @click="deleteDeviceDialogVisible = true">删除</el-button>
+          <el-button type="primary" @click="deviceImportDialogVisible = true">导入</el-button>
+          <el-button type="primary" @click="deviceAddDialogVisible = true">添加</el-button>
+          <el-button type="primary" @click="deviceAllocateDialogVisible = true">分配</el-button>
+          <el-button type="primary" @click="deviceFreeDialogVisible = true">召回</el-button>
+          <el-button type="primary" @click="deviceDeleteDialogVisible = true">删除</el-button>
           <el-button type="primary">恢复</el-button>
-          <el-button type="primary" @click="disableDeviceDialogVisible = true">禁用</el-button>
+          <el-button type="primary" @click="deviceDisableDialogVisible = true">禁用</el-button>
           <el-button type="primary">启用</el-button>
-          <el-button type="primary">集群</el-button>
+          <el-button type="primary" @click="deviceClusterDialogVisible = true">集群</el-button>
           <el-button type="primary">群控</el-button>
           <el-button type="primary">绑定</el-button>
           <el-button type="primary">解绑</el-button>
@@ -78,31 +78,34 @@
         :total="400">
       </el-pagination>
     </el-card>
-    <import-device-dialog :visible.sync="importDeviceDialogVisible"></import-device-dialog>
-    <add-device-dialog :visible.sync="addDeviceDialogVisible"></add-device-dialog>
-    <allocate-device-dialog :visible.sync="allocateDeviceDialogVisible" :allocate-list="selectedDeviceList"></allocate-device-dialog>
-    <delete-device-dialog :visible.sync="deleteDeviceDialogVisible" :delete-list="selectedDeviceList"></delete-device-dialog>
-    <free-device-dialog :visible.sync="freeDeviceDialogVisible" :free-list="selectedDeviceList"></free-device-dialog>
-    <disable-device-dialog :visible.sync="disableDeviceDialogVisible" :disable-list="selectedDeviceList"></disable-device-dialog>
+    <device-import-dialog :visible.sync="deviceImportDialogVisible"></device-import-dialog>
+    <device-add-dialog :visible.sync="deviceAddDialogVisible"></device-add-dialog>
+    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :allocate-list="deviceSelectedList"></device-allocate-dialog>
+    <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :delete-list="deviceSelectedList"></device-delete-dialog>
+    <device-free-dialog :visible.sync="deviceFreeDialogVisible" :free-list="deviceSelectedList"></device-free-dialog>
+    <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :disable-list="deviceSelectedList"></device-disable-dialog>
+    <device-cluster-dialog :visible.sync="deviceClusterDialogVisible"></device-cluster-dialog>
   </div>
 </template>
 
 <script>
-  import ImportDeviceDialog from './components/import-device-dialog'
-  import AddDeviceDialog from './components/add-device-dialog'
-  import AllocateDeviceDialog from './components/allocate-device-dialog'
-  import DeleteDeviceDialog from './components/delete-device-dialog'
-  import FreeDeviceDialog from './components/free-device-dialog'
-  import DisableDeviceDialog from './components/disable-device-dialog'
+  import DeviceImportDialog from './components/DeviceImportDialog'
+  import DeviceAddDialog from './components/DeviceAddDialog'
+  import DeviceAllocateDialog from './components/DeviceAllocateDialog'
+  import DeviceDeleteDialog from './components/DeviceDeleteDialog'
+  import DeviceFreeDialog from './components/DeviceFreeDialog'
+  import DeviceDisableDialog from './components/DeviceDisableDialog'
+  import DeviceClusterDialog from './components/DeviceClusterDialog'
 
   export default {
     components: {
-      ImportDeviceDialog,
-      AddDeviceDialog,
-      AllocateDeviceDialog,
-      DeleteDeviceDialog,
-      FreeDeviceDialog,
-      DisableDeviceDialog
+      DeviceImportDialog,
+      DeviceAddDialog,
+      DeviceAllocateDialog,
+      DeviceDeleteDialog,
+      DeviceFreeDialog,
+      DeviceDisableDialog,
+      DeviceClusterDialog
     },
     data() {
       const deviceList = []
@@ -131,18 +134,19 @@
       }
       return {
         deviceList,
-        importDeviceDialogVisible: false,
-        addDeviceDialogVisible: false,
-        allocateDeviceDialogVisible: false,
-        deleteDeviceDialogVisible: false,
-        freeDeviceDialogVisible: false,
-        disableDeviceDialogVisible: false,
-        selectedDeviceList: []
+        deviceImportDialogVisible: false,
+        deviceAddDialogVisible: false,
+        deviceAllocateDialogVisible: false,
+        deviceDeleteDialogVisible: false,
+        deviceFreeDialogVisible: false,
+        deviceDisableDialogVisible: false,
+        deviceClusterDialogVisible: false,
+        deviceSelectedList: []
       }
     },
     methods: {
       handleSelectionChange(selection) {
-        this.selectedDeviceList = selection
+        this.deviceSelectedList = selection
       }
     }
   }
