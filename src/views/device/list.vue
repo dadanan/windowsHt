@@ -6,10 +6,10 @@
           <el-button type="primary" @click="importDeviceDialogVisible = true">导入</el-button>
           <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
           <el-button type="primary" @click="allocateDeviceDialogVisible = true">分配</el-button>
-          <el-button type="primary">召回</el-button>
+          <el-button type="primary" @click="freeDeviceDialogVisible = true">召回</el-button>
           <el-button type="primary" @click="deleteDeviceDialogVisible = true">删除</el-button>
           <el-button type="primary">恢复</el-button>
-          <el-button type="primary">禁用</el-button>
+          <el-button type="primary" @click="disableDeviceDialogVisible = true">禁用</el-button>
           <el-button type="primary">启用</el-button>
           <el-button type="primary">集群</el-button>
           <el-button type="primary">群控</el-button>
@@ -80,8 +80,10 @@
     </el-card>
     <import-device-dialog :visible.sync="importDeviceDialogVisible"></import-device-dialog>
     <add-device-dialog :visible.sync="addDeviceDialogVisible"></add-device-dialog>
-    <allocate-device-dialog :visible.sync="allocateDeviceDialogVisible"></allocate-device-dialog>
+    <allocate-device-dialog :visible.sync="allocateDeviceDialogVisible" :allocate-list="selectedDeviceList"></allocate-device-dialog>
     <delete-device-dialog :visible.sync="deleteDeviceDialogVisible" :delete-list="selectedDeviceList"></delete-device-dialog>
+    <free-device-dialog :visible.sync="freeDeviceDialogVisible" :free-list="selectedDeviceList"></free-device-dialog>
+    <disable-device-dialog :visible.sync="disableDeviceDialogVisible" :disable-list="selectedDeviceList"></disable-device-dialog>
   </div>
 </template>
 
@@ -90,13 +92,17 @@
   import AddDeviceDialog from './components/add-device-dialog'
   import AllocateDeviceDialog from './components/allocate-device-dialog'
   import DeleteDeviceDialog from './components/delete-device-dialog'
+  import FreeDeviceDialog from './components/free-device-dialog'
+  import DisableDeviceDialog from './components/disable-device-dialog'
 
   export default {
     components: {
       ImportDeviceDialog,
       AddDeviceDialog,
       AllocateDeviceDialog,
-      DeleteDeviceDialog
+      DeleteDeviceDialog,
+      FreeDeviceDialog,
+      DisableDeviceDialog
     },
     data() {
       const deviceList = []
@@ -129,6 +135,8 @@
         addDeviceDialogVisible: false,
         allocateDeviceDialogVisible: false,
         deleteDeviceDialogVisible: false,
+        freeDeviceDialogVisible: false,
+        disableDeviceDialogVisible: false,
         selectedDeviceList: []
       }
     },
