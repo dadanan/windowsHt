@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="设备召回" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-table
-      :data="freeList"
+      :data="deviceList"
       style="width: 100%" border>
       <el-table-column type="selection"></el-table-column>
       <el-table-column type="index"></el-table-column>
@@ -33,7 +33,7 @@
         type: Boolean,
         default: false
       },
-      freeList: {
+      deviceList: {
         type: Array,
         default() {
           return []

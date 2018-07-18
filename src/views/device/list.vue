@@ -80,11 +80,11 @@
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible"></device-import-dialog>
     <device-add-dialog :visible.sync="deviceAddDialogVisible"></device-add-dialog>
-    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :allocate-list="deviceSelectedList"></device-allocate-dialog>
-    <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :delete-list="deviceSelectedList"></device-delete-dialog>
-    <device-free-dialog :visible.sync="deviceFreeDialogVisible" :free-list="deviceSelectedList"></device-free-dialog>
-    <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :disable-list="deviceSelectedList"></device-disable-dialog>
-    <device-cluster-dialog :visible.sync="deviceClusterDialogVisible"></device-cluster-dialog>
+    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :device-list="selectedDeviceList"></device-allocate-dialog>
+    <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :device-list="selectedDeviceList"></device-delete-dialog>
+    <device-free-dialog :visible.sync="deviceFreeDialogVisible" :device-list="selectedDeviceList"></device-free-dialog>
+    <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :device-list="selectedDeviceList"></device-disable-dialog>
+    <device-cluster-dialog :visible.sync="deviceClusterDialogVisible" :device-list="selectedDeviceList"></device-cluster-dialog>
   </div>
 </template>
 
@@ -141,12 +141,12 @@
         deviceFreeDialogVisible: false,
         deviceDisableDialogVisible: false,
         deviceClusterDialogVisible: false,
-        deviceSelectedList: []
+        selectedDeviceList: []
       }
     },
     methods: {
       handleSelectionChange(selection) {
-        this.deviceSelectedList = selection
+        this.selectedDeviceList = selection
       }
     }
   }
