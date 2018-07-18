@@ -13,8 +13,8 @@
           <el-button type="primary">启用</el-button>
           <el-button type="primary" @click="deviceClusterDialogVisible = true">集群</el-button>
           <el-button type="primary" @click="DeviceClusterControlDialogVisible = true">群控</el-button>
-          <el-button type="primary">绑定</el-button>
-          <el-button type="primary">解绑</el-button>
+          <el-button type="primary" @click="DeviceBindDialogVisible = true">绑定</el-button>
+          <el-button type="primary" @click="DeviceUnbindDialogVisible = true">解绑</el-button>
           <el-button type="primary">导出</el-button>
           <el-button type="primary">自定义</el-button>
         </el-button-group>
@@ -86,6 +86,9 @@
     <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :device-list="selectedDeviceList"></device-disable-dialog>
     <device-cluster-dialog :visible.sync="deviceClusterDialogVisible" :device-list="selectedDeviceList"></device-cluster-dialog>
     <device-cluster-control-dialog :visible.sync="DeviceClusterControlDialogVisible"></device-cluster-control-dialog>
+    <device-bind-dialog :visible.sync="DeviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
+    <device-unbind-dialog :visible.sync="DeviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
+
   </div>
 </template>
 
@@ -98,6 +101,8 @@
   import DeviceDisableDialog from './components/DeviceDisableDialog'
   import DeviceClusterDialog from './components/DeviceClusterDialog'
   import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
+  import DeviceBindDialog from './components/DeviceBindDialog'
+  import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 
   export default {
     components: {
@@ -108,7 +113,9 @@
       DeviceFreeDialog,
       DeviceDisableDialog,
       DeviceClusterDialog,
-      DeviceClusterControlDialog
+      DeviceClusterControlDialog,
+      DeviceBindDialog,
+      DeviceUnbindDialog
     },
     data() {
       const deviceList = []
@@ -145,7 +152,28 @@
         deviceDisableDialogVisible: false,
         deviceClusterDialogVisible: false,
         DeviceClusterControlDialogVisible: false,
-        selectedDeviceList: []
+        DeviceBindDialogVisible: false,
+        DeviceUnbindDialogVisible: false,
+        selectedDeviceList: [],
+        deviceColumnVisible: {
+          name: true,
+          mac: true,
+          owner: true,
+          type: true,
+          isBound: true,
+          isEnabled: true,
+          clusterID: true,
+          clusterName: true,
+          isBoot: true,
+          isOnline: true,
+          deviceID: true,
+          deviceModel: true,
+          deviceName: true,
+          regDatetime: true,
+          lastOnlineDatetime: true,
+          bindUser: true,
+          position: true
+        }
       }
     },
     methods: {
