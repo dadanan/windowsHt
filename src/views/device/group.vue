@@ -31,7 +31,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="deviceDetailDialogVisible = true">编辑</el-button>
+            <el-button type="text" @click="groupEditDialogVisible = true">编辑</el-button>
+            <el-button type="text">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,15 +45,18 @@
       </el-pagination>
     </el-card>
     <group-add-dialog :visible.sync="groupAddDialogVisible"></group-add-dialog>
+    <group-edit-dialog :visible.sync="groupEditDialogVisible"></group-edit-dialog>
   </div>
 </template>
 
 <script>
   import GroupAddDialog from './components/GroupAddDialog'
+  import GroupEditDialog from './components/GroupEditDialog'
 
   export default {
     components: {
-      GroupAddDialog
+      GroupAddDialog,
+      GroupEditDialog
     },
     data() {
       const groupList = []
@@ -64,7 +68,8 @@
       }
       return {
         groupList,
-        groupAddDialogVisible: false
+        groupAddDialogVisible: false,
+        groupEditDialogVisible: false
       }
     }
   }
