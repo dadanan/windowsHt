@@ -1,3 +1,8 @@
 <template>
-  <div class="dashboard-container">设备组管理</div>
+  <div class="dashboard-container">
+    <el-card>
+      <div ></div>
+      <el-table></el-table>
+    </el-card>
+  </div>
 </template>
