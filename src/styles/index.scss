@@ -286,3 +286,9 @@ code {
     width: 100px;
   }
 }
+
+.el-card--solid {
+  border: 1px solid #dcdfe6;
+  box-shadow: none;
+  border-radius: 0;
+}
