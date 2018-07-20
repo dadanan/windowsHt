@@ -132,7 +132,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'type',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/type'),
         name: 'deviceType',
         meta: {
           title: 'deviceType'
