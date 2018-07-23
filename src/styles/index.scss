@@ -260,6 +260,10 @@ code {
 
 .input-group {
   display: flex;
+  margin: 0 -5px;
+  .el-input, .el-button {
+    margin: 0 5px;
+  }
 }
 
 .dialog-footer {
@@ -291,4 +295,14 @@ code {
   border: 1px solid #dcdfe6;
   box-shadow: none;
   border-radius: 0;
+}
+
+.el-table {
+  &__header-wrapper {
+    .has-gutter {
+      tr > th.gutter {
+        display: table !important;
+      }
+    }
+  }
 }

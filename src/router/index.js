@@ -139,6 +139,14 @@ export const asyncRouterMap = [
         }
       },
       {
+        path: 'function',
+        component: () => import('@/views/device/function'),
+        name: 'deviceFunction',
+        meta: {
+          title: 'deviceFunction'
+        }
+      },
+      {
         path: 'map',
         component: () => import('@/views/blank'),
         name: 'deviceMap',
