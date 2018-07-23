@@ -14,6 +14,7 @@ export default {
     deviceMap: '设备地图展示',
     deviceConfig: '设备配置',
     deviceFiling: '设备备案',
+    deviceFunction: '设备功能管理',
     alarm: '售后管理',
     alarmDevice: '告警设备列表',
     alarmConfig: '告警级别设置',

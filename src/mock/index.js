@@ -4,6 +4,8 @@ import articleAPI from './article'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
+import functionAPI from './function'
+
 // Mock.setup({
 //   timeout: '350-600'
 // })
@@ -25,5 +27,8 @@ Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser)
 
 // 账单相关
 Mock.mock(/\/transaction\/list/, 'get', transactionAPI.getList)
+
+// 设备功能
+Mock.mock(/\/function\/list/, 'get', functionAPI.getList)
 
 export default Mock
