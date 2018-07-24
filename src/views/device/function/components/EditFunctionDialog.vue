@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="功能添加" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog title="编辑功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="名称">
         <el-input v-model="addForm.name"></el-input>
@@ -21,7 +21,7 @@
         </el-radio-group>
       </el-form-item>
       <template v-if="addForm.writeMethod === 2 || addForm.writeMethod === 3">
-        <el-form-item v-for="option, index in addForm.writeMethodConfig.options" :label="'选项 ' + index">
+        <el-form-item v-for="option, index in addForm.writeMethodConfig.options" :key="index" :label="'选项 ' + index">
           <div class="input-group">
             <el-input v-model="option.label" placeholder="选项名称"></el-input>
             <el-input v-model="option.value" placeholder="选项值"></el-input>
@@ -51,8 +51,8 @@
     data() {
       return {
         addForm: {
-          name: '',
-          hwFunctionID: '',
+          name: 'PM2.5 传感器 1',
+          hwFunctionID: '238',
           rwPermissions: ['read'],
           writeMethod: '0',
           writeMethodConfig: {
