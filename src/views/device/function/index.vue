@@ -68,17 +68,6 @@
       EditFunctionDialog
     },
     data() {
-      // const functionList = []
-      //
-      // for (let i = 0; i < 15; i++) {
-      //   functionList.push({
-      //     id: i,
-      //     name: 'PM2.5 传感器1',
-      //     hwFunctionID: '11x',
-      //     rwPermissions: ['read', 'write'],
-      //     writeType: '0'
-      //   })
-      // }
       return {
         loading: true,
         list: null,

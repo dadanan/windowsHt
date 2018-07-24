@@ -130,14 +130,14 @@ export const asyncRouterMap = [
           title: 'deviceGroup'
         }
       },
-      {
-        path: 'type',
-        component: () => import('@/views/device/type'),
-        name: 'deviceType',
-        meta: {
-          title: 'deviceType'
-        }
-      },
+      // {
+      //   path: 'type',
+      //   component: () => import('@/views/device/type'),
+      //   name: 'deviceType',
+      //   meta: {
+      //     title: 'deviceType'
+      //   }
+      // },
       {
         path: 'function',
         component: () => import('@/views/device/function'),
@@ -147,29 +147,37 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'map',
-        component: () => import('@/views/blank'),
-        name: 'deviceMap',
+        path: 'model',
+        component: () => import('@/views/device/model'),
+        name: 'deviceModel',
         meta: {
-          title: 'deviceMap'
-        }
-      },
-      {
-        path: 'config',
-        component: () => import('@/views/blank'),
-        name: 'deviceConfig',
-        meta: {
-          title: 'deviceConfig'
-        }
-      },
-      {
-        path: 'filing',
-        component: () => import('@/views/device/filing'),
-        name: 'deviceFiling',
-        meta: {
-          title: 'deviceFiling'
+          title: 'deviceModel'
         }
       }
+      // {
+      //   path: 'map',
+      //   component: () => import('@/views/blank'),
+      //   name: 'deviceMap',
+      //   meta: {
+      //     title: 'deviceMap'
+      //   }
+      // },
+      // {
+      //   path: 'config',
+      //   component: () => import('@/views/blank'),
+      //   name: 'deviceConfig',
+      //   meta: {
+      //     title: 'deviceConfig'
+      //   }
+      // },
+      // {
+      //   path: 'hardware',
+      //   component: () => import('@/views/device/hardware'),
+      //   name: 'deviceFiling',
+      //   meta: {
+      //     title: 'deviceFiling'
+      //   }
+      // }
     ]
   },
   {
