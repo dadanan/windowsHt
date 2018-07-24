@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="addDialogVisible = true">添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="createFunctionDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
@@ -39,8 +39,8 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="editFunctionDialogVisible = true">编辑</el-button>
+            <el-button type="text" @click="deleteFunction">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,17 +52,20 @@
         :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <add-dialog :visible.sync="addDialogVisible"></add-dialog>
+    <create-function-dialog :visible.sync="createFunctionDialogVisible"></create-function-dialog>
+    <edit-function-dialog :visible.sync="editFunctionDialogVisible"></edit-function-dialog>
   </div>
 </template>
 
 <script>
-  import AddDialog from './components/AddDialog'
+  import CreateFunctionDialog from './components/CreateFunctionDialog'
+  import EditFunctionDialog from './components/EditFunctionDialog'
   import { fetchList } from '@/api/function'
 
   export default {
     components: {
-      AddDialog
+      CreateFunctionDialog,
+      EditFunctionDialog
     },
     data() {
       // const functionList = []
@@ -84,9 +87,10 @@
           page: 1,
           limit: 10
         },
-        addDialogVisible: false,
         rwPermissionsMap: { 'read': '可读', 'write': '可写' },
-        writeMethodMap: { 0: '不可配置', 1: '文本', 2: '多选', 3: '单选' }
+        writeMethodMap: { 0: '不可配置', 1: '文本', 2: '多选', 3: '单选' },
+        createFunctionDialogVisible: false,
+        editFunctionDialogVisible: false
       }
     },
     created() {
@@ -108,6 +112,23 @@
       handleCurrentChange(val) {
         this.listQuery.page = val
         this.getList()
+      },
+      deleteFunction() {
+        this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       }
     }
   }
