@@ -25,7 +25,8 @@
                           <div class="bdp-weather__text2">2018-07-07 13:28 周三</div>
                         </div>
                         <div>
-                          <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
+                          <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span
+                            class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
                           <div class="bdp-weather__text6 bdp-weather__mb2">湿度: 53%</div>
                           <div class="bdp-weather__text6">PM2.5: 58ug/m3</div>
                         </div>
@@ -58,11 +59,23 @@
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">设备数据</div>
+                <div class="bdp__panel-title__opt">
+                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                </div>
+              </div>
+              <div class="bdp__panel-body">
+                <chart :options="deviceDataChartOptions" class="bdp-chart"></chart>
               </div>
             </div>
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">用户数据</div>
+                <div class="bdp__panel-title__opt">
+                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                </div>
+              </div>
+              <div class="bdp__panel-body">
+                <chart :options="userDataChartOptions" class="bdp-chart"></chart>
               </div>
             </div>
             <div class="bdp__panel">
@@ -220,7 +233,7 @@
 
     &__text6 {
       font-size: 14px;
-      font-family: "Microsoft YaHei",serif;
+      font-family: "Microsoft YaHei", serif;
       color: rgb(255, 255, 255);
     }
 
@@ -292,5 +305,283 @@
       height: 20px;
     }
   }
+
+  .bdp-chart {
+    height: 100%;
+    width: 100%;
+  }
 </style>
+
+<script>
+  import echarts from 'echarts'
+
+  export default {
+    data() {
+      return {
+        deviceDataChartOptions: {
+          color: ['#ff6600', '#2797fa'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            }
+          },
+          legend: {
+            textStyle: {
+              color: '#fff'
+            }
+          },
+          grid: {
+            // show: false
+            left: 0,
+            top: '28px',
+            right: 0,
+            bottom: 0,
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisLabel: {
+                interval: 0
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            }
+          ],
+          yAxis: [
+            {
+              splitLine: { show: false },
+              type: 'value',
+              name: '设备数量',
+              min: 0,
+              max: 1500,
+              interval: 300,
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            },
+            {
+              splitLine: { show: false },
+              type: 'value',
+              name: '增长率',
+              min: 0,
+              max: 100,
+              interval: 20,
+              axisLabel: {
+                formatter: '{value}%'
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            }
+          ],
+          series: [
+            {
+              name: '设备数量',
+              type: 'bar',
+              barWidth: '50%',
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                      { offset: 0, color: '#2797fa' },
+                      // {offset: 0.5, color: '#188df0'},
+                      { offset: 1, color: '#6f47d2' }
+                    ]
+                  )
+                }
+              },
+              data: [10, 100, 258, 400, 984, 52, 14, 23, 90, 1000, 1254, 1500]
+            },
+            {
+              name: '增长率',
+              type: 'line',
+              yAxisIndex: 1,
+              smooth: true,
+              showSymbol: false,
+              data: [10, 20, 50, 25, 73, 87, 64, 41, 50, 69, 100, 1],
+              lineStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 1,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: '#ff6600' // 0% 处的颜色
+                  }, {
+                    offset: 1, color: '#f6e40c' // 100% 处的颜色
+                  }],
+                  globalCoord: false // 缺省为 false
+                }
+              }
+            }
+          ]
+        },
+        userDataChartOptions: {
+          color: ['#ff6600', '#2797fa'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            }
+          },
+          legend: {
+            textStyle: {
+              color: '#fff'
+            }
+          },
+          grid: {
+            // show: false
+            left: 0,
+            top: '28px',
+            right: 0,
+            bottom: 0,
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisLabel: {
+                interval: 0
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            }
+          ],
+          yAxis: [
+            {
+              splitLine: { show: false },
+              type: 'value',
+              name: '用户数量',
+              min: 0,
+              max: 1500,
+              interval: 300,
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            },
+            {
+              splitLine: { show: false },
+              type: 'value',
+              name: '增长率',
+              min: 0,
+              max: 100,
+              interval: 20,
+              axisLabel: {
+                formatter: '{value}%'
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#fff'
+                }
+              },
+              axisPointer: {
+                label: {
+                  color: '#fff',
+                  backgroundColor: '#333',
+                  shadowColor: 'transparent'
+                }
+              }
+            }
+          ],
+          series: [
+            {
+              name: '用户数量',
+              type: 'bar',
+              barWidth: '50%',
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                      { offset: 0, color: '#69f0cd' },
+                      // {offset: 0.5, color: '#188df0'},
+                      { offset: 1, color: '#1ca3f9' }
+                    ]
+                  )
+                }
+              },
+              data: [10, 100, 258, 400, 984, 52, 14, 23, 90, 1000, 1254, 1500]
+            },
+            {
+              name: '增长率',
+              type: 'line',
+              yAxisIndex: 1,
+              smooth: true,
+              showSymbol: false,
+              data: [10, 20, 50, 25, 73, 87, 64, 41, 50, 69, 100, 1],
+              lineStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 1,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: '#ff6600' // 0% 处的颜色
+                  }, {
+                    offset: 1, color: '#f6e40c' // 100% 处的颜色
+                  }],
+                  globalCoord: false // 缺省为 false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+</script>
 
