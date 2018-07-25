@@ -9,7 +9,49 @@
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">室外天气</div>
                 <div class="bdp__panel-title__opt">
-                  <font-awesome-icon icon="cog"></font-awesome-icon>
+                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                </div>
+              </div>
+              <div class="bdp__panel-body">
+                <div class="bdp-weather">
+                  <div class="row">
+                    <div class="col">
+                      <div class="bdp-sprite bdp-sprite--pos bdp-weather__pos"></div>
+                    </div>
+                    <div class="col">
+                      <div class="row col space-between">
+                        <div>
+                          <div class="bdp-weather__text1 bdp-weather__mb1">上海 普陀区</div>
+                          <div class="bdp-weather__text2">2018-07-07 13:28 周三</div>
+                        </div>
+                        <div>
+                          <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
+                          <div class="bdp-weather__text6 bdp-weather__mb2">湿度: 53%</div>
+                          <div class="bdp-weather__text6">PM2.5: 58ug/m3</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col full">
+                      <div class="row col space-between center">
+                        <div>
+                          <div class="bdp-sprite bdp-sprite--sun"></div>
+                        </div>
+                        <div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="bdp-weather__text3 bdp-weather__mr1">24</div>
+                            </div>
+                            <div class="col">
+                              <div class="row col vcenter">
+                                <div class="bdp-weather__text4">℃</div>
+                                <div class="bdp-weather__text5">晴</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,6 +137,13 @@
       height: 222px;
       background: url("/static/images/bdp_panel.png") no-repeat;
       background-size: 100% 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__panel-body {
+      padding: 15px;
+      flex: 1;
     }
 
     &__map-panel {
@@ -115,7 +164,7 @@
       height: 39px;
       line-height: 39px;
       font-size: 18px;
-      font-family: "Microsoft YaHei",serif;
+      font-family: "Microsoft YaHei", serif;
       color: rgb(255, 255, 255);
       font-weight: bold;
       display: flex;
@@ -127,6 +176,12 @@
 
       &__opt {
         margin-right: 10px;
+        align-items: center;
+        display: flex;
+
+        & > * {
+          cursor: pointer;
+        }
       }
     }
 
@@ -145,6 +200,96 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+    }
+  }
+
+  .bdp-weather {
+    height: 100%;
+
+    &__text1 {
+      font-size: 18px;
+      font-family: "Microsoft YaHei", serif;
+      color: rgb(255, 255, 255);
+    }
+
+    &__text2 {
+      font-size: 14px;
+      font-family: "Microsoft YaHei", serif;
+      color: rgb(0, 180, 255);
+    }
+
+    &__text6 {
+      font-size: 14px;
+      font-family: "Microsoft YaHei",serif;
+      color: rgb(255, 255, 255);
+    }
+
+    &__mb1 {
+      margin-bottom: 10px;
+    }
+
+    &__mb2 {
+      margin-bottom: 15px;
+    }
+
+    &__mr1 {
+      margin-right: 10px;
+    }
+
+    &__text3 {
+      font-family: "Microsoft YaHei", serif;
+      color: rgb(255, 255, 255);
+      font-size: 42px;
+    }
+
+    &__text4 {
+      font-family: "Microsoft YaHei", serif;
+      color: rgb(255, 255, 255);
+      font-size: 14px;
+    }
+
+    &__text5 {
+      font-family: "Microsoft YaHei", serif;
+      color: rgb(255, 255, 255);
+      font-size: 14px;
+    }
+
+    &__text7 {
+      display: inline-block;
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    &__pos {
+      margin-right: 15px;
+    }
+  }
+
+  .bdp-sprite {
+    background-image: url("/static/images/bdp_sprite.png");
+
+    &--cog {
+      background-position: -84px -59px;
+      width: 22px;
+      height: 22px;
+    }
+
+    &--sun {
+      background-position: -201px -122px;
+      width: 96px;
+      height: 96px;
+    }
+
+    &--pos {
+      background-position: -145px -55px;
+      width: 19px;
+      height: 26px;
+    }
+
+    &--bad {
+      background-position: -1px -102px;
+      width: 52px;
+      height: 20px;
     }
   }
 </style>
