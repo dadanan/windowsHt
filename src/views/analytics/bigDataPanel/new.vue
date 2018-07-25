@@ -1,58 +1,63 @@
 <template>
   <div class="bdp">
     <div class="bdp__container">
-      <div class="bdp__column">
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            <font-awesome-icon icon="cog" @click="toggleDialog(0)" class="bdp__card__setting"/>
-            <weather :option="OptionData.WeatherOptionData"></weather>
-            <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
-                            @toggleDialog="toggleDialog"></weather-option>
+      <div class="bdp__title"></div>
+      <div class="bdp__content">
+        <div class="bdp__row">
+          <div class="bdp__col">
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">室外天气</div>
+                <div class="bdp__panel-title__opt">
+                  <font-awesome-icon icon="cog"></font-awesome-icon>
+                </div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">设备数据</div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">用户数据</div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">设备类型</div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            <!--<chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>-->
-            <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
-            <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
-                           @toggleDialog="toggleDialog"></device-option>
+          <div class="bdp__col">
+            <div class="bdp__map-panel"></div>
+            <div class="bdp__project-panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">工程案例</div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            3
-          </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            4
-          </div>
-        </div>
-      </div>
-      <div class="bdp__full">
-        <div class="bdp__card">
-          2
-        </div>
-      </div>
-      <div class="bdp__column">
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            1
-          </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            2
-          </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            3
-          </div>
-        </div>
-        <div class="bdp__column__item">
-          <div class="bdp__card">
-            4
+          <div class="bdp__col">
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">最新消息</div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">解决方案</div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">告警信息</div>
+              </div>
+            </div>
+            <div class="bdp__panel">
+              <div class="bdp__panel-title">
+                <div class="bdp__panel-title__text">维护信息</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -62,631 +67,85 @@
 
 <style lang="scss" scoped>
   .bdp {
-    padding: 10px;
+    width: 100%;
+    height: 100%;
     position: fixed;
-    color: #fff;
     top: 0;
-    bottom: 0;
     left: 0;
+    bottom: 0;
     right: 0;
-    background: linear-gradient(173deg, rgba(14, 92, 141, 1) 0%, rgba(3, 10, 39, 1) 100%);
-    z-index: 2001;
+    z-index: 1002;
+    overflow: auto;
 
     &__container {
+      width: 1920px;
+      height: 1080px;
+      background: url("/static/images/bdp_topbar.png") no-repeat, url("/static/images/bdp_bg.jpg") no-repeat;
+      background-size: 100%, 100%;
       display: flex;
-      height: 100%;
+      flex-direction: column;
     }
 
-    &__full {
+    &__title {
+      height: 85px;
+    }
+
+    &__panel {
+      width: 452px;
+      height: 222px;
+      background: url("/static/images/bdp_panel.png") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    &__map-panel {
+      width: 852px;
+      background: url("/static/images/bdp_map_panel.png") no-repeat;
+      background-size: 100%;
+      height: 630px;
+    }
+
+    &__project-panel {
+      width: 852px;
+      height: 292px;
+      background: url("/static/images/bdp_project_panel.png") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    &__panel-title {
+      height: 39px;
+      line-height: 39px;
+      font-size: 18px;
+      font-family: "Microsoft YaHei",serif;
+      color: rgb(255, 255, 255);
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      &__text {
+        text-align: center;
+        width: 170px;
+      }
+
+      &__opt {
+        margin-right: 10px;
+      }
+    }
+
+    &__content {
+      padding: 10px 30px 36px;
       flex: 1;
     }
 
-    &__column {
-      height: 100%;
+    &__row {
       display: flex;
-      flex-direction: column;
-      &__item {
-        flex-basis: 25%;
-        display: flex;
-        width: 400px;
-      }
+      justify-content: space-between;
+      height: 100%;
     }
 
-    &__card {
-      flex-grow: 1;
-      margin: 10px;
-      padding: 10px;
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-
-      &__setting {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        opacity: 0;
-        cursor: pointer;
-        transition: opacity .3s;
-      }
-
-      &:hover &__setting {
-        opacity: 1;
-      }
+    &__col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 </style>
 
-<script>
-  // 各模块(共10个)
-  import ChartDeviceMap from './compoments/ChartDeviceMap.vue'
-  import ChartDeviceData from './compoments/ChartDeviceData.vue'
-  import ChartUserData from './compoments/ChartUserData.vue'
-  import ChartDeviceType from './compoments/ChartDeviceType.vue'
-  import ChartOperationData from './compoments/ChartOperationData.vue'
-  import FilteredData from './compoments/FilteredData.vue'
-  import Weather from './compoments/Weather.vue'
-  import Message from './compoments/MessageData.vue'
-  import MaintainChart from './compoments/MaintainChart.vue'
-  import SolutionPanel from './compoments/SolutionPanel.vue'
-  import ProjectSample from './compoments/ProjectSample.vue'
-
-  // 弹窗
-  import WeatherOption from './compoments/WeatherOption.vue'
-  import DeviceOption from './compoments/DeviceOption.vue'
-  import UserOption from './compoments/UserOption.vue'
-  import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
-  import SolutionOption from './compoments/SolutionOption.vue'
-  import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
-  import ChartOperationOption from './compoments/ChartOperationOption.vue'
-  import SampleDetailPrompt from './compoments/SampleDetailPrompt.vue'
-
-  // 特效
-
-  import VanillaTilt from 'vanilla-tilt'
-
-  export default {
-    created() {
-      this.bubbles.length = 10
-    },
-    mounted() {
-      /*
-        VanillaTilt.init([this.$refs.weather, this.$refs.device, this.$refs.users], {
-          max: 25,
-          speed: 400
-        })
-      */
-      VanillaTilt.init(this.$refs.main, {
-        max: 10,
-        speed: 400
-      })
-    },
-    components: {
-      // 模块
-      ChartDeviceMap,
-      ChartDeviceData,
-      ChartUserData,
-      ChartDeviceType,
-      ChartOperationData,
-      FilteredData,
-      Weather,
-      Message,
-      MaintainChart,
-      SolutionPanel,
-      ProjectSample,
-      // 弹窗
-      WeatherOption,
-      DeviceOption,
-      UserOption,
-      DeviceTypeOption,
-      SolutionOption,
-      ProjectSampleOption,
-      ChartOperationOption,
-      SampleDetailPrompt
-    },
-    data() {
-      return {
-        bubbles: [],
-        OptionData: {
-          WeatherOptionData: {
-            province: '上海',
-            city: '上海市',
-            suburb: '普陀区'
-          },
-          MessageOptions: {
-            types: [
-              { id: 0, name: '系统信息' },
-              { id: 1, name: '设备信息' },
-              { id: 2, name: '订单信息' }
-            ],
-            data: [
-              { type: 0, message: '系统讯息测试' },
-              { type: 0, message: '系统讯息测试2' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 0, message: '系统讯息测试3' },
-              { type: 1, message: '设备信息测试数据' },
-              { type: 1, message: '设备信息测试数据2' },
-              { type: 2, message: '订单讯息测试' }
-            ]
-
-          },
-          // 设备信息数据
-          DeviceChartOptions: {
-            integrals: [
-              '1月',
-              '2月',
-              '3月',
-              '4月',
-              '5月'
-            ],
-            data: {
-              data: [ // 设备数据
-                500,
-                1000,
-                2000,
-                3000,
-                4100
-              ],
-              active: [
-                100,
-                500,
-                600,
-                750,
-                800
-              ],
-              increase: [
-                20,
-                40,
-                50,
-                60,
-                100
-              ],
-              // Pie chart data
-              pieActiveData: [
-                { value: 335, name: 'A' },
-                { value: 34, name: 'B' },
-                { value: 563, name: 'C' }
-              ],
-              pieMonthlyData: [
-                { value: 335, name: 'A' },
-                { value: 323, name: 'B' },
-                { value: 34, name: 'C' }
-              ]
-            }
-
-          },
-          // 用户信息数据
-          UserChartOptions: {
-            integrals: [
-              '1月',
-              '2月',
-              '3月',
-              '4月',
-              '5月',
-              '6月'
-            ],
-            data: {
-              data: [ // 设备数据
-                100,
-                200,
-                343,
-                650,
-                1000,
-                1100
-              ],
-              active: [
-                100,
-                120,
-                202,
-                320,
-                400,
-                400
-              ],
-              increase: [
-                5,
-                10,
-                11,
-                12,
-                30,
-                20
-              ],
-              // Pie chart data
-              pieActiveData: [
-                { value: 135, name: 'A' },
-                { value: 234, name: 'B' },
-                { value: 563, name: 'C' }
-              ],
-              pieMonthlyData: [
-                { value: 475, name: 'A' },
-                { value: 123, name: 'B' },
-                { value: 34, name: 'C' }
-              ]
-            }
-
-          },
-          // 维护信息数据
-          MaintainChartOptions: {
-            integrals: [
-              '1月',
-              '2月',
-              '3月',
-              '4月',
-              '5月'
-            ],
-            data: {
-              update: [
-                100, 200, 300, 400, 500
-              ],
-              maintain: [
-                100, 300, 400, 600, 800
-              ],
-              calibration: [
-                20, 50, 40, 80, 43, 67
-              ]
-            }
-
-          },
-          // 设备类型图表数据
-          DeviceTypeChartData: {
-            allTypes: ['检测探头', '净化器', '控制器', '新风机'],
-            allStatus: ['在线', '离线'],
-            totalOnline: [18203, 23489, 29034, 30493],
-            totalOffline: [5203, 43250, 11000, 22202],
-            totalDevices: 3052,
-            data: [
-              { value: 335, name: '检测探头' },
-              { value: 310, name: '净化器' },
-              { value: 234, name: '控制器' },
-              { value: 135, name: '新风机' }
-            ]
-          },
-          // 设备告警信息数据
-          OperationChartData: {
-            allTypes: [
-              '已处理',
-              '待处理',
-              '总告警'
-            ],
-            data: [
-              { value: 335, name: '已处理' },
-              { value: 310, name: '待处理' },
-              { value: 1548, name: '总告警' }
-            ],
-            lineChart: {
-              intergrals: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
-            }
-          },
-          // 解决方案数据
-          SolutionData: {
-            selectedId: 0,
-            data: [
-              {
-                id: 0,
-                icon: 'null',
-                name: '别墅',
-                img: '动图....'
-              },
-              {
-                id: 1,
-                icon: 'null',
-                name: '大房',
-                img: '动图....'
-              },
-              {
-                id: 2,
-                icon: 'null',
-                name: '居家',
-                img: '动图....'
-              },
-              {
-                id: 3,
-                icon: 'null',
-                name: '办公',
-                img: '动图....'
-              },
-              {
-                id: 4,
-                icon: 'null',
-                name: '学校',
-                img: '动图....'
-              },
-              {
-                id: 5,
-                icon: 'null',
-                name: '医院',
-                img: '动图....'
-              },
-              {
-                id: 6,
-                icon: 'null',
-                name: '商场',
-                img: '动图....'
-              },
-              {
-                id: 7,
-                icon: 'null',
-                name: '展厅',
-                img: '动图....'
-              }
-            ]
-          },
-          // 工程案列数据
-          ProjectSampleData: {
-            data: [
-              {
-                id: 0,
-                name: '龙湖一期',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 1,
-                name: '九亭工坊',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 2,
-                name: '桃浦智创',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 3,
-                name: '恒大丽宫',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 4,
-                name: '新汇大厦',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 5,
-                name: '万科横桥',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              },
-              {
-                id: 6,
-                name: '绿地大厦',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' }
-                ]
-              },
-              {
-                id: 7,
-                name: '万达武汉',
-                icon: '工程示意图地址',
-                imgs: [
-                  { id: 0, url: '案列图片1' },
-                  { id: 1, url: '案列图片2' },
-                  { id: 2, url: '案列图片3' },
-                  { id: 3, url: '案列图片4' },
-                  { id: 4, url: '案列图片5' }
-                ]
-              }
-            ]
-          }
-        },
-
-        DialogVisile: [false, false, false, false, false, false, false, false, false, false]
-      }
-    },
-
-    methods: {
-      updateWeatherOption(options) {
-        this.OptionData.WeatherOptionData = options
-      },
-      toggleDialog(id) {
-        console.log(id + ' is toggle')
-        this.DialogVisile.splice(id, 1, !this.DialogVisile[id])
-      },
-      alertTest() {
-        alert('hello world')
-      },
-      itemSelected(id) {
-        console.log('[解决方案选中] 父组件收到id = ' + id)
-        this.OptionData.SolutionData.selectedId = id
-        this.toggleDialog(4)
-      }
-
-    }
-
-  }
-
-</script>
-
-<!--<style lang="scss" scoped>-->
-
-<!--.big-data-panel {-->
-<!--position: fixed;-->
-<!--color: white;-->
-<!--top: 0;-->
-<!--left: 0;-->
-<!--right: 0;-->
-<!--bottom: 0;-->
-<!--background: linear-gradient(173deg, rgba(14, 92, 141, 1) 0%, rgba(3, 10, 39, 1) 100%);-->
-<!--z-index: 2001;-->
-<!--#middle-top {-->
-<!--height: 60vh;-->
-<!--}-->
-<!--#middle-bottom {-->
-<!--height: 40vh;-->
-<!--}-->
-<!--.col::before {-->
-<!--filter: blur(5px);-->
-<!--}-->
-<!--.col {-->
-<!--height: 23vh;-->
-<!-- -webkit-backdrop-filter: blur(5px);-->
-<!--border-radius: 5px;-->
-<!--/* Google Chrome */-->
-<!--backdrop-filter: blur(5px);-->
-
-<!--/* 设置背景半透明黑色 */-->
-<!--background: rgba(0, 0, 0, 0.2);-->
-<!--margin-top: 10px;-->
-<!--margin-bottom: 10px;-->
-
-<!--}-->
-<!--.ui-row {-->
-
-<!--margin-left: 10px;-->
-<!--margin-right: 10px;-->
-<!--}-->
-<!--.setting {-->
-<!--float: right;-->
-<!--&:hover {-->
-<!--color: #4CD8FC;-->
-<!--}-->
-<!--}-->
-<!--h1, h2, h3 {-->
-<!--text-align: center;-->
-<!--}-->
-<!--//Duang duang-->
-<!--.bg-bubbles {-->
-<!--position: absolute;-->
-<!--// 使气泡背景充满整个屏幕-->
-<!--top: 0;-->
-<!--left: 0;-->
-<!--width: 100%;-->
-<!--height: 100%;-->
-<!--li {-->
-<!--border-radius: 100px;-->
-<!--position: absolute;-->
-<!--// bottom 的设置是为了营造出气泡从页面底部冒出的效果；-->
-<!--bottom: -160px;-->
-<!--// 默认的气泡大小；-->
-<!--width: 40px;-->
-<!--height: 40px;-->
-<!--background-color: rgba(255, 255, 255, 0.15);-->
-<!--list-style: none;-->
-<!--// 使用自定义动画使气泡渐现、上升和翻滚；-->
-<!--animation: square 15s infinite;-->
-<!--transition-timing-function: linear;-->
-<!--// 分别设置每个气泡不同的位置、大小、透明度和速度，以显得有层次感；-->
-<!--&:nth-child(1) {-->
-<!--left: 10%;-->
-<!--}-->
-<!--&:nth-child(2) {-->
-<!--left: 20%;-->
-<!--width: 90px;-->
-<!--height: 90px;-->
-<!--animation-delay: 2s;-->
-<!--animation-duration: 7s;-->
-<!--}-->
-<!--&:nth-child(3) {-->
-<!--left: 25%;-->
-<!--animation-delay: 4s;-->
-<!--}-->
-<!--&:nth-child(4) {-->
-<!--left: 40%;-->
-<!--width: 60px;-->
-<!--height: 60px;-->
-<!--animation-duration: 8s;-->
-<!--background-color: rgba(255, 255, 255, 0.3);-->
-<!--}-->
-<!--&:nth-child(5) {-->
-<!--left: 70%;-->
-<!--}-->
-<!--&:nth-child(6) {-->
-<!--left: 80%;-->
-<!--width: 120px;-->
-<!--height: 120px;-->
-<!--animation-delay: 3s;-->
-<!--background-color: rgba(255, 255, 255, 0.2);-->
-<!--}-->
-<!--&:nth-child(7) {-->
-<!--left: 32%;-->
-<!--width: 160px;-->
-<!--height: 160px;-->
-<!--animation-delay: 2s;-->
-<!--}-->
-<!--&:nth-child(8) {-->
-<!--left: 55%;-->
-<!--width: 20px;-->
-<!--height: 20px;-->
-<!--animation-delay: 4s;-->
-<!--animation-duration: 15s;-->
-<!--}-->
-<!--&:nth-child(9) {-->
-<!--left: 25%;-->
-<!--width: 10px;-->
-<!--height: 10px;-->
-<!--animation-delay: 2s;-->
-<!--animation-duration: 12s;-->
-<!--background-color: rgba(255, 255, 255, 0.3);-->
-<!--}-->
-<!--&:nth-child(10) {-->
-<!--left: 85%;-->
-<!--width: 160px;-->
-<!--height: 160px;-->
-<!--animation-delay: 5s;-->
-<!--}-->
-<!--}-->
-<!--// 自定义 square 动画；-->
-<!--@keyframes square {-->
-<!--0% {-->
-<!--opacity: 0.5;-->
-<!--transform: translateY(0px) rotate(45deg);-->
-<!--}-->
-<!--25% {-->
-<!--opacity: 0.75;-->
-<!--transform: translateY(-400px) rotate(90deg)-->
-<!--}-->
-<!--50% {-->
-<!--opacity: 1;-->
-<!--transform: translateY(-600px) rotate(135deg);-->
-<!--}-->
-<!--100% {-->
-<!--opacity: 0;-->
-<!--transform: translateY(-1000px) rotate(180deg);-->
-<!--}-->
-<!--}-->
-<!--}-->
-<!--}-->
-
-
-<!--</style>-->
