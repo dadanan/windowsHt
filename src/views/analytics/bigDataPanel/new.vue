@@ -1,7 +1,11 @@
 <template>
   <div class="bdp">
     <div class="bdp__container">
-      <div class="bdp__title"></div>
+      <div class="bdp__title">
+        <div class="bdp-sprite bdp-sprite--back bdp-back">
+          返回
+        </div>
+      </div>
       <div class="bdp__content">
         <div class="bdp__row">
           <div class="bdp__col">
@@ -91,7 +95,28 @@
             </div>
           </div>
           <div class="bdp__col">
-            <div class="bdp__map-panel"></div>
+            <div class="bdp__map-panel">
+              <chart-device-map></chart-device-map>
+              <div class="bdp-count">
+                <div class="row">
+                  <div class="col full">
+                    <div class="row col center vcenter">
+                      <div class="bdp-count__text1">设备总数 (台)</div>
+                      <div class="bdp-count__text2">19,298</div>
+                    </div>
+                  </div>
+                  <div class="col full">
+                    <div class="row col center vcenter">
+                      <div class="bdp-count__text1">用户总数 (人)</div>
+                      <div class="bdp-count__text3">89,298</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bdp-map-back bdp-sprite bdp-sprite--backbtn"></div>
+              <div class="bdp-map-full bdp-sprite bdp-sprite--full"></div>
+              <div class="bdp-map-cog bdp-sprite bdp-sprite--cog"></div>
+            </div>
             <div class="bdp__project-panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">工程案例</div>
@@ -276,6 +301,68 @@
 </template>
 
 <style lang="scss" scoped>
+  .bdp-map-full {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 63px;
+  }
+
+  .bdp-map-cog {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .bdp-map-back {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+
+
+  .bdp-back {
+    text-indent: 18px;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    top: 6px;
+    left: 30px;
+    position: relative;
+  }
+
+  .bdp-count {
+    background: url("/static/images/bdp_count_bg.png");
+    width: 417px;
+    height: 75px;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    &__text1 {
+      font-size: 16px;
+      font-family: "Microsoft YaHei";
+      color: rgb(255, 255, 255);
+      margin-bottom: 5px;
+    }
+
+    &__text2, &__text3 {
+      font-size: 25px;
+      font-family: "Microsoft YaHei";
+      color: rgb(91, 255, 232);
+      font-weight: bold;
+    }
+
+    &__text3 {
+      color: #ffc600;
+    }
+  }
+
   .bdp-message-list {
     display: flex;
     flex-direction: column;
@@ -381,6 +468,7 @@
 
     &__title {
       height: 85px;
+      position: relative;
     }
 
     &__panel {
@@ -410,6 +498,7 @@
       background: url("/static/images/bdp_map_panel.png") no-repeat;
       background-size: 100%;
       height: 630px;
+      position: relative;
     }
 
     &__project-panel {
@@ -612,6 +701,24 @@
       width: 16px;
       height: 14px;
     }
+
+    &--back {
+      background-position: 0 -142px;
+      width: 131px;
+      height: 42px;
+    }
+
+    &--full {
+      background-position: -46px -58px;
+      width: 23px;
+      height: 23px;
+    }
+
+    &--backbtn {
+      background-position: -7px -57px;
+      width: 24px;
+      height: 24px;
+    }
   }
 
   .bdp-chart {
@@ -622,6 +729,7 @@
 
 <script>
   import echarts from 'echarts'
+  import ChartDeviceMap from './compoments/ChartDeviceMap2'
 
   export default {
     data() {
@@ -1193,6 +1301,9 @@
           ]
         }
       }
+    },
+    components: {
+      ChartDeviceMap
     }
   }
 </script>
