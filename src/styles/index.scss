@@ -258,6 +258,32 @@ code {
   height: 46px;
 }
 
+.row {
+  display: flex;
+  height: 100%;
+  &.col {
+    flex-direction: column;
+    &.space-between {
+      justify-content: space-between;
+    }
+
+    &.center {
+      align-items: center;
+    }
+
+    &.vcenter {
+      justify-content: center;
+    }
+  }
+
+  .col {
+    &.full {
+      flex: 1;
+    }
+  }
+}
+
+
 .input-group {
   display: flex;
   margin: 0 -5px;

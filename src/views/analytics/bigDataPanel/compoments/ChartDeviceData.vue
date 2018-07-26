@@ -2,8 +2,8 @@
     设备数据图表
 -->
 <template>
-  <div class="panel" @click="$emit('click')">
-    <chart :options="option" class="chart"></chart>
+  <div @click="$emit('click')" class="chart">
+    <chart :options="option" class="chart__content"></chart>
   </div>
 </template>
 <script>
@@ -149,14 +149,13 @@
   }
 </script>
 <style lang="scss" scoped>
-  .panel{
-    height: 100%;
-  }
   .chart {
+    width: 100%;
     height: 100%;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 10px;
+    padding: 10px;
+    &__content {
+      width: 100%;
+      height: 100%;
+    }
   }
 </style>
