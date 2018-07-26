@@ -2,9 +2,11 @@
   <div class="bdp">
     <div class="bdp__container">
       <div class="bdp__title">
-        <div class="bdp-sprite bdp-sprite--back bdp-back">
-          返回
-        </div>
+        <router-link to="/">
+          <div class="bdp-sprite bdp-sprite--back bdp-back">
+            返回
+          </div>
+        </router-link>
       </div>
       <div class="bdp__content">
         <div class="bdp__row">
@@ -321,7 +323,6 @@
     top: 10px;
     left: 10px;
   }
-
 
   .bdp-back {
     text-indent: 18px;
