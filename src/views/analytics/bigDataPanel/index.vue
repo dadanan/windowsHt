@@ -11,7 +11,9 @@
           <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
                           @toggleDialog="toggleDialog"></weather-option>
           <div ref="weather" class="col" data-tilt>
-            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)"><font-awesome-icon icon="cog" /></a>
+            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">
+              <font-awesome-icon icon="cog"/>
+            </a>
             <weather :option="OptionData.WeatherOptionData"></weather>
           </div>
         </el-col>
@@ -29,7 +31,8 @@
           <div ref="users" class="col" data-tilt>
             <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
           </div>
-          <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></user-option>
+          <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
+                       @toggleDialog="toggleDialog"></user-option>
 
         </el-col>
 
@@ -51,7 +54,8 @@
           </el-col>
         </div>
         <el-col :span="24" id="middle-bottom">
-          <project-sample :id="5" :detailid="7" :options="OptionData.ProjectSampleData" @toggleDialog="toggleDialog"></project-sample>
+          <project-sample :id="5" :detailid="7" :options="OptionData.ProjectSampleData"
+                          @toggleDialog="toggleDialog"></project-sample>
           <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
                                  @toggleDialog="toggleDialog"></project-sample-option>
           <sample-detail-prompt :id="7" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[7]"
@@ -73,17 +77,15 @@
         <el-col :span="24" class="col">
           <chart-operation-option :id="6" :visible.sync="DialogVisile[6]" :options="OptionData.OperationChartData"
                                   @toggleDialog="toggleDialog"></chart-operation-option>
-          <chart-operation-data @click="toggleDialog(6)" :options="OptionData.OperationChartData"></chart-operation-data>
+          <chart-operation-data @click="toggleDialog(6)"
+                                :options="OptionData.OperationChartData"></chart-operation-data>
         </el-col>
         <el-col :span="24" class="col">
           <maintain-chart :options="OptionData.MaintainChartOptions"></maintain-chart>
         </el-col>
       </el-col>
     </el-row>
-
   </div>
-
-
 </template>
 <script>
   // 各模块(共10个)
@@ -539,7 +541,6 @@
       background: rgba(0, 0, 0, 0.2);
       margin-top: 10px;
       margin-bottom: 10px;
-
 
     }
     .ui-row {
