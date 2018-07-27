@@ -92,20 +92,20 @@ export const asyncRouterMap = [
           title: 'systemAnalytics'
         }
       },
-      // {
-      //   path: 'bigDataPanel',
-      //   component: () => import('@/views/analytics/bigDataPanel'),
-      //   name: 'bigDataPanel',
-      //   meta: {
-      //     title: 'bigDataPanel'
-      //   }
-      // },
       {
-        path: 'newBigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel/new'),
+        path: 'bigDataPanel',
+        component: () => import('@/views/analytics/bigDataPanel'),
         name: 'bigDataPanel',
         meta: {
           title: 'bigDataPanel'
+        }
+      },
+      {
+        path: 'newBigDataPanel',
+        component: () => import('@/views/analytics/bigDataPanel/new'),
+        name: 'newBigDataPanel',
+        meta: {
+          title: 'newBigDataPanel'
         }
       }
     ]
@@ -118,7 +118,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'device',
-      icon: 'angry'
+      icon: 'hdd'
     },
     children: [
       {
@@ -137,14 +137,14 @@ export const asyncRouterMap = [
           title: 'deviceGroup'
         }
       },
-      // {
-      //   path: 'type',
-      //   component: () => import('@/views/device/type'),
-      //   name: 'deviceType',
-      //   meta: {
-      //     title: 'deviceType'
-      //   }
-      // },
+      {
+        path: 'type',
+        component: () => import('@/views/device/type'),
+        name: 'deviceType',
+        meta: {
+          title: 'deviceType'
+        }
+      },
       {
         path: 'function',
         component: () => import('@/views/device/function'),
@@ -195,7 +195,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'alarm',
-      icon: 'angry'
+      icon: 'people-carry'
     },
     children: [
       {
@@ -232,7 +232,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'order',
-      icon: 'angry'
+      icon: 'file-invoice'
     },
     children: [
       {
@@ -277,7 +277,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'income',
-      icon: 'angry'
+      icon: 'bezier-curve'
     },
     children: [
       {
@@ -306,7 +306,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'rent',
-      icon: 'angry'
+      icon: 'hand-holding-usd'
     },
     children: [
       {
@@ -367,7 +367,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'system',
-      icon: 'angry'
+      icon: 'wrench'
     },
     children: [
       {
@@ -412,7 +412,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'message',
-      icon: 'angry'
+      icon: 'comment-alt'
     },
     children: [
       {
