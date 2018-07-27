@@ -174,6 +174,9 @@ $light_gray:#eee;
     text-align: center;
     &__logo {
       margin-bottom: 22px;
+      img {
+        width: 250px;
+      }
     }
     &__title {
       color: #eee;

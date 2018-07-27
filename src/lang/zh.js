@@ -7,6 +7,7 @@ export default {
     deviceAnalytics: '设备数据',
     systemAnalytics: '系统分析',
     bigDataPanel: '大数据看板',
+    newBigDataPanel: '新大数据看板',
     device: '设备管理',
     deviceList: '设备列表',
     deviceGroup: '设备组列表',
