@@ -59,6 +59,7 @@
     "vue-echarts": "^3.0.9",
     "vue-i18n": "7.3.2",
     "vue-multiselect": "2.0.8",
+    "vue-particles": "^1.0.9",
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
     "vuedraggable": "^2.16.0",

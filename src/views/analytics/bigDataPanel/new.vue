@@ -1,6 +1,25 @@
 <template>
   <div class="bdp">
     <div class="bdp__container">
+      <vue-particles
+        color="#dedede"
+        :particleOpacity="0.7"
+        :particlesNumber="80"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#dedede"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="3"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="bdp-effect"
+      >
+      </vue-particles>
       <div class="bdp__title">
         <router-link to="/">
           <div class="bdp-sprite bdp-sprite--back bdp-back">
@@ -303,6 +322,16 @@
 </template>
 
 <style lang="scss" scoped>
+
+  .bdp-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+  }
+
   .bdp-map-full {
     cursor: pointer;
     position: absolute;
@@ -465,6 +494,7 @@
       background-size: 100%, 100%;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     &__title {
@@ -539,6 +569,7 @@
     &__content {
       padding: 10px 30px 36px;
       flex: 1;
+      position: relative;
     }
 
     &__row {
