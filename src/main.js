@@ -24,6 +24,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import VueParticles from 'vue-particles'
+
 import ECharts from 'vue-echarts'
 import chinaMap from 'echarts/map/json/china'
 import anhuiMap from 'echarts/map/json/province/anhui'
@@ -102,6 +104,8 @@ Vue.component('chart', ECharts)
 library.add(fas)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+Vue.use(VueParticles)
 
 Vue.use(Element, {
   size: 'medium', // set element-ui default size
