@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="createFunctionDialogVisible = true">添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="functionCreateDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
@@ -34,13 +34,13 @@
           label="配置方式"
           show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ writeMethodMap[scope.row.writeMethod] }}
+            {{ writeMethodMap[scope.row.writeMethod] === undefined ? '不可配置' : writeMethodMap[scope.row.writeMethod] }}
           </template>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="editFunctionDialogVisible = true">编辑</el-button>
-            <el-button type="text" @click="deleteFunction">删除</el-button>
+            <el-button type="text" @click="functionEditDialogVisible = true">编辑</el-button>
+            <el-button type="text" @click="functionDelete">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,20 +52,20 @@
         :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <create-function-dialog :visible.sync="createFunctionDialogVisible"></create-function-dialog>
-    <edit-function-dialog :visible.sync="editFunctionDialogVisible"></edit-function-dialog>
+    <function-create-dialog :visible.sync="functionCreateDialogVisible"></function-create-dialog>
+    <function-edit-dialog :visible.sync="functionEditDialogVisible"></function-edit-dialog>
   </div>
 </template>
 
 <script>
-  import CreateFunctionDialog from './components/CreateFunctionDialog'
-  import EditFunctionDialog from './components/EditFunctionDialog'
+  import FunctionCreateDialog from './components/FunctionCreateDialog'
+  import FunctionEditDialog from './components/FunctionEditDialog'
   import { fetchList } from '@/api/function'
 
   export default {
     components: {
-      CreateFunctionDialog,
-      EditFunctionDialog
+      FunctionCreateDialog,
+      FunctionEditDialog
     },
     data() {
       return {
@@ -78,8 +78,8 @@
         },
         rwPermissionsMap: { 'read': '可读', 'write': '可写' },
         writeMethodMap: { 0: '不可配置', 1: '文本', 2: '多选', 3: '单选' },
-        createFunctionDialogVisible: false,
-        editFunctionDialogVisible: false
+        functionCreateDialogVisible: false,
+        functionEditDialogVisible: false
       }
     },
     created() {
@@ -102,7 +102,7 @@
         this.listQuery.page = val
         this.getList()
       },
-      deleteFunction() {
+      functionDelete() {
         this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
