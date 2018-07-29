@@ -3,12 +3,12 @@ import loginAPI from './login'
 import articleAPI from './article'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
-
 import functionAPI from './function'
+import modelAPI from './model'
 
-// Mock.setup({
-//   timeout: '350-600'
-// })
+Mock.setup({
+  timeout: '350-600'
+})
 
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
@@ -30,5 +30,8 @@ Mock.mock(/\/transaction\/list/, 'get', transactionAPI.getList)
 
 // 设备功能
 Mock.mock(/\/function\/list/, 'get', functionAPI.getList)
+
+// 备案机型
+Mock.mock(/\/model\/list/, 'get', modelAPI.getList)
 
 export default Mock
