@@ -110,6 +110,13 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // device: '设备管理',
+  // deviceList: '设备列表',
+  // deviceGroup: '设备组管理',
+  // deviceCluster: '设备集群管理',
+  // deviceConfig: '设备配置管理',
+  // deviceModel: '设备备案管理',
+  // deviceFunction: '设备功能管理',
   {
     path: '/device',
     component: Layout,
@@ -138,19 +145,19 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'type',
-        component: () => import('@/views/device/type'),
-        name: 'deviceType',
+        path: 'cluster',
+        component: () => import('@/views/device/cluster'),
+        name: 'deviceCluster',
         meta: {
-          title: 'deviceType'
+          title: 'deviceCluster'
         }
       },
       {
-        path: 'function',
-        component: () => import('@/views/device/function'),
-        name: 'deviceFunction',
+        path: 'config',
+        component: () => import('@/views/device/config'),
+        name: 'deviceConfig',
         meta: {
-          title: 'deviceFunction'
+          title: 'deviceConfig'
         }
       },
       {
@@ -160,31 +167,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'deviceModel'
         }
+      },
+      {
+        path: 'function',
+        component: () => import('@/views/device/function'),
+        name: 'deviceFunction',
+        meta: {
+          title: 'deviceFunction'
+        }
       }
-      // {
-      //   path: 'map',
-      //   component: () => import('@/views/blank'),
-      //   name: 'deviceMap',
-      //   meta: {
-      //     title: 'deviceMap'
-      //   }
-      // },
-      // {
-      //   path: 'config',
-      //   component: () => import('@/views/blank'),
-      //   name: 'deviceConfig',
-      //   meta: {
-      //     title: 'deviceConfig'
-      //   }
-      // },
-      // {
-      //   path: 'hardware',
-      //   component: () => import('@/views/device/hardware'),
-      //   name: 'deviceFiling',
-      //   meta: {
-      //     title: 'deviceFiling'
-      //   }
-      // }
     ]
   },
   {

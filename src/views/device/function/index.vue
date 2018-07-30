@@ -3,44 +3,44 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="functionCreateDialogVisible = true">添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="createFunctionDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
-        <el-table-column
-          prop="id"
-          label="ID"
-          show-overflow-tooltip sortable>
-        </el-table-column>
+        <el-table-column type="index"></el-table-column>
         <el-table-column
           prop="name"
           label="名称"
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
-          prop="hwFunctionID"
+          prop="functionId"
           label="硬件功能 ID"
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
-          prop="rwPermissions"
+          prop="permissions"
           label="读写权限"
           show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.rwPermissions.map(el => rwPermissionsMap[el]).join(', ') }}
+            {{ scope.row.permissions.map(el => permissionsMap[el]).join(', ') }}
           </template>
         </el-table-column>
         <el-table-column
           label="配置方式"
           show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ writeMethodMap[scope.row.writeMethod] === undefined ? '不可配置' : writeMethodMap[scope.row.writeMethod] }}
+            {{ scope.row.config === undefined ? '不可配置' : configTypeMap[scope.row.config.type] }}
           </template>
+        </el-table-column>
+        <el-table-column
+          label="备注"
+          prop="description">
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="functionEditDialogVisible = true">编辑</el-button>
-            <el-button type="text" @click="functionDelete">删除</el-button>
+            <el-button type="text" @click="editFunctionDialogVisible = true">编辑</el-button>
+            <el-button type="text" @click="deleteFunction">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,20 +52,20 @@
         :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <function-create-dialog :visible.sync="functionCreateDialogVisible"></function-create-dialog>
-    <function-edit-dialog :visible.sync="functionEditDialogVisible"></function-edit-dialog>
+    <create-function-dialog :visible.sync="createFunctionDialogVisible"></create-function-dialog>
+    <edit-function-dialog :visible.sync="editFunctionDialogVisible"></edit-function-dialog>
   </div>
 </template>
 
 <script>
-  import FunctionCreateDialog from './components/FunctionCreateDialog'
-  import FunctionEditDialog from './components/FunctionEditDialog'
+  import CreateFunctionDialog from './components/CreateFunctionDialog'
+  import EditFunctionDialog from './components/EditFunctionDialog'
   import { fetchList } from '@/api/function'
 
   export default {
     components: {
-      FunctionCreateDialog,
-      FunctionEditDialog
+      CreateFunctionDialog,
+      EditFunctionDialog
     },
     data() {
       return {
@@ -76,10 +76,10 @@
           page: 1,
           limit: 10
         },
-        rwPermissionsMap: { 'read': '可读', 'write': '可写' },
-        writeMethodMap: { 0: '不可配置', 1: '文本', 2: '多选', 3: '单选' },
-        functionCreateDialogVisible: false,
-        functionEditDialogVisible: false
+        permissionsMap: { 'r': '可读', 'w': '可写' },
+        configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
+        createFunctionDialogVisible: false,
+        editFunctionDialogVisible: false
       }
     },
     created() {
@@ -102,7 +102,7 @@
         this.listQuery.page = val
         this.getList()
       },
-      functionDelete() {
+      deleteFunction() {
         this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
