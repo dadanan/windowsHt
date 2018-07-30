@@ -11,7 +11,7 @@
         <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>
       <el-form-item label="读写权限">
-        <el-checkbox-group v-model="form.permissions" @change="handlePermissionsChange">
+        <el-checkbox-group v-model="form.permissions" @change="handlePermissionListChange">
           <el-checkbox label="r">可读</el-checkbox>
           <el-checkbox label="w">可写</el-checkbox>
         </el-checkbox-group>
@@ -56,15 +56,15 @@
     data() {
       return {
         form: {
-          name: '',
-          functionId: '',
-          description: '',
+          name: '温度传感器 1',
+          functionId: '233',
+          description: '暂无',
           permissions: ['r']
         }
       }
     },
     methods: {
-      handlePermissionsChange(permissions) {
+      handlePermissionListChange(permissions) {
         if (permissions.some(el => el === 'w')) {
           this.$set(this.form, 'config', { type: 1 })
         } else {

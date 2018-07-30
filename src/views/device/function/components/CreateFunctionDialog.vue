@@ -11,7 +11,7 @@
         <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>
       <el-form-item label="读写权限">
-        <el-checkbox-group v-model="form.permissions" @change="handlePermissionsChange">
+        <el-checkbox-group v-model="form.permissionList" @change="handlePermissionListChange">
           <el-checkbox label="r">可读</el-checkbox>
           <el-checkbox label="w">可写</el-checkbox>
         </el-checkbox-group>
@@ -59,12 +59,12 @@
           name: '',
           functionId: '',
           description: '',
-          permissions: ['r']
+          permissionList: ['r']
         }
       }
     },
     methods: {
-      handlePermissionsChange(permissions) {
+      handlePermissionListChange(permissions) {
         if (permissions.some(el => el === 'w')) {
           this.$set(this.form, 'config', { type: 1 })
         } else {
