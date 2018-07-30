@@ -3,36 +3,40 @@ import { param2Obj } from '@/utils'
 
 const list = [
   {
-    id: '1',
+    id: 1,
     name: '温度传感器 1',
-    rwPermissions: ['read'],
-    hwFunctionID: 211
+    functionId: 211,
+    description: '打法沙发沙发沙发',
+    permissions: ['r']
   },
   {
-    id: '2',
+    id: 2,
     name: '温度传感器 2',
-    rwPermissions: ['read'],
-    hwFunctionID: 212
+    functionId: 212,
+    description: '打法沙发沙发沙发沙发沙',
+    permissions: ['r']
   },
   {
-    id: '3',
+    id: 3,
     name: '湿度传感器 1',
-    rwPermissions: ['read'],
-    hwFunctionID: 111,
-    writeMethod: 0
+    functionId: 111,
+    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    permissions: ['r']
   },
   {
-    id: '4',
+    id: 4,
     name: '风机转速控制 1',
-    rwPermissions: ['read', 'write'],
-    hwFunctionID: 'a11',
-    writeMethod: 3
+    functionId: 312,
+    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    permissions: ['r', 'w'],
+    config: { type: 3, options: [{ label: '低速', value: '1000' }] }
   },
   {
-    id: '5',
+    id: 5,
     name: 'PM2.5 传感器 1',
-    rwPermissions: ['read'],
-    hwFunctionID: 'a12'
+    functionId: 'a12',
+    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    permissions: ['r']
   }
 ]
 

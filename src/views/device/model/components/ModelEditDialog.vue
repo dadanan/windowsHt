@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item label="功能">
         <el-checkbox-group v-model="form.functionList">
-          <el-checkbox v-for="item in functionList" :label="item.id">{{ item.name }}</el-checkbox>
+          <el-checkbox v-for="item, index in functionList" :key="index" :label="item.id">{{ item.name }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-form>
