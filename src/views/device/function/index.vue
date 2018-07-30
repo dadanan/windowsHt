@@ -19,11 +19,10 @@
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
-          prop="permissions"
           label="读写权限"
           show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.permissions.map(el => permissionsMap[el]).join(', ') }}
+            {{ scope.row.permissionList.map(el => permissionListMap[el]).join(', ') }}
           </template>
         </el-table-column>
         <el-table-column
@@ -35,7 +34,8 @@
         </el-table-column>
         <el-table-column
           label="备注"
-          prop="description">
+          prop="description"
+          show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -76,7 +76,7 @@
           page: 1,
           limit: 10
         },
-        permissionsMap: { 'r': '可读', 'w': '可写' },
+        permissionListMap: { 'r': '可读', 'w': '可写' },
         configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
         createFunctionDialogVisible: false,
         editFunctionDialogVisible: false

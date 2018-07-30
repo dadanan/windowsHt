@@ -3,13 +3,13 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="modelCreateDialogVisible = true">添加</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="createModelDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column
-          prop="id"
-          label="ID"
+          prop="typeId"
+          label="TypeID"
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
@@ -18,10 +18,22 @@
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
-          prop="model"
-          label="型号"
+          prop="source"
+          label="来源"
           show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column
+          label="功能项"
+          show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            {{ scope.row.functionList.map(el => el.name).join(', ') }}
+          </template>
+        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="codeMap"-->
+          <!--label="码表"-->
+          <!--show-overflow-tooltip sortable>-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="description"
           label="备注"
@@ -29,8 +41,8 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="modelEditDialogVisible = true">编辑</el-button>
-            <el-button type="text" @click="modelDelete">删除</el-button>
+            <el-button type="text" @click="editModelDialogVisible = true">编辑</el-button>
+            <el-button type="text" @click="deleteModel">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -42,20 +54,20 @@
         :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <model-create-dialog :visible.sync="modelCreateDialogVisible"></model-create-dialog>
-    <model-edit-dialog :visible.sync="modelEditDialogVisible"></model-edit-dialog>
+    <create-model-dialog :visible.sync="createModelDialogVisible"></create-model-dialog>
+    <edit-model-dialog :visible.sync="editModelDialogVisible"></edit-model-dialog>
   </div>
 </template>
 
 <script>
-  import ModelCreateDialog from './components/ModelCreateDialog'
-  import ModelEditDialog from './components/ModelEditDialog'
+  import CreateModelDialog from './components/CreateModelDialog'
+  import EditModelDialog from './components/EditModelDialog'
   import { fetchList } from '@/api/model'
 
   export default {
     components: {
-      ModelCreateDialog,
-      ModelEditDialog
+      CreateModelDialog,
+      EditModelDialog
     },
     data() {
       return {
@@ -66,8 +78,8 @@
           page: 1,
           limit: 10
         },
-        modelCreateDialogVisible: false,
-        modelEditDialogVisible: false
+        createModelDialogVisible: false,
+        editModelDialogVisible: false
       }
     },
     created() {
@@ -90,7 +102,7 @@
         this.listQuery.page = val
         this.getList()
       },
-      modelDelete() {
+      deleteModel() {
         this.$confirm('此操作将永久删除该备案机型, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
