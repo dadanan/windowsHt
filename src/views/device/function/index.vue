@@ -60,7 +60,7 @@
 <script>
   import CreateFunctionDialog from './components/CreateFunctionDialog'
   import EditFunctionDialog from './components/EditFunctionDialog'
-  import { fetchList } from '@/api/function'
+  import { fetchList } from '@/api/device/function'
 
   export default {
     components: {
