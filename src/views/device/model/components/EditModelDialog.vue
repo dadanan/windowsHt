@@ -4,6 +4,9 @@
       <el-form-item label="TypeID">
         <el-input v-model="form.typeId"></el-input>
       </el-form-item>
+      <el-form-item label="缩图">
+        <image-uploader v-model="form.pic"></image-uploader>
+      </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -16,7 +19,7 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="码表">
-        <el-button type="primary" icon="el-icon-upload">上传</el-button>
+        <el-button type="primary" icon="el-icon-upload" size="mini">上传</el-button>
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 4 }"></el-input>
@@ -30,9 +33,13 @@
 </template>
 
 <script>
-  import { fetchList } from '@/api/function'
+  import ImageUploader from '@/components/ImageUploader'
+  import { fetchList } from '@/api/device/function'
 
   export default {
+    components: {
+      ImageUploader
+    },
     props: {
       visible: {
         type: Boolean,
@@ -42,6 +49,7 @@
     data() {
       return {
         form: {
+          pic: 'http://via.placeholder.com/65x65',
           typeId: 'fen-01',
           name: '测试风机 1',
           source: '未知',

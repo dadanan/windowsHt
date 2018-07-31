@@ -7,14 +7,20 @@
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
-        <el-table-column
-          prop="typeId"
-          label="TypeID"
-          show-overflow-tooltip sortable>
+        <el-table-column type="index"></el-table-column>
+        <el-table-column label="缩图">
+          <template slot-scope="scope">
+            <img :src="scope.row.pic" :alt="scope.row.name" class="block">
+          </template>
         </el-table-column>
         <el-table-column
           prop="name"
           label="名称"
+          show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column
+          prop="typeId"
+          label="TypeID"
           show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column
@@ -62,7 +68,7 @@
 <script>
   import CreateModelDialog from './components/CreateModelDialog'
   import EditModelDialog from './components/EditModelDialog'
-  import { fetchList } from '@/api/model'
+  import { fetchList } from '@/api/device/model'
 
   export default {
     components: {
