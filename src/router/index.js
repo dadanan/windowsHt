@@ -50,6 +50,12 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
+    path: '/big-picture-mode',
+    component: () => import('@/views/big-picture-mode'),
+    name: 'big-picture-mode',
+    hidden: true
+  },
+  {
     path: '/analytics',
     component: Layout,
     name: 'analytics',
@@ -91,23 +97,23 @@ export const asyncRouterMap = [
         meta: {
           title: 'systemAnalytics'
         }
-      },
-      {
-        path: 'bigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel'),
-        name: 'bigDataPanel',
-        meta: {
-          title: 'bigDataPanel'
-        }
-      },
-      {
-        path: 'newBigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel/new'),
-        name: 'newBigDataPanel',
-        meta: {
-          title: 'newBigDataPanel'
-        }
       }
+      // {
+      //   path: 'bigDataPanel',
+      //   component: () => import('@/views/analytics/bigDataPanel'),
+      //   name: 'bigDataPanel',
+      //   meta: {
+      //     title: 'bigDataPanel'
+      //   }
+      // },
+      // {
+      //   path: 'newBigDataPanel',
+      //   component: () => import('@/views/analytics/bigDataPanel/new'),
+      //   name: 'newBigDataPanel',
+      //   meta: {
+      //     title: 'newBigDataPanel'
+      //   }
+      // }
     ]
   },
   // device: '设备管理',

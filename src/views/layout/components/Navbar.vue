@@ -29,6 +29,10 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <div class="profile" @click="bigPictureMode">
+        <font-awesome-icon icon="expand"></font-awesome-icon>
+        大数据模式
+      </div>
     </el-menu>
     <el-dialog
       title="个人设置"
@@ -63,6 +67,7 @@
   import Screenfull from '@/components/Screenfull'
   import LangSelect from '@/components/LangSelect'
   import ThemePicker from '@/components/ThemePicker'
+  import * as screenfull from 'screenfull'
 
   export default {
     components: {
@@ -297,6 +302,12 @@
         this.$store.dispatch('LogOut').then(() => {
           location.reload()// In order to re-instantiate the vue-router object to avoid bugs
         })
+      },
+      bigPictureMode() {
+        this.$router.push({ name: 'big-picture-mode' })
+        if (screenfull.enabled) {
+          screenfull.request()
+        }
       }
     }
   }
@@ -332,6 +343,8 @@
       cursor: pointer;
       padding: 0 20px;
       transition: all .3s ease-out;
+      color: #606266;
+      font-size: 14px;
       &::after {
         content: '';
         display: block;
