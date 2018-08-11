@@ -140,7 +140,14 @@
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">工程案例</div>
                 <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                  <div class="bdp-sprite bdp-sprite--cog" @click="handleShowProjectDropdown"></div>
+                  <div class="project-dropdown" :class="{ 'show': showProjectDropdown }">
+                    <span>设置</span>
+                    <span>设备分析</span>
+                    <span>用户分析</span>
+                    <span>订单分析</span>
+                    <span>空气质量</span>
+                  </div>
                 </div>
               </div>
               <div class="bdp__panel-body">
@@ -322,6 +329,39 @@
 </template>
 
 <style lang="scss" scoped>
+  .project-dropdown {
+    display: none;
+    position: absolute;
+    top: 34px;
+    right: 0;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, .5);
+    border: 1px solid #0a4e7f;
+    font-weight: normal;
+    text-align: center;
+    width: 150px;
+
+    &.show {
+      display: flex;
+    }
+    span {
+      line-height: 40px;
+      padding: 0 40px;
+      font-size: 15px;
+      border-bottom: 1px solid #0a4e7f;
+      cursor: pointer;
+      &:hover {
+        color: #008dff;
+      }
+    }
+    span:nth-child(1) {
+      font-size: 20px;
+      cursor: unset;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
 
   .bdp-effect {
     position: absolute;
@@ -542,6 +582,7 @@
     }
 
     &__panel-title {
+      position: relative;
       height: 39px;
       line-height: 39px;
       font-size: 18px;
@@ -556,6 +597,7 @@
       }
 
       &__opt {
+        position: relative;
         margin-right: 10px;
         align-items: center;
         display: flex;
@@ -769,6 +811,7 @@
   export default {
     data() {
       return {
+        showProjectDropdown: false,
         deviceDataChartOptions: {
           color: ['#ff6600', '#2797fa'],
           tooltip: {
@@ -1350,6 +1393,9 @@
         if (screenfull.enabled) {
           screenfull.exit()
         }
+      },
+      handleShowProjectDropdown() {
+        this.showProjectDropdown = !this.showProjectDropdown
       }
     }
   }
