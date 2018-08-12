@@ -105,7 +105,7 @@
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">设备类型</div>
                 <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                  <div class="bdp-sprite bdp-sprite--cog" @click="deviceTypeDialogVisible = true"></div>
                 </div>
               </div>
               <div class="bdp__panel-body">
@@ -325,6 +325,7 @@
     </div>
     <select-location-dialog :visible.sync="selectLocationDialogVisible"></select-location-dialog>
     <alarm-dialog :visible.sync="alarmDialogVisible"></alarm-dialog>
+    <device-type-dialog :visible.sync="deviceTypeDialogVisible"></device-type-dialog>
   </div>
 </template>
 
@@ -807,6 +808,7 @@
   import * as screenfull from 'screenfull'
   import SelectLocationDialog from './compoments/SelectLocationDialog'
   import AlarmDialog from './compoments/AlarmDialog'
+  import DeviceTypeDialog from './compoments/DeviceTypeDialog'
 
   export default {
     data() {
@@ -1379,13 +1381,15 @@
           ]
         },
         selectLocationDialogVisible: false,
-        alarmDialogVisible: false
+        alarmDialogVisible: false,
+        deviceTypeDialogVisible: false
       }
     },
     components: {
       ChartDeviceMap,
       SelectLocationDialog,
-      AlarmDialog
+      AlarmDialog,
+      DeviceTypeDialog
     },
     methods: {
       back() {
