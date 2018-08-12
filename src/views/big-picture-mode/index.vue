@@ -94,7 +94,7 @@
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">用户数据</div>
                 <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                  <div class="bdp-sprite bdp-sprite--cog" @click="userDialogVisible = true"></div>
                 </div>
               </div>
               <div class="bdp__panel-body">
@@ -246,49 +246,49 @@
               </div>
               <div class="bdp__panel-body bdp__panel-body--mini">
                 <div class="bdp-solution-list">
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--bieshu"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">别墅</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--dafang"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">大房</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--jujia"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">居家</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--bangong"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">办公</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--xuexiao"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">学校</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--yiyuan"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">医院</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--shangchang"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">商场</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--zhantin"></div>
                     </div>
@@ -327,6 +327,7 @@
     <alarm-dialog :visible.sync="alarmDialogVisible"></alarm-dialog>
     <device-type-dialog :visible.sync="deviceTypeDialogVisible"></device-type-dialog>
     <device-dialog :visible.sync="deviceDialogVisible"></device-dialog>
+    <user-dialog :visible.sync="userDialogVisible"></user-dialog>
   </div>
 </template>
 
@@ -811,6 +812,7 @@
   import AlarmDialog from './compoments/AlarmDialog'
   import DeviceTypeDialog from './compoments/DeviceTypeDialog'
   import DeviceDialog from './compoments/DeviceDialog'
+  import UserDialog from './compoments/UserDialog'
 
   export default {
     data() {
@@ -1385,7 +1387,8 @@
         selectLocationDialogVisible: false,
         alarmDialogVisible: false,
         deviceTypeDialogVisible: false,
-        deviceDialogVisible: false
+        deviceDialogVisible: false,
+        userDialogVisible: false
       }
     },
     components: {
@@ -1393,7 +1396,8 @@
       SelectLocationDialog,
       AlarmDialog,
       DeviceTypeDialog,
-      DeviceDialog
+      DeviceDialog,
+      UserDialog
     },
     methods: {
       back() {
@@ -1404,6 +1408,9 @@
       },
       handleShowProjectDropdown() {
         this.showProjectDropdown = !this.showProjectDropdown
+      },
+      handleSolution() {
+        this.$router.push({ name: 'big-picture-mode-solution' })
       }
     }
   }
