@@ -152,49 +152,49 @@
               </div>
               <div class="bdp__panel-body">
                 <div class="bdp-project-list">
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
                     </div>
                     <div class="bdp-project-list__item__text">龙湖一期</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project2.jpg" alt="九亭工坊">
                     </div>
                     <div class="bdp-project-list__item__text">九亭工坊</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project3.jpg" alt="桃浦智创">
                     </div>
                     <div class="bdp-project-list__item__text">桃浦智创</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project4.jpg" alt="恒大丽宫">
                     </div>
                     <div class="bdp-project-list__item__text">恒大丽宫</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project5.jpg" alt="新微大厦">
                     </div>
                     <div class="bdp-project-list__item__text">新微大厦</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project6.jpg" alt="万科虹桥">
                     </div>
                     <div class="bdp-project-list__item__text">万科虹桥</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project7.jpg" alt="绿地大厦">
                     </div>
                     <div class="bdp-project-list__item__text">绿地大厦</div>
                   </div>
-                  <div class="bdp-project-list__item">
+                  <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project8.jpg" alt="万达武汉">
                     </div>
@@ -1411,6 +1411,9 @@
       },
       handleSolution() {
         this.$router.push({ name: 'big-picture-mode-solution' })
+      },
+      handleProject() {
+        this.$router.push({ name: 'big-picture-mode-project' })
       }
     }
   }

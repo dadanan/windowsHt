@@ -62,6 +62,12 @@ export const asyncRouterMap = [
     hidden: true
   },
   {
+    path: '/big-picture-mode/project',
+    component: () => import('@/views/big-picture-mode/project'),
+    name: 'big-picture-mode-project',
+    hidden: true
+  },
+  {
     path: '/analytics',
     component: Layout,
     name: 'analytics',
