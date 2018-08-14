@@ -207,9 +207,7 @@ export default {
     },
     login() {
       login('wkk', '123456')
-        .then(res => {
-          res = res.data
-        })
+        .then(() => {})
         .catch(err => {
           console.log('err', err)
         })
@@ -288,7 +286,9 @@ export default {
       getUserList()
         .then(res => {
           res = res.data
-          this.userList = res.data
+          if (res.code === 200) {
+            this.userList = res.data
+          }
         })
         .catch(err => {
           console.log('err', err)
@@ -298,7 +298,9 @@ export default {
       getRoleList()
         .then(res => {
           res = res.data
-          this.roleList = res.data
+          if (res.code === 200) {
+            this.roleList = res.data
+          }
         })
         .catch(err => {
           console.log('err', err)

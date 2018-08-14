@@ -12,7 +12,7 @@
         </el-table-column>
         <el-table-column prop="roleDesc" label="简介" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="userTotal" label="系统用户数量" show-overflow-tooltip sortable>
+        <el-table-column prop="userCount" label="系统用户数量" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -208,8 +208,10 @@ export default {
       login('wkk', '123456')
         .then(res => {
           res = res.data
-          this.userID = res.data.user.id
-          this.getPermissions()
+          if (res.code === 200) {
+            this.userID = res.data.user.id
+            this.getPermissions()
+          }
         })
         .catch(err => {
           console.log('err', err)
@@ -219,8 +221,10 @@ export default {
       getPermissions()
         .then(res => {
           const data = res.data.data
-          if (data && data.length > 0) {
-            this.computePermissionList(data)
+          if (res.code === 200) {
+            if (data && data.length > 0) {
+              this.computePermissionList(data)
+            }
           }
         })
         .catch(err => {
@@ -304,7 +308,9 @@ export default {
       getRoleList()
         .then(res => {
           res = res.data
-          this.roleList = res.data
+          if (res.code === 200) {
+            this.roleList = res.data
+          }
         })
         .catch(err => {
           console.log('err', err)
