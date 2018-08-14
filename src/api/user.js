@@ -12,24 +12,32 @@ export function login(userName, pwd) {
   })
 }
 
-export function getPermissions() {
+export function updateUser(data) {
   return request({
-    url: '/role/getPermissions',
-    method: 'get'
+    url: '/user/updateUser',
+    method: 'put',
+    data
   })
 }
 
-export function createRole(data) {
+export function createUser(data) {
   return request({
-    url: '/role/createRole',
+    url: '/user/createUser',
     method: 'post',
     data
   })
 }
 
-export function updateUser(id) {
+export function delUser(id) {
   return request({
-    url: `/user/updateUser`,
-    method: 'put'
+    url: `/user/delUser/${id}`,
+    method: 'delete'
+  })
+}
+
+export function getUserList() {
+  return request({
+    url: '/user/getUserList',
+    method: 'get'
   })
 }
