@@ -25,20 +25,38 @@ import Layout from '@/views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true },
-  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
-  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
+    path: '/authredirect',
+    component: () => import('@/views/login/authredirect'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/errorPage/404'),
+    hidden: true
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/errorPage/401'),
+    hidden: true
+  },
   {
     path: '',
     component: Layout,
     redirect: 'dashboard',
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard'),
+        name: 'dashboard',
+        meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
@@ -53,19 +71,30 @@ export const asyncRouterMap = [
     path: '/big-picture-mode',
     component: () => import('@/views/big-picture-mode'),
     name: 'big-picture-mode',
-    hidden: true
-  },
-  {
-    path: '/big-picture-mode/solution',
-    component: () => import('@/views/big-picture-mode/solution'),
-    name: 'big-picture-mode-solution',
-    hidden: true
-  },
-  {
-    path: '/big-picture-mode/project',
-    component: () => import('@/views/big-picture-mode/project'),
-    name: 'big-picture-mode-project',
-    hidden: true
+    hidden: true,
+    meta: {
+      roles: ['admin', 'normal']
+    },
+    children: [
+      {
+        path: 'solution',
+        component: () => import('@/views/big-picture-mode/solution'),
+        name: 'big-picture-mode-solution',
+        hidden: true,
+        meta: {
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'project',
+        component: () => import('@/views/big-picture-mode/project'),
+        name: 'big-picture-mode-project',
+        hidden: true,
+        meta: {
+          roles: ['normal']
+        }
+      }
+    ]
   },
   {
     path: '/analytics',
@@ -75,7 +104,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'analytics',
-      icon: 'chart-bar'
+      icon: 'chart-bar',
+      roles: ['admin']
     },
     children: [
       {
@@ -143,7 +173,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'device',
-      icon: 'hdd'
+      icon: 'hdd',
+      roles: ['normal']
     },
     children: [
       {
@@ -204,7 +235,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'alarm',
-      icon: 'people-carry'
+      icon: 'people-carry',
+      roles: ['super_admin']
     },
     children: [
       {
@@ -241,7 +273,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'order',
-      icon: 'file-invoice'
+      icon: 'file-invoice',
+      roles: ['admin']
     },
     children: [
       {
@@ -286,7 +319,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'income',
-      icon: 'bezier-curve'
+      icon: 'bezier-curve',
+      roles: ['admin']
     },
     children: [
       {
@@ -315,7 +349,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'rent',
-      icon: 'hand-holding-usd'
+      icon: 'hand-holding-usd',
+      roles: ['normal']
     },
     children: [
       {
@@ -376,7 +411,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'system',
-      icon: 'wrench'
+      icon: 'wrench',
+      roles: ['super_admin']
     },
     children: [
       {
@@ -421,7 +457,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'message',
-      icon: 'comment-alt'
+      icon: 'comment-alt',
+      roles: ['super_admin']
     },
     children: [
       {

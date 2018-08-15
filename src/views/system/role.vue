@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import { login } from '@/api/user'
 import {
   getPermissions,
   createRole,
@@ -147,7 +146,6 @@ export default {
         }
       })
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -174,7 +172,6 @@ export default {
         .then(() => {
           deleteRole(id)
             .then(res => {
-              res = res.data
               if (res.code === 200) {
                 this.$message({
                   type: 'success',
@@ -202,19 +199,6 @@ export default {
             type: 'info',
             message: '已取消删除'
           })
-        })
-    },
-    login() {
-      login('wkk', '123456')
-        .then(res => {
-          res = res.data
-          if (res.code === 200) {
-            this.userID = res.data.user.id
-            this.getPermissions()
-          }
-        })
-        .catch(err => {
-          console.log('err', err)
         })
     },
     getPermissions() {
@@ -247,7 +231,6 @@ export default {
         role
       })
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -307,7 +290,6 @@ export default {
     getRoleList() {
       getRoleList()
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.roleList = res.data
           }
@@ -318,7 +300,6 @@ export default {
     }
   },
   created() {
-    this.login()
     this.getRoleList()
   }
 }

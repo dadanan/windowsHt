@@ -63,7 +63,7 @@ import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
 import * as screenfull from 'screenfull'
-import { getCurrentUser, logout, updateUser } from '@/api/user'
+import { getCurrentUser, updateUser } from '@/api/user'
 
 export default {
   components: {
@@ -358,16 +358,9 @@ export default {
       this.$store.dispatch('toggleSideBar')
     },
     logout() {
-      // this.$store.dispatch('LogOut').then(() => {
-      //   location.reload() // In order to re-instantiate the vue-router object to avoid bugs
-      // })
-      logout()
-        .then(res => {
-          res = res.data
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+      })
     },
     bigPictureMode() {
       this.$router.push({ name: 'big-picture-mode' })
@@ -375,25 +368,12 @@ export default {
         screenfull.request()
       }
     },
-    getUserInfo() {
-      getCurrentUser()
-        .then(res => {
-          res = res.data
-          if (res.code === 200) {
-            this.profileForm = res.data
-          }
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
-    },
     updateUser() {
       updateUser({
         ...this.profileForm,
         lastUpdateTime: new Date().toISOString()
       })
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -409,6 +389,17 @@ export default {
         })
         .catch(err => {
           console.log(err)
+        })
+    },
+    getUserInfo() {
+      getCurrentUser()
+        .then(res => {
+          if (res.code === 200) {
+            this.profileForm = res.data
+          }
+        })
+        .catch(err => {
+          console.log('err', err)
         })
     }
   },

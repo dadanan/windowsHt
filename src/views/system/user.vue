@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { login, createUser, getUserList, updateUser, delUser } from '@/api/user'
+import { createUser, getUserList, updateUser, delUser } from '@/api/user'
 import { getRoleList } from '@/api/role'
 
 export default {
@@ -187,7 +187,6 @@ export default {
     editUser() {
       updateUser(this.editingData)
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -205,13 +204,6 @@ export default {
           console.log(err)
         })
     },
-    login() {
-      login('wkk', '123456')
-        .then(() => {})
-        .catch(err => {
-          console.log('err', err)
-        })
-    },
     createUser() {
       const time = new Date().toISOString()
       const user = {
@@ -221,7 +213,6 @@ export default {
       }
       createUser(user)
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.$message({
               type: 'success',
@@ -252,7 +243,6 @@ export default {
         .then(() => {
           delUser(id)
             .then(res => {
-              res = res.data
               if (res.code === 200) {
                 this.$message({
                   type: 'success',
@@ -285,7 +275,6 @@ export default {
     getUserList() {
       getUserList()
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.userList = res.data
           }
@@ -297,7 +286,6 @@ export default {
     getRoleList() {
       getRoleList()
         .then(res => {
-          res = res.data
           if (res.code === 200) {
             this.roleList = res.data
           }
@@ -308,7 +296,6 @@ export default {
     }
   },
   created() {
-    this.login()
     this.getUserList()
     this.getRoleList()
   }
