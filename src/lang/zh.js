@@ -7,13 +7,16 @@ export default {
     deviceAnalytics: '设备数据',
     systemAnalytics: '系统分析',
     bigDataPanel: '大数据看板',
+    newBigDataPanel: '新大数据看板',
+    // 设备管理
     device: '设备管理',
     deviceList: '设备列表',
-    deviceGroup: '设备组列表',
-    deviceType: '设备类型管理',
-    deviceMap: '设备地图展示',
-    deviceConfig: '设备配置',
-    deviceFiling: '设备备案',
+    deviceGroup: '设备组管理',
+    deviceCluster: '设备集群管理',
+    deviceConfig: '设备配置管理',
+    deviceModel: '设备备案管理',
+    deviceFunction: '设备功能管理',
+    // 售后管理
     alarm: '售后管理',
     alarmDevice: '告警设备列表',
     alarmConfig: '告警级别设置',
@@ -104,8 +107,8 @@ export default {
     publish: '发布',
     draft: '草稿',
     delete: '删除',
-    cancel: '取 消',
-    confirm: '确 定'
+    cancel: '取消',
+    confirm: '确定'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

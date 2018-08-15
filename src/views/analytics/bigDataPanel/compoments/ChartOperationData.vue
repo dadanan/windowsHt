@@ -2,7 +2,9 @@
     设备类型图表
 -->
 <template>
+  <div class="panel" @click="$emit('click')">
     <chart :options="option" class="chart"></chart>
+  </div>
 </template>
 <script>
 export default {
@@ -95,5 +97,9 @@ export default {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 10px;
+}
+.panel{
+  height: 100%;
 }
 </style>

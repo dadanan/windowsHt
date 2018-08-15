@@ -7,61 +7,85 @@
     <el-row class="ui-row">
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" class="col">
-          <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
-          <WeatherOption :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
-                         @toggleDialog="toggleDialog"></WeatherOption>
-          <h3>天气环境</h3>
-          <Weather :option="OptionData.WeatherOptionData"></Weather>
+        <el-col :span="24">
+          <weather-option :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
+                          @toggleDialog="toggleDialog"></weather-option>
+          <div ref="weather" class="col" data-tilt>
+            <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">
+              <font-awesome-icon icon="cog"/>
+            </a>
+            <weather :option="OptionData.WeatherOptionData"></weather>
+          </div>
+        </el-col>
+
+        <el-col :span="24">
+          <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions"
+                         @toggleDialog="toggleDialog"></device-option>
+          <div ref="device" class="col" data-tilt>
+
+            <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
+          </div>
+        </el-col>
+
+        <el-col :span="24">
+          <div ref="users" class="col" data-tilt>
+            <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
+          </div>
+          <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions"
+                       @toggleDialog="toggleDialog"></user-option>
 
         </el-col>
-        <el-col :span="24" class="col">
-          <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
-          <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions" @toggleDialog="toggleDialog"></DeviceOption>
-          <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
-        </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <UserOption :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></UserOption>
-          <ChartUserData :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></ChartUserData>
-        </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <DeviceTypeOption :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData" @toggleDialog="toggleDialog"></DeviceTypeOption>
-          <ChartDeviceType :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></ChartDeviceType>
-        </el-col>
+
+        <div ref="type" class="duang" data-tilt>
+          <el-col :span="24" class="col">
+            <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"
+
+            <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)"></chart-device-type>
+          </el-col>
+        </div>
       </el-col>
 
       <el-col :span="14">
+
         <h1>大数据看板</h1>
-        <el-col :span="24" id="middle-top">
-          <ChartDeviceMap></ChartDeviceMap>
-        </el-col>
+        <div ref="main" data-tilt>
+          <el-col :span="24" id="middle-top">
+            <chart-device-map></chart-device-map>
+          </el-col>
+        </div>
         <el-col :span="24" id="middle-bottom">
-          <h3>工程案例</h3>
+          <project-sample :id="5" :detailid="7" :options="OptionData.ProjectSampleData"
+                          @toggleDialog="toggleDialog"></project-sample>
+          <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]"
+                                 @toggleDialog="toggleDialog"></project-sample-option>
+          <sample-detail-prompt :id="7" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[7]"
+                                @toggleDialog="toggleDialog"></sample-detail-prompt>
         </el-col>
+
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-
-          <Message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></Message>
-        </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <h3>解决方法</h3>
-          <SolutionOption :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData" @toggleDialog="toggleDialog"></SolutionOption>
-          <SolutionPanel @itemSelected="itemSelected" :options="OptionData.SolutionData"></SolutionPanel>
-        </el-col>
-        <el-col :span="24" class="col"><a class="setting" type="primary" size="mini">设置</a>
-          <ChartOperationData :options="OptionData.OperationChartData"></ChartOperationData>
+        <el-col :span="24" class="col">
+          <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
         <el-col :span="24" class="col">
-          <MaintainChart :options="OptionData.MaintainChartOptions"></MaintainChart>
+
+          <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData"
+                           @toggleDialog="toggleDialog"></solution-option>
+          <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
+        </el-col>
+        <el-col :span="24" class="col">
+          <chart-operation-option :id="6" :visible.sync="DialogVisile[6]" :options="OptionData.OperationChartData"
+                                  @toggleDialog="toggleDialog"></chart-operation-option>
+          <chart-operation-data @click="toggleDialog(6)"
+                                :options="OptionData.OperationChartData"></chart-operation-data>
+        </el-col>
+        <el-col :span="24" class="col">
+          <maintain-chart :options="OptionData.MaintainChartOptions"></maintain-chart>
         </el-col>
       </el-col>
     </el-row>
-
   </div>
-
-
 </template>
 <script>
   // 各模块(共10个)
@@ -75,6 +99,7 @@
   import Message from './compoments/MessageData.vue'
   import MaintainChart from './compoments/MaintainChart.vue'
   import SolutionPanel from './compoments/SolutionPanel.vue'
+  import ProjectSample from './compoments/ProjectSample.vue'
 
   // 弹窗
   import WeatherOption from './compoments/WeatherOption.vue'
@@ -82,10 +107,29 @@
   import UserOption from './compoments/UserOption.vue'
   import DeviceTypeOption from './compoments/DeviceTypeOption.vue'
   import SolutionOption from './compoments/SolutionOption.vue'
+  import ProjectSampleOption from './compoments/ProjectSampleOption.vue'
+  import ChartOperationOption from './compoments/ChartOperationOption.vue'
+  import SampleDetailPrompt from './compoments/SampleDetailPrompt.vue'
+
+  // 特效
+
+  import VanillaTilt from 'vanilla-tilt'
 
   export default {
     created() {
       this.bubbles.length = 10
+    },
+    mounted() {
+      /*
+        VanillaTilt.init([this.$refs.weather, this.$refs.device, this.$refs.users], {
+          max: 25,
+          speed: 400
+        })
+      */
+      VanillaTilt.init(this.$refs.main, {
+        max: 10,
+        speed: 400
+      })
     },
     components: {
       // 模块
@@ -99,12 +143,16 @@
       Message,
       MaintainChart,
       SolutionPanel,
+      ProjectSample,
       // 弹窗
       WeatherOption,
       DeviceOption,
       UserOption,
       DeviceTypeOption,
-      SolutionOption
+      SolutionOption,
+      ProjectSampleOption,
+      ChartOperationOption,
+      SampleDetailPrompt
     },
     data() {
       return {
@@ -273,7 +321,11 @@
               { value: 335, name: '已处理' },
               { value: 310, name: '待处理' },
               { value: 1548, name: '总告警' }
-            ]
+            ],
+            lineChart: {
+              intergrals: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }
           },
           // 解决方案数据
           SolutionData: {
@@ -328,6 +380,104 @@
                 img: '动图....'
               }
             ]
+          },
+          // 工程案列数据
+          ProjectSampleData: {
+            data: [
+              {
+                id: 0,
+                name: '龙湖一期',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 1,
+                name: '九亭工坊',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 2,
+                name: '桃浦智创',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 3,
+                name: '恒大丽宫',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 4,
+                name: '新汇大厦',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 5,
+                name: '万科横桥',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              },
+              {
+                id: 6,
+                name: '绿地大厦',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' }
+                ]
+              },
+              {
+                id: 7,
+                name: '万达武汉',
+                icon: '工程示意图地址',
+                imgs: [
+                  { id: 0, url: '案列图片1' },
+                  { id: 1, url: '案列图片2' },
+                  { id: 2, url: '案列图片3' },
+                  { id: 3, url: '案列图片4' },
+                  { id: 4, url: '案列图片5' }
+                ]
+              }
+            ]
           }
         },
 
@@ -359,6 +509,7 @@
 </script>
 
 <style lang="scss" scoped>
+
   .big-data-panel {
 
     color: white;
@@ -376,16 +527,15 @@
     #middle-bottom {
       height: 40vh;
     }
-    .col::before{
+    .col::before {
       filter: blur(5px);
     }
     .col {
-      height: 23vh;
+      height: 22vh;
       -webkit-backdrop-filter: blur(5px);
       border-radius: 5px;
       /* Google Chrome */
       backdrop-filter: blur(5px);
-
 
       /* 设置背景半透明黑色 */
       background: rgba(0, 0, 0, 0.2);
@@ -509,7 +659,6 @@
       }
     }
   }
-
 
 
 </style>

@@ -7,8 +7,8 @@
         list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleSubmit">确 定</el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">确定</el-button>
     </el-dialog>
   </div>
 </template>

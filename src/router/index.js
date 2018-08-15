@@ -25,20 +25,38 @@ import Layout from '@/views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/authredirect', component: () => import('@/views/login/authredirect'), hidden: true },
-  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
-  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
+    path: '/authredirect',
+    component: () => import('@/views/login/authredirect'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/errorPage/404'),
+    hidden: true
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/errorPage/401'),
+    hidden: true
+  },
   {
     path: '',
     component: Layout,
     redirect: 'dashboard',
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard'),
+        name: 'dashboard',
+        meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
+      }
+    ]
   }
 ]
 
@@ -50,6 +68,35 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
+    path: '/big-picture-mode',
+    component: () => import('@/views/big-picture-mode'),
+    name: 'big-picture-mode',
+    hidden: true,
+    meta: {
+      roles: ['admin', 'normal']
+    },
+    children: [
+      {
+        path: 'solution',
+        component: () => import('@/views/big-picture-mode/solution'),
+        name: 'big-picture-mode-solution',
+        hidden: true,
+        meta: {
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'project',
+        component: () => import('@/views/big-picture-mode/project'),
+        name: 'big-picture-mode-project',
+        hidden: true,
+        meta: {
+          roles: ['normal']
+        }
+      }
+    ]
+  },
+  {
     path: '/analytics',
     component: Layout,
     name: 'analytics',
@@ -57,7 +104,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'analytics',
-      icon: 'chart-bar'
+      icon: 'chart-bar',
+      roles: ['admin']
     },
     children: [
       {
@@ -86,23 +134,37 @@ export const asyncRouterMap = [
       },
       {
         path: 'system',
-        component: () => import('@/views/analytics/system'),
+        component: () => import('@/views/blank'),
         name: 'systemAnalytics',
         meta: {
           title: 'systemAnalytics'
         }
-      },
-      {
-        path: 'bigDataPanel',
-        component: () => import('@/views/analytics/bigDataPanel'),
-        name: 'bigDataPanel',
-        meta: {
-
-          title: 'bigDataPanel'
-        }
       }
+      // {
+      //   path: 'bigDataPanel',
+      //   component: () => import('@/views/analytics/bigDataPanel'),
+      //   name: 'bigDataPanel',
+      //   meta: {
+      //     title: 'bigDataPanel'
+      //   }
+      // },
+      // {
+      //   path: 'newBigDataPanel',
+      //   component: () => import('@/views/analytics/bigDataPanel/new'),
+      //   name: 'newBigDataPanel',
+      //   meta: {
+      //     title: 'newBigDataPanel'
+      //   }
+      // }
     ]
   },
+  // device: '设备管理',
+  // deviceList: '设备列表',
+  // deviceGroup: '设备组管理',
+  // deviceCluster: '设备集群管理',
+  // deviceConfig: '设备配置管理',
+  // deviceModel: '设备备案管理',
+  // deviceFunction: '设备功能管理',
   {
     path: '/device',
     component: Layout,
@@ -111,12 +173,13 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'device',
-      icon: 'angry'
+      icon: 'hdd',
+      roles: ['normal']
     },
     children: [
       {
         path: 'list',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/list'),
         name: 'deviceList',
         meta: {
           title: 'deviceList'
@@ -124,42 +187,42 @@ export const asyncRouterMap = [
       },
       {
         path: 'group',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/group'),
         name: 'deviceGroup',
         meta: {
           title: 'deviceGroup'
         }
       },
       {
-        path: 'type',
-        component: () => import('@/views/blank'),
-        name: 'deviceType',
+        path: 'cluster',
+        component: () => import('@/views/device/cluster'),
+        name: 'deviceCluster',
         meta: {
-          title: 'deviceType'
-        }
-      },
-      {
-        path: 'map',
-        component: () => import('@/views/blank'),
-        name: 'deviceMap',
-        meta: {
-          title: 'deviceMap'
+          title: 'deviceCluster'
         }
       },
       {
         path: 'config',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/device/config'),
         name: 'deviceConfig',
         meta: {
           title: 'deviceConfig'
         }
       },
       {
-        path: 'filing',
-        component: () => import('@/views/blank'),
-        name: 'deviceFiling',
+        path: 'model',
+        component: () => import('@/views/device/model'),
+        name: 'deviceModel',
         meta: {
-          title: 'deviceFiling'
+          title: 'deviceModel'
+        }
+      },
+      {
+        path: 'function',
+        component: () => import('@/views/device/function'),
+        name: 'deviceFunction',
+        meta: {
+          title: 'deviceFunction'
         }
       }
     ]
@@ -172,20 +235,21 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'alarm',
-      icon: 'angry'
+      icon: 'people-carry',
+      roles: ['super_admin']
     },
     children: [
       {
         path: 'device',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/alarm/device'),
         name: 'alarmDevice',
         meta: {
           title: 'alarmDevice'
         }
       },
       {
-        path: 'config',
-        component: () => import('@/views/blank'),
+        path: 'level',
+        component: () => import('@/views/alarm/level'),
         name: 'alarmConfig',
         meta: {
           title: 'alarmConfig'
@@ -209,12 +273,13 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'order',
-      icon: 'angry'
+      icon: 'file-invoice',
+      roles: ['admin']
     },
     children: [
       {
         path: 'rent',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/rent'),
         name: 'rentOrder',
         meta: {
           title: 'rentOrder'
@@ -222,7 +287,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'payment',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/order/payment'),
         name: 'paymentOrder',
         meta: {
           title: 'paymentOrder'
@@ -254,7 +319,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'income',
-      icon: 'angry'
+      icon: 'bezier-curve',
+      roles: ['admin']
     },
     children: [
       {
@@ -283,7 +349,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'rent',
-      icon: 'angry'
+      icon: 'hand-holding-usd',
+      roles: ['normal']
     },
     children: [
       {
@@ -344,12 +411,13 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'system',
-      icon: 'angry'
+      icon: 'wrench',
+      roles: ['super_admin']
     },
     children: [
       {
         path: 'client',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/client'),
         name: 'systemClient',
         meta: {
           title: 'systemClient'
@@ -357,7 +425,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'role',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/role'),
         name: 'systemRole',
         meta: {
           title: 'systemRole'
@@ -365,7 +433,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'user',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/user'),
         name: 'systemUser',
         meta: {
           title: 'systemUser'
@@ -389,7 +457,8 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'message',
-      icon: 'angry'
+      icon: 'comment-alt',
+      roles: ['super_admin']
     },
     children: [
       {

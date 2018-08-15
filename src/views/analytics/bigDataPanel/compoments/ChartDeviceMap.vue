@@ -2,13 +2,12 @@
     设备地图 (中间)
 -->
 <template>
-  <chart :options="option" class="chart"></chart>
+  <chart ref="map" @click="onProvienceClick" :options="option" class="chart"></chart>
 </template>
 <script>
   export default {
     data() {
       return {
-        chart: null,
         option: null,
         geoCoordMap: {
           海门: [121.15, 31.89],
@@ -206,6 +205,42 @@
           { name: '海门', value: 1 },
           { name: '鄂尔多斯', value: 1 },
           { name: '厦门', value: 1 }
+        ],
+        provienceTable: [
+          { name: '安徽', code: 'anhui' },
+          { name: '澳门', code: 'aomen' },
+          { name: '北京', code: 'beijing' },
+          { name: '重庆', code: 'chongqing' },
+          { name: '福建', code: 'fujian' },
+          { name: '甘肃', code: 'gansu' },
+          { name: '山东', code: 'guangdong' },
+          { name: '广西', code: 'guangxi' },
+          { name: '贵州', code: 'guizhou' },
+          { name: '海南', code: 'hainan' },
+          { name: '河北', code: 'hebei' },
+          { name: '黑龙江', code: 'heilongjiang' },
+          { name: '河南', code: 'henan' },
+          { name: '湖北', code: 'hubei' },
+          { name: '湖南', code: 'hunan' },
+          { name: '江苏', code: 'jiangsu' },
+          { name: '江西', code: 'jiangxi' },
+          { name: '吉林', code: 'jilin' },
+          { name: '辽宁', code: 'liaoning' },
+          { name: '内蒙古', code: 'neimenggu' },
+          { name: '宁夏', code: 'ningxia' },
+          { name: '青海', code: 'qinghai' },
+          { name: '山东', code: 'shandong' },
+          { name: '上海', code: 'shanghai' },
+          { name: '山西', code: 'shanxi' },
+          { name: '陕西', code: 'shanxi1' },
+          { name: '四川', code: 'sichuan' },
+          { name: '台湾', code: 'taiwan' },
+          { name: '天津', code: 'tianjin' },
+          { name: '香港', code: 'xianggang' },
+          { name: '新疆', code: 'xinjiang' },
+          { name: '西藏', code: 'xizang' },
+          { name: '云南', code: 'yunnan' },
+          { name: '浙江', code: 'zhejiang' }
         ]
       }
     },
@@ -329,6 +364,25 @@
           }
         }
         return res
+      },
+      watch: {
+        option() {
+          // console.log('provice updated')
+          this.$refs.map.mergeOptions(this.option)
+        }
+      },
+      onProvienceClick(param) {
+        console.log('provicence click + ' + param.name)
+        if (this.option.geo.map === 'china') { this.option.geo.map = this.lookupProvienceTable(param.name) } else { this.option.geo.map = 'china' }
+      },
+      lookupProvienceTable(provienceName) {
+        let result = 'null'
+        this.provienceTable.forEach(element => {
+          if (element.name === provienceName) {
+            result = element.code
+          }
+        })
+        return result
       }
     },
     beforeDestroy() {
