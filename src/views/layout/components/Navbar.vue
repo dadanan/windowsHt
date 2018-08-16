@@ -15,7 +15,7 @@
       <el-dropdown>
         <div class="profile">
           <font-awesome-icon icon="user"></font-awesome-icon>
-          {{profileForm.userName}}
+          {{profileForm.nickName}}
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>

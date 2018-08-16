@@ -66,7 +66,43 @@ const user = {
             setToken(data.token)
 
             // 先模拟permission
-            data['permission'] = ['admin']
+            data['permission'] = [
+              'big-picture-mode:solution:get',
+              'big-picture-mode:project:get',
+              'analytics:order:get',
+              'analytics:user:post',
+              'analytics:device:post',
+              'analytics:system:post',
+              'device:list:get',
+              'device:group:post',
+              'device:cluster:post',
+              'device:config:post',
+              'device:model:post',
+              'device:function:post',
+              'alarm:device:get',
+              'alarm:level:get',
+              'alarm:process:get',
+              'order:rent:get',
+              'order:payment:get',
+              'order:sales:get',
+              'order:after-sale:get',
+              'income:rule:get',
+              'income:bill:get',
+              'rent:wechat:get',
+              'rent:blacklist:get',
+              'rent:toll:get',
+              'rent:putin:get',
+              'rent:operator:get',
+              'rent:payment:get',
+              'system:client:get',
+              'system:role:get',
+              'system:user:get',
+              'system:setting:get',
+              'message:system:get',
+              'message:user:get',
+              'message:alarm:get',
+              'message:after-sale:get'
+            ]
             if (data.permission && data.permission.length > 0) {
               // 验证返回的permission是否是一个非空数组
               commit('SET_PERMISSION', data.permission)

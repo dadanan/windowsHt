@@ -26,7 +26,43 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.permission.length === 0) {
         // 判断当前用户是否已拉取完user_info信息
-        const permission = ['admin']
+        const permission = [
+          'big-picture-mode:solution:get',
+          'big-picture-mode:project:get',
+          'analytics:order:get',
+          'analytics:user:post',
+          'analytics:device:post',
+          'analytics:system:post',
+          'device:list:get',
+          'device:group:post',
+          'device:cluster:post',
+          'device:config:post',
+          'device:model:post',
+          'device:function:post',
+          'alarm:device:get',
+          'alarm:level:get',
+          'alarm:process:get',
+          'order:rent:get',
+          'order:payment:get',
+          'order:sales:get',
+          'order:after-sale:get',
+          'income:rule:get',
+          'income:bill:get',
+          'rent:wechat:get',
+          'rent:blacklist:get',
+          'rent:toll:get',
+          'rent:putin:get',
+          'rent:operator:get',
+          'rent:payment:get',
+          'system:client:get',
+          'system:role:get',
+          'system:user:get',
+          'system:setting:get',
+          'message:system:get',
+          'message:user:get',
+          'message:alarm:get',
+          'message:after-sale:get'
+        ]
         store.commit('SET_PERMISSION', permission)
         store.dispatch('GenerateRoutes', { permission }).then(() => {
           // 根据permission权限生成可访问的路由表

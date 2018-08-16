@@ -72,27 +72,18 @@ export const asyncRouterMap = [
     component: () => import('@/views/big-picture-mode'),
     name: 'big-picture-mode',
     hidden: true,
-    meta: {
-      roles: ['admin', 'normal']
-    },
     children: [
       {
         path: 'solution',
         component: () => import('@/views/big-picture-mode/solution'),
         name: 'big-picture-mode-solution',
-        hidden: true,
-        meta: {
-          roles: ['admin']
-        }
+        hidden: true
       },
       {
         path: 'project',
         component: () => import('@/views/big-picture-mode/project'),
         name: 'big-picture-mode-project',
-        hidden: true,
-        meta: {
-          roles: ['normal']
-        }
+        hidden: true
       }
     ]
   },
@@ -104,8 +95,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'analytics',
-      icon: 'chart-bar',
-      roles: ['admin']
+      icon: 'chart-bar'
     },
     children: [
       {
@@ -173,8 +163,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'device',
-      icon: 'hdd',
-      roles: ['normal']
+      icon: 'hdd'
     },
     children: [
       {
@@ -235,8 +224,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'alarm',
-      icon: 'people-carry',
-      roles: ['super_admin']
+      icon: 'people-carry'
     },
     children: [
       {
@@ -273,8 +261,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'order',
-      icon: 'file-invoice',
-      roles: ['admin']
+      icon: 'file-invoice'
     },
     children: [
       {
@@ -319,8 +306,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'income',
-      icon: 'bezier-curve',
-      roles: ['admin']
+      icon: 'bezier-curve'
     },
     children: [
       {
@@ -350,7 +336,6 @@ export const asyncRouterMap = [
     meta: {
       title: 'rent',
       icon: 'hand-holding-usd',
-      roles: ['normal']
     },
     children: [
       {
@@ -412,7 +397,6 @@ export const asyncRouterMap = [
     meta: {
       title: 'system',
       icon: 'wrench',
-      roles: ['super_admin']
     },
     children: [
       {
@@ -458,7 +442,6 @@ export const asyncRouterMap = [
     meta: {
       title: 'message',
       icon: 'comment-alt',
-      roles: ['super_admin']
     },
     children: [
       {

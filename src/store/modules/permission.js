@@ -9,16 +9,6 @@ function hasPermission(permission, route) {
   return permission.some(item => item.path === route.path.replace('/', ''))
 }
 
-const permissionData = [
-  'big-picture-mode:solution:get',
-  'big-picture-mode:project:get',
-  'analytics:order:get',
-  'analytics:user:post',
-  'device:list:get',
-  'device:cluster:post',
-  'alarm:device:get'
-]
-
 const transformType = data => {
   const result = []
   data.forEach(item => {
@@ -85,14 +75,13 @@ const thePermission = {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         let { permission } = data
-        permission = transformType(permissionData)
+        permission = transformType(permission)
         let accessedRouters
         if (permission.indexOf('admin') >= 0) {
           accessedRouters = asyncRouterMap
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, permission)
         }
-        console.log('final route: ', accessedRouters)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
