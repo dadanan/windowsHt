@@ -7,10 +7,10 @@ import { getToken } from '@/utils/auth' // getToken from cookie
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 // permission judge function
-function hasPermission(roles, permissionRoles) {
-  if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
+function hasPermission(permission, permissionRoles) {
+  if (permission.indexOf('admin') >= 0) return true // admin permission passed directly
   if (!permissionRoles) return true
-  return roles.some(role => permissionRoles.indexOf(role) >= 0)
+  return permission.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
 const whiteList = ['/login', '/authredirect'] // no redirect whitelist
@@ -24,18 +24,18 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (store.getters.roles.length === 0) {
+      if (store.getters.permission.length === 0) {
         // 判断当前用户是否已拉取完user_info信息
-        const roles = ['super_admin']
-        store.commit('SET_ROLES', roles)
-        store.dispatch('GenerateRoutes', { roles }).then(() => {
-          // 根据roles权限生成可访问的路由表
+        const permission = ['admin']
+        store.commit('SET_PERMISSION', permission)
+        store.dispatch('GenerateRoutes', { permission }).then(() => {
+          // 根据permission权限生成可访问的路由表
           router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
         })
       } else {
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        if (hasPermission(store.getters.roles, to.meta.roles)) {
+        if (hasPermission(store.getters.permission, to.meta.permission)) {
           next()
         } else {
           next({ path: '/401', replace: true, query: { noGoBack: true }})

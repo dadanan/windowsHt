@@ -13,8 +13,8 @@ export default {
     deviceList: '设备列表',
     deviceGroup: '设备组管理',
     deviceCluster: '设备集群管理',
-    deviceConfig: '设备配置管理',
-    deviceModel: '设备备案管理',
+    deviceConfig: '设备型号管理',
+    deviceModel: '设备类型管理',
     deviceFunction: '设备功能管理',
     // 售后管理
     alarm: '售后管理',

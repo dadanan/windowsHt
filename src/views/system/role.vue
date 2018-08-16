@@ -301,6 +301,7 @@ export default {
   },
   created() {
     this.getRoleList()
+    this.getPermissions()
   }
 }
 </script>

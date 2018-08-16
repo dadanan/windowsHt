@@ -2,27 +2,66 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
- * @param roles
- * @param route
+ * @param permission  权限对象
+ * @param route  某个特定路由配置数据
  */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
-  } else {
-    return true
-  }
+function hasPermission(permission, route) {
+  return permission.some(item => item.path === route.path.replace('/', ''))
+}
+
+const permissionData = [
+  'big-picture-mode:solution:get',
+  'big-picture-mode:project:get',
+  'analytics:order:get',
+  'analytics:user:post',
+  'device:list:get',
+  'device:cluster:post',
+  'alarm:device:get'
+]
+
+const transformType = data => {
+  const result = []
+  data.forEach(item => {
+    item = item.split(':')
+    // 判断是否在result中已经添加过该一级路由对象
+    const index = result.findIndex(obj => obj.path === item[0])
+    if (index >= 0) {
+      result[index].children.push({
+        path: item[1],
+        method: item[2]
+      })
+      return
+    }
+    // 如果没有找到
+    result.push({
+      path: item[0],
+      children: [
+        {
+          path: item[1],
+          method: item[2]
+        }
+      ]
+    })
+  })
+  return result
 }
 
 /**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
+ * 递归过滤异步路由表，返回符合权限的路由表
  * @param asyncRouterMap
- * @param roles
+ * @param permission
  */
-function filterAsyncRouter(asyncRouterMap, roles) {
+function filterAsyncRouter(asyncRouterMap, permission) {
   const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
+    if (hasPermission(permission, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
+        const thePermission = permission.filter(
+          item => item.path === route.path.replace('/', '')
+        )[0]
+        route.children = filterAsyncRouter(
+          route.children,
+          thePermission && thePermission.children
+        )
       }
       return true
     }
@@ -31,7 +70,7 @@ function filterAsyncRouter(asyncRouterMap, roles) {
   return accessedRouters
 }
 
-const permission = {
+const thePermission = {
   state: {
     routers: constantRouterMap,
     addRouters: []
@@ -45,13 +84,15 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
+        let { permission } = data
+        permission = transformType(permissionData)
         let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
+        if (permission.indexOf('admin') >= 0) {
           accessedRouters = asyncRouterMap
         } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+          accessedRouters = filterAsyncRouter(asyncRouterMap, permission)
         }
+        console.log('final route: ', accessedRouters)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
@@ -59,4 +100,4 @@ const permission = {
   }
 }
 
-export default permission
+export default thePermission

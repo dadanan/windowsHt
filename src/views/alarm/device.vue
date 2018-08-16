@@ -2,8 +2,7 @@
   <div class="dashboard-container">
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanCardList" :key="item.id" v-if="item.isVisible">
-        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit"
-                   :style="{ backgroundColor: '#EC7063' }"></data-card>
+        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#EC7063' }"></data-card>
       </el-col>
     </el-row>
     <el-card class="mb20">
@@ -13,7 +12,7 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="条件">
+            <el-select placeholder="条件" :value='value1'>
               <el-option label="设备 MAC" value="1"></el-option>
               <el-option label="设备序列号" value="2"></el-option>
               <el-option label="设备名称" value="3"></el-option>
@@ -24,7 +23,7 @@
             <el-input placeholder="关键词"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="告警类型">
+            <el-select placeholder="告警类型" :value='value2'>
               <el-option label="预留布尔值故障" value="1"></el-option>
               <el-option label="滤网到期提醒" value="2"></el-option>
               <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
@@ -32,7 +31,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="告警状态">
+            <el-select placeholder="告警状态" :value='value3'>
               <el-option label="未修复" value="1"></el-option>
               <el-option label="已修复" value="2"></el-option>
             </el-select>
@@ -50,63 +49,35 @@
           <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table
-        :data="alarmList"
-        style="width: 100%" class="mb20" border>
+      <el-table :data="alarmList" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column
-          prop="mac"
-          label="设备 MAC" show-overflow-tooltip sortable v-if="alarmListColumnVisible.mac">
+        <el-table-column prop="mac" label="设备 MAC" show-overflow-tooltip sortable v-if="alarmListColumnVisible.mac">
         </el-table-column>
-        <el-table-column
-          prop="sn"
-          label="设备序列号" show-overflow-tooltip sortable v-if="alarmListColumnVisible.sn">
+        <el-table-column prop="sn" label="设备序列号" show-overflow-tooltip sortable v-if="alarmListColumnVisible.sn">
         </el-table-column>
-        <el-table-column
-          prop="name"
-          label="设备名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.name">
+        <el-table-column prop="name" label="设备名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.name">
         </el-table-column>
-        <el-table-column
-          prop="pos"
-          label="投放点名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.pos">
+        <el-table-column prop="pos" label="投放点名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.pos">
         </el-table-column>
-        <el-table-column
-          prop="tel"
-          label="投放点负责人电话" show-overflow-tooltip sortable v-if="alarmListColumnVisible.tel">
+        <el-table-column prop="tel" label="投放点负责人电话" show-overflow-tooltip sortable v-if="alarmListColumnVisible.tel">
         </el-table-column>
-        <el-table-column
-          prop="alarmName"
-          label="告警名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.alarmName">
+        <el-table-column prop="alarmName" label="告警名称" show-overflow-tooltip sortable v-if="alarmListColumnVisible.alarmName">
         </el-table-column>
-        <el-table-column
-          prop="createDatetime"
-          label="告警发生时间" show-overflow-tooltip sortable v-if="alarmListColumnVisible.createDatetime">
+        <el-table-column prop="createDatetime" label="告警发生时间" show-overflow-tooltip sortable v-if="alarmListColumnVisible.createDatetime">
         </el-table-column>
-        <el-table-column
-          prop="duration"
-          label="告警时长" show-overflow-tooltip sortable v-if="alarmListColumnVisible.duration">
+        <el-table-column prop="duration" label="告警时长" show-overflow-tooltip sortable v-if="alarmListColumnVisible.duration">
         </el-table-column>
-        <el-table-column
-          prop="type"
-          label="告警类型" show-overflow-tooltip sortable v-if="alarmListColumnVisible.type">
+        <el-table-column prop="type" label="告警类型" show-overflow-tooltip sortable v-if="alarmListColumnVisible.type">
         </el-table-column>
-        <el-table-column
-          prop="state"
-          label="告警状态" show-overflow-tooltip sortable v-if="alarmListColumnVisible.state">
+        <el-table-column prop="state" label="告警状态" show-overflow-tooltip sortable v-if="alarmListColumnVisible.state">
         </el-table-column>
-        <el-table-column
-          label="操作">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="1"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
       </el-pagination>
     </el-card>
     <el-dialog title="自定义显示列" :visible.sync="isColumnDialogVisible">
@@ -151,110 +122,119 @@
 </template>
 
 <script>
-  import DataCard from '@/components/DataCard'
+import DataCard from '@/components/DataCard'
 
-  export default {
-    components: {
-      DataCard
-    },
-    data() {
-      const alarmList = []
+export default {
+  components: {
+    DataCard
+  },
+  data() {
+    const alarmList = []
 
-      for (let i = 0; i < 15; i++) {
-        alarmList.push({
-          mac: '862151034187433',
-          sn: '10063679114543329199',
-          name: '金敦煌C910',
-          pos: '金敦煌 KTV',
-          tel: '13166666007',
-          alarmName: 'PM Lose',
-          createDatetime: '2018-03-28 01:24:29',
-          duration: '111天4时34分24秒',
-          type: '故障',
-          state: '已修复'
-        })
-      }
-      return {
-        kanbanCardList: [
+    for (let i = 0; i < 15; i++) {
+      alarmList.push({
+        mac: '862151034187433',
+        sn: '10063679114543329199',
+        name: '金敦煌C910',
+        pos: '金敦煌 KTV',
+        tel: '13166666007',
+        alarmName: 'PM Lose',
+        createDatetime: '2018-03-28 01:24:29',
+        duration: '111天4时34分24秒',
+        type: '故障',
+        state: '已修复'
+      })
+    }
+    return {
+      value1: '',
+      value2: '',
+      value3: '',
+      kanbanCardList: [
+        {
+          id: 0,
+          icon: 'hdd',
+          name: '当前告警设备数 (台)',
+          value: 0,
+          isVisible: true
+        },
+        {
+          id: 1,
+          icon: 'hdd',
+          name: '今日新增告警记录',
+          value: 0,
+          isVisible: true
+        },
+        {
+          id: 2,
+          icon: 'hdd',
+          name: '设备故障率',
+          value: 0,
+          isVisible: true,
+          unit: '%'
+        }
+      ],
+      kanbanChart: {
+        title: {
+          text: '售后类型'
+        },
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        xAxis: [
           {
-            id: 0,
-            icon: 'hdd',
-            name: '当前告警设备数 (台)',
-            value: 0,
-            isVisible: true
-          },
-          {
-            id: 1,
-            icon: 'hdd',
-            name: '今日新增告警记录',
-            value: 0,
-            isVisible: true
-          },
-          {
-            id: 2,
-            icon: 'hdd',
-            name: '设备故障率',
-            value: 0,
-            isVisible: true,
-            unit: '%'
+            type: 'category',
+            data: [
+              '预留布尔值故障',
+              '预留布尔值故障',
+              '滤网到期提醒',
+              'PM 2.5 数值丢失报警',
+              '设备移开 1000 米报警'
+            ],
+            axisTick: {
+              alignWithLabel: true
+            }
           }
         ],
-        kanbanChart: {
-          title: {
-            text: '售后类型'
-          },
-          color: ['#3398DB'],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            }
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: ['预留布尔值故障', '预留布尔值故障', '滤网到期提醒', 'PM 2.5 数值丢失报警', '设备移开 1000 米报警'],
-              axisTick: {
-                alignWithLabel: true
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value'
-            }
-          ],
-          series: [
-            {
-              name: '占比',
-              type: 'bar',
-              barWidth: '60%',
-              data: [10, 52, 200, 334, 390]
-            }
-          ]
-        },
-        alarmList,
-        alarmListColumnVisible: {
-          mac: true,
-          sn: true,
-          name: true,
-          pos: true,
-          tel: true,
-          alarmName: true,
-          createDatetime: true,
-          duration: true,
-          type: true,
-          state: true
-        },
-        isColumnDialogVisible: false
-      }
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '占比',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390]
+          }
+        ]
+      },
+      alarmList,
+      alarmListColumnVisible: {
+        mac: true,
+        sn: true,
+        name: true,
+        pos: true,
+        tel: true,
+        alarmName: true,
+        createDatetime: true,
+        duration: true,
+        type: true,
+        state: true
+      },
+      isColumnDialogVisible: false
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .chart {
-    height: 360px;
-    width: 100%;
-  }
+.chart {
+  height: 360px;
+  width: 100%;
+}
 </style>

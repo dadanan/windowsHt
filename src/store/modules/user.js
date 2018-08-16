@@ -12,7 +12,7 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: [],
+    permission: [],
     setting: {
       articlePlatform: []
     }
@@ -40,8 +40,8 @@ const user = {
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
     },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
+    SET_PERMISSION: (state, permission) => {
+      state.permission = permission
     }
   },
 
@@ -65,13 +65,13 @@ const user = {
             commit('SET_TOKEN', data.token)
             setToken(data.token)
 
-            // 先模拟roles
-            data['roles'] = ['super_admin']
-            if (data.roles && data.roles.length > 0) {
-              // 验证返回的roles是否是一个非空数组
-              commit('SET_ROLES', data.roles)
+            // 先模拟permission
+            data['permission'] = ['admin']
+            if (data.permission && data.permission.length > 0) {
+              // 验证返回的permission是否是一个非空数组
+              commit('SET_PERMISSION', data.permission)
             } else {
-              reject('getInfo: roles must be a non-null array !')
+              reject('getInfo: permission must be a non-null array !')
             }
 
             const user = data.user
@@ -82,7 +82,7 @@ const user = {
             // debugger
 
             store.dispatch('GenerateRoutes', data).then(() => {
-              // 根据roles权限生成可访问的路由表
+              // 根据permission权限生成可访问的路由表
               router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
               resolve()
             })
@@ -114,7 +114,7 @@ const user = {
         logout()
           .then(() => {
             commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
+            commit('SET_PERMISSION', [])
             removeToken()
             resolve()
           })
@@ -140,7 +140,7 @@ const user = {
         setToken(role)
         // getUserInfo(role).then(response => {
         //   const data = response.data
-        //   commit('SET_ROLES', data.roles)
+        //   commit('SET_PERMISSION', data.permission)
         //   commit('SET_NAME', data.name)
         //   commit('SET_AVATAR', data.avatar)
         //   commit('SET_INTRODUCTION', data.introduction)
