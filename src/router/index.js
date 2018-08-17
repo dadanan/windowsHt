@@ -335,7 +335,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'rent',
-      icon: 'hand-holding-usd',
+      icon: 'hand-holding-usd'
     },
     children: [
       {
@@ -396,7 +396,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'system',
-      icon: 'wrench',
+      icon: 'wrench'
     },
     children: [
       {
@@ -441,7 +441,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: 'message',
-      icon: 'comment-alt',
+      icon: 'comment-alt'
     },
     children: [
       {

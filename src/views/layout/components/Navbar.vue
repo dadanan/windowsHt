@@ -32,18 +32,18 @@
       </div>
     </el-menu>
     <el-dialog title="个人设置" :visible.sync="dialogEditProfileVisible">
-      <el-form :model="profileForm" label-width="80px" label-position="left">
+      <el-form :rules="rules" :model="profileForm" ref='form' label-width="80px" label-position="left">
         <el-form-item label="账号">
           <el-input v-model="profileForm.userName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item label="昵称" prop="nickName">
           <el-input v-model="profileForm.nickName"></el-input>
         </el-form-item>
         <el-form-item label="角色类型">
           <el-input v-model="profileForm.roleName" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="手机">
-          <el-input v-model="profileForm.telephone"></el-input>
+        <el-form-item label="手机" prop='telephone'>
+          <el-input type='number' v-model="profileForm.telephone"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -350,7 +350,21 @@ export default {
       selectedOptions: [],
       keywords: '',
       dialogEditProfileVisible: false,
-      profileForm: {}
+      profileForm: {},
+      rules: {
+        nickName: [
+          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+          { required: true, message: '请输入昵称', trigger: 'blur' }
+        ],
+        telephone: [
+          { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法手机号',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -369,27 +383,36 @@ export default {
       }
     },
     updateUser() {
-      updateUser({
-        ...this.profileForm,
-        lastUpdateTime: new Date().toISOString()
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          updateUser({
+            ...this.profileForm,
+            lastUpdateTime: new Date().toISOString()
+          })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '更新成功!'
+                })
+                this.dialogEditProfileVisible = false
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          return
+        }
+        this.$message({
+          type: 'error',
+          message: '表单验证失败！'
+        })
       })
-        .then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '更新成功!'
-            })
-            this.dialogEditProfileVisible = false
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     getUserInfo() {
       getCurrentUser()

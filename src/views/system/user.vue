@@ -37,97 +37,97 @@
       </el-pagination>
     </el-card>
     <el-dialog :top='"2vh"' title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
-      <el-form label-position="left" label-width="150px">
-        <el-form-item label="账号">
+      <el-form :model='creatingData' :rules='rules' ref='creatingData' label-position="left" label-width="150px">
+        <el-form-item label="账号" prop='userName'>
           <el-input v-model='creatingData.userName'></el-input>
         </el-form-item>
-        <el-form-item label="所属角色">
+        <el-form-item label="所属角色" prop='roleId'>
           <el-select v-model="creatingData.roleId" placeholder="请选择">
             <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="手机">
-          <el-input v-model="creatingData.telephone"></el-input>
+        <el-form-item label="手机" prop='telephone'>
+          <el-input type='number' v-model="creatingData.telephone"></el-input>
         </el-form-item>
-        <el-form-item label="绑定微信 Open ID">
+        <el-form-item label="绑定微信 Open ID" prop='openID'>
           <el-input v-model="creatingData.openID"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop='password'>
           <el-input v-model="creatingData.password"></el-input>
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item label="昵称" prop='nickName'>
           <el-input v-model="creatingData.nickName"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" prop='status'>
           <el-select v-model="creatingData.status" placeholder="请选择">
             <el-option v-for="item in status" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="绑定模板 ID">
+        <el-form-item label="绑定模板 ID" prop='templateId'>
           <el-input v-model="creatingData.templateId"></el-input>
         </el-form-item>
-        <el-form-item label="AppID">
+        <el-form-item label="AppID" prop='appId'>
           <el-input v-model="creatingData.appId"></el-input>
         </el-form-item>
-        <el-form-item label="AppSecret">
+        <el-form-item label="AppSecret" prop='appSecret'>
           <el-input v-model="creatingData.appSecret"></el-input>
         </el-form-item>
-        <el-form-item label="SecondDomain">
+        <el-form-item label="SecondDomain" prop='secondDomain'>
           <el-input v-model="creatingData.secondDomain"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isCreateUserDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="createUser">确定</el-button>
+        <el-button type="primary" @click="validate('creatingData','createUser')">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog :top='"2vh"' title="编辑系统用户" :visible.sync="isEditUserDialogVisible">
-      <el-form label-position="left" label-width="150px">
-        <el-form-item label="账号">
+      <el-form label-position="left" label-width="150px" :model='editingData' :rules='rules' ref='editingData'>
+        <el-form-item label="账号" prop="userName">
           <el-input v-model='editingData.userName'></el-input>
         </el-form-item>
-        <el-form-item label="所属角色">
+        <el-form-item label="所属角色" prop='roleId'>
           <el-select v-model="editingData.roleId" placeholder="请选择">
             <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="手机">
-          <el-input v-model="editingData.telephone"></el-input>
+        <el-form-item label="手机" prop='telephone'>
+          <el-input type='number' v-model="editingData.telephone"></el-input>
         </el-form-item>
-        <el-form-item label="绑定微信 Open ID">
+        <el-form-item prop='openID' label="绑定微信 Open ID">
           <el-input v-model="editingData.openID"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item prop='password' label="密码">
           <el-input v-model="editingData.password"></el-input>
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item prop='nickName' label="昵称">
           <el-input v-model="editingData.nickName"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item prop='status' label="状态">
           <el-select v-model="editingData.status" placeholder="请选择">
             <el-option v-for="item in status" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="绑定模板 ID">
+        <el-form-item prop='templateId' label="绑定模板 ID">
           <el-input v-model="editingData.templateId"></el-input>
         </el-form-item>
-        <el-form-item label="AppID">
+        <el-form-item prop='appId' label="AppID">
           <el-input v-model="editingData.appId"></el-input>
         </el-form-item>
-        <el-form-item label="AppSecret">
+        <el-form-item prop='appSecret' label="AppSecret">
           <el-input v-model="editingData.appSecret"></el-input>
         </el-form-item>
-        <el-form-item label="SecondDomain">
+        <el-form-item prop='secondDomain' label="SecondDomain">
           <el-input v-model="editingData.secondDomain"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isEditUserDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="editUser">确定</el-button>
+        <el-button type="primary" @click="validate('editingData','editUser')">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -164,10 +164,106 @@ export default {
           value: 'limited',
           label: '限制'
         }
-      ]
+      ],
+      rules: {
+        userName: [
+          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        roleId: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        telephone: [
+          { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法手机号',
+            trigger: 'blur'
+          }
+        ],
+        openID: [
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法OpenID',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          { max: 40, message: '最长为40个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ],
+        nickName: [
+          { max: 20, message: '最长为20个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入昵称',
+            trigger: 'blur'
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: '请选择状态',
+            trigger: 'change'
+          }
+        ],
+        templateId: [
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法模板ID',
+            trigger: 'blur'
+          }
+        ],
+        appId: [
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法AppID',
+            trigger: 'blur'
+          }
+        ],
+        appSecret: [
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法appSecret',
+            trigger: 'blur'
+          }
+        ],
+        secondDomain: [
+          { min: 1, max: 30, message: '最长为30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入合法secondDomain',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
+    validate(form, cb) {
+      /**
+       * 函数式表单验证
+       * @param form 表单ref引用名
+       * @param cb 验证成功需要调用的函数名
+       */
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          this[cb]()
+        } else {
+          this.$message({
+            type: 'error',
+            message: '表单验证失败！'
+          })
+          return false
+        }
+      })
+    },
     getRoleName(id) {
       const role = this.roleList.filter(item => item.id === id)[0]
       if (role && role.roleName) {

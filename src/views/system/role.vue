@@ -31,12 +31,12 @@
           </el-tree>
         </el-col>
         <el-col :span="12">
-          <el-form label-position="left" label-width="150px">
-            <el-form-item label="角色名">
-              <el-input v-model='roleName'></el-input>
+          <el-form :rules='rules' ref='addForm' :model='addForm' label-position="left" label-width="150px">
+            <el-form-item label="角色名" prop='roleName'>
+              <el-input v-model='addForm.roleName'></el-input>
             </el-form-item>
-            <el-form-item label="简介">
-              <el-input v-model='roleDesc'></el-input>
+            <el-form-item label="简介" prop='roleDesc'>
+              <el-input v-model='addForm.roleDesc'></el-input>
             </el-form-item>
             <el-form-item label="共享数据">
               <el-switch></el-switch>
@@ -53,7 +53,7 @@
       </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isCreateRoleDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="createRole">确定</el-button>
+        <el-button type="primary" @click="validate('addForm','createRole')">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="编辑角色" :visible.sync="isEditRoleDialogVisible">
@@ -63,11 +63,11 @@
           </el-tree>
         </el-col>
         <el-col :span="12">
-          <el-form label-position="left" label-width="150px">
-            <el-form-item label="角色名">
+          <el-form :model='editingData' :rules='rules' ref='editingData' label-position="left" label-width="150px">
+            <el-form-item label="角色名" prop='roleName'>
               <el-input v-model="editingData.roleName"></el-input>
             </el-form-item>
-            <el-form-item label="简介">
+            <el-form-item label="简介" prop='roleDesc'>
               <el-input v-model='editingData.roleDesc'></el-input>
             </el-form-item>
             <el-form-item label="共享数据">
@@ -94,7 +94,7 @@
       </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isEditRoleDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="editRole">确定</el-button>
+        <el-button type="primary" @click="validate('editingData','editRole')">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -123,9 +123,25 @@ export default {
         name: '管理员'
       },
       userID: undefined,
-      roleDesc: '',
-      roleName: '',
-      editingData: {} // 当前正在编辑的角色数据
+      addForm: {
+        roleDesc: '',
+        roleName: ''
+      },
+      editingData: {}, // 当前正在编辑的角色数据
+      rules: {
+        roleName: [
+          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+          { required: true, message: '请输入角色名', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { max: 100, message: '最长为100个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入角色描述',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -215,6 +231,24 @@ export default {
           console.log('err', err)
         })
     },
+    validate(form, cb) {
+      /**
+       * 函数式表单验证
+       * @param form 表单ref引用名
+       * @param cb 验证成功需要调用的函数名
+       */
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          this[cb]()
+        } else {
+          this.$message({
+            type: 'error',
+            message: '表单验证失败！'
+          })
+          return false
+        }
+      })
+    },
     createRole() {
       const permissions = this.$refs.tree.getCheckedKeys()
       const time = new Date().toISOString()
@@ -223,8 +257,8 @@ export default {
         createTime: time,
         id: 0,
         lastUpdateTime: time,
-        roleDesc: this.roleDesc,
-        roleName: this.roleName
+        roleDesc: this.addForm.roleDesc,
+        roleName: this.addForm.roleName
       }
       createRole({
         permissions: permissions,
