@@ -25,6 +25,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="lastUpdateTime" label="修改时间" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
