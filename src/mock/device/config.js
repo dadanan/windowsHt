@@ -109,11 +109,16 @@ const list = [
 export default {
   getList(config) {
     const { page = 1, limit = 15 } = param2Obj(config.url)
-    const pageList = list.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+    const pageList = list.filter(
+      (item, index) => index < limit * page && index >= limit * (page - 1)
+    )
 
     return {
-      total: list.length,
-      items: pageList
+      data: {
+        total: list.length,
+        items: pageList
+      },
+      code: 200
     }
   }
 }

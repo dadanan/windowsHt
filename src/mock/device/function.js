@@ -20,14 +20,16 @@ const list = [
     id: 3,
     name: '湿度传感器 1',
     functionId: 111,
-    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    description:
+      '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
     permissionList: ['r']
   },
   {
     id: 4,
     name: '风机转速控制 1',
     functionId: 312,
-    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    description:
+      '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
     permissionList: ['r', 'w'],
     config: { type: 3 }
   },
@@ -35,7 +37,8 @@ const list = [
     id: 5,
     name: 'PM2.5 传感器 1',
     functionId: 'a12',
-    description: '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
+    description:
+      '打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点打法沙发沙发沙发沙发沙发放大撒旦发射点',
     permissionList: ['r']
   }
 ]
@@ -43,11 +46,15 @@ const list = [
 export default {
   getList(config) {
     const { page = 1, limit = 15 } = param2Obj(config.url)
-    const pageList = list.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-
+    const pageList = list.filter(
+      (item, index) => index < limit * page && index >= limit * (page - 1)
+    )
     return {
-      total: list.length,
-      items: pageList
+      data: {
+        total: list.length,
+        items: pageList
+      },
+      code: 200
     }
   }
 }
