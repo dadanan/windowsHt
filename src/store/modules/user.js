@@ -42,6 +42,7 @@ const user = {
     },
     SET_PERMISSION: (state, permission) => {
       state.permission = permission
+      window.localStorage.setItem('permission', JSON.stringify(permission))
     }
   },
 
@@ -65,47 +66,17 @@ const user = {
             commit('SET_TOKEN', data.token)
             setToken(data.token)
 
-            // 先模拟permission
-            data['permission'] = [
+            // 手动增加权限（这几个页面路由配置有些特殊）
+            data.permissions.unshift(
+              'big-picture-mode/solution:1:get',
+              'big-picture-mode/project:1:get',
               'big-picture-mode:solution:get',
-              'big-picture-mode:project:get',
-              'analytics:order:get',
-              'analytics:user:post',
-              'analytics:device:post',
-              'analytics:system:post',
-              'device:list:get',
-              'device:group:post',
-              'device:cluster:post',
-              'device:config:post',
-              'device:model:post',
-              'device:function:post',
-              'alarm:device:get',
-              'alarm:level:get',
-              'alarm:process:get',
-              'order:rent:get',
-              'order:payment:get',
-              'order:sales:get',
-              'order:after-sale:get',
-              'income:rule:get',
-              'income:bill:get',
-              'rent:wechat:get',
-              'rent:blacklist:get',
-              'rent:toll:get',
-              'rent:putin:get',
-              'rent:operator:get',
-              'rent:payment:get',
-              'system:client:get',
-              'system:role:get',
-              'system:user:get',
-              'system:setting:get',
-              'message:system:get',
-              'message:user:get',
-              'message:alarm:get',
-              'message:after-sale:get'
-            ]
-            if (data.permission && data.permission.length > 0) {
+              'big-picture-mode:project:get'
+            )
+            if (data.permissions && data.permissions.length > 0) {
               // 验证返回的permission是否是一个非空数组
-              commit('SET_PERMISSION', data.permission)
+              console.log('login 设置')
+              commit('SET_PERMISSION', data.permissions)
             } else {
               reject('getInfo: permission must be a non-null array !')
             }
@@ -115,7 +86,6 @@ const user = {
 
             commit('SET_AVATAR', user.avatar)
             commit('SET_INTRODUCTION', user.introduction)
-            // debugger
 
             store.dispatch('GenerateRoutes', data).then(() => {
               // 根据permission权限生成可访问的路由表

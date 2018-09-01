@@ -4,6 +4,7 @@ import { Message } from 'element-ui'
 import store from '@/store'
 
 const request2 = axios.create({
+  // baseURL: 'http://localhost:9528/hush',
   baseURL: 'http://localhost:9528/temp',
   timeout: 5000
 })
@@ -39,47 +40,34 @@ request2.interceptors.response.use(
   }
 )
 
-export function createDeviceModel(data) {
+export function createDevice(data) {
   return request2({
-    url: '/api/deviceModel/createDeviceModel',
+    url: '/api/device/createDevice',
     method: 'post',
     data
   })
 }
 
-export function deleteModelById(id) {
+export function deleteDevice(data) {
   return request2({
-    url: `/api/deviceModel/deleteModelById/${id}`,
-    method: 'delete'
-  })
-}
-
-export function select(data) {
-  return request2({
-    url: '/api/deviceModel/select',
+    url: '/api/device/deleteDevice',
     method: 'post',
     data
   })
 }
 
-export function selectById(id) {
+export function getList(data) {
   return request2({
-    url: `/api/deviceModel/selectById/${id}`,
-    method: 'get'
+    url: '/api/device/queryDevice',
+    method: 'post',
+    data
   })
 }
 
-export function selectByTypeId(id) {
+export function assignDeviceToCustomer(data) {
   return request2({
-    url: `/api/deviceModel/selectByTypeId/${id}`,
-    method: 'get'
-  })
-}
-
-export function updateDeviceModel(data) {
-  return request2({
-    url: '/api/deviceModel/updateDeviceModel',
-    method: 'put',
+    url: '/api/device/assignDeviceToCustomer',
+    method: 'post',
     data
   })
 }

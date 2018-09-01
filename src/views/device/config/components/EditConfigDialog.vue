@@ -5,11 +5,7 @@
         <d-title>设备配置</d-title>
         <el-form-item label="TypeID">
           <el-select v-model="form.typeId" @change="handleModelChange">
-            <el-option
-              v-for="model in modelList"
-              :key="model.typeId"
-              :label="model.name"
-              :value="model.typeId">
+            <el-option v-for="model in modelList" :key="model.typeId" :label="model.name" :value="model.typeId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -36,34 +32,21 @@
           <el-table :data="functionList" class="mb20">
             <el-table-column type="selection"></el-table-column>
             <el-table-column type="index"></el-table-column>
-            <el-table-column
-              prop="name"
-              label="名称"
-              show-overflow-tooltip sortable>
+            <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              prop="functionId"
-              label="硬件功能 ID"
-              show-overflow-tooltip sortable>
+            <el-table-column prop="functionId" label="硬件功能 ID" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              label="读写权限"
-              show-overflow-tooltip sortable>
+            <el-table-column label="读写权限" show-overflow-tooltip sortable>
               <template slot-scope="scope">
                 {{ scope.row.permissionList.map(el => permissionListMap[el]).join(', ') }}
               </template>
             </el-table-column>
-            <el-table-column
-              label="配置方式"
-              show-overflow-tooltip sortable>
+            <el-table-column label="配置方式" show-overflow-tooltip sortable>
               <template slot-scope="scope">
                 {{ scope.row.config === undefined ? '不可配置' : configTypeMap[scope.row.config.type] }}
               </template>
             </el-table-column>
-            <el-table-column
-              label="备注"
-              prop="description"
-              show-overflow-tooltip>
+            <el-table-column label="备注" prop="description" show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="操作" show-overflow-tooltip>
               <template slot-scope="scope">
@@ -108,69 +91,69 @@
 </template>
 
 <script>
-  import ImageUploader from '@/components/ImageUploader'
-  import EditFunctionDialog from './EditFunctionDialog'
-  import { fetchList as modelFetchList } from '@/api/device/model'
-  import DTitle from '@/components/Title'
+import ImageUploader from '@/components/ImageUploader'
+import EditFunctionDialog from './EditFunctionDialog'
+import { fetchList as modelFetchList } from '@/api/device/model'
+import DTitle from '@/components/Title'
 
-  export default {
-    components: {
-      EditFunctionDialog,
-      ImageUploader,
-      DTitle
-    },
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      }
-    },
-    data() {
-      return {
-        form: {
-          typeId: 'fen-03',
-          name: '',
-          source: '',
-          functionList: [],
-          codeMap: '',
-          description: '',
-          isRelated: false,
-          isUpdateable: false,
-          isResettable: false,
-          manual: ''
-        },
-        modelList: [],
+export default {
+  components: {
+    EditFunctionDialog,
+    ImageUploader,
+    DTitle
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      form: {
+        typeId: 'fen-03',
+        name: '',
+        source: '',
         functionList: [],
-        permissionListMap: { 'r': '可读', 'w': '可写' },
-        configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
-        editFunctionDialogVisible: false
-      }
-    },
-    created() {
-      this.getModelList().then(() => {
-        this.handleModelChange(this.form.typeId)
+        codeMap: '',
+        description: '',
+        isRelated: false,
+        isUpdateable: false,
+        isResettable: false,
+        manual: ''
+      },
+      modelList: [],
+      functionList: [],
+      permissionListMap: { r: '可读', w: '可写' },
+      configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
+      editFunctionDialogVisible: false
+    }
+  },
+  created() {
+    // this.getModelList().then(() => {
+    //   this.handleModelChange(this.form.typeId)
+    // })
+  },
+  methods: {
+    getModelList() {
+      return modelFetchList({
+        page: 1,
+        limit: 1000
+      }).then(response => {
+        this.modelList = response.data.items
       })
     },
-    methods: {
-      getModelList() {
-        return modelFetchList({
-          page: 1,
-          limit: 1000
-        }).then(response => {
-          this.modelList = response.data.items
-        })
-      },
-      handleModelChange(typeId) {
-        const model = this.modelList.find(model => model.typeId === typeId)
-        this.form.pic = model.pic
-        this.form.name = model.name
-        this.form.source = model.source
-        this.form.functionList = model.functionList
-        this.form.codeMap = model.codeMap
-        this.form.description = model.description
+    handleModelChange(typeId) {
+      // const model = this.modelList.find(model => model.typeId === typeId)
+      // this.form.pic = model.pic
+      // this.form.name = model.name
+      // this.form.source = model.source
+      // this.form.functionList = model.functionList
+      // this.form.codeMap = model.codeMap
+      // this.form.description = model.description
 
-        this.functionList = model.functionList
-      }
+      // this.functionList = model.functionList
     }
   }
+}
 </script>

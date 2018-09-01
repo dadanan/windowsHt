@@ -8,117 +8,135 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column
-          prop="name"
-          label="名称"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="ablityName" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          prop="functionId"
-          label="硬件功能 ID"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="ablityType" label="类型(标签)" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          label="读写权限"
-          show-overflow-tooltip sortable>
+        <el-table-column label="运行状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.permissionList.map(el => permissionListMap[el]).join(', ') }}
+            {{ scope.row.runStatus === 0 ? '可运行' : '不可运行' }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="配置方式"
-          show-overflow-tooltip sortable>
+        <el-table-column label="读写权限" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            {{ scope.row.readStatus === 1 ? '可读' : '不可读'}} {{ scope.row.writeStatus === 1 ? '、可写' : '、不可写'}}
+          </template>
+        </el-table-column>
+        <el-table-column label="配置方式" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             {{ scope.row.config === undefined ? '不可配置' : configTypeMap[scope.row.config.type] }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="备注"
-          prop="description"
-          show-overflow-tooltip>
+        <el-table-column label="备注" prop="remark" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column label="指令" prop="dirValue" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="editFunctionDialogVisible = true">编辑</el-button>
-            <el-button type="text" @click="deleteFunction">删除</el-button>
+            <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
+            <el-button type="text" @click="deleteFunction(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="listQuery.page"
-        :page-sizes="[10, 20, 40]"
-        :page-size="listQuery.limit"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <create-function-dialog :visible.sync="createFunctionDialogVisible"></create-function-dialog>
-    <edit-function-dialog :visible.sync="editFunctionDialogVisible"></edit-function-dialog>
+    <create-function-dialog :visible.sync="createFunctionDialogVisible" @add-data='addData'></create-function-dialog>
+    <edit-function-dialog :visible.sync="editFunctionDialogVisible" @update-data='updateData' :data='editingData'></edit-function-dialog>
   </div>
 </template>
 
 <script>
-  import CreateFunctionDialog from './components/CreateFunctionDialog'
-  import EditFunctionDialog from './components/EditFunctionDialog'
-  import { fetchList } from '@/api/device/function'
+import CreateFunctionDialog from './components/CreateFunctionDialog'
+import EditFunctionDialog from './components/EditFunctionDialog'
+import { fetchList, deleteAblity } from '@/api/device/function'
 
-  export default {
-    components: {
-      CreateFunctionDialog,
-      EditFunctionDialog
+export default {
+  components: {
+    CreateFunctionDialog,
+    EditFunctionDialog
+  },
+  data() {
+    return {
+      loading: true,
+      list: [],
+      total: 0,
+      listQuery: {},
+      permissionListMap: { r: '可读', w: '可写' },
+      configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
+      createFunctionDialogVisible: false,
+      editFunctionDialogVisible: false,
+      editingData: {}
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    addData(data) {
+      this.list.unshift(data)
     },
-    data() {
-      return {
-        loading: true,
-        list: null,
-        total: 0,
-        listQuery: {
-          page: 1,
-          limit: 10
-        },
-        permissionListMap: { 'r': '可读', 'w': '可写' },
-        configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
-        createFunctionDialogVisible: false,
-        editFunctionDialogVisible: false
-      }
+    updateData(data) {
+      this.list.map(item => {
+        if (item.id === data.id) {
+          Object.assign(item, data)
+        }
+      })
     },
-    created() {
+    showEditRoleDialog(data) {
+      this.editFunctionDialogVisible = true
+      this.editingData = data
+    },
+    getList() {
+      this.loading = true
+      fetchList(this.listQuery).then(res => {
+        this.list = res.data
+        this.total = res.data.length
+        this.loading = false
+      })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
       this.getList()
     },
-    methods: {
-      getList() {
-        this.loading = true
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.items
-          this.total = response.data.total
-          this.loading = false
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getList()
+    },
+    deleteFunction(id) {
+      this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deleteAblity(id)
+            .then(res => {
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 从表格中移除此条数据
+                this.list = this.list.filter(item => item.id !== id)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              console.log('err', err)
+            })
         })
-      },
-      handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
-      },
-      handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
-      },
-      deleteFunction() {
-        this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
+        .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           })
         })
-      }
     }
   }
+}
 </script>

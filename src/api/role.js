@@ -36,3 +36,10 @@ export function updateRole(data) {
     data
   })
 }
+
+export function getRoleDetail(id) {
+  return request({
+    url: `/role/getRoleDetail/${id}`,
+    method: 'get'
+  })
+}

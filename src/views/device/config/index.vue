@@ -3,57 +3,48 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加</el-button>
+          <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加
+          </el-button>
         </el-button-group>
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
+        <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
             <img :src="scope.row.pic" :alt="scope.row.name" class="block">
           </template>
         </el-table-column>
-        <el-table-column
-          prop="name"
-          label="名称"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="typeId" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          prop="typeId"
-          label="TypeID"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="typeId" label="(类型)TypeID" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          prop="source"
-          label="来源"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="source" label="对应名" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          label="功能项"
-          show-overflow-tooltip sortable>
+        <el-table-column label="功能项" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.functionList.map(el => el.name).join(', ') }}
+            <!-- {{ scope.row.functionList.map(el => el.name).join(', ') }} -->
           </template>
         </el-table-column>
-        <el-table-column
-          label="备注"
-          prop="description"
-          show-overflow-tooltip>
+        <el-table-column prop="owner" label="归属(客户)" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          prop="user"
-          label="创建者"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="remark" label="productID" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column
-          prop="owner"
-          label="归属"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="user" label="二维码" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column
-          prop="createdAt"
-          label="创建时间"
-          show-overflow-tooltip sortable>
+        <el-table-column prop="createdAt" label="创建者" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="创建时间" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="设备描述" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="硬件信息" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="软件文件" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -62,79 +53,134 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="listQuery.page"
-        :page-sizes="[10, 20, 40]"
-        :page-size="listQuery.limit"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible"></create-config-dialog>
     <edit-config-dialog :visible.sync="editConfigDialogVisible"></edit-config-dialog>
+    <el-dialog title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
+      <el-form inline>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.type">类别</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.publicName">公众号</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.deviceTypeList">产品类型</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.groupList">组信息</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.administrator">管理员</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.intro">备注说明</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.deviceTotal">客户设备数</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.orderTotal">客户订单数</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.isDashboardEnabled">后台开放与否</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.isAndroidEnabled">安卓开放与否</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.use">业务方向</el-checkbox>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="isClientColumnVisibleDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="isClientColumnVisibleDialogVisible = false">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import CreateConfigDialog from './components/CreateConfigDialog'
-  import EditConfigDialog from './components/EditConfigDialog'
-  import { fetchList } from '@/api/device/config'
+import CreateConfigDialog from './components/CreateConfigDialog'
+import EditConfigDialog from './components/EditConfigDialog'
+import { select } from '@/api/device/config'
 
-  export default {
-    components: {
-      CreateConfigDialog,
-      EditConfigDialog
-    },
-    data() {
-      return {
-        loading: true,
-        list: null,
-        total: 0,
-        listQuery: {
-          page: 1,
-          limit: 10
-        },
-        createConfigDialogVisible: false,
-        editConfigDialogVisible: false
+export default {
+  data() {
+    return {
+      loading: false,
+      list: null,
+      total: 0,
+      listQuery: {
+        page: 1,
+        limit: 100
+      },
+      createConfigDialogVisible: false,
+      editConfigDialogVisible: false,
+      isClientColumnVisibleDialogVisible: false,
+      clientColumnVisible: {
+        name: true,
+        type: true,
+        publicName: true,
+        deviceTypeList: true,
+        groupList: true,
+        administrator: true,
+        intro: true,
+        deviceTotal: false,
+        orderTotal: false,
+        isDashboardEnabled: false,
+        isAndroidEnabled: false,
+        use: false
       }
+    }
+  },
+  methods: {
+    getList() {
+      this.loading = true
+      select(this.listQuery).then(res => {
+        this.list = res.data
+        this.loading = false
+      })
     },
-    created() {
+    handleSizeChange(val) {
+      this.listQuery.limit = val
       this.getList()
     },
-    methods: {
-      getList() {
-        this.loading = true
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.items
-          this.total = response.data.total
-          this.loading = false
-        })
-      },
-      handleSizeChange(val) {
-        this.listQuery.limit = val
-        this.getList()
-      },
-      handleCurrentChange(val) {
-        this.listQuery.page = val
-        this.getList()
-      },
-      deleteFunction() {
-        this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getList()
+    },
+    deleteFunction() {
+      this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
           this.$message({
             type: 'success',
             message: '删除成功!'
           })
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           })
         })
-      }
     }
+  },
+  created() {
+    // this.getList()
+  },
+  components: {
+    CreateConfigDialog,
+    EditConfigDialog
   }
+}
 </script>

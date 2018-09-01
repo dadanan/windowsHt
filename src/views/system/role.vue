@@ -38,7 +38,7 @@
             <el-form-item label="简介" prop='roleDesc'>
               <el-input v-model='addForm.roleDesc'></el-input>
             </el-form-item>
-            <el-form-item label="共享数据">
+            <!-- <el-form-item label="共享数据">
               <el-switch></el-switch>
             </el-form-item>
             <el-form-item label="设置分润权限">
@@ -47,7 +47,7 @@
                 <el-radio label="入账权限"></el-radio>
                 <el-radio label="收款权限"></el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
         </el-col>
       </el-row>
@@ -59,7 +59,7 @@
     <el-dialog title="编辑角色" :visible.sync="isEditRoleDialogVisible">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-tree :data="permissionList" ref='editTree' show-checkbox node-key="id" :default-expand-all='true' :default-checked-keys="[]" :props="defaultProps" class="permission-list">
+          <el-tree :data="permissionList" ref='editTree' show-checkbox node-key="id" :default-expand-all='true' :props="defaultProps" class="permission-list">
           </el-tree>
         </el-col>
         <el-col :span="12">
@@ -70,16 +70,6 @@
             <el-form-item label="简介" prop='roleDesc'>
               <el-input v-model='editingData.roleDesc'></el-input>
             </el-form-item>
-            <el-form-item label="共享数据">
-              <el-switch></el-switch>
-            </el-form-item>
-            <el-form-item label="设置分润权限">
-              <el-radio-group>
-                <el-radio label="无"></el-radio>
-                <el-radio label="入账权限"></el-radio>
-                <el-radio label="收款权限"></el-radio>
-              </el-radio-group>
-            </el-form-item>
             <el-form-item label="修改时间">
               <div>{{new Date(editingData.lastUpdateTime).toLocaleString()}}</div>
             </el-form-item>
@@ -87,7 +77,7 @@
               <div>{{new Date(editingData.createTime).toLocaleString()}}</div>
             </el-form-item>
             <el-form-item label="系统用户数量">
-              <div>0</div>
+              <div>{{editingData.userCount}}</div>
             </el-form-item>
           </el-form>
         </el-col>
@@ -106,7 +96,8 @@ import {
   createRole,
   getRoleList,
   deleteRole,
-  updateRole
+  updateRole,
+  getRoleDetail
 } from '@/api/role'
 export default {
   data() {
@@ -147,7 +138,7 @@ export default {
   methods: {
     showEditRoleDialog(data) {
       this.isEditRoleDialogVisible = true
-      this.editingData = data
+      this.getRoleDetail(data.id)
     },
     editRole() {
       updateRole({
@@ -178,6 +169,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    getRoleDetail(id) {
+      getRoleDetail(id).then(res => {
+        const data = res.data
+        this.editingData = data.role
+        this.$refs.editTree.setCheckedNodes(data.permissions)
+      })
     },
     deleteRole(id) {
       this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
@@ -220,7 +218,7 @@ export default {
     getPermissions() {
       getPermissions()
         .then(res => {
-          const data = res.data.data
+          const data = res.data
           if (res.code === 200) {
             if (data && data.length > 0) {
               this.computePermissionList(data)
@@ -260,10 +258,11 @@ export default {
         roleDesc: this.addForm.roleDesc,
         roleName: this.addForm.roleName
       }
-      createRole({
-        permissions: permissions,
-        role
-      })
+      const form = {
+        permissions,
+        role: role
+      }
+      createRole(form)
         .then(res => {
           if (res.code === 200) {
             this.$message({
@@ -271,9 +270,11 @@ export default {
               message: '添加成功!'
             })
             this.isCreateRoleDialogVisible = false
+
+            form.role.id = res.data
             this.roleList.unshift({
-              ...role,
-              id: res.data
+              ...form.role,
+              userCount: 0
             })
           } else {
             this.$message({

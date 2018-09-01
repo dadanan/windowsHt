@@ -3,6 +3,10 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 
+/**
+ * 软件版式
+ */
+
 const request2 = axios.create({
   baseURL: 'http://localhost:9528/temp',
   timeout: 5000
@@ -39,47 +43,40 @@ request2.interceptors.response.use(
   }
 )
 
-export function createDeviceModel(data) {
+export function createWxFormat(data) {
   return request2({
-    url: '/api/deviceModel/createDeviceModel',
+    url: '/api/wxFormat/createWxFormat',
     method: 'post',
     data
   })
 }
 
-export function deleteModelById(id) {
+export function deleteById(id) {
   return request2({
-    url: `/api/deviceModel/deleteModelById/${id}`,
+    url: `/api/wxFormat/deleteById/${id}`,
     method: 'delete'
   })
 }
 
 export function select(data) {
   return request2({
-    url: '/api/deviceModel/select',
+    url: '/api/wxFormat/select',
     method: 'post',
     data
   })
 }
 
-export function selectById(id) {
+export function updateWxFormat(data) {
   return request2({
-    url: `/api/deviceModel/selectById/${id}`,
-    method: 'get'
-  })
-}
-
-export function selectByTypeId(id) {
-  return request2({
-    url: `/api/deviceModel/selectByTypeId/${id}`,
-    method: 'get'
-  })
-}
-
-export function updateDeviceModel(data) {
-  return request2({
-    url: '/api/deviceModel/updateDeviceModel',
+    url: '/api/wxFormat/updateWxFormat',
     method: 'put',
     data
+  })
+}
+
+export function selectFormatsByCustomerId(customerId, typeId) {
+  return request2({
+    url: `/api/wxFormat/selectFormatsByCustomerId/${customerId}/${typeId}`,
+    method: 'get'
   })
 }

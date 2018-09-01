@@ -12,6 +12,10 @@ function hasPermission(permission, route) {
 const transformType = data => {
   const result = []
   data.forEach(item => {
+    if (!/:/.test(item)) {
+      // 如果没有检测到“:”，忽略此项
+      return
+    }
     item = item.split(':')
     // 判断是否在result中已经添加过该一级路由对象
     const index = result.findIndex(obj => obj.path === item[0])
@@ -74,8 +78,8 @@ const thePermission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        let { permission } = data
-        permission = transformType(permission)
+        const { permissions } = data
+        const permission = transformType(permissions)
         let accessedRouters
         if (permission.indexOf('admin') >= 0) {
           accessedRouters = asyncRouterMap

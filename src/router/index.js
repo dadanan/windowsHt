@@ -67,25 +67,43 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  // {
+  //   path: '/big-picture-mode',
+  //   // component: () => import('@/views/big-picture-mode'),
+  //   name: 'big-picture-mode',
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'solution',
+  //       component: () => import('@/views/big-picture-mode/solution'),
+  //       name: 'big-picture-mode-solution',
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'project',
+  //       component: () => import('@/views/big-picture-mode/project'),
+  //       name: 'big-picture-mode-project',
+  //       hidden: true
+  //     }
+  //   ]
+  // },
   {
     path: '/big-picture-mode',
     component: () => import('@/views/big-picture-mode'),
     name: 'big-picture-mode',
-    hidden: true,
-    children: [
-      {
-        path: 'solution',
-        component: () => import('@/views/big-picture-mode/solution'),
-        name: 'big-picture-mode-solution',
-        hidden: true
-      },
-      {
-        path: 'project',
-        component: () => import('@/views/big-picture-mode/project'),
-        name: 'big-picture-mode-project',
-        hidden: true
-      }
-    ]
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution'),
+    name: 'big-picture-mode-solution',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/project',
+    component: () => import('@/views/big-picture-mode/project'),
+    name: 'big-picture-mode-project',
+    hidden: true
   },
   {
     path: '/analytics',
@@ -429,6 +447,14 @@ export const asyncRouterMap = [
         name: 'systemSetting',
         meta: {
           title: 'systemSetting'
+        }
+      },
+      {
+        path: 'software',
+        component: () => import('@/views/system/software'),
+        name: 'systemSoftware',
+        meta: {
+          title: 'systemSoftware'
         }
       }
     ]

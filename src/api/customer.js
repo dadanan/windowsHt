@@ -3,6 +3,9 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 
+/**
+ * 客户管理
+ */
 const request2 = axios.create({
   baseURL: 'http://localhost:9528/temp',
   timeout: 5000
@@ -39,47 +42,40 @@ request2.interceptors.response.use(
   }
 )
 
-export function createDeviceModel(data) {
+export function saveDetail(data) {
   return request2({
-    url: '/api/deviceModel/createDeviceModel',
+    url: '/api/customer/saveDetail',
     method: 'post',
     data
   })
 }
 
-export function deleteModelById(id) {
+export function updateDetail(data) {
   return request2({
-    url: `/api/deviceModel/deleteModelById/${id}`,
-    method: 'delete'
+    url: '/api/customer/updateDetail',
+    method: 'put',
+    data
   })
 }
 
 export function select(data) {
   return request2({
-    url: '/api/deviceModel/select',
+    url: '/api/customer/select',
     method: 'post',
     data
   })
 }
 
+export function deleteCustomerById(id) {
+  return request2({
+    url: `/api/customer/deleteCustomerById/${id}`,
+    method: 'delete'
+  })
+}
+
 export function selectById(id) {
   return request2({
-    url: `/api/deviceModel/selectById/${id}`,
+    url: `/api/customer/selectById/${id}`,
     method: 'get'
-  })
-}
-
-export function selectByTypeId(id) {
-  return request2({
-    url: `/api/deviceModel/selectByTypeId/${id}`,
-    method: 'get'
-  })
-}
-
-export function updateDeviceModel(data) {
-  return request2({
-    url: '/api/deviceModel/updateDeviceModel',
-    method: 'put',
-    data
   })
 }

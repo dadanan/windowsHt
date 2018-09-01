@@ -41,6 +41,7 @@ export default {
     systemRole: '角色管理',
     systemUser: '系统用户',
     systemSetting: '系统设置',
+    systemSoftware: '软件版式',
     message: '消息管理',
     systemMessage: '系统消息',
     userMessage: '客户反馈',
