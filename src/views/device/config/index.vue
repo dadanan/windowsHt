@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
+          <!-- <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button> -->
           <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加
           </el-button>
         </el-button-group>
@@ -14,49 +14,38 @@
         </el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
-            <img :src="scope.row.pic" :alt="scope.row.name" class="block">
+            <img :src="scope.row.icon" :alt="scope.row.name" class="table-img">
           </template>
         </el-table-column>
-        <el-table-column prop="typeId" label="型号" show-overflow-tooltip sortable>
+        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="typeId" label="(类型)TypeID" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="source" label="对应名" show-overflow-tooltip sortable>
+        <el-table-column prop="typeId" label="类型" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="功能项" show-overflow-tooltip sortable>
           <template slot-scope="scope">
+            ...
             <!-- {{ scope.row.functionList.map(el => el.name).join(', ') }} -->
           </template>
         </el-table-column>
-        <el-table-column prop="owner" label="归属(客户)" show-overflow-tooltip sortable>
+        <el-table-column prop="customerId" label="归属(客户)" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="remark" label="productID" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="user" label="二维码" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="createdAt" label="创建者" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="createdAt" label="创建时间" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="createdAt" label="设备描述" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="createdAt" label="硬件信息" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="createdAt" label="软件文件" show-overflow-tooltip sortable>
+        <el-table-column prop="productId" label="productID" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="version" label="版本" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="text" @click="editConfigDialogVisible = true">编辑</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="showEditDialog(scope.row)">编辑</el-button>
+            <el-button type="text" @click="deleteRow(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <create-config-dialog :visible.sync="createConfigDialogVisible"></create-config-dialog>
+    <create-config-dialog :visible.sync="createConfigDialogVisible" @add-data='addData'></create-config-dialog>
     <edit-config-dialog :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
@@ -108,7 +97,7 @@
 <script>
 import CreateConfigDialog from './components/CreateConfigDialog'
 import EditConfigDialog from './components/EditConfigDialog'
-import { select } from '@/api/device/config'
+import { select, deleteModelById } from '@/api/device/config'
 
 export default {
   data() {
@@ -136,10 +125,52 @@ export default {
         isDashboardEnabled: false,
         isAndroidEnabled: false,
         use: false
-      }
+      },
+      editingData: {}
     }
   },
   methods: {
+    addData(data) {
+      this.list.unshift(data)
+    },
+    showEditDialog(data) {
+      // this.editConfigDialogVisible = true
+      this.editingData = data
+    },
+    deleteRow(id) {
+      this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deleteModelById(id)
+            .then(res => {
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 从表格中移除此条数据
+                this.list = this.list.filter(item => item.id !== id)
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              console.log('err', err)
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
     getList() {
       this.loading = true
       select(this.listQuery).then(res => {
@@ -176,7 +207,7 @@ export default {
     }
   },
   created() {
-    // this.getList()
+    this.getList()
   },
   components: {
     CreateConfigDialog,
@@ -184,3 +215,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.table-img {
+  width: 100%;
+}
+</style>

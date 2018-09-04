@@ -317,7 +317,8 @@ export default {
         }
         list.push({
           id: item.id,
-          label: item.authName
+          label: item.authName,
+          children: []
         })
       })
       this.permissionList = list

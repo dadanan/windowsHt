@@ -21,6 +21,13 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="设备类型">
+          <el-checkbox-group v-model="addForm.typeIds">
+            <el-checkbox v-for="item in types" :key="item.id" :label="item.id">
+              {{ item.name }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="描述">
           <el-input v-model='addForm.description'></el-input>
         </el-form-item>
@@ -50,17 +57,26 @@
           </el-form-item>
           <d-title>页面功能项</d-title>
           <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
-            <el-table-column type="index" label='标号' width="50"></el-table-column>
-            <el-table-column label="名称">
-              <template slot-scope="scope">
-                <el-input v-model='scope.row.name'></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="功能类型(标签)">
-              <template slot-scope="scope">
-                <el-input v-model='scope.row.ablityType'></el-input>
-              </template>
-            </el-table-column>
+            <template>
+              <el-table-column type="index" label='标号' width="50"></el-table-column>
+              <el-table-column label="名称">
+                <template slot-scope="scope">
+                  <el-input v-model='scope.row.name'></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="功能类型(标签)">
+                <template slot-scope="scope">
+                  <el-select v-model='scope.row.ablityType' placeholder="请选择">
+                    <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>
+                </template>
+              </el-table-column>
+            </template>
           </el-table>
           <el-button @click='addMoreLine(item.wxFormatItemVos)'>+增加功能项</el-button>
         </el-form>
@@ -79,6 +95,7 @@ import ImageUploader from '@/components/Upload/image'
 import DTitle from '@/components/Title'
 import { updateWxFormat } from '@/api/format'
 import { select } from '@/api/customer'
+import { selectAllTypes } from '@/api/device/model'
 
 export default {
   props: {
@@ -93,7 +110,9 @@ export default {
   data() {
     return {
       step: 1,
-      addForm: {},
+      addForm: {
+        typeIds: []
+      },
       level: [
         {
           label: '私有',
@@ -109,14 +128,43 @@ export default {
         }
       ],
       pages: [{ wxFormatItemVos: [{}] }],
-      customers: []
+      customers: [],
+      typeList: [
+        {
+          label: '文本类',
+          value: 1
+        },
+        {
+          label: '单选类',
+          value: 2
+        },
+        {
+          label: '多选类',
+          value: 3
+        },
+        {
+          label: '阈值类',
+          value: 4
+        },
+        {
+          label: '阈值选择类',
+          value: 5
+        }
+      ],
+      types: []
     }
   },
   methods: {
+    deleteOption(data, scope) {
+      data.splice(scope.$index, 1, Object.assign({}, scope.row, { status: 2 }))
+    },
     submitForm() {
       this.pages.forEach((item, index) => {
         item.pageNo = index + 1
       })
+
+      this.addForm.typeIds = this.addForm.typeIds.join(',')
+
       const form = {
         ...this.addForm,
         wxFormatPageVos: this.pages
@@ -126,11 +174,9 @@ export default {
           type: 'success',
           message: '添加成功'
         })
-        console.log(res)
         this.$emit('add-data', form)
         this.$emit('update:visible', false)
       })
-      console.log(form)
     },
     deleteCard(index) {
       if (this.pages.length <= 1) return
@@ -165,6 +211,15 @@ export default {
       }).then(res => {
         this.customers = res.data
       })
+    },
+    selectAllTypes() {
+      selectAllTypes({
+        limit: 100,
+        page: 1
+      }).then(res => {
+        console.log('res', res)
+        this.types = res.data
+      })
     }
   },
   watch: {
@@ -172,11 +227,14 @@ export default {
       const tempForm = JSON.parse(JSON.stringify(val))
 
       this.addForm = tempForm
+      this.addForm.typeIds = this.addForm.typeIds
+        .split(',')
+        .map(id => Number(id))
 
       if (tempForm.wxFormatPageVos && tempForm.wxFormatPageVos.length > 0) {
         this.pages = tempForm.wxFormatPageVos
         // 如果没有这个参数，初始化一下
-        this.page.forEach(item => {
+        this.pages.forEach(item => {
           if (!item.wxFormatItemVos || item.wxFormatItemVos.length === 0) {
             item['wxFormatItemVos'] = [{}]
           }
@@ -186,6 +244,7 @@ export default {
   },
   created() {
     this.getCustomer()
+    this.selectAllTypes()
   },
   components: {
     ImageUploader,

@@ -192,8 +192,8 @@
     </div>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type=" primary " @click="backStep " v-if="createStep !==1 ">上一步</el-button>
-      <el-button type="primary " @click="nextStep " v-if="createStep < 4 ">下一步</el-button>
+      <el-button type=" primary " @click="backStep " v-if="createStep !==1">上一步</el-button>
+      <el-button type="primary " @click="nextStep " v-if="createStep !== 5">下一步</el-button>
       <el-button type="primary " @click="updateDetail " v-else>确定</el-button>
     </div>
   </el-dialog>
@@ -282,7 +282,7 @@ export default {
     nextStep() {
       this.createStep++
 
-      if (this.createStep === 5) {
+      if (this.createStep === 6) {
         this.isCreateClientDialogVisible = false
         this.createStep = 0
       }

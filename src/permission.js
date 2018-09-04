@@ -35,12 +35,11 @@ router.beforeEach((to, from, next) => {
           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
         })
       } else {
-        console.log('else了')
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
         if (hasPermission(store.getters.permission, to.meta.permission)) {
           next()
         } else {
-          next({ path: '/401', replace: true, query: { noGoBack: true } })
+          next({ path: '/401', replace: true, query: { noGoBack: true }})
         }
         // 可删 ↑
       }

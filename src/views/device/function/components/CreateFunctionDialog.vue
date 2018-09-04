@@ -8,14 +8,11 @@
         <el-input v-model="form.dirValue"></el-input>
       </el-form-item>
       <el-form-item label="运行状态">
-        <el-radio v-model="form.runStatus" label="1">可运行</el-radio>
-        <el-radio v-model="form.runStatus" label="0">不可运行</el-radio>
+        <el-radio v-model="form.runStatus" :label="1">可运行</el-radio>
+        <el-radio v-model="form.runStatus" :label="0">不可运行</el-radio>
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
-      </el-form-item>
-      <el-form-item label="功能类型(标签)">
-        <el-input v-model="form.ablityType"></el-input>
       </el-form-item>
       <el-form-item label="读写权限">
         <el-checkbox-group v-model="form.permissions" @change="handlePermissionListChange">
@@ -24,26 +21,44 @@
         </el-checkbox-group>
       </el-form-item>
       <template v-if="form.writeStatus">
-        <el-form-item label="配置方式">
-          <el-radio-group v-model="form.configType" @change="handleConfigTypeChange">
-            <el-radio :label="1">文本</el-radio>
-            <el-radio :label="2">多选</el-radio>
-            <el-radio :label="3">单选</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="输入文本" v-if='form.configType === 1'>
-          <el-input v-model="form.text"></el-input>
+        <el-form-item label="功能类型(标签)">
+          <el-select v-model='form.configType' placeholder="请选择" @change="handleConfigTypeChange">
+            <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <template v-if="form.configType === 2 || form.configType === 3">
           <el-form-item v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-              <el-input v-model="option.optionValue" placeholder="选项值"></el-input>
+              <el-input v-model="option.optionValue" placeholder="指令"></el-input>
               <el-button type="danger" @click="deleteConfigOption(i)">删除</el-button>
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="createConfigOption">新增选项</el-button>
+            <el-button type="primary" @click="addConfigOption">新增选项</el-button>
+          </el-form-item>
+        </template>
+        <template v-else-if="form.configType === 4">
+          <el-form-item label="极值">
+            <div class="input-group">
+              <el-input v-model="form.minVal" placeholder="最小值"></el-input>
+              <el-input v-model="form.maxVal" placeholder="最大值"></el-input>
+              <el-button type="danger" @click="deleteConfigOption(i)">删除</el-button>
+            </div>
+          </el-form-item>
+        </template>
+        <template v-else-if="form.configType === 5">
+          <el-form-item v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
+            <div class="input-group">
+              <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+              <el-input v-model="option.optionValue" placeholder="选项指令"></el-input>
+              <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+              <el-input v-model="option.minVal" placeholder="最小值"></el-input>
+              <el-button type="danger" @click="deleteConfigOption(i)">删除</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="addConfigOption">新增选项</el-button>
           </el-form-item>
         </template>
       </template>
@@ -71,19 +86,40 @@ export default {
         ablityName: '',
         dirValue: '',
         remark: '',
-        ablityType: '',
         permissions: [],
         writeStatus: 0,
         readStatus: 0,
         configType: 1,
         deviceAblityOptions: [],
         runStatus: 0
-      }
+      },
+      typeList: [
+        {
+          label: '文本类',
+          value: 1
+        },
+        {
+          label: '单选类',
+          value: 2
+        },
+        {
+          label: '多选类',
+          value: 3
+        },
+        {
+          label: '阈值类',
+          value: 4
+        },
+        {
+          label: '阈值选择类',
+          value: 5
+        }
+      ]
     }
   },
   methods: {
     createHandler() {
-      console.log(JSON.stringify(this.form))
+      this.form['ablityType'] = this.form.configType
       createDeviceAblity(this.form)
         .then(res => {
           this.$emit('add-data', {
@@ -110,12 +146,33 @@ export default {
       }
     },
     handleConfigTypeChange(type) {
+      this.$set(this.form, 'configType', type)
+      if (type === 1) {
+        delete this.form.deviceAblityOptions
+        return
+      }
       if (type === 2 || type === 3) {
-        this.$set(this.form, 'configType', type)
         this.$set(this.form, 'deviceAblityOptions', [
           {
             optionName: '',
             optionValue: ''
+          }
+        ])
+        return
+      }
+      if (type === 4) {
+        this.form.maxVal = ''
+        this.form.minVal = ''
+        delete this.form.deviceAblityOptions
+        return
+      }
+      if (type === 5) {
+        this.$set(this.form, 'deviceAblityOptions', [
+          {
+            optionName: '',
+            optionValue: '',
+            minVal: '',
+            maxVal: ''
           }
         ])
       }
@@ -123,11 +180,23 @@ export default {
     deleteConfigOption(i) {
       this.form.deviceAblityOptions.splice(i, 1)
     },
-    createConfigOption() {
-      this.form.deviceAblityOptions.push({
-        optionName: '',
-        optionValue: ''
-      })
+    addConfigOption() {
+      const type = this.form.configType
+      if (type === 2 || type === 3) {
+        this.form.deviceAblityOptions.push({
+          optionName: '',
+          optionValue: ''
+        })
+        return
+      }
+      if (type === 5) {
+        this.form.deviceAblityOptions.push({
+          optionName: '',
+          optionValue: '',
+          minVal: '',
+          maxVal: ''
+        })
+      }
     }
   }
 }

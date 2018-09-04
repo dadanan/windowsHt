@@ -21,6 +21,13 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="设备类型">
+          <el-checkbox-group v-model="addForm.typeIds">
+            <el-checkbox v-for="item in types" :key="item.id" :label="item.id">
+              {{ item.name }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="描述">
           <el-input v-model='addForm.description'></el-input>
         </el-form-item>
@@ -58,40 +65,18 @@
             </el-table-column>
             <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
-                <el-input v-model='scope.row.ablityType'></el-input>
+                <el-select v-model='scope.row.ablityType' placeholder="请选择">
+                  <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
           <el-button @click='addMoreLine(item.wxFormatItemVos)'>+增加功能项</el-button>
-          <!-- <div v-for='(option,oIndex) in options'>
-            <el-form-item label="标号">
-              {{oIndex}}
-            </el-form-item>
-            <el-form-item label="名称">
-              <el-input v-model='addForm.name'></el-input>
-            </el-form-item>
-            <el-form-item label="格式">
-              <el-select v-model="addForm.format" placeholder="请选择">
-                <el-option v-for="iItem in format" :key="iItem.value" :label="iItem.label" :value="iItem.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="值">
-              <template v-if='addForm.format === 1'>
-                <el-switch style="display: block" v-model="addForm.switch" active-color="#13ce66" inactive-color="#ff4949" active-text="有" inactive-text="无">
-                </el-switch>
-              </template>
-              <template v-if='addForm.format === 2'>
-                <el-input v-model='addForm.name'></el-input>
-              </template>
-            </el-form-item>
-            <el-form-item label="图片">
-              <image-uploader @get-url='setURL(arguments,h5Config,"img")'></image-uploader>
-            </el-form-item>
-            <el-form-item label="备注">
-              <el-input v-model='addForm.remark'></el-input>
-            </el-form-item>
-          </div> -->
         </el-form>
       </el-card>
     </div>
@@ -108,6 +93,7 @@ import ImageUploader from '@/components/Upload/image'
 import DTitle from '@/components/Title'
 import { createWxFormat } from '@/api/format'
 import { select } from '@/api/customer'
+import { selectAllTypes } from '@/api/device/model'
 
 export default {
   props: {
@@ -119,7 +105,9 @@ export default {
   data() {
     return {
       step: 1,
-      addForm: {},
+      addForm: {
+        typeIds: []
+      },
       level: [
         {
           label: '私有',
@@ -135,14 +123,43 @@ export default {
         }
       ],
       pages: [{ wxFormatItemVos: [{}] }],
-      customers: []
+      customers: [],
+      typeList: [
+        {
+          label: '文本类',
+          value: 1
+        },
+        {
+          label: '单选类',
+          value: 2
+        },
+        {
+          label: '多选类',
+          value: 3
+        },
+        {
+          label: '阈值类',
+          value: 4
+        },
+        {
+          label: '阈值选择类',
+          value: 5
+        }
+      ],
+      types: []
     }
   },
   methods: {
+    deleteOption(data, scope) {
+      data.splice(scope.$index, 1)
+    },
     submitForm() {
       this.pages.forEach((item, index) => {
         item.pageNo = index + 1
       })
+
+      this.addForm.typeIds = this.addForm.typeIds.join(',')
+
       const form = {
         ...this.addForm,
         wxFormatPageVos: this.pages
@@ -152,15 +169,12 @@ export default {
           type: 'success',
           message: '添加成功'
         })
-        console.log(res)
         this.$emit('add-data', form)
         this.$emit('update:visible', false)
       })
-      console.log(form)
     },
     deleteCard(index) {
       if (this.pages.length <= 1) return
-
       this.pages.splice(index, 1)
     },
     addCard() {
@@ -191,10 +205,20 @@ export default {
       }).then(res => {
         this.customers = res.data
       })
+    },
+    selectAllTypes() {
+      selectAllTypes({
+        limit: 100,
+        page: 1
+      }).then(res => {
+        console.log('res', res)
+        this.types = res.data
+      })
     }
   },
   created() {
     this.getCustomer()
+    this.selectAllTypes()
   },
   components: {
     ImageUploader,

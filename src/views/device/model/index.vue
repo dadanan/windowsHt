@@ -74,7 +74,6 @@ export default {
     showEditRoleDialog(data) {
       this.editModelDialogVisible = true
       this.editingData = data
-      console.log('edit', data)
     },
     addData(data) {
       this.list.unshift(data)

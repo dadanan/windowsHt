@@ -8,7 +8,8 @@ import store from '@/store'
  */
 
 const request2 = axios.create({
-  baseURL: 'http://localhost:9528/temp',
+  // baseURL: 'http://localhost:9528/temp',
+  baseURL: 'http://dev.hcocloud.com/temp',
   timeout: 5000
 })
 

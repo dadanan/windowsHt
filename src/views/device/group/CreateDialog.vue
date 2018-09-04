@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column label="联动设置" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-switch style="display: block" v-model="form.switch" active-color="#13ce66" inactive-color="#ff4949" active-text="关联" inactive-text="非关联">
+            <el-switch @change='switchChanged(scope.row)' style="display: block" v-model="scope.row.switch" active-color="#13ce66" inactive-color="#ff4949" active-text="关联" inactive-text="非关联">
             </el-switch>
           </template>
         </el-table-column>
@@ -84,6 +84,15 @@ export default {
     // this.getModelList()
   },
   methods: {
+    switchChanged(data) {
+      if (this.options.length < 2) {
+        data.switch = false
+        this.$message({
+          type: 'warning',
+          message: '开启设备‘可关联’需要存在两个及以上的设备！'
+        })
+      }
+    },
     newRow() {
       this.options.push({})
     },

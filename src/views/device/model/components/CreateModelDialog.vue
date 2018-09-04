@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加备案机型" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog title="添加设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="typeNo">
         <el-input v-model="form.typeNo"></el-input>
@@ -14,11 +14,24 @@
         <el-input v-model="form.source"></el-input>
       </el-form-item>
       <el-form-item label="功能项">
-        <el-checkbox-group v-model="form.deviceTypeAblitys">
-          <el-checkbox v-for="(item, index) in deviceTypeAblitys" :key="index" :label="item.id">
-            {{ item.ablityName }}
-          </el-checkbox>
-        </el-checkbox-group>
+        <el-table :data="deviceTypeAblitys" style="width: 100%" class="mb20" border>
+          <el-table-column label="功能项名称">
+            <template slot-scope="scope">
+              {{scope.row.ablityName}}
+            </template>
+          </el-table-column>
+          <el-table-column label="功能项类型">
+            <template slot-scope="scope">
+              {{typeModel[scope.row.ablityType]}}
+            </template>
+          </el-table-column>
+          <el-table-column label="功能项类型">
+            <template slot-scope="scope">
+              <el-switch style="display: block" v-model="scope.row.isChecked" active-color="#13ce66" inactive-color="#ff4949" active-text="选择" inactive-text="不选择">
+              </el-switch>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-form-item>
       <el-form-item label="码表">
         <image-uploader excel @get-url='getURL2'></image-uploader>
@@ -60,7 +73,14 @@ export default {
         stopWatch: '',
         remark: ''
       },
-      deviceTypeAblitys: []
+      deviceTypeAblitys: [],
+      typeModel: {
+        1: '文本类',
+        2: '单选类',
+        3: '多选类',
+        4: '阈值类',
+        5: '阈值选择类'
+      }
     }
   },
   created() {
@@ -68,9 +88,13 @@ export default {
   },
   methods: {
     createForm() {
-      const newDeviceTypeAblitys = this.form.deviceTypeAblitys.map(item => {
+      const userDeviceTypeAblitys = this.deviceTypeAblitys.filter(
+        item => item.isChecked
+      )
+
+      const newDeviceTypeAblitys = userDeviceTypeAblitys.map(item => {
         return {
-          ablityId: item
+          ablityId: item.id
         }
       })
 
@@ -81,18 +105,15 @@ export default {
 
       createDeviceType(form)
         .then(res => {
-          const tempArray = this.deviceTypeAblitys.filter(item => {
-            return this.form.deviceTypeAblitys.indexOf(item.id) !== -1
-          })
           this.$emit('update:visible', false)
           this.$emit('add-data', {
             ...form,
-            deviceTypeAblitys: tempArray,
+            deviceTypeAblitys: userDeviceTypeAblitys,
             id: res.data
           })
           console.log({
             ...form,
-            deviceTypeAblitys: tempArray,
+            deviceTypeAblitys: userDeviceTypeAblitys,
             id: res.data
           })
         })
