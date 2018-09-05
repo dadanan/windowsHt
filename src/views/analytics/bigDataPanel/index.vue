@@ -531,7 +531,7 @@
       filter: blur(5px);
     }
     .col {
-      height: 22vh;
+      height: 24vh;
       -webkit-backdrop-filter: blur(5px);
       border-radius: 5px;
       /* Google Chrome */

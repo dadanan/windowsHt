@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备禁用" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备禁用" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-table
       :data="deviceList"
       style="width: 100%" border>

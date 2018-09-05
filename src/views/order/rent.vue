@@ -42,66 +42,38 @@
           <el-button type="primary" @click="orderListColumnDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table
-        :data="orderList"
-        style="width: 100%" class="mb20" border>
+      <el-table :data="orderList" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column
-          prop="id"
-          label="订单号" show-overflow-tooltip sortable v-if="orderListColumnVisible.id">
+        <el-table-column prop="id" label="订单号" show-overflow-tooltip sortable v-if="orderListColumnVisible.id">
         </el-table-column>
-        <el-table-column
-          prop="nickname"
-          label="用户昵称" show-overflow-tooltip sortable v-if="orderListColumnVisible.nickname">
+        <el-table-column prop="nickname" label="用户昵称" show-overflow-tooltip sortable v-if="orderListColumnVisible.nickname">
         </el-table-column>
-        <el-table-column
-          prop="pos"
-          label="投放点" show-overflow-tooltip sortable v-if="orderListColumnVisible.pos">
+        <el-table-column prop="pos" label="投放点" show-overflow-tooltip sortable v-if="orderListColumnVisible.pos">
         </el-table-column>
-        <el-table-column
-          prop="deviceMAC"
-          label="设备MAC" show-overflow-tooltip sortable v-if="orderListColumnVisible.deviceMAC">
+        <el-table-column prop="deviceMAC" label="设备MAC" show-overflow-tooltip sortable v-if="orderListColumnVisible.deviceMAC">
         </el-table-column>
-        <el-table-column
-          prop="deviceName"
-          label="设备名称" show-overflow-tooltip sortable v-if="orderListColumnVisible.deviceName">
+        <el-table-column prop="deviceName" label="设备名称" show-overflow-tooltip sortable v-if="orderListColumnVisible.deviceName">
         </el-table-column>
-        <el-table-column
-          prop="cost"
-          label="支付费用" show-overflow-tooltip sortable v-if="orderListColumnVisible.cost">
+        <el-table-column prop="cost" label="支付费用" show-overflow-tooltip sortable v-if="orderListColumnVisible.cost">
         </el-table-column>
-        <el-table-column
-          prop="paymentDatetime"
-          label="支付时间" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentDatetime">
+        <el-table-column prop="paymentDatetime" label="支付时间" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentDatetime">
         </el-table-column>
-        <el-table-column
-          prop="paymentType"
-          label="支付类型" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentType">
+        <el-table-column prop="paymentType" label="支付类型" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentType">
         </el-table-column>
-        <el-table-column
-          prop="paymentName"
-          label="收费名称" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentName">
+        <el-table-column prop="paymentName" label="收费名称" show-overflow-tooltip sortable v-if="orderListColumnVisible.paymentName">
         </el-table-column>
-        <el-table-column
-          prop="state"
-          label="订单状态" show-overflow-tooltip sortable v-if="orderListColumnVisible.state">
+        <el-table-column prop="state" label="订单状态" show-overflow-tooltip sortable v-if="orderListColumnVisible.state">
         </el-table-column>
-        <el-table-column
-          label="操作">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="1"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
       </el-pagination>
     </el-card>
-    <el-dialog title="自定义显示列" :visible.sync="orderListColumnDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="orderListColumnDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="orderListColumnVisible.id">订单号</el-checkbox>
@@ -143,39 +115,39 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      const orderList = []
-      for (let i = 0; i < 15; i++) {
-        orderList.push({
-          id: '1015317745706317400',
-          nickname: '测试用户',
-          pos: '测试投放点',
-          deviceMAC: '866854037369637',
-          deviceName: '测试设备',
-          cost: '￥0.01',
-          paymentDatetime: '2018-07-17 04:56:21',
-          paymentType: '微信公众号',
-          paymentName: '1分钱4H',
-          state: '使用中'
-        })
-      }
-      return {
-        orderList,
-        orderListColumnVisible: {
-          id: true,
-          nickname: true,
-          pos: true,
-          deviceMAC: true,
-          deviceName: true,
-          cost: true,
-          paymentDatetime: true,
-          paymentType: true,
-          paymentName: true,
-          state: true
-        },
-        orderListColumnDialogVisible: false
-      }
+export default {
+  data() {
+    const orderList = []
+    for (let i = 0; i < 15; i++) {
+      orderList.push({
+        id: '1015317745706317400',
+        nickname: '测试用户',
+        pos: '测试投放点',
+        deviceMAC: '866854037369637',
+        deviceName: '测试设备',
+        cost: '￥0.01',
+        paymentDatetime: '2018-07-17 04:56:21',
+        paymentType: '微信公众号',
+        paymentName: '1分钱4H',
+        state: '使用中'
+      })
+    }
+    return {
+      orderList,
+      orderListColumnVisible: {
+        id: true,
+        nickname: true,
+        pos: true,
+        deviceMAC: true,
+        deviceName: true,
+        cost: true,
+        paymentDatetime: true,
+        paymentType: true,
+        paymentName: true,
+        state: true
+      },
+      orderListColumnDialogVisible: false
     }
   }
+}
 </script>

@@ -49,7 +49,7 @@
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateClientDialogVisible"></create-model-dialog>
     <edit-model-dialog @update-data='updateData' :visible.sync="isEditClientDialogVisible" :data='editingData'></edit-model-dialog>
-    <el-dialog title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>

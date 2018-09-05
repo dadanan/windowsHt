@@ -80,7 +80,7 @@
       <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
       </el-pagination>
     </el-card>
-    <el-dialog title="自定义显示列" :visible.sync="isColumnDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义显示列" :visible.sync="isColumnDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="alarmListColumnVisible.mac">设备 MAC</el-checkbox>

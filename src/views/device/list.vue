@@ -76,7 +76,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible"></device-detail-dialog>
-    <el-dialog title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.name">名称</el-checkbox>

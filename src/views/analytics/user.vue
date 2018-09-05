@@ -81,7 +81,7 @@
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
-    <el-dialog title="编辑看板" :visible.sync="isEditKanbanDialogVisible" class="kanban-edit">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑看板" :visible.sync="isEditKanbanDialogVisible" class="kanban-edit">
       <el-form label-position="left" label-width="100px">
         <el-form-item label="数据展示">
           <el-checkbox v-model="item.isVisible" v-for="item in kanbanData.数据展示" :key="item.id">{{ item.name }}

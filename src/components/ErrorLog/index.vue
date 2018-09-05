@@ -10,7 +10,7 @@
       </el-button>
     </el-badge>
 
-    <el-dialog title="Error Log" :visible.sync="dialogTableVisible" width="80%">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="Error Log" :visible.sync="dialogTableVisible" width="80%">
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
           <template slot-scope="scope">

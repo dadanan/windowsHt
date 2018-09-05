@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog top='4vh' :close-on-click-modal=false 
     title="工程设置"
     :visible.sync="dialogVisible"
     width="30%"

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备分配" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备分配" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-row :gutter="20">
       <el-col :span="12">
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" highlight-current-row border>

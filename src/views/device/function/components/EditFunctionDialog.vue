@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="名称">
         <el-input v-model="form.ablityName"></el-input>

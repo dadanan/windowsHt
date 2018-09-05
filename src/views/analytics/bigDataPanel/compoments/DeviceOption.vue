@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog
+    <el-dialog top='4vh' :close-on-click-modal=false 
       title="设备信息"
       :visible="dialogVisible"
       size="large"

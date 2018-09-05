@@ -34,7 +34,7 @@
       </el-form>
     </el-card>
 
-    <el-dialog title="密码找回提示" :visible.sync="showDialog" append-to-body>
+    <el-dialog top='4vh' :close-on-click-modal=false  title="密码找回提示" :visible.sync="showDialog" append-to-body>
       <pre>
         *1 若超级管理员忘记密码，可以联系环可平台客服人员；
 

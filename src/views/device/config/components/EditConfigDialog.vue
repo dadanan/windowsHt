@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="编辑设备配置" :visible="visible" @update:visible="$emit('update:visible', $event)">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑设备配置" :visible="visible" @update:visible="$emit('update:visible', $event)">
       <el-form label-width="100px" class="mb-22">
         <d-title>设备配置</d-title>
         <el-form-item label="TypeID">

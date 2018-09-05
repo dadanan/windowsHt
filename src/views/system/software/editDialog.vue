@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="遍及版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="遍及版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="基本信息"></el-step>
       <el-step title="版式内容设置"></el-step>

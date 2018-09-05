@@ -25,50 +25,30 @@
           <el-button type="primary" @click="paymentListColumnDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table
-        :data="paymentList"
-        style="width: 100%" class="mb20" border>
+      <el-table :data="paymentList" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column
-          prop="id"
-          label="充值单号" show-overflow-tooltip sortable v-if="paymentListColumnVisible.id">
+        <el-table-column prop="id" label="充值单号" show-overflow-tooltip sortable v-if="paymentListColumnVisible.id">
         </el-table-column>
-        <el-table-column
-          prop="nickname"
-          label="用户昵称" show-overflow-tooltip sortable v-if="paymentListColumnVisible.nickname">
+        <el-table-column prop="nickname" label="用户昵称" show-overflow-tooltip sortable v-if="paymentListColumnVisible.nickname">
         </el-table-column>
-        <el-table-column
-          prop="cost"
-          label="充值金额" show-overflow-tooltip sortable v-if="paymentListColumnVisible.cost">
+        <el-table-column prop="cost" label="充值金额" show-overflow-tooltip sortable v-if="paymentListColumnVisible.cost">
         </el-table-column>
-        <el-table-column
-          prop="datetime"
-          label="充值时间" show-overflow-tooltip sortable v-if="paymentListColumnVisible.datetime">
+        <el-table-column prop="datetime" label="充值时间" show-overflow-tooltip sortable v-if="paymentListColumnVisible.datetime">
         </el-table-column>
-        <el-table-column
-          prop="type"
-          label="充值方式" show-overflow-tooltip sortable v-if="paymentListColumnVisible.type">
+        <el-table-column prop="type" label="充值方式" show-overflow-tooltip sortable v-if="paymentListColumnVisible.type">
         </el-table-column>
-        <el-table-column
-          prop="state"
-          label="充值状态" show-overflow-tooltip sortable v-if="paymentListColumnVisible.state">
+        <el-table-column prop="state" label="充值状态" show-overflow-tooltip sortable v-if="paymentListColumnVisible.state">
         </el-table-column>
-        <el-table-column
-          label="操作">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="1"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
       </el-pagination>
     </el-card>
-    <el-dialog title="自定义显示列" :visible.sync="paymentListColumnDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="paymentListColumnDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="paymentListColumnVisible.id">充值单号</el-checkbox>
@@ -98,31 +78,31 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      const paymentList = []
-      for (let i = 0; i < 15; i++) {
-        paymentList.push({
-          id: '1015317745706317400',
-          nickname: '测试用户',
-          cost: '￥0.01',
-          datetime: '2018-07-17 04:56:21',
-          type: '微信公众号',
-          state: '使用中'
-        })
-      }
-      return {
-        paymentList,
-        paymentListColumnVisible: {
-          id: true,
-          nickname: true,
-          cost: true,
-          datetime: true,
-          type: true,
-          state: true
-        },
-        paymentListColumnDialogVisible: false
-      }
+export default {
+  data() {
+    const paymentList = []
+    for (let i = 0; i < 15; i++) {
+      paymentList.push({
+        id: '1015317745706317400',
+        nickname: '测试用户',
+        cost: '￥0.01',
+        datetime: '2018-07-17 04:56:21',
+        type: '微信公众号',
+        state: '使用中'
+      })
+    }
+    return {
+      paymentList,
+      paymentListColumnVisible: {
+        id: true,
+        nickname: true,
+        cost: true,
+        datetime: true,
+        type: true,
+        state: true
+      },
+      paymentListColumnDialogVisible: false
     }
   }
+}
 </script>

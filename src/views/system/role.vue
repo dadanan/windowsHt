@@ -24,7 +24,7 @@
       <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="roleList.length">
       </el-pagination>
     </el-card>
-    <el-dialog title="添加角色" :visible.sync="isCreateRoleDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="添加角色" :visible.sync="isCreateRoleDialogVisible">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-tree ref="tree" :data="permissionList" show-checkbox node-key="id" :default-expand-all='true' :props="defaultProps" class="permission-list">
@@ -38,16 +38,6 @@
             <el-form-item label="简介" prop='roleDesc'>
               <el-input v-model='addForm.roleDesc'></el-input>
             </el-form-item>
-            <!-- <el-form-item label="共享数据">
-              <el-switch></el-switch>
-            </el-form-item>
-            <el-form-item label="设置分润权限">
-              <el-radio-group>
-                <el-radio label="无"></el-radio>
-                <el-radio label="入账权限"></el-radio>
-                <el-radio label="收款权限"></el-radio>
-              </el-radio-group>
-            </el-form-item> -->
           </el-form>
         </el-col>
       </el-row>
@@ -56,7 +46,7 @@
         <el-button type="primary" @click="validate('addForm','createRole')">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="编辑角色" :visible.sync="isEditRoleDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑角色" :visible.sync="isEditRoleDialogVisible">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-tree :data="permissionList" ref='editTree' show-checkbox node-key="id" :default-expand-all='true' :props="defaultProps" class="permission-list">

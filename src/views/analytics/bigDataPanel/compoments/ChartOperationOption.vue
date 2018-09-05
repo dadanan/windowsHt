@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog top='4vh' :close-on-click-modal=false 
     title="告警信息"
     :visible.sync="dialogVisible"
     :before-close="close"

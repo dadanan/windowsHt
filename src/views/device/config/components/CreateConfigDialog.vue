@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
+  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="设备配置"></el-step>
       <el-step title="客户信息设置"></el-step>
@@ -44,7 +44,6 @@
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
       <el-table :data="abilityList" style="width: 100%" class="mb20" border>
-        <el-table-column type="selection"></el-table-column>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
             <el-input v-model='scope.row.ablityName' disabled></el-input>
@@ -57,12 +56,18 @@
         </el-table-column>
         <el-table-column label="功能类型(标签)">
           <template slot-scope="scope">
-            <el-input v-model='scope.row.ablityName' disabled></el-input>
+            {{typeModel[scope.row.ablityType]}}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button v-if='scope.row.ablityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否使用">
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
+            </el-switch>
           </template>
         </el-table-column>
       </el-table>
@@ -110,7 +115,7 @@
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.ablityId">
-                  <el-option v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
+                  <el-option v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName || item.ablityName" :value="iItem.id">
                   </el-option>
                 </el-select>
               </template>
@@ -125,7 +130,7 @@
       <el-button type="primary" v-if='step!==4 ' @click="nextStep()">下一步</el-button>
       <el-button type="primary" v-else @click="createDeviceModel">确定</el-button>
     </div>
-    <el-dialog title="自定义" :visible.sync="dialogFormVisible" append-to-body>
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义" :visible.sync="dialogFormVisible" append-to-body>
       <el-form label-width="100px" class="mb-22">
         <el-form-item label="功能项名称">
           <el-input v-model="modifyData.ablityName" disabled></el-input>
@@ -137,7 +142,7 @@
         <el-form-item v-if='modifyData.ablityType===2 || modifyData.ablityType === 3' v-for="(option, i) in modifyData.deviceAblityOptions" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项值"></el-input>
+            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.ablityType === 4'>
@@ -149,7 +154,7 @@
         <el-form-item v-if='modifyData.ablityType === 5' v-for="(option, i) in modifyData.deviceAblityOptions" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项指令"></el-input>
+            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
             <el-input v-model="option.minVal" placeholder="最小值"></el-input>
             <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
           </div>

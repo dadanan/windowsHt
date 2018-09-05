@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加设备组" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="添加设备组" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="组名">
         <el-input v-model="form.source"></el-input>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog
+    <el-dialog top='4vh' :close-on-click-modal=false 
         title="位置设置"
         :visible.sync="dialogVisible"
         size="tiny"

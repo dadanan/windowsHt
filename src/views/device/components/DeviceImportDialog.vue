@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备导入" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备导入" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div class="table-opts">
       <el-form inline class="el-form--flex">
         <div style="flex: 1;"></div>

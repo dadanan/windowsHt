@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
+  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="设备配置"></el-step>
       <el-step title="客户信息设置"></el-step>
@@ -125,7 +125,7 @@
       <el-button type="primary" v-if='step!==4 ' @click="nextStep()">下一步</el-button>
       <el-button type="primary" v-else @click="createDeviceModel">确定</el-button>
     </div>
-    <el-dialog title="自定义" :visible.sync="dialogFormVisible" append-to-body>
+    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义" :visible.sync="dialogFormVisible" append-to-body>
       <el-form label-width="100px" class="mb-22">
         <el-form-item label="功能项名称">
           <el-input v-model="modifyData.ablityName" disabled></el-input>

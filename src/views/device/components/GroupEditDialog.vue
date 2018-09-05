@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="设备组编辑" :visible="visible" @update:visible="$emit('update:visible', $event)">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="设备组编辑" :visible="visible" @update:visible="$emit('update:visible', $event)">
       <d-title>组信息</d-title>
       <el-form label-width="100px" label-position="left">
         <el-form-item label="组名">
@@ -70,7 +70,7 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog title="设备添加" :visible.sync="addDeviceDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="设备添加" :visible.sync="addDeviceDialogVisible">
       <el-form label-width="80px" label-position="left">
         <el-form-item label="typeID">
           <el-select v-model="addForm.typeID">

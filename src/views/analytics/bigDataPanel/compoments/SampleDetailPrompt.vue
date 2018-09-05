@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog top='4vh' :close-on-click-modal=false 
     title="案列详情"
     :visible.sync="dialogVisible"
     width="80%"

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div>
       <el-steps :active="createStep" finish-status="success" class="mb20" align-center>
         <el-step title="基本信息"></el-step>

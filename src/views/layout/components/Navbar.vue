@@ -31,7 +31,7 @@
         大数据模式
       </div>
     </el-menu>
-    <el-dialog title="个人设置" :visible.sync="dialogEditProfileVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="个人设置" :visible.sync="dialogEditProfileVisible">
       <el-form :rules="rules" :model="profileForm" ref='form' label-width="80px" label-position="left">
         <el-form-item label="账号">
           <el-input v-model="profileForm.userName" :disabled="true"></el-input>

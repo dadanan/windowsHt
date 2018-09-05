@@ -39,7 +39,7 @@
       <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="userList.length">
       </el-pagination>
     </el-card>
-    <el-dialog :top='"2vh"' title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
       <el-form :model='creatingData' :rules='rules' ref='creatingData' label-position="left" label-width="150px">
         <el-form-item label="账号" prop='userName'>
           <el-input v-model='creatingData.userName'></el-input>
@@ -69,7 +69,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="绑定模板 ID" prop='templateId'>
-          <el-input v-model="creatingData.templateId"></el-input>
+          <el-input type='number' v-model="creatingData.templateId"></el-input>
         </el-form-item>
         <el-form-item label="AppID" prop='appId'>
           <el-input v-model="creatingData.appId"></el-input>
@@ -77,7 +77,7 @@
         <el-form-item label="AppSecret" prop='appSecret'>
           <el-input v-model="creatingData.appSecret"></el-input>
         </el-form-item>
-        <el-form-item label="SecondDomain" prop='secondDomain'>
+        <el-form-item label="二级域名" prop='secondDomain'>
           <el-input v-model="creatingData.secondDomain"></el-input>
         </el-form-item>
       </el-form>
@@ -86,7 +86,7 @@
         <el-button type="primary" @click="validate('creatingData','createUser')">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :top='"2vh"' title="编辑系统用户" :visible.sync="isEditUserDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="编辑系统用户" :visible.sync="isEditUserDialogVisible">
       <el-form label-position="left" label-width="150px" :model='editingData' :rules='rules' ref='editingData'>
         <el-form-item label="账号" prop="userName">
           <el-input v-model='editingData.userName'></el-input>
@@ -124,7 +124,7 @@
         <el-form-item prop='appSecret' label="AppSecret">
           <el-input v-model="editingData.appSecret"></el-input>
         </el-form-item>
-        <el-form-item prop='secondDomain' label="SecondDomain">
+        <el-form-item prop='secondDomain' label="二级域名">
           <el-input v-model="editingData.secondDomain"></el-input>
         </el-form-item>
       </el-form>
@@ -183,12 +183,7 @@ export default {
           }
         ],
         openID: [
-          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
-          {
-            required: true,
-            message: '请输入合法OpenID',
-            trigger: 'blur'
-          }
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' }
         ],
         password: [
           { max: 40, message: '最长为40个字符', trigger: 'blur' },
@@ -214,12 +209,7 @@ export default {
           }
         ],
         templateId: [
-          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
-          {
-            required: true,
-            message: '请输入合法模板ID',
-            trigger: 'blur'
-          }
+          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' }
         ],
         appId: [
           { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },

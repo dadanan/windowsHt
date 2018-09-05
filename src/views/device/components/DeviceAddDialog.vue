@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="设备添加" :visible="visible" @update:visible="$emit('update:visible', $event)">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="设备添加" :visible="visible" @update:visible="$emit('update:visible', $event)">
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="addDeviceDialogVisible = true">添加</el-button>
@@ -35,7 +35,7 @@
         <el-button type="primary" @click="createDevice">确认添加</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="录入设备信息" :visible.sync="addDeviceDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false  title="录入设备信息" :visible.sync="addDeviceDialogVisible">
       <el-form label-width="80px" label-position="left">
         <el-form-item label="名称">
           <el-input v-model="addForm.name"></el-input>

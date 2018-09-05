@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备群控" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备群控" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div class="table-opts">
       <el-button-group>
         <el-button type="primary">开关</el-button>

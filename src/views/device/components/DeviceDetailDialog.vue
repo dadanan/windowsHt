@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
     <div class="flex mb20">
       <div class="flex-item flex-item--full">
         <el-card class="el-card--solid">

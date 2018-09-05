@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="设备备案创建" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="设备备案创建" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" label-position="left">
       <el-form-item label="Type ID">
         <el-select v-model="placeholder">

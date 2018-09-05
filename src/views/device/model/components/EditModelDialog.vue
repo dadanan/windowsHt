@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="typeNo">
         <el-input v-model="data.typeNo"></el-input>
@@ -25,7 +25,7 @@
               {{typeModel[scope.row.ablityType]}}
             </template>
           </el-table-column>
-          <el-table-column label="功能项类型">
+          <el-table-column label="是否选择">
             <template slot-scope="scope">
               <el-switch style="display: block" v-model="scope.row.isChecked" active-color="#13ce66" inactive-color="#ff4949" active-text="选择" inactive-text="不选择">
               </el-switch>
