@@ -31,6 +31,7 @@ const bytes = Crypto.HMAC(Crypto.SHA1, policyBase64, accesskey, {
 const signature = Crypto.util.bytesToBase64(bytes)
 
 export default {
+  name: 'imageUploader',
   data() {
     return {
       host: 'http://mybucket42.oss-cn-beijing.aliyuncs.com',

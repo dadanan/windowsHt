@@ -1,24 +1,16 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="设备绑定" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备绑定" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card>
-          <el-table
-            :data="deviceList"
-            style="width: 100%" highlight-current-row border>
+          <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" highlight-current-row border>
             <el-table-column type="selection"></el-table-column>
             <el-table-column type="index"></el-table-column>
-            <el-table-column
-              prop="name"
-              label="名称" show-overflow-tooltip sortable>
+            <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              prop="typeID"
-              label="typeID" show-overflow-tooltip sortable>
+            <el-table-column prop="typeId" label="typeId" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              prop="mac"
-              label="MAC" show-overflow-tooltip sortable>
+            <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable>
             </el-table-column>
           </el-table>
         </el-card>
@@ -26,19 +18,22 @@
       <el-col :span="12">
         <el-card class="mb20">
           <el-form class="mb-22" label-width="100px" label-position="left">
-            <el-form-item label="客户">
-              <el-select v-model="allocateForm.client" style="width: 100%">
+            <!-- <el-form-item label="用户">
+              <el-select v-model="userId" style="width: 100%">
                 <el-option label="测试客户 1" value="1"></el-option>
                 <el-option label="测试客户 2" value="2"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="Open ID">
-              <el-input v-model="allocateForm.appID"></el-input>
+              <!-- <el-select v-model="openId" placeholder="请选择">
+                <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
+                </el-option>
+              </el-select> -->
+              <el-input v-model='openId' placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="用户绑定组">
-              <el-select v-model="allocateForm.type" style="width: 100%">
-                <el-option label="用户绑定组 1" value="1"></el-option>
-                <el-option label="用户绑定组 2" value="2"></el-option>
+              <el-select v-model="teamId" style="width: 100%">
+                <el-option v-for='item in teamList' :key='item.id' :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -49,22 +44,14 @@
               <el-button type="primary">移出</el-button>
             </el-button-group>
           </div>
-          <el-table
-            :data="deviceList"
-            style="width: 100%" highlight-current-row border>
+          <el-table :data="deviceList" style="width: 100%" highlight-current-row border>
             <el-table-column type="selection"></el-table-column>
             <el-table-column type="index"></el-table-column>
-            <el-table-column
-              prop="name"
-              label="名称" show-overflow-tooltip sortable>
+            <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              prop="typeID"
-              label="typeID" show-overflow-tooltip sortable>
+            <el-table-column prop="typeId" label="typeId" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column
-              prop="mac"
-              label="MAC" show-overflow-tooltip sortable>
+            <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable>
             </el-table-column>
           </el-table>
         </el-card>
@@ -72,36 +59,99 @@
     </el-row>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="$emit('update:visible', false)">分配选中项</el-button>
-      <el-button type="primary" @click="$emit('update:visible', false)">分配全部</el-button>
+      <el-button type="primary" @click="bindDeviceToUserPart">分配选中项</el-button>
+      <el-button type="primary" @click="bindDeviceToUserAll">分配全部</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-  export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      },
-      deviceList: {
-        type: Array,
-        default() {
-          return []
-        }
-      }
+import { bindDeviceToUser } from '@/api/device/list'
+import { queryUsers } from '@/api/device/list'
+import { queryTeamList } from '@/api/device/group'
+
+export default {
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
     },
-    data() {
-      return {
-        allocateForm: {
-          client: '',
-          appID: '',
-          type: '',
-          productID: '',
-          productDescription: ''
-        }
-      }
+    deviceList: {
+      type: Array
     }
+  },
+  data() {
+    return {
+      openId: '',
+      teamId: 1,
+      userId: 1,
+      selectedDeviceList: [],
+      customerList: [],
+      query: {
+        limit: 100,
+        page: 1
+      },
+      teamList: []
+    }
+  },
+  methods: {
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+    },
+    bindDeviceToUserPart() {
+      bindDeviceToUser({
+        deviceQueryRequest: {
+          deviceList: this.selectedDeviceList
+        },
+        openId: this.openId,
+        teamId: this.teamId,
+        userId: this.userId
+      }).then(() => {
+        this.$message({
+          message: '绑定成功！',
+          type: 'success'
+        })
+        this.$emit('update:visible', false)
+      })
+    },
+    bindDeviceToUserAll() {
+      bindDeviceToUser({
+        deviceQueryRequest: {
+          deviceList: this.deviceList
+        },
+        openId: this.openId,
+        teamId: this.teamId,
+        userId: this.userId
+      }).then(() => {
+        this.$message({
+          message: '绑定成功！',
+          type: 'success'
+        })
+        this.$emit('update:visible', false)
+      })
+    },
+    getCustomerList() {
+      const user = this.$store.getters.user.user
+      queryUsers({
+        customerId: user.id
+      }).then(res => {
+        this.customerList = res.data
+      })
+    },
+    queryTeamList() {
+      queryTeamList(this.query).then(res => {
+        this.teamList = res.data
+      })
+    }
+  },
+  watch: {
+    deviceList(val) {
+      console.log('val', val)
+    }
+  },
+  created() {
+    // this.getCustomerList()
+    this.queryTeamList()
   }
+}
 </script>

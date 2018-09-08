@@ -30,17 +30,29 @@
         </el-table-column>
         <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
         </el-table-column>
-        <el-table-column prop="bindStatus" label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
+        <el-table-column label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
+          <template slot-scope="scope">
+            {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
+          </template>
         </el-table-column>
-        <el-table-column prop="enableStatus" label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+        <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+          <template slot-scope="scope">
+            {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
+          </template>
         </el-table-column>
         <el-table-column prop="groupId" label="集群 ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupId">
         </el-table-column>
         <el-table-column prop="groupName" label="集群名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
-        <el-table-column prop="workStatus" label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
+        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
+          <template slot-scope="scope">
+            {{scope.row.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
+          </template>
         </el-table-column>
-        <el-table-column prop="onlineStatus" label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
+        <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
+          <template slot-scope="scope">
+            {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+          </template>
         </el-table-column>
         <el-table-column prop="deviceId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.deviceId">
         </el-table-column>
@@ -67,7 +79,7 @@
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible"></device-import-dialog>
     <device-add-dialog @add-data='addData' :visible.sync="deviceAddDialogVisible"></device-add-dialog>
-    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :device-list="deviceList"></device-allocate-dialog>
+    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :device-list="selectedDeviceList"></device-allocate-dialog>
     <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :device-list="selectedDeviceList"></device-delete-dialog>
     <device-free-dialog :visible.sync="deviceFreeDialogVisible" :device-list="selectedDeviceList"></device-free-dialog>
     <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :device-list="selectedDeviceList"></device-disable-dialog>
@@ -76,7 +88,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible"></device-detail-dialog>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.name">名称</el-checkbox>
@@ -247,23 +259,48 @@ export default {
         })
     },
     addData(data) {
-      this.deviceList.unshift(data)
+      const list = data.deviceList
+      list.forEach(item => {
+        item.bindStatus = 1
+        item.enableStatus = 0
+        item.groupId = -1
+        item.workStatus = 0
+        item.groupName = '无集群'
+        item.onlineStatus = 0
+      })
+      this.deviceList.unshift(...list)
     },
     deleteDeviceHandler() {
-      const form = this.selectedDeviceList
-      deleteDevice({
-        deviceList: form
+      this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(res => {
-          console.log('res', res)
-          this.selectedDeviceList = []
-          console.log(this.selectedDeviceList)
-          this.deviceList = this.deviceList.filter(
-            item => !this.selectedDeviceList.some(obj => obj.mac === item.mac)
-          )
+        .then(() => {
+          const form = this.selectedDeviceList
+          deleteDevice({
+            deviceList: form
+          })
+            .then(res => {
+              this.deviceList = this.deviceList.filter(
+                item =>
+                  !this.selectedDeviceList.some(obj => obj.mac === item.mac)
+              )
+              this.selectedDeviceList = []
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
-        .catch(err => {
-          console.log(err)
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
         })
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="遍及版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="基本信息"></el-step>
       <el-step title="版式内容设置"></el-step>
@@ -64,13 +64,13 @@
                   <el-input v-model='scope.row.name'></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="功能类型(标签)">
+              <!-- <el-table-column label="功能类型(标签)">
                 <template slot-scope="scope">
                   <el-select v-model='scope.row.ablityType' placeholder="请选择">
                     <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
+  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%' class='create-config-container'>
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="设备配置"></el-step>
       <el-step title="客户信息设置"></el-step>
@@ -21,13 +21,13 @@
       </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
-          <el-input v-model="theType.name"></el-input>
+          <el-input v-model="theType.showName"></el-input>
         </el-form-item>
         <el-form-item label="型号">
           <el-input v-model="theType.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='theType.icon' @get-url='getURL' :imageName='getImageName(theType.icon)'></image-uploader>
+          <image-uploader :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
@@ -39,7 +39,7 @@
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
-        <image-uploader></image-uploader>
+        <image-uploader :url='form.qrcode' @get-url='setURL(arguments,form,"qrcode")'></image-uploader>
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
@@ -64,12 +64,12 @@
             <el-button v-if='scope.row.ablityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="是否使用">
+        <!-- <el-table-column label="是否使用">
           <template slot-scope="scope">
             <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
             </el-switch>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </el-form>
     <el-form v-else-if='step===4' label-width="100px" class="mb-22">
@@ -96,30 +96,37 @@
           <d-title>配置页面功能项</d-title>
           <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
             <el-table-column type="index" label='标号 ' width="50"></el-table-column>
-            <el-table-column label="功能类型(标签)">
+            <el-table-column label="显示名称">
+              <template slot-scope="scope">
+                <el-input v-model='scope.row.showName'></el-input>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
                 {{typeModel[scope.row.ablityType]}}
               </template>
-            </el-table-column>
-            <el-table-column label="描述">
+            </el-table-column> -->
+            <!-- <el-table-column label="描述">
               <template slot-scope="scope">
                 <el-input v-model='scope.row.remark'></el-input>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="是否显示" show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
                 </el-switch>
               </template>
             </el-table-column>
-            <el-table-column label="挑选功能项">
+            <!-- <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.ablityId">
-                  <el-option v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName || item.ablityName" :value="iItem.id">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
+                  </el-option>
+                  <el-option v-else v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.ablityName" :value="iItem.id">
                   </el-option>
                 </el-select>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </el-card>
       </template>
@@ -308,7 +315,7 @@ export default {
         description: theType.remark,
         icon: theType.icon,
         modelNo: theType.typeNo,
-        name: theType.name,
+        name: theType.showName,
         remark: theType.remark,
         deviceModelAblitys: newArray,
         deviceModelFormat: {
@@ -332,6 +339,7 @@ export default {
     },
     handleTypeChange(id) {
       this.theType = this.typeList.filter(item => item.id === id)[0]
+      this.theType.showName = this.theType.name
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
@@ -373,8 +381,8 @@ export default {
         this.typeList = response.data
       })
     },
-    getURL(url) {
-      this.form.icon = url
+    setURL(argu, data, name) {
+      data[name] = argu[0]
     },
     getImageName(url) {
       if (!url) {
@@ -413,18 +421,12 @@ export default {
 </script>
 
 <style lang='scss'>
-.box-card {
-  margin-top: 10px;
-}
-.inline-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  > div {
-    width: 49%;
+.create-config-container {
+  .box-card {
+    margin-top: 10px;
   }
-}
-.format-page-img {
-  width: 300px;
+  .format-page-img {
+    width: 300px;
+  }
 }
 </style>

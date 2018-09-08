@@ -1,104 +1,196 @@
 <template>
-  <div>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑设备配置" :visible="visible" @update:visible="$emit('update:visible', $event)">
-      <el-form label-width="100px" class="mb-22">
-        <d-title>设备配置</d-title>
-        <el-form-item label="TypeID">
-          <el-select v-model="form.typeId" @change="handleModelChange">
-            <el-option v-for="model in modelList" :key="model.typeId" :label="model.name" :value="model.typeId">
-            </el-option>
-          </el-select>
+  <el-dialog top='4vh' :close-on-click-modal=false title="编辑设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%'>
+    <el-steps :active="step" finish-status="success" class="mb20" align-center>
+      <el-step title="设备配置"></el-step>
+      <el-step title="客户信息设置"></el-step>
+      <el-step title="硬件功能项"></el-step>
+      <el-step title="版式配置"></el-step>
+    </el-steps>
+    <el-form v-if='step === 1' label-width="100px" class="mb-22">
+      <el-form-item label="客户">
+        <el-select v-model="form.customerId" @change="handleCustomerChange">
+          <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="类型">
+        <el-select v-model="form.typeId" @change="handleTypeChange">
+          <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <template v-if="form.typeId">
+        <el-form-item label="名称">
+          <el-input v-model="theType.showName"></el-input>
         </el-form-item>
-        <template v-if="form.typeId">
-          <el-form-item label="缩图">
-            <image-uploader v-model="form.pic"></image-uploader>
+        <el-form-item label="型号">
+          <el-input v-model="theType.typeNo"></el-input>
+        </el-form-item>
+        <el-form-item label="缩图">
+          <image-uploader :url='theType.icon' @get-url='getURL' :imageName='getImageName(theType.icon)'></image-uploader>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+        </el-form-item>
+      </template>
+    </el-form>
+    <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
+      <el-form-item label="ProductID">
+        <el-input v-model="form.productId"></el-input>
+      </el-form-item>
+      <el-form-item label="二维码">
+        <image-uploader></image-uploader>
+      </el-form-item>
+      <el-form-item label="DeviceID余额">
+        <div class='inline-input'>
+          <el-input v-model="form.devicePoolCount" disabled></el-input>
+        </div>
+      </el-form-item>
+    </el-form>
+    <el-form v-else-if='step===3' label-width="100px" class="mb-22">
+      <el-table :data="abilityList" style="width: 100%" class="mb20" border>
+        <el-table-column label="功能项名称">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.ablityName' disabled></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="显示名称">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.definedName'></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="功能类型(标签)">
+          <template slot-scope="scope">
+            {{typeModel[scope.row.ablityType]}}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button v-if='scope.row.ablityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="是否使用">
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
+            </el-switch>
+          </template>
+        </el-table-column> -->
+      </el-table>
+    </el-form>
+    <el-form v-else-if='step===4' label-width="100px" class="mb-22">
+      <el-form-item label="版式选择">
+        <el-select v-model="form.formatId" @change="handleFormatChange">
+          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <template v-for='item in pageOfForamt'>
+        <el-card class='box-card' :key='item.id'>
+          <el-form-item label='页面预览'>
+            <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-          <el-form-item label="名称">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item :label=' "页序-" + item.pageId '>
+            <el-radio-group v-model="item.showStatus">
+              <el-radio :label="true">显示</el-radio>
+              <el-radio :label="false">不显示</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="来源">
-            <el-input v-model="form.source"></el-input>
+          <el-form-item label='页面名称'>
+            {{item.name}}
           </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 4 }"></el-input>
-          </el-form-item>
-          <d-title>功能配置</d-title>
-          <!--<pre>{{functionList}}</pre>-->
-          <!--<el-form-item label="功能项">-->
-          <!--<el-checkbox-group v-model="form.functionList">-->
-          <!--<el-checkbox v-for="item, index in functionList" :key="index" :label="item">{{ item.name }}</el-checkbox>-->
-          <!--</el-checkbox-group>-->
-          <!--</el-form-item>-->
-          <el-table :data="functionList" class="mb20">
-            <el-table-column type="selection"></el-table-column>
-            <el-table-column type="index"></el-table-column>
-            <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
-            </el-table-column>
-            <el-table-column prop="functionId" label="硬件功能 ID" show-overflow-tooltip sortable>
-            </el-table-column>
-            <el-table-column label="读写权限" show-overflow-tooltip sortable>
+          <d-title>配置页面功能项</d-title>
+          <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
+            <el-table-column type="index" label='标号 ' width="50"></el-table-column>
+            <el-table-column label="显示名称">
               <template slot-scope="scope">
-                {{ scope.row.permissionList.map(el => permissionListMap[el]).join(', ') }}
+                <el-input v-model='scope.row.showName'></el-input>
               </template>
             </el-table-column>
-            <el-table-column label="配置方式" show-overflow-tooltip sortable>
+            <!-- <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
-                {{ scope.row.config === undefined ? '不可配置' : configTypeMap[scope.row.config.type] }}
+                {{typeModel[scope.row.ablityType]}}
+              </template>
+            </el-table-column> -->
+            <!-- <el-table-column label="描述">
+              <template slot-scope="scope">
+                <el-input v-model='scope.row.remark'></el-input>
+              </template>
+            </el-table-column> -->
+            <el-table-column label="是否显示" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                </el-switch>
               </template>
             </el-table-column>
-            <el-table-column label="备注" prop="description" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column label="操作" show-overflow-tooltip>
+            <!-- <el-table-column label="挑选功能项">
               <template slot-scope="scope">
-                <el-button type="text" @click="editFunctionDialogVisible = true">编辑</el-button>
+                <el-select v-model="scope.row.ablityId">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
+                  </el-option>
+                  <el-option v-else v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.ablityName" :value="iItem.id">
+                  </el-option>
+                </el-select>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
-          <d-title>微信客户端配置</d-title>
-          <el-form-item label="关联设置">
-            <el-radio-group v-model="form.isRelated">
-              <el-radio :label="true">关联</el-radio>
-              <el-radio :label="false">非关联</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="软件更新">
-            <el-radio-group v-model="form.isUpdateable">
-              <el-radio :label="true">显示</el-radio>
-              <el-radio :label="false">不显示</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="恢复出厂设置">
-            <el-radio-group v-model="form.isResettable">
-              <el-radio :label="true">显示</el-radio>
-              <el-radio :label="false">不显示</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <!--<el-form-item label="码表">-->
-          <!--<el-button type="primary" icon="el-icon-upload" size="mini">上传</el-button>-->
-          <!--</el-form-item>-->
-          <el-form-item label="说明书">
-            <el-button type="primary" icon="el-icon-upload" size="mini">上传</el-button>
-          </el-form-item>
-        </template>
+        </el-card>
+      </template>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="$emit('update:visible', false)">取消</el-button>
+      <el-button type="primary" v-if='step!==1 ' @click="backStep()">上一步</el-button>
+      <el-button type="primary" v-if='step!==4 ' @click="nextStep()">下一步</el-button>
+      <el-button type="primary" v-else @click="updateDeviceModel">确定</el-button>
+    </div>
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义" :visible.sync="dialogFormVisible" append-to-body>
+      <el-form label-width="100px" class="mb-22">
+        <el-form-item label="功能项名称">
+          <el-input v-model="modifyData.ablityName" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="功能分类">
+          <el-input v-model="modifyData.ablityType" disabled></el-input>
+        </el-form-item>
+        <d-title>自定义部分</d-title>
+        <el-form-item v-if='modifyData.ablityType===2 || modifyData.ablityType === 3' v-for="(option, i) in modifyData.deviceModelAblityOptions" :label="'选项 ' + i">
+          <div class="input-group">
+            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item v-if='modifyData.ablityType === 4'>
+          <div class="input-group">
+            <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
+            <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item v-if='modifyData.ablityType === 5' v-for="(option, i) in modifyData.deviceAblityOptions" :label="'选项 ' + i">
+          <div class="input-group">
+            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+            <el-input v-model="option.minVal" placeholder="最小值"></el-input>
+            <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="$emit('update:visible', false)">取消</el-button>
-        <el-button type="primary" @click="$emit('update:visible', false)">确定</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
-    <edit-function-dialog :visible.sync="editFunctionDialogVisible"></edit-function-dialog>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
-import ImageUploader from '@/components/ImageUploader'
-import EditFunctionDialog from './EditFunctionDialog'
-import { fetchList as modelFetchList } from '@/api/device/model'
+import ImageUploader from '@/components/Upload/image'
+import { fetchList as getTypeList, createDeviceType } from '@/api/device/model'
+import { select as getCustomer } from '@/api/customer'
+import { selectFormatsByCustomerId } from '@/api/format'
+import { updateDeviceModel } from '@/api/device/config'
+import { selectListByTypeIds } from '@/api/device/model'
 import DTitle from '@/components/Title'
 
 export default {
   components: {
-    EditFunctionDialog,
     ImageUploader,
     DTitle
   },
@@ -106,54 +198,289 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    data: {
+      type: Object
     }
   },
   data() {
     return {
       form: {
-        typeId: 'fen-03',
-        name: '',
-        source: '',
-        functionList: [],
-        codeMap: '',
-        description: '',
-        isRelated: false,
-        isUpdateable: false,
-        isResettable: false,
-        manual: ''
+        typeId: '',
+        customerId: '',
+        showStatus: true,
+        devicePoolCount: ''
       },
-      modelList: [],
-      functionList: [],
-      permissionListMap: { r: '可读', w: '可写' },
-      configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
-      editFunctionDialogVisible: false
+      formatId: '',
+      formatSelectedList: [], // 用户可选择的总版式列表
+      formatSelected: [], // 用户选择的某个版式列表
+      pageOfForamt: [], // 用户选择的某个版式列表的页面配置
+      dialogFormVisible: false,
+      typeList: [],
+      theType: {}, // 用户选择的类型数据
+      ablitySelected: [
+        {
+          name: '功能项1',
+          id: 1
+        },
+        {
+          name: '功能项2',
+          id: 2
+        },
+        {
+          name: '功能项3',
+          id: 3
+        }
+      ],
+      deviceTypeAblitys: [],
+      step: 1,
+      software: [
+        {
+          img: '',
+          index: 1,
+          name: '页面名称A'
+        },
+        {
+          img: '',
+          index: 2,
+          name: '页面名称B'
+        }
+      ],
+      options: [
+        {
+          name: 'asd',
+          type: '开关类',
+          remark: '备注1'
+        },
+        {
+          name: 'dfgfg',
+          type: '文本类',
+          remark: '备注2'
+        }
+      ],
+      customterList: [],
+      abilityList: [],
+      modifyData: {}, // 正在自定义的功能配置项数据
+      typeModel: {
+        1: '文本类',
+        2: '单选类',
+        3: '多选类',
+        4: '阈值类',
+        5: '阈值选择类'
+      }
+    }
+  },
+  methods: {
+    useableAblity(key) {
+      return this.abilityList.filter(item => item.ablityType === key)
+    },
+    updateDeviceModel() {
+      // 调整第三步「硬件功能项」的数据结构
+      const newArray =
+        this.abilityList &&
+        this.abilityList.map(item => {
+          return {
+            id: item.id,
+            ablityId: item.ablityId,
+            definedName: item.definedName,
+            maxVal: item.maxVal,
+            minVal: item.minVal,
+            deviceModelAblityOptions:
+              item.deviceAblityOptions &&
+              item.deviceAblityOptions.map(iItem => {
+                return {
+                  id: iItem.id,
+                  ablityOptionId: iItem.ablityOptionId,
+                  definedName: iItem.optionName,
+                  maxVal: iItem.maxVal,
+                  minVal: iItem.minVal
+                }
+              })
+          }
+        })
+
+      // 调整第四步「版式配置」的数据结构
+      const modelFormatPages =
+        this.pageOfForamt &&
+        this.pageOfForamt.map(item => {
+          return {
+            id: item.id,
+            pageId: item.pageNo,
+            showName: item.name,
+            showStatus: item.showStatus ? 1 : 0,
+            modelFormatItems:
+              item.modelFormatItems &&
+              item.modelFormatItems.map(iItem => {
+                return {
+                  id: iItem.id,
+                  ablityId: iItem.ablityId,
+                  itemId: iItem.modelFormatId,
+                  showName: iItem.showName,
+                  showStatus: iItem.showStatus ? 1 : 0
+                }
+              })
+          }
+        })
+
+      const theType = this.theType
+      const form = {
+        ...this.form,
+        description: theType.remark,
+        icon: theType.icon,
+        modelNo: theType.typeNo,
+        name: theType.showName,
+        remark: theType.remark,
+        deviceModelAblitys: newArray,
+        deviceModelFormat: {
+          modelFormatPages
+        }
+      }
+      updateDeviceModel(form).then(res => {
+        this.$emit('update:visible', false)
+        this.$emit('add-data', {
+          ...form,
+          id: res.data
+        })
+      })
+    },
+    selectFormatsByCustomerId() {
+      selectFormatsByCustomerId(this.form.customerId, this.form.typeId).then(
+        res => {
+          this.formatSelectedList = res.data
+        }
+      )
+    },
+    handleTypeChange(id) {
+      this.theType = this.typeList.filter(item => item.id === id)[0]
+      this.theType.showName = this.theType.name
+    },
+    modifyAbilityItem(data) {
+      this.dialogFormVisible = true
+      this.modifyData = data
+    },
+    handleCustomerChange(id) {
+      const temp = this.customterList.filter(item => item.id === id)
+      this.getTypeById(temp[0].typeIds)
+    },
+    getCustomer() {
+      getCustomer({
+        limit: 100,
+        page: 1
+      }).then(res => {
+        this.customterList = res.data
+      })
+    },
+    backStep() {
+      if (this.step > 1) {
+        this.step--
+      }
+    },
+    nextStep() {
+      if (this.step === 2) {
+        this.selectFormatsByCustomerId()
+      }
+      if (this.step++ > 3) this.step = 0
+    },
+    createDeviceType() {
+      createDeviceType(this.form).then(res => {
+        console.log(res)
+      })
+    },
+    getModelList() {
+      getTypeList({
+        page: 1,
+        limit: 100
+      }).then(response => {
+        this.typeList = response.data
+      })
+    },
+    getURL(url) {
+      this.form.icon = url
+    },
+    getImageName(url) {
+      if (!url) {
+        return ''
+      }
+      const match = url.match('aliyuncs.com/(.*)')
+      return match ? match[1] : ''
+    },
+    handleFormatChange(id) {
+      this.formatSelected = this.formatSelectedList.filter(
+        item => item.id === id
+      )
+      this.pageOfForamt =
+        this.formatSelected && this.formatSelected[0].wxFormatPageVos
+    },
+    getTypeById(ids) {
+      selectListByTypeIds(ids).then(res => {
+        this.typeList = res.data
+
+        // 遍历类型，把功能项集中起来
+        const temp = []
+        res.data.forEach(item => {
+          if (item.deviceTypeAblitys && item.deviceTypeAblitys.length > 0) {
+            temp.push(...item.deviceTypeAblitys)
+          }
+        })
+        this.abilityList = temp
+      })
+    }
+  },
+  watch: {
+    data(val) {
+      console.log(val)
+      const newData = JSON.parse(JSON.stringify(val))
+
+      this.form = newData
+      const theTypeArray = this.typeList.filter(
+        item => item.id === newData.typeId
+      )
+      this.theType = theTypeArray ? theTypeArray[0] : {}
+      this.theType.showName = this.theType.name
+
+      this.abilityList = newData.deviceModelAblitys
+      this.abilityList.forEach(item => {
+        // 将definedName 给 名称，然后将其置空
+        item['ablityName'] = item.definedName
+        item.definedName = ''
+        item.deviceModelAblityOptions &&
+          item.deviceModelAblityOptions.forEach(iItem => {
+            iItem.optionName = iItem.definedName
+            iItem.definedName = ''
+          })
+      })
+
+      this.pageOfForamt = newData.modelFormatVo.modelFormatPages
+
+      this.pageOfForamt.forEach(item => {
+        item.showStatus = item.showStatus ? true : false
+        Array.isArray(item.modelFormatItems) &&
+          item.modelFormatItems.forEach(iItem => {
+            iItem.showStatus = iItem.showStatus ? true : false
+          })
+      })
     }
   },
   created() {
-    // this.getModelList().then(() => {
-    //   this.handleModelChange(this.form.typeId)
-    // })
-  },
-  methods: {
-    getModelList() {
-      return modelFetchList({
-        page: 1,
-        limit: 1000
-      }).then(response => {
-        this.modelList = response.data.items
-      })
-    },
-    handleModelChange(typeId) {
-      // const model = this.modelList.find(model => model.typeId === typeId)
-      // this.form.pic = model.pic
-      // this.form.name = model.name
-      // this.form.source = model.source
-      // this.form.functionList = model.functionList
-      // this.form.codeMap = model.codeMap
-      // this.form.description = model.description
-
-      // this.functionList = model.functionList
-    }
+    this.getModelList()
+    this.getCustomer()
   }
 }
 </script>
+
+<style lang='scss'>
+.box-card {
+  margin-top: 10px;
+}
+.inline-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > div {
+    width: 49%;
+  }
+}
+.format-page-img {
+  width: 300px;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="设备分配" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备分配" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-row :gutter="20">
       <el-col :span="12">
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" highlight-current-row border>
@@ -16,21 +16,20 @@
       <el-col :span="12">
         <el-form label-width="100px" class="mb-22" label-position="left">
           <el-form-item label="客户">
-            <el-select v-model="allocateForm.customerId" style="width: 100%">
+            <el-select v-model="allocateForm.customerId" @change='customerChanged' style="width: 100%">
               <el-option v-for='item in clientList' :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="APP ID">
-            <el-input v-model="allocateForm.appid"></el-input>
+            <el-input v-model="allocateForm.appid" disabled></el-input>
           </el-form-item>
           <el-form-item label="产品型号">
-            <el-select v-model="allocateForm.modelId" style="width: 100%">
-              <el-option label="测试类型 1" value="1"></el-option>
-              <el-option label="测试类型 2" value="2"></el-option>
+            <el-select @change='modelChanged' v-model="allocateForm.modelId" style="width: 100%">
+              <el-option v-for='item in modelList' :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="产品 ID">
-            <el-input v-model="allocateForm.productId"></el-input>
+            <el-input v-model="allocateForm.productId" disabled></el-input>
           </el-form-item>
           <!-- <el-form-item label="产品型号描述">
             <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="allocateForm.remark"></el-input>
@@ -48,7 +47,7 @@
 
 <script>
 import { assignDeviceToCustomer } from '@/api/device/list'
-import { select } from '@/api/customer'
+import { select, selectModelsByTypeIds } from '@/api/customer'
 
 export default {
   props: {
@@ -72,6 +71,7 @@ export default {
       },
       selectedDeviceList: [],
       clientList: [],
+      modelList: [],
       listQuery: {
         page: 1,
         limit: 100
@@ -79,15 +79,22 @@ export default {
     }
   },
   methods: {
+    modelChanged(id) {
+      const model = this.modelList.filter(item => item.id === id)[0]
+      this.allocateForm.productId = model.productId
+    },
+    customerChanged(id) {
+      const customer = this.clientList.filter(item => item.id === id)[0]
+      this.allocateForm.appid = customer.appid
+      this.selectModelsByTypeIds(customer.typeIds)
+    },
+    selectModelsByTypeIds(typeIds) {
+      selectModelsByTypeIds(typeIds).then(res => {
+        this.modelList = res.data
+        console.log('re', res)
+      })
+    },
     allocatePart() {
-      console.log(
-        JSON.stringify({
-          ...this.allocateForm,
-          deviceQueryRequest: {
-            deviceList: this.selectedDeviceList
-          }
-        })
-      )
       assignDeviceToCustomer({
         appid: 'ceshiid',
         customerId: 111,
@@ -103,34 +110,32 @@ export default {
         modelId: 111,
         productId: 111
       })
-        .then(res => {
-          console.log('1', res)
-          // this.$emit('update:visible', false)
+        .then(() => {
+          this.$emit('update:visible', false)
+          this.$message({
+            message: '分配成功！',
+            type: 'success'
+          })
         })
-        .catch(err => {
+        .catch(() => {
           console.log('err', err)
         })
     },
     allocateAll() {
-      console.log(
-        JSON.stringify({
-          ...this.allocateForm,
-          deviceQueryRequest: {
-            deviceList: this.deviceList
-          }
-        })
-      )
       assignDeviceToCustomer({
         ...this.allocateForm,
         deviceQueryRequest: {
           deviceList: this.deviceList
         }
       })
-        .then(res => {
-          console.log('1', res)
-          // this.$emit('update:visible', false)
+        .then(() => {
+          this.$emit('update:visible', false)
+          this.$message({
+            message: '分配成功！',
+            type: 'success'
+          })
         })
-        .catch(err => {
+        .catch(() => {
           console.log('err', err)
         })
     },

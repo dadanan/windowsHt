@@ -5,7 +5,7 @@
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "cross-env BABEL_ENV=development webpack-dev-server --disableHostCheck=true --inline --progress --config build/webpack.dev.conf.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
@@ -68,6 +68,7 @@
     "xlsx": "^0.11.16"
   },
   "devDependencies": {
+    "@xkeshi/vue-qrcode": "^1.0.0",
     "autoprefixer": "7.2.3",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.3",

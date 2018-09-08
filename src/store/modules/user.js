@@ -43,6 +43,9 @@ const user = {
     SET_PERMISSION: (state, permission) => {
       state.permission = permission
       window.localStorage.setItem('permission', JSON.stringify(permission))
+    },
+    SET_USER: (state, user) => {
+      state.user = user
     }
   },
 
@@ -75,7 +78,6 @@ const user = {
             )
             if (data.permissions && data.permissions.length > 0) {
               // 验证返回的permission是否是一个非空数组
-              console.log('login 设置')
               commit('SET_PERMISSION', data.permissions)
             } else {
               reject('getInfo: permission must be a non-null array !')

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="创建客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="创建客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div>
       <el-steps :active="createStep" finish-status="success" class="mb20" align-center>
         <el-step title="基本信息"></el-step>
@@ -83,14 +83,12 @@
             <image-uploader :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
           </el-form-item>
           <el-form-item label="页面版式">
-            <el-select v-model="h5Config.htmlTypeId">
-              <el-option label="模板 1" value="1"></el-option>
-              <el-option label="模板 2" value="2"></el-option>
-              <el-option label="模板 3" value="3"></el-option>
+            <el-select v-model="h5Config.htmlTypeId" @change='pageFormatChanged'>
+              <el-option v-for='item in pageFormatList' :label='item.name' :value='item.id' :key='item.id'></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="页面概览">
-            <span>概览图</span>
+            <img class='page-preview-img' :src='h5PreviewImg'>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model="h5Config.themeName"></el-input>
@@ -125,7 +123,7 @@
             <file-uploader format='apk' @get-url='setURL(arguments,androidConfig,"logo")'></file-uploader>
           </el-form-item>
           <el-form-item label="设备切换密码">
-            <el-input v-model='androidConfig.deviceChangePassword' type="password"></el-input>
+            <el-input v-model='androidConfig.deviceChangePassword'></el-input>
           </el-form-item>
           <el-form-item label="安卓场景">
             <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList'>
@@ -138,7 +136,7 @@
                   <el-input v-model='item.name'></el-input>
                 </el-form-item>
                 <el-form-item label="场景描述">
-                  <el-input v-model='item.description'></el-input>
+                  <el-input v-model='item.description' type='textarea'></el-input>
                 </el-form-item>
                 <el-form-item label="场景封面">
                   <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
@@ -154,7 +152,7 @@
                         <el-input v-model='list.name'></el-input>
                       </el-form-item>
                       <el-form-item label="描述">
-                        <el-input v-model='list.description'></el-input>
+                        <el-input v-model='list.description' type='textarea'></el-input>
                       </el-form-item>
                       <el-form-item label="图片/视频">
                         <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
@@ -214,6 +212,7 @@ import ImageUploader from '@/components/Upload/image'
 import FileUploader from '@/components/Upload/file'
 import { fetchList } from '@/api/device/model'
 import { saveDetail } from '@/api/customer'
+import { select as getForamtList } from '@/api/format'
 
 export default {
   props: {
@@ -280,10 +279,22 @@ export default {
       listQuery: {
         limit: 1000,
         page: 1
-      }
+      },
+      pageFormatList: [],
+      h5PreviewImg: ''
     }
   },
   methods: {
+    pageFormatChanged(id) {
+      this.h5PreviewImg = this.pageFormatList.filter(
+        item => item.id === id
+      )[0].previewImg
+    },
+    getForamtList() {
+      getForamtList(this.listQuery).then(res => {
+        this.pageFormatList = res.data
+      })
+    },
     backStep() {
       this.createStep--
     },
@@ -370,6 +381,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getForamtList()
   },
   components: {
     ImageUploader,
@@ -389,5 +401,8 @@ export default {
     font-size: 15px;
     line-height: 1;
   }
+}
+.page-preview-img {
+  width: 100%;
 }
 </style>
