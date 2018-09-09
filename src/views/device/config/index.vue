@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="version" label="版本" show-overflow-tooltip sortable>
+        <el-table-column prop="devicePoolCount" label="配额" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width='180'>
           <template slot-scope="scope">

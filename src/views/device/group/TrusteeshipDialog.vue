@@ -5,10 +5,11 @@
         <el-input v-model="team.name"></el-input>
       </el-form-item>
       <el-form-item label="受托人">
-        <el-select v-model="form.openId" placeholder="请选择">
+        <!-- <el-select v-model="form.openId" placeholder="请选择">
           <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
           </el-option>
-        </el-select>
+        </el-select> -->
+        <el-input placeholder="OpenID..." v-model='form.openId'></el-input>
       </el-form-item>
       <el-form-item label="托管二维码">
         <qrcode :value="url" :options="{ size: 200 }"></qrcode>
@@ -29,7 +30,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import { trusteeTeam, createTrusteeQrCode } from '@/api/device/group'
+import { trusteeTeam, createTrusteeQrCode } from '@/api/device/team'
 import { queryUsers } from '@/api/device/list'
 import DTitle from '@/components/Title'
 import Qrcode from '@xkeshi/vue-qrcode'

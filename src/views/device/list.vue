@@ -5,21 +5,21 @@
         <el-button-group>
           <el-button type="primary" @click="deviceImportDialogVisible = true">导入</el-button>
           <el-button type="primary" @click="deviceAddDialogVisible = true">添加</el-button>
-          <el-button type="primary" @click="deleteDeviceHandler">删除</el-button>
+          <el-button type="primary" @click="deleteOneDeviceHandler">删除</el-button>
+          <el-button type="primary" @click='deviceRecoverDialogVisible = true'>恢复</el-button>
           <el-button type="primary" @click="deviceAllocateDialogVisible = true">分配</el-button>
           <el-button type="primary" @click="deviceFreeDialogVisible = true">召回</el-button>
-          <el-button type="primary">恢复</el-button>
           <el-button type="primary" @click="deviceDisableDialogVisible = true">禁用</el-button>
-          <el-button type="primary">启用</el-button>
+          <el-button type="primary" @click="deviceAbleDialogVisible = true">启用</el-button>
           <el-button type="primary" @click="deviceClusterDialogVisible = true">集群</el-button>
-          <el-button type="primary" @click="deviceClusterControlDialogVisible = true">群控</el-button>
+          <!-- <el-button type="primary" @click="deviceClusterControlDialogVisible = true">群控</el-button> -->
           <el-button type="primary" @click="deviceBindDialogVisible = true">绑定</el-button>
           <el-button type="primary" @click="deviceUnbindDialogVisible = true">解绑</el-button>
           <el-button type="primary">导出</el-button>
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table :data="deviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
+      <el-table :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
@@ -70,7 +70,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="deviceDetailDialogVisible = true">详情</el-button>
+            <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,13 +81,15 @@
     <device-add-dialog @add-data='addData' :visible.sync="deviceAddDialogVisible"></device-add-dialog>
     <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :device-list="selectedDeviceList"></device-allocate-dialog>
     <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :device-list="selectedDeviceList"></device-delete-dialog>
+    <device-recover-dialog :visible.sync="deviceRecoverDialogVisible" :device-list="selectedDeviceList"></device-recover-dialog>
     <device-free-dialog :visible.sync="deviceFreeDialogVisible" :device-list="selectedDeviceList"></device-free-dialog>
     <device-disable-dialog :visible.sync="deviceDisableDialogVisible" :device-list="selectedDeviceList"></device-disable-dialog>
+    <device-able-dialog :visible.sync="deviceAbleDialogVisible" :device-list="selectedDeviceList"></device-able-dialog>
     <device-cluster-dialog :visible.sync="deviceClusterDialogVisible" :device-list="selectedDeviceList"></device-cluster-dialog>
     <device-cluster-control-dialog :visible.sync="deviceClusterControlDialogVisible"></device-cluster-control-dialog>
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
-    <device-detail-dialog :visible.sync="deviceDetailDialogVisible"></device-detail-dialog>
+    <device-detail-dialog :visible.sync="deviceDetailDialogVisible" :detail-data='detailData'></device-detail-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
         <el-form-item>
@@ -144,27 +146,27 @@
       </el-form>
       <el-form label-width="100px" label-location="left">
         <el-form-item label="已删除设备">
-          <el-radio-group>
-            <el-radio label="显示"></el-radio>
-            <el-radio label="不显示"></el-radio>
+          <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedHandle">
+            <el-radio :label="true">显示</el-radio>
+            <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="已召回设备">
-          <el-radio-group>
-            <el-radio label="显示"></el-radio>
-            <el-radio label="不显示"></el-radio>
+          <el-radio-group v-model='showDeviceCallBack'>
+            <el-radio :label="true">显示</el-radio>
+            <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="已解绑设备">
-          <el-radio-group>
-            <el-radio label="显示"></el-radio>
-            <el-radio label="不显示"></el-radio>
+          <el-radio-group v-model='showDeviceBind'>
+            <el-radio :label="true">显示</el-radio>
+            <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="未分配设备">
-          <el-radio-group>
-            <el-radio label="显示"></el-radio>
-            <el-radio label="不显示"></el-radio>
+          <el-radio-group v-model='showDeviceAllocate'>
+            <el-radio :label="true">显示</el-radio>
+            <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -181,14 +183,16 @@ import DeviceImportDialog from './components/DeviceImportDialog'
 import DeviceAddDialog from './components/DeviceAddDialog'
 import DeviceAllocateDialog from './components/DeviceAllocateDialog'
 import DeviceDeleteDialog from './components/DeviceDeleteDialog'
+import DeviceRecoverDialog from './components/DeviceRecoverDialog'
 import DeviceFreeDialog from './components/DeviceFreeDialog'
 import DeviceDisableDialog from './components/DeviceDisableDialog'
+import DeviceAbleDialog from './components/DeviceAbleDialog'
 import DeviceClusterDialog from './components/DeviceClusterDialog'
 import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
-import { getList, deleteDevice } from '@/api/device/list'
+import { getList, deleteOneDevice } from '@/api/device/list'
 
 export default {
   components: {
@@ -196,8 +200,10 @@ export default {
     DeviceAddDialog,
     DeviceAllocateDialog,
     DeviceDeleteDialog,
+    DeviceRecoverDialog,
     DeviceFreeDialog,
     DeviceDisableDialog,
+    DeviceAbleDialog,
     DeviceClusterDialog,
     DeviceClusterControlDialog,
     DeviceBindDialog,
@@ -211,8 +217,10 @@ export default {
       deviceAddDialogVisible: false,
       deviceAllocateDialogVisible: false,
       deviceDeleteDialogVisible: false,
+      deviceRecoverDialogVisible: false,
       deviceFreeDialogVisible: false,
       deviceDisableDialogVisible: false,
+      deviceAbleDialogVisible: false,
       deviceClusterDialogVisible: false,
       deviceClusterControlDialogVisible: false,
       deviceBindDialogVisible: false,
@@ -240,19 +248,42 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 30,
+        limit: 100,
         page: 1
+      },
+      detailData: {},
+      showDeviceDeleted: false,
+      showDeviceCallBack: false,
+      showDeviceBind: false,
+      showDeviceAllocate: false
+    }
+  },
+  computed: {
+    computeDeviceList() {
+      let list = this.deviceList
+      if (!this.showDeviceDeleted) {
+        // 如果不显示删除设备，返回状态不等于 2 的
+        list = list.filter(item => item.status !== 2)
       }
+      // if(){
+
+      // }
+      return list
     }
   },
   methods: {
+    showDeviceDeletedHandle(val) {},
+    showDetail(data) {
+      this.deviceDetailDialogVisible = true
+      this.detailData = data
+    },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
     getList() {
       getList(this.query)
         .then(res => {
-          this.deviceList = res.data
+          this.deviceList = res.data || []
         })
         .catch(err => {
           console.log('err', err)
@@ -270,16 +301,17 @@ export default {
       })
       this.deviceList.unshift(...list)
     },
-    deleteDeviceHandler() {
-      this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
+    deleteOneDeviceHandler() {
+      this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           const form = this.selectedDeviceList
-          deleteDevice({
-            deviceList: form
+          deleteOneDevice({
+            deviceId: form[0].id,
+            mac: form[0].mac
           })
             .then(res => {
               this.deviceList = this.deviceList.filter(
@@ -289,7 +321,7 @@ export default {
               this.selectedDeviceList = []
               this.$message({
                 type: 'success',
-                message: '删除成功!'
+                message: `设备删除成功: ${form[0].name}`
               })
             })
             .catch(err => {

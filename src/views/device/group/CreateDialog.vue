@@ -5,10 +5,11 @@
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="创建人">
-        <el-select v-model="form.createUserOpenId" @change='customerChanged' placeholder="请选择">
+        <!-- <el-select v-model="form.createUserOpenId" @change='customerChanged' placeholder="请选择">
           <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
           </el-option>
-        </el-select>
+        </el-select> -->
+        <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
       </el-form-item>
       <el-form-item label="组标">
         <image-uploader :url='form.teamIcon' @get-url='setURL(arguments,form,"teamIcon")'></image-uploader>
@@ -35,10 +36,11 @@
         </el-table-column>
         <el-table-column label="mac" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-select v-model="scope.row.mac" placeholder="请选择">
+            <!-- <el-select v-model="scope.row.mac" placeholder="请选择">
               <el-option v-for="item in deviceList" :key="item.mac" :label="item.name" :value="item.mac">
               </el-option>
-            </el-select>
+            </el-select> -->
+            <el-input v-model='scope.row.mac' placeholder="mac"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="管理名称" show-overflow-tooltip>
@@ -64,7 +66,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import { createNewTeam, queryDeviceInfo } from '@/api/device/group'
+import { createNewTeam, queryDeviceInfo } from '@/api/device/team'
 import { queryUsers } from '@/api/device/list'
 import { select } from '@/api/customer'
 import DTitle from '@/components/Title'

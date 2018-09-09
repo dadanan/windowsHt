@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
     <div class="flex mb20">
       <div class="flex-item flex-item--full">
         <el-card class="el-card--solid">
@@ -66,8 +66,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid">
-          <iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0'
-                  src='http://f.amap.com/rRZS_0F85dWA'></iframe>
+          <iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://f.amap.com/rRZS_0F85dWA'></iframe>
         </el-card>
       </div>
     </div>
@@ -81,172 +80,97 @@
         </el-button-group>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
-        <el-table
-          style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="工作日志" name="3">
-        <el-table
-          style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="操作日志" name="4">
-        <el-table
-          style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
-        <el-table
-          style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="设备订单" name="6">
-        <el-table
-          style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column
-            prop="name"
-            label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -262,34 +186,42 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
     },
-    data() {
-      return {
-        placeholder: 'placeholder',
-        activeTab: '1',
-        deviceList: []
-      }
+    detailData: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      placeholder: 'placeholder',
+      activeTab: '1',
+      deviceList: []
+    }
+  },
+  watch: {
+    detailData(val) {
+      console.log('asd', val)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .flex {
-    display: flex;
-    margin-left: -10px;
-    margin-right: -10px;
-  }
+.flex {
+  display: flex;
+  margin-left: -10px;
+  margin-right: -10px;
+}
 
-  .flex-item {
-    margin: 0 10px;
-    &--full {
-      flex: 1;
-    }
+.flex-item {
+  margin: 0 10px;
+  &--full {
+    flex: 1;
   }
+}
 </style>

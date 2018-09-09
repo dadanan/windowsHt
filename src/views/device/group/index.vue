@@ -120,7 +120,7 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList } from '@/api/device/group'
+import { queryTeamList } from '@/api/device/team'
 
 export default {
   data() {

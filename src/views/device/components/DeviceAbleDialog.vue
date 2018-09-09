@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备禁用" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备启用" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border>
       <el-table-column type="selection"></el-table-column>
       <el-table-column type="index"></el-table-column>
@@ -18,14 +18,14 @@
     </el-table>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="updateDeivceDisblePart">禁用选中项</el-button>
-      <el-button type="primary" @click="updateDeivceDisbleAll">禁用全部</el-button>
+      <el-button type="primary" @click="updateDeivceEnablePart">启用选中项</el-button>
+      <el-button type="primary" @click="updateDeivceEnableAll">启用全部</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { updateDeivceDisble } from '@/api/device/list'
+import { updateDeivceEnable } from '@/api/device/list'
 
 export default {
   props: {
@@ -49,8 +49,8 @@ export default {
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
-    updateDeivceDisblePart() {
-      updateDeivceDisble({
+    updateDeivceEnablePart() {
+      updateDeivceEnable({
         deviceVos: this.selectedDeviceList.map(item => {
           return {
             mac: item.mac,
@@ -59,14 +59,14 @@ export default {
         })
       }).then(() => {
         this.$message({
-          message: '禁用成功！',
+          message: '启用成功！',
           type: 'success'
         })
         this.$emit('update:visible', false)
       })
     },
-    updateDeivceDisbleAll() {
-      updateDeivceDisble({
+    updateDeivceEnableAll() {
+      updateDeivceEnable({
         deviceVos: this.deviceList.map(item => {
           return {
             mac: item.mac,
@@ -75,7 +75,7 @@ export default {
         })
       }).then(() => {
         this.$message({
-          message: '禁用成功！',
+          message: '启用成功！',
           type: 'success'
         })
         this.$emit('update:visible', false)

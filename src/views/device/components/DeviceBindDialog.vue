@@ -59,8 +59,8 @@
     </el-row>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="bindDeviceToUserPart">分配选中项</el-button>
-      <el-button type="primary" @click="bindDeviceToUserAll">分配全部</el-button>
+      <el-button type="primary" @click="bindDeviceToUserPart">绑定选中项</el-button>
+      <el-button type="primary" @click="bindDeviceToUserAll">绑定全部</el-button>
     </div>
   </el-dialog>
 </template>
@@ -68,7 +68,7 @@
 <script>
 import { bindDeviceToUser } from '@/api/device/list'
 import { queryUsers } from '@/api/device/list'
-import { queryTeamList } from '@/api/device/group'
+import { queryTeamList } from '@/api/device/team'
 
 export default {
   props: {
@@ -142,11 +142,6 @@ export default {
       queryTeamList(this.query).then(res => {
         this.teamList = res.data
       })
-    }
-  },
-  watch: {
-    deviceList(val) {
-      console.log('val', val)
     }
   },
   created() {

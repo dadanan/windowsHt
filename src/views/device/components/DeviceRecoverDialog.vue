@@ -1,7 +1,7 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备解绑" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备恢复" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-card>
-      <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" highlight-current-row border>
+      <el-table :data="list" @selection-change="handleSelectionChange" style="width: 100%" highlight-current-row border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
@@ -14,14 +14,14 @@
     </el-card>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="untieDeviceToUserPart">解绑选中项</el-button>
-      <el-button type="primary" @click="untieDeviceToUserAll">解绑全部</el-button>
+      <el-button type="primary" @click="recoverDevicePart">恢复选中项</el-button>
+      <el-button type="primary" @click="recoverDeviceAll">恢复全部</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { untieDeviceToUser } from '@/api/device/list'
+import { recoverDevice } from '@/api/device/list'
 
 export default {
   props: {
@@ -38,21 +38,22 @@ export default {
   },
   data() {
     return {
-      selectedDeviceList: []
+      selectedDeviceList: [],
+      list: []
     }
   },
   methods: {
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
-    untieDeviceToUserPart() {
-      this.$confirm('此操作将执行解绑动作, 是否继续?', '提示', {
+    recoverDevicePart() {
+      this.$confirm('此操作将执行恢复动作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          untieDeviceToUser({
+          recoverDevice({
             deviceVos: this.selectedDeviceList.map(item => {
               return {
                 mac: item.mac,
@@ -61,7 +62,7 @@ export default {
             })
           }).then(() => {
             this.$message({
-              message: '解绑成功！',
+              message: '恢复成功！',
               type: 'success'
             })
             this.$emit('update:visible', false)
@@ -70,19 +71,19 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消解绑'
+            message: '已取消恢复'
           })
         })
     },
-    untieDeviceToUserAll() {
-      this.$confirm('此操作将执行解绑动作, 是否继续?', '提示', {
+    recoverDeviceAll() {
+      this.$confirm('此操作将执行恢复动作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          untieDeviceToUser({
-            deviceVos: this.deviceList.map(item => {
+          recoverDevice({
+            deviceVos: this.list.map(item => {
               return {
                 mac: item.mac,
                 deviceId: item.id
@@ -90,7 +91,7 @@ export default {
             })
           }).then(() => {
             this.$message({
-              message: '解绑成功！',
+              message: '恢复成功！',
               type: 'success'
             })
             this.$emit('update:visible', false)
@@ -99,9 +100,14 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消解绑'
+            message: '已取消恢复'
           })
         })
+    }
+  },
+  watch: {
+    deviceList(val) {
+      this.list = val.filter(item => item.status === 2)
     }
   }
 }

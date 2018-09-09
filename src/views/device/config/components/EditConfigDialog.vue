@@ -48,7 +48,7 @@
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="abilityList" style="width: 100%" class="mb20" border>
+      <el-table :data="theType.deviceTypeAblitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
             <el-input v-model='scope.row.ablityName' disabled></el-input>
@@ -272,13 +272,13 @@ export default {
   },
   methods: {
     useableAblity(key) {
-      return this.abilityList.filter(item => item.ablityType === key)
+      return this.theType.filter(item => item.ablityType === key)
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
       const newArray =
-        this.abilityList &&
-        this.abilityList.map(item => {
+        this.theType &&
+        this.theType.map(item => {
           return {
             id: item.id,
             ablityId: item.ablityId,
@@ -341,6 +341,18 @@ export default {
           ...form,
           id: res.data
         })
+        if (!this.formatSelected[0]) {
+          return
+        }
+        this.$alert(
+          `您已成功配置好型号数据，复制链接微信内打开即可预览效果: ${
+            this.formatSelected[0].htmlUrl
+          }`,
+          '预览地址',
+          {
+            confirmButtonText: '确定'
+          }
+        )
       })
     },
     selectFormatsByCustomerId() {
@@ -435,7 +447,7 @@ export default {
       const theTypeArray = this.typeList.filter(
         item => item.id === newData.typeId
       )
-      this.theType = theTypeArray ? theTypeArray[0] : {}
+      this.theType = theTypeArray[0] ? theTypeArray[0] : {}
       this.theType.showName = this.theType.name
 
       this.abilityList = newData.deviceModelAblitys
@@ -452,13 +464,14 @@ export default {
 
       this.pageOfForamt = newData.modelFormatVo.modelFormatPages
 
-      this.pageOfForamt.forEach(item => {
-        item.showStatus = item.showStatus ? true : false
-        Array.isArray(item.modelFormatItems) &&
-          item.modelFormatItems.forEach(iItem => {
-            iItem.showStatus = iItem.showStatus ? true : false
-          })
-      })
+      this.pageOfForamt &&
+        this.pageOfForamt.forEach(item => {
+          item.showStatus = item.showStatus ? true : false
+          Array.isArray(item.modelFormatItems) &&
+            item.modelFormatItems.forEach(iItem => {
+              iItem.showStatus = iItem.showStatus ? true : false
+            })
+        })
     }
   },
   created() {

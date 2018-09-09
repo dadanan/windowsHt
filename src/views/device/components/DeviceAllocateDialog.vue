@@ -96,30 +96,17 @@ export default {
     },
     allocatePart() {
       assignDeviceToCustomer({
-        appid: 'ceshiid',
-        customerId: 111,
+        ...this.allocateForm,
         deviceQueryRequest: {
-          deviceList: [
-            {
-              mac: '3',
-              name: '3',
-              typeId: 1
-            }
-          ]
-        },
-        modelId: 111,
-        productId: 111
+          deviceList: this.selectedDeviceList
+        }
+      }).then(() => {
+        this.$emit('update:visible', false)
+        this.$message({
+          message: '分配成功！',
+          type: 'success'
+        })
       })
-        .then(() => {
-          this.$emit('update:visible', false)
-          this.$message({
-            message: '分配成功！',
-            type: 'success'
-          })
-        })
-        .catch(() => {
-          console.log('err', err)
-        })
     },
     allocateAll() {
       assignDeviceToCustomer({
@@ -127,17 +114,13 @@ export default {
         deviceQueryRequest: {
           deviceList: this.deviceList
         }
+      }).then(() => {
+        this.$emit('update:visible', false)
+        this.$message({
+          message: '分配成功！',
+          type: 'success'
+        })
       })
-        .then(() => {
-          this.$emit('update:visible', false)
-          this.$message({
-            message: '分配成功！',
-            type: 'success'
-          })
-        })
-        .catch(() => {
-          console.log('err', err)
-        })
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection

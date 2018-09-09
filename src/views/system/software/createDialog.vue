@@ -37,6 +37,9 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="预览地址">
+          <el-input v-model='addForm.htmlUrl'></el-input>
+        </el-form-item>
       </el-form>
     </div>
     <div v-if="step == 2">

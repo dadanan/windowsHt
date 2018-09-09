@@ -16,6 +16,22 @@ export function deleteDevice(data) {
   })
 }
 
+export function deleteOneDevice(data) {
+  return request({
+    url: '/temp/api/device/deleteOneDevice',
+    method: 'delete',
+    data
+  })
+}
+
+export function recoverDevice(data) {
+  return request({
+    url: '/temp/api/device/recoverDevice',
+    method: 'put',
+    data
+  })
+}
+
 export function getList(data) {
   return request({
     url: '/temp/api/device/queryDevice',
@@ -48,10 +64,34 @@ export function bindDeviceToUser(data) {
   })
 }
 
+export function untieDeviceToUser(data) {
+  return request({
+    url: '/temp/api/device/untieDeviceToUser',
+    method: 'post',
+    data
+  })
+}
+
 export function queryUsers(data) {
   return request({
     url: '/temp/api/device/queryUsers',
     method: 'post',
+    data
+  })
+}
+
+export function updateDeivceDisble(data) {
+  return request({
+    url: '/temp/api/device/updateDeivceDisble',
+    method: 'put',
+    data
+  })
+}
+
+export function updateDeivceEnable(data) {
+  return request({
+    url: '/temp/api/device/updateDeivceEnable',
+    method: 'put',
     data
   })
 }

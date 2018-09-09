@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="编辑版式" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="基本信息"></el-step>
       <el-step title="版式内容设置"></el-step>
@@ -36,6 +36,9 @@
             <el-option v-for="item in level" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="预览地址">
+          <el-input v-model='addForm.htmlUrl'></el-input>
         </el-form-item>
       </el-form>
     </div>

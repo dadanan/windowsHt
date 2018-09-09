@@ -43,7 +43,7 @@
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="abilityList" style="width: 100%" class="mb20" border>
+      <el-table :data="theType.deviceTypeAblitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
             <el-input v-model='scope.row.ablityName' disabled></el-input>
@@ -263,13 +263,13 @@ export default {
   },
   methods: {
     useableAblity(key) {
-      return this.abilityList.filter(item => item.ablityType === key)
+      return this.theType.filter(item => item.ablityType === key)
     },
     createDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
       const newArray =
-        this.abilityList &&
-        this.abilityList.map(item => {
+        this.theType &&
+        this.theType.map(item => {
           return {
             ablityId: item.ablityId,
             definedName: item.definedName,
@@ -328,6 +328,18 @@ export default {
           ...form,
           id: res.data
         })
+        if (!this.formatSelected[0]) {
+          return
+        }
+        this.$alert(
+          `您已成功配置好型号数据，复制链接微信内打开即可预览效果: ${
+            this.formatSelected[0].htmlUrl
+          }`,
+          '预览地址',
+          {
+            confirmButtonText: '确定'
+          }
+        )
       })
     },
     selectFormatsByCustomerId() {
