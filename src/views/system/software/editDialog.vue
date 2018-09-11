@@ -67,13 +67,13 @@
                   <el-input v-model='scope.row.name'></el-input>
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="功能类型(标签)">
+              <el-table-column label="功能类型(标签)">
                 <template slot-scope="scope">
                   <el-select v-model='scope.row.ablityType' placeholder="请选择">
                     <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     deleteOption(data, scope) {
-      data.splice(scope.$index, 1, Object.assign({}, scope.row, { status: 2 }))
+      data.splice(scope.$index, 1)
     },
     submitForm() {
       this.pages.forEach((item, index) => {
@@ -168,6 +168,42 @@ export default {
 
       this.addForm.typeIds = this.addForm.typeIds.join(',')
 
+      // 通过对比编辑时传入的版式页面功能项数据和当前用户操作的数据，
+      // 找出之前存在但用户删除了的，将其标记为status:2
+      this.addForm.wxFormatPageVos &&
+        this.addForm.wxFormatPageVos.forEach((item, index) => {
+          if (!item.wxFormatItemVos || item.wxFormatItemVos.length === 0) {
+            return
+          }
+          // 先找到对应的数据
+          let thePageWxFormatItemVos = this.pages[index].wxFormatItemVos
+          const newWxFormatItemVos = []
+
+          // 先将用户新增的、没有id的数据存放到这里
+          const tempArray = thePageWxFormatItemVos.filter(
+            item => !item.hasOwnProperty('id')
+          )
+
+          // 然后去除无id的数据，后面干扰后续操作
+          thePageWxFormatItemVos = thePageWxFormatItemVos.filter(item =>
+            item.hasOwnProperty('id')
+          )
+
+          item.wxFormatItemVos.forEach(iItem => {
+            if (
+              thePageWxFormatItemVos.findIndex(temp => temp.id === iItem.id) ===
+              -1
+            ) {
+              // 如果没找到，说明用户删除了
+              iItem['status'] = 2
+            }
+            newWxFormatItemVos.push(iItem)
+          })
+          newWxFormatItemVos.push(...tempArray)
+
+          this.pages[index].wxFormatItemVos = newWxFormatItemVos
+        })
+
       const form = {
         ...this.addForm,
         wxFormatPageVos: this.pages
@@ -175,7 +211,7 @@ export default {
       updateWxFormat(form).then(res => {
         this.$message({
           type: 'success',
-          message: '添加成功'
+          message: '更新成功'
         })
         this.$emit('add-data', form)
         this.$emit('update:visible', false)
@@ -228,14 +264,14 @@ export default {
   watch: {
     data(val) {
       const tempForm = JSON.parse(JSON.stringify(val))
-
       this.addForm = tempForm
       this.addForm.typeIds = this.addForm.typeIds
         .split(',')
         .map(id => Number(id))
 
       if (tempForm.wxFormatPageVos && tempForm.wxFormatPageVos.length > 0) {
-        this.pages = tempForm.wxFormatPageVos
+        // 克隆有必要
+        this.pages = JSON.parse(JSON.stringify(tempForm.wxFormatPageVos))
         // 如果没有这个参数，初始化一下
         this.pages.forEach(item => {
           if (!item.wxFormatItemVos || item.wxFormatItemVos.length === 0) {

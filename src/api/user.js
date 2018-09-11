@@ -6,7 +6,7 @@ export function login(userName, pwd) {
     pwd
   }
   return request({
-    url: '/api/user/login',
+    url: '/server/user/login',
     method: 'post',
     params: data
   })
@@ -14,7 +14,7 @@ export function login(userName, pwd) {
 
 export function updateUser(data) {
   return request({
-    url: '/api/user/updateUser',
+    url: '/server/user/updateUser',
     method: 'put',
     data
   })
@@ -22,7 +22,7 @@ export function updateUser(data) {
 
 export function createUser(data) {
   return request({
-    url: '/api/user/createUser',
+    url: '/server/user/createUser',
     method: 'post',
     data
   })
@@ -30,28 +30,28 @@ export function createUser(data) {
 
 export function delUser(id) {
   return request({
-    url: `/api/user/delUser/${id}`,
+    url: `/server/user/delUser/${id}`,
     method: 'delete'
   })
 }
 
 export function getUserList() {
   return request({
-    url: '/api/user/getUserList',
+    url: '/server/user/getUserList',
     method: 'get'
   })
 }
 
 export function getCurrentUser() {
   return request({
-    url: '/api/user/getCurrentUser',
+    url: '/server/user/getCurrentUser',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: '/api/user/logout',
+    url: '/server/user/logout',
     method: 'delete'
   })
 }

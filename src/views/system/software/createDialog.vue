@@ -66,13 +66,13 @@
                 <el-input v-model='scope.row.name'></el-input>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="功能类型(标签)">
+            <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
                 <el-select v-model='scope.row.ablityType' placeholder="请选择">
                   <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
                 </el-select>
               </template>
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>
@@ -214,7 +214,6 @@ export default {
         limit: 100,
         page: 1
       }).then(res => {
-        console.log('res', res)
         this.types = res.data
       })
     }

@@ -27,19 +27,22 @@
           <el-input v-model="theType.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='theType.icon' @get-url='getURL' :imageName='getImageName(theType.icon)'></image-uploader>
+          <image-uploader :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </template>
+      <el-form-item label="软件">
+        <file @get-url='setURL(arguments,null,"software")' :file-name='getImageName(this.software)'></file>
+      </el-form-item>
     </el-form>
     <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
       <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
-        <image-uploader></image-uploader>
+        <image-uploader :url='form.qrcode' @get-url='setURL(arguments,form,"qrcode")'></image-uploader>
       </el-form-item>
       <el-form-item label="DeviceID余额">
         <div class='inline-input'>
@@ -69,12 +72,12 @@
             <el-button v-if='scope.row.ablityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="是否使用">
+        <el-table-column label="是否使用">
           <template slot-scope="scope">
             <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
             </el-switch>
           </template>
-        </el-table-column> -->
+        </el-table-column>
       </el-table>
     </el-form>
     <el-form v-else-if='step===4' label-width="100px" class="mb-22">
@@ -89,7 +92,7 @@
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-          <el-form-item :label=' "页序-" + item.pageId '>
+          <el-form-item :label=' "页序 - " + item.pageId '>
             <el-radio-group v-model="item.showStatus">
               <el-radio :label="true">显示</el-radio>
               <el-radio :label="false">不显示</el-radio>
@@ -106,11 +109,11 @@
                 <el-input v-model='scope.row.showName'></el-input>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="功能类型(标签)">
+            <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
                 {{typeModel[scope.row.ablityType]}}
               </template>
-            </el-table-column> -->
+            </el-table-column>
             <!-- <el-table-column label="描述">
               <template slot-scope="scope">
                 <el-input v-model='scope.row.remark'></el-input>
@@ -122,7 +125,7 @@
                 </el-switch>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="挑选功能项">
+            <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.ablityId">
                   <el-option v-if='iItem.definedName' v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
@@ -131,7 +134,7 @@
                   </el-option>
                 </el-select>
               </template>
-            </el-table-column> -->
+            </el-table-column>
           </el-table>
         </el-card>
       </template>
@@ -182,6 +185,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import File from '@/components/Upload/file'
 import { fetchList as getTypeList, createDeviceType } from '@/api/device/model'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
@@ -192,7 +196,8 @@ import DTitle from '@/components/Title'
 export default {
   components: {
     ImageUploader,
-    DTitle
+    DTitle,
+    File
   },
   props: {
     visible: {
@@ -234,18 +239,6 @@ export default {
       ],
       deviceTypeAblitys: [],
       step: 1,
-      software: [
-        {
-          img: '',
-          index: 1,
-          name: '页面名称A'
-        },
-        {
-          img: '',
-          index: 2,
-          name: '页面名称B'
-        }
-      ],
       options: [
         {
           name: 'asd',
@@ -267,18 +260,22 @@ export default {
         3: '多选类',
         4: '阈值类',
         5: '阈值选择类'
-      }
+      },
+      software: ''
     }
   },
   methods: {
     useableAblity(key) {
-      return this.theType.filter(item => item.ablityType === key)
+      return this.theType.deviceTypeAblitys.filter(
+        item => item.ablityType === key
+      )
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
       const newArray =
         this.theType &&
-        this.theType.map(item => {
+        this.theType.deviceTypeAblitys &&
+        this.theType.deviceTypeAblitys.map(item => {
           return {
             id: item.id,
             ablityId: item.ablityId,
@@ -406,8 +403,12 @@ export default {
         this.typeList = response.data
       })
     },
-    getURL(url) {
-      this.form.icon = url
+    setURL(argu, data, name) {
+      if (!data) {
+        this[name] = argu[0]
+        return
+      }
+      data[name] = argu[0]
     },
     getImageName(url) {
       if (!url) {
@@ -440,7 +441,7 @@ export default {
   },
   watch: {
     data(val) {
-      console.log(val)
+      console.log('edit', val)
       const newData = JSON.parse(JSON.stringify(val))
 
       this.form = newData
@@ -449,14 +450,12 @@ export default {
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
       this.theType.showName = this.theType.name
-
       this.abilityList = newData.deviceModelAblitys
       this.abilityList.forEach(item => {
-        // 将definedName 给 名称，然后将其置空
         item['ablityName'] = item.definedName
-        item.definedName = ''
-        item.deviceModelAblityOptions &&
-          item.deviceModelAblityOptions.forEach(iItem => {
+        item.isUsed = true
+        item.deviceAblityOptions &&
+          item.deviceAblityOptions.forEach(iItem => {
             iItem.optionName = iItem.definedName
             iItem.definedName = ''
           })

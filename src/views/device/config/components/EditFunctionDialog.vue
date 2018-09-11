@@ -79,7 +79,7 @@
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-          <el-form-item :label=' "页序-" + item.pageNo '>
+          <el-form-item :label=' "页序 - " + item.pageNo '>
             <el-radio-group v-model="item.showStatus">
               <el-radio :label="true">显示</el-radio>
               <el-radio :label="false">不显示</el-radio>

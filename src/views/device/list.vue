@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
         </el-table-column>
-        <el-table-column prop="owner" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.owner">
+        <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.customerName">
         </el-table-column>
         <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
         </el-table-column>
@@ -99,7 +99,7 @@
           <el-checkbox v-model="deviceColumnVisible.mac">MAC</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.owner">归属</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.customerName">归属</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.type">类型</el-checkbox>
@@ -230,7 +230,7 @@ export default {
       deviceColumnVisible: {
         name: true,
         mac: true,
-        owner: true,
+        customerName: true,
         deviceType: true,
         bindStatus: true,
         enableStatus: true,
@@ -292,7 +292,7 @@ export default {
     addData(data) {
       const list = data.deviceList
       list.forEach(item => {
-        item.bindStatus = 1
+        item.bindStatus = 0
         item.enableStatus = 0
         item.groupId = -1
         item.workStatus = 0
@@ -314,10 +314,12 @@ export default {
             mac: form[0].mac
           })
             .then(res => {
-              this.deviceList = this.deviceList.filter(
-                item =>
-                  !this.selectedDeviceList.some(obj => obj.mac === item.mac)
-              )
+              this.deviceList.forEach(item => {
+                // 如果在用户选择的删除列表中
+                if (this.selectedDeviceList.some(obj => obj.mac === item.mac)) {
+                  item.status = 2
+                }
+              })
               this.selectedDeviceList = []
               this.$message({
                 type: 'success',

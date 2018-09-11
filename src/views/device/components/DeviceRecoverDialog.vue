@@ -15,7 +15,7 @@
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
       <el-button type="primary" @click="recoverDevicePart">恢复选中项</el-button>
-      <el-button type="primary" @click="recoverDeviceAll">恢复全部</el-button>
+      <!-- <el-button type="primary" @click="recoverDeviceAll">恢复全部</el-button> -->
     </div>
   </el-dialog>
 </template>
@@ -54,12 +54,8 @@ export default {
       })
         .then(() => {
           recoverDevice({
-            deviceVos: this.selectedDeviceList.map(item => {
-              return {
-                mac: item.mac,
-                deviceId: item.id
-              }
-            })
+            mac: this.selectedDeviceList[0].mac,
+            deviceId: this.selectedDeviceList[0].id
           }).then(() => {
             this.$message({
               message: '恢复成功！',

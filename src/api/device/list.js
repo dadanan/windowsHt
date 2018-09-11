@@ -95,3 +95,11 @@ export function updateDeivceEnable(data) {
     data
   })
 }
+
+export function queryTeamInfo(data) {
+  return request({
+    url: '/temp/api/device/queryTeamInfo',
+    method: 'post',
+    data
+  })
+}

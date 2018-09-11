@@ -29,7 +29,7 @@
                 <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
                 </el-option>
               </el-select> -->
-              <el-input v-model='openId' placeholder="请输入"></el-input>
+              <el-input v-model='openId' @blur='queryTeamInfo' placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="用户绑定组">
               <el-select v-model="teamId" style="width: 100%">
@@ -67,8 +67,7 @@
 
 <script>
 import { bindDeviceToUser } from '@/api/device/list'
-import { queryUsers } from '@/api/device/list'
-import { queryTeamList } from '@/api/device/team'
+import { queryUsers, queryTeamInfo } from '@/api/device/list'
 
 export default {
   props: {
@@ -83,8 +82,7 @@ export default {
   data() {
     return {
       openId: '',
-      teamId: 1,
-      userId: 1,
+      teamId: '',
       selectedDeviceList: [],
       customerList: [],
       query: {
@@ -138,15 +136,14 @@ export default {
         this.customerList = res.data
       })
     },
-    queryTeamList() {
-      queryTeamList(this.query).then(res => {
+    queryTeamInfo() {
+      console.log(11)
+      queryTeamInfo({
+        openId: this.openId
+      }).then(res => {
         this.teamList = res.data
       })
     }
-  },
-  created() {
-    // this.getCustomerList()
-    this.queryTeamList()
   }
 }
 </script>

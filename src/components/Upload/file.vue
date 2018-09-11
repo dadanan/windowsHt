@@ -41,7 +41,7 @@ export default {
     }
   },
   props: {
-    imageName: {
+    fileName: {
       type: String,
       default: ''
     },
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     getName() {
-      return this.name || this.imageName
+      return this.name || this.fileName
     }
   },
   methods: {

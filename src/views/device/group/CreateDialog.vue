@@ -133,7 +133,6 @@ export default {
         teamDeviceCreateRequestList: this.teamDeviceCreateRequestList
       }
       createNewTeam(form).then(res => {
-        console.log(res)
         this.$emit('update:visible', false)
         this.$emit('add-data', form)
       })
