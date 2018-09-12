@@ -107,9 +107,6 @@
       </div>
       <div v-if="createStep == 3">
         <el-form label-position="left" label-width="150px">
-          <el-form-item label="APP 二维码">
-            <image-uploader :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
-          </el-form-item>
           <el-form-item label="APP 名称">
             <el-input v-model='androidConfig.name'></el-input>
           </el-form-item>
@@ -261,7 +258,6 @@ export default {
         deviceChangePassword: '',
         logo: '',
         name: '',
-        qrcode: '',
         version: ''
       },
       backendConfig: {

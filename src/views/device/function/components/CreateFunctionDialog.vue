@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="添加功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="添加功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="名称">
         <el-input v-model="form.ablityName"></el-input>
@@ -43,11 +43,16 @@
             <div class="input-group">
               <el-input v-model="form.minVal" placeholder="最小值"></el-input>
               <el-input v-model="form.maxVal" placeholder="最大值"></el-input>
-              <el-button type="danger" @click="deleteConfigOption(i)">删除</el-button>
             </div>
           </el-form-item>
         </template>
         <template v-else-if="form.configType === 5">
+          <el-form-item label="极值">
+            <div class="input-group">
+              <el-input v-model="form.minVal" placeholder="最小值"></el-input>
+              <el-input v-model="form.maxVal" placeholder="最大值"></el-input>
+            </div>
+          </el-form-item>
           <el-form-item v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>

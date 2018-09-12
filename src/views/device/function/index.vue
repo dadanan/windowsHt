@@ -10,7 +10,10 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="ablityName" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="ablityType" label="类型(标签)" show-overflow-tooltip sortable>
+        <el-table-column label="类型(标签)" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            {{typeModel[scope.row.ablityType]}}
+          </template>
         </el-table-column>
         <el-table-column label="运行状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
@@ -38,7 +41,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="1" :page-sizes="[10, 20, 40]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-function-dialog :visible.sync="createFunctionDialogVisible" @add-data='addData'></create-function-dialog>
@@ -61,12 +64,19 @@ export default {
       loading: true,
       list: [],
       total: 0,
-      listQuery: {},
+      listQuery: { limit: 100, page: 1 },
       permissionListMap: { r: '可读', w: '可写' },
       configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
       createFunctionDialogVisible: false,
       editFunctionDialogVisible: false,
-      editingData: {}
+      editingData: {},
+      typeModel: {
+        1: '文本类',
+        2: '单选类',
+        3: '多选类',
+        4: '阈值类',
+        5: '阈值选择类'
+      }
     }
   },
   created() {
