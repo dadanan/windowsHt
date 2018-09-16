@@ -8,7 +8,7 @@
         <el-step title="安卓 APP 设置"></el-step>
         <el-step title="管理后台设置"></el-step>
       </el-steps>
-      <div v-if="createStep == 0">
+      <div v-if="createStep == 1">
         <el-form label-position="left" label-width="150px">
           <el-form-item label="客户名称">
             <el-input v-model="baseInfo.name"></el-input>
@@ -34,7 +34,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="createStep == 1">
+      <div v-if="createStep == 2">
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
           <el-table-column type="selection">
           </el-table-column>
@@ -71,7 +71,7 @@
         <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
         </el-pagination>
       </div>
-      <div v-if="createStep == 2">
+      <div v-if="createStep == 3">
         <el-form label-position="left" label-width="150px">
           <el-form-item label="默认组名">
             <el-input v-model="h5Config.defaultTeamName"></el-input>
@@ -105,7 +105,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="createStep == 3">
+      <div v-if="createStep == 4">
         <el-form label-position="left" label-width="150px">
           <el-form-item label="APP 名称">
             <el-input v-model='androidConfig.name'></el-input>
@@ -162,7 +162,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="createStep == 4">
+      <div v-if="createStep == 5">
         <el-form label-position="left" label-width="150px">
           <el-form-item label="开放">
             <el-switch v-model='backendConfig.enableStatus'></el-switch>
@@ -197,8 +197,8 @@
     </div>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="backStep" v-if="createStep !== 0">上一步</el-button>
-      <el-button type="primary" @click="nextStep" v-if="createStep < 4">下一步</el-button>
+      <el-button type="primary" @click="backStep" v-if="createStep !== 1">上一步</el-button>
+      <el-button type="primary" @click="nextStep" v-if="createStep < 5">下一步</el-button>
       <el-button type="primary" @click="saveDetail" v-else>确定</el-button>
     </div>
   </el-dialog>
@@ -267,7 +267,7 @@ export default {
         name: '',
         type: 0
       },
-      createStep: 0,
+      createStep: 1,
       // 动态功能
       dynamicTags: ['功能1', '功能2', '功能3'],
       selectedDeviceList: [],
@@ -297,9 +297,9 @@ export default {
     nextStep() {
       this.createStep++
 
-      if (this.createStep === 5) {
+      if (this.createStep === 6) {
         this.isCreateClientDialogVisible = false
-        this.createStep = 0
+        this.createStep = 1
       }
     },
     getList() {
@@ -373,6 +373,13 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    }
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.createStep = 1
+      }
     }
   },
   created() {

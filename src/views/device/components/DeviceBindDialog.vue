@@ -32,7 +32,7 @@
               <el-input v-model='openId' @blur='queryTeamInfo' placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="用户绑定组">
-              <el-select v-model="teamId" style="width: 100%">
+              <el-select v-model="teamId" @change='bindDeviceHandle' style="width: 100%">
                 <el-option v-for='item in teamList' :key='item.id' :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -83,6 +83,7 @@ export default {
     return {
       openId: '',
       teamId: '',
+      teamName: '',
       selectedDeviceList: [],
       customerList: [],
       query: {
@@ -93,6 +94,9 @@ export default {
     }
   },
   methods: {
+    bindDeviceHandle(id) {
+      this.teamName = this.teamList.filter(item => item.id === id)[0].name
+    },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
@@ -103,7 +107,7 @@ export default {
         },
         openId: this.openId,
         teamId: this.teamId,
-        userId: this.userId
+        teamName: this.teamName
       }).then(() => {
         this.$message({
           message: '绑定成功！',
@@ -119,7 +123,7 @@ export default {
         },
         openId: this.openId,
         teamId: this.teamId,
-        userId: this.userId
+        teamName: this.teamName
       }).then(() => {
         this.$message({
           message: '绑定成功！',

@@ -218,6 +218,13 @@ export default {
       })
     }
   },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.step = 1
+      }
+    }
+  },
   created() {
     this.getCustomer()
     this.selectAllTypes()

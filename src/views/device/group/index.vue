@@ -120,7 +120,7 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList } from '@/api/device/team'
+import { queryTeamList, deleteOneTeam } from '@/api/device/team'
 
 export default {
   data() {
@@ -167,7 +167,34 @@ export default {
       this.list.unshift(data)
     },
     updateData() {},
-    deleteRow() {}
+    deleteRow(id) {
+      this.$confirm('将执行删除操作, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deleteOneTeam({
+            teamId: id
+          })
+            .then(res => {
+              this.list = this.list.filter(item => item.id !== id)
+              this.$message({
+                type: 'success',
+                message: `删除成功！`
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    }
   },
   created() {
     this.queryTeamList()

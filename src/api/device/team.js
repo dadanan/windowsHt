@@ -47,3 +47,11 @@ export function queryDeviceInfo(data) {
     data
   })
 }
+
+export function deleteOneTeam(data) {
+  return request({
+    url: `/temp/api/team/deleteOneTeam`,
+    method: 'post',
+    data
+  })
+}

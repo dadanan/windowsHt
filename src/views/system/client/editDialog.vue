@@ -389,8 +389,6 @@ export default {
         sld: val.sld,
         remark: val.remark
       }
-      // this.baseInfo = val.baseInfo
-      // this.h5Config = val.h5Config || {}
       this.h5Config = tempForm.h5Config
       this.androidConfig = val.androidConfig || {}
       this.backendConfig = val.backendConfig || {}
@@ -415,6 +413,11 @@ export default {
             name: ''
           }
         ]
+      }
+    },
+    visible(val) {
+      if (val) {
+        this.createStep = 1
       }
     }
   },

@@ -338,13 +338,17 @@ export default {
           ...form,
           id: res.data
         })
-        if (!this.formatSelected[0]) {
+        if (!this.form.formatId) {
           return
         }
+        const formatSelected = this.formatSelectedList.filter(
+          item => item.id === this.form.formatId
+        )
+
         this.$alert(
-          `您已成功配置好型号数据，复制链接微信内打开即可预览效果: ${
-            this.formatSelected[0].htmlUrl
-          }`,
+          `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
+            formatSelected[0].htmlUrl
+          }?customerId=${this.form.customerId}`,
           '预览地址',
           {
             confirmButtonText: '确定'
@@ -356,6 +360,34 @@ export default {
       selectFormatsByCustomerId(this.form.customerId, this.form.typeId).then(
         res => {
           this.formatSelectedList = res.data
+          // 如果是编辑状态，且上次选择了版式
+          if (this.data.formatId && this.data.formatId + '') {
+            // 手动将特定版式的一些数据塞到用户当前版式数据中（因为查询型号详情的版式数据中缺少一些参数）
+            const formatSelected = this.formatSelectedList.filter(
+              item => item.id === this.form.formatId
+            )
+            const pageOfForamt =
+              formatSelected && formatSelected[0].wxFormatPageVos
+            if (this.pageOfForamt) {
+              // 如果用户上次选择了版式，并配置了版式数据，修正一些参数
+              this.pageOfForamt.forEach((page, pIndex) => {
+                page.modelFormatItems &&
+                  page.modelFormatItems.forEach((item, index) => {
+                    item.ablityType =
+                      pageOfForamt[pIndex].wxFormatItemVos[index].ablityType
+                  })
+              })
+            } else {
+              // 上次用户没有配置版式数据，仅仅选择了版式
+              this.pageOfForamt = pageOfForamt
+              this.pageOfForamt.forEach(page => {
+                page.pageId = page.pageNo
+                page.modelFormatItems = page.wxFormatItemVos
+                delete page.pageNo
+                delete page.wxFormatItemVos
+              })
+            }
+          }
         }
       )
     },
@@ -449,7 +481,7 @@ export default {
         item => item.id === newData.typeId
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
-      this.theType.showName = this.theType.name
+      this.theType.showName = newData.name
       this.abilityList = newData.deviceModelAblitys
       this.abilityList.forEach(item => {
         item['ablityName'] = item.definedName
@@ -463,7 +495,8 @@ export default {
 
       this.pageOfForamt = newData.modelFormatVo.modelFormatPages
 
-      this.pageOfForamt &&
+      // 如果用户上次配置了版式数据，那么转换一些参数
+      if (this.pageOfForamt) {
         this.pageOfForamt.forEach(item => {
           item.showStatus = item.showStatus ? true : false
           Array.isArray(item.modelFormatItems) &&
@@ -471,6 +504,14 @@ export default {
               iItem.showStatus = iItem.showStatus ? true : false
             })
         })
+      } else {
+        // 如果用户上次没有配置版式数据的话
+      }
+    },
+    visible(val) {
+      if (val) {
+        this.step = 1
+      }
     }
   },
   created() {

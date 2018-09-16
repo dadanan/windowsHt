@@ -279,6 +279,11 @@ export default {
           }
         })
       }
+    },
+    visible(val) {
+      if (val) {
+        this.step = 1
+      }
     }
   },
   created() {

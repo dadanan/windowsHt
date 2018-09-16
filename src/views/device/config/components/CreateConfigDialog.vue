@@ -329,9 +329,9 @@ export default {
           return
         }
         this.$alert(
-          `您已成功配置好型号数据，复制链接微信内打开即可预览效果: ${
+          `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
             this.formatSelected[0].htmlUrl
-          }`,
+          }?customerId=${this.from.customerId}`,
           '预览地址',
           {
             confirmButtonText: '确定'
@@ -430,6 +430,13 @@ export default {
   created() {
     this.getModelList()
     this.getCustomer()
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.step = 1
+      }
+    }
   }
 }
 </script>

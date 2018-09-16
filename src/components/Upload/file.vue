@@ -15,7 +15,7 @@ import '@/assets/crypto1/crypto/crypto.js'
 import '@/assets/crypto1/hmac/hmac.js'
 import '@/assets/crypto1/sha1/sha1.js'
 
-const accesskey = 'ApTxE4aAwdlN1FC4k7TZ08WTgJcoh0'
+const accesskey = 'k6DqH7zUE0JFyjuroCasU2dIDI1Fxl'
 const policyText = {
   expiration: '2020-01-01T12:00:00.000Z',
   conditions: [['content-length-range', 0, 2048000]]
@@ -29,11 +29,11 @@ const signature = Crypto.util.bytesToBase64(bytes)
 export default {
   data() {
     return {
-      host: 'http://mybucket42.oss-cn-beijing.aliyuncs.com',
+      host: 'http://2018-9-16-image.oss-cn-beijing.aliyuncs.com',
       attachedData: {
         key: '${filename}',
         policy: policyBase64,
-        OSSAccessKeyId: 'LTAI8ZpYvAKhPdRK',
+        OSSAccessKeyId: 'LTAIceTyFAv3wFbS',
         success_action_status: 200,
         signature: signature
       },

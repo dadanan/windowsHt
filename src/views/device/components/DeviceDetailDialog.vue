@@ -7,57 +7,51 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="placeholder"></el-input>
+                  <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="型号">
-                  <el-input v-model="placeholder" disabled></el-input>
+                <el-form-item label="型号ID">
+                  <el-input v-model="form.modelId" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="typeID">
-                  <el-input v-model="placeholder" disabled></el-input>
+                <el-form-item label="型号名">
+                  <el-input v-model="form.modelName" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="设备类型">
-                  <el-input v-model="placeholder" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="对应名">
-                  <el-input v-model="placeholder" disabled></el-input>
+                <el-form-item label="设备类型ID">
+                  <el-input v-model="form.typeId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="设备归属">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  <el-input v-model="form.customerName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="MAC">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  <el-input v-model="form.mac" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="绑定状态">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  {{form.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </el-form-item>
-                <el-form-item label="绑定人">
-                  <el-input v-model="placeholder" disabled></el-input>
+                <el-form-item label="启用状态">
+                  {{form.enableStatus === 1 ? '启用' : '禁用'}}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="启用状态">
-                  <el-input v-model="placeholder" disabled></el-input>
-                </el-form-item>
                 <el-form-item label="托管状态">
                   <el-input v-model="placeholder" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="集群">
-                  <el-input v-model="placeholder" disabled></el-input>
+                <el-form-item label="集群ID">
+                  <el-input v-model="form.groupId" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="集群名">
+                  <el-input v-model="form.groupName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="在线状态">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
                 <el-form-item label="工作状态">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  {{form.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
                 </el-form-item>
                 <el-form-item label="注册时间">
-                  <el-input v-model="placeholder" disabled></el-input>
+                  {{new Date(form.createTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="最后上线时间">
-                  <el-input v-model="placeholder" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="设备业务">
-                  <el-input v-model="placeholder"></el-input>
+                  {{new Date(form.lastUpdateTime).toLocaleString()}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -200,12 +194,13 @@ export default {
     return {
       placeholder: 'placeholder',
       activeTab: '1',
-      deviceList: []
+      deviceList: [],
+      form: {}
     }
   },
   watch: {
     detailData(val) {
-      console.log('asd', val)
+      this.form = JSON.parse(JSON.stringify(val))
     }
   }
 }

@@ -54,17 +54,15 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
-        <el-table-column prop="deviceId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.deviceId">
+        <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
-        <el-table-column prop="modelId" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
+        <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
         </el-table-column>
-        <el-table-column prop="modelName" label="对应名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+        <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
         </el-table-column>
         <el-table-column prop="createTime" label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.createTime">
         </el-table-column>
         <el-table-column prop="lastUpdateTime" label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
-        </el-table-column>
-        <el-table-column prop="bindCustomer" label="绑定人" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindCustomer">
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
         </el-table-column>
@@ -102,13 +100,13 @@
           <el-checkbox v-model="deviceColumnVisible.customerName">归属</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.type">类型</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.typeId">类型</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.isEnabled">启用状态</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.enableStatus">启用状态</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.clusterID">集群 ID</el-checkbox>
@@ -117,28 +115,22 @@
           <el-checkbox v-model="deviceColumnVisible.clusterName">集群名</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.isBoot">工作状态</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.workStatus">工作状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.isOnline">在线状态</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.deviceId">设备 ID</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelName">对应名</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.modelName">设备型号名称</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.createTime">注册时间</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.lastUpdateTime">最后上线时间</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.bindCustomer">绑定人</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
@@ -238,7 +230,7 @@ export default {
         groupName: true,
         workStatus: true,
         onlineStatus: true,
-        deviceId: false,
+        typeId: false,
         modelId: false,
         modelName: false,
         createTime: false,
@@ -310,7 +302,7 @@ export default {
         .then(() => {
           const form = this.selectedDeviceList
           deleteOneDevice({
-            deviceId: form[0].id,
+            typeId: form[0].id,
             mac: form[0].mac
           })
             .then(res => {
