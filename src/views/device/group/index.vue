@@ -8,7 +8,7 @@
           <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table :data="list" v-loading.body="loading" class="mb20" border @selection-change="handleSelectionChange">
+      <el-table :data="computeList" v-loading.body="loading" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="id" label="组ID" show-overflow-tooltip sortable v-if='clientColumnVisible.id'>
         </el-table-column>
@@ -120,7 +120,7 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList, deleteOneTeam } from '@/api/device/team'
+import { queryTeamList, deleteOneTeam, queryTeamById } from '@/api/device/team'
 
 export default {
   data() {
@@ -150,6 +150,11 @@ export default {
       selectionTable: []
     }
   },
+  computed: {
+    computeList() {
+      return this.list.filter(item => item.status !== 2)
+    }
+  },
   methods: {
     handleSelectionChange(selection) {
       this.selectionTable = selection
@@ -160,8 +165,13 @@ export default {
       })
     },
     showEditRoleDialog(data) {
-      this.editDialogVisible = true
-      this.editingData = data
+      this.getDetail(data.id)
+    },
+    getDetail(id) {
+      queryTeamById(id).then(res => {
+        this.editDialogVisible = true
+        this.editingData = res.data
+      })
     },
     addData(data) {
       this.list.unshift(data)

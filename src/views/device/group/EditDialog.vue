@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column label="管理名称" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-input size="small" v-model="scope.row.manageName"></el-input>
+            <el-input size="small" v-model="scope.row.manageName" placeholder="施工管理的备注名"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="联动设置" show-overflow-tooltip width='180'>
@@ -137,7 +137,6 @@ export default {
         teamDeviceCreateRequestList: this.teamDeviceCreateRequestList
       }
       updateTeam(form).then(res => {
-        console.log(res)
         this.$emit('update:visible', false)
         this.$emit('add-data', form)
       })
@@ -165,7 +164,20 @@ export default {
     data(val) {
       const data = JSON.parse(JSON.stringify(val))
       console.log('da', data)
-      this.teamDeviceCreateRequestList = data.teamDeviceCreateRequestList
+      if (data.deviceTeamItemVos) {
+        this.teamDeviceCreateRequestList = data.deviceTeamItemVos
+      } else {
+        this.teamDeviceCreateRequestList =
+          data.teamDeviceCreateRequestList || []
+      }
+      if (data.cover) {
+        data.teamCover = data.cover
+        delete data.cover
+      }
+      if (data.icon) {
+        data.teamIcon = data.icon
+        delete data.icon
+      }
       this.form = data
     }
   }

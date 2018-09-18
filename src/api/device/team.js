@@ -55,3 +55,10 @@ export function deleteOneTeam(data) {
     data
   })
 }
+
+export function queryTeamById(id) {
+  return request({
+    url: `/temp/api/team/queryTeamById/${id}`,
+    method: 'get'
+  })
+}

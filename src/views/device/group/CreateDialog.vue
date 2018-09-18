@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column label="管理名称" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-input size="small" v-model="scope.row.manageName"></el-input>
+            <el-input size="small" v-model="scope.row.manageName" placeholder="施工管理的备注名"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="联动设置" show-overflow-tooltip width='180'>
@@ -134,6 +134,8 @@ export default {
       }
       createNewTeam(form).then(res => {
         this.$emit('update:visible', false)
+        form['icon'] = form.teamIcon
+        form['cover'] = form.teamCover
         this.$emit('add-data', {
           ...form,
           id: res.data

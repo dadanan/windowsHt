@@ -1,4 +1,4 @@
-<template>
+保存型号<template>
   <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%' class='create-config-container'>
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="设备配置"></el-step>
@@ -331,7 +331,7 @@ export default {
         this.$alert(
           `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
             this.formatSelected[0].htmlUrl
-          }?customerId=${this.from.customerId}`,
+          }?customerId=${this.form.customerId}`,
           '预览地址',
           {
             confirmButtonText: '确定'
@@ -348,8 +348,11 @@ export default {
     },
     handleTypeChange(id) {
       this.theType = this.typeList.filter(item => item.id === id)[0]
-      console.log('asd', this.theType)
       this.theType.showName = this.theType.name
+      this.theType.deviceTypeAblitys &&
+        this.theType.deviceTypeAblitys.forEach(item => {
+          item['definedName'] = item.ablityName
+        })
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true

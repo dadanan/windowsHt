@@ -99,7 +99,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label='页面名称'>
-            {{item.name}}
+            {{item.showName || item.name}}
           </el-form-item>
           <d-title>配置页面功能项</d-title>
           <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
@@ -302,8 +302,8 @@ export default {
         this.pageOfForamt.map(item => {
           return {
             id: item.id,
-            pageId: item.pageNo,
-            showName: item.name,
+            pageId: item.pageId || item.pageNo,
+            showName: item.showName || item.name,
             showStatus: item.showStatus ? 1 : 0,
             modelFormatItems:
               item.modelFormatItems &&
@@ -332,6 +332,9 @@ export default {
           modelFormatPages
         }
       }
+      // form.deviceModelFormat = form.modelFormatVo
+      delete form.modelFormatVo
+
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('add-data', {
