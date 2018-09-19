@@ -121,6 +121,7 @@ import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
 import { queryTeamList, deleteOneTeam, queryTeamById } from '@/api/device/team'
+import axios from 'axios'
 
 export default {
   data() {
@@ -208,6 +209,15 @@ export default {
   },
   created() {
     this.queryTeamList()
+    const url = 'http://www.hcocloud.com:8887/huankeadmin/api/device/upload'
+    axios
+      .options(url)
+      .then(res => {
+        console.log('res', res)
+      })
+      .catch(err => {
+        console.log('err', err)
+      })
   },
   components: {
     CreateDialog,
