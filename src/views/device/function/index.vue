@@ -8,11 +8,11 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="ablityName" label="名称" show-overflow-tooltip sortable>
+        <el-table-column prop="abilityName" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="类型(标签)" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{typeModel[scope.row.ablityType]}}
+            {{typeModel[scope.row.abilityType]}}
           </template>
         </el-table-column>
         <el-table-column label="运行状态" show-overflow-tooltip sortable>
@@ -52,7 +52,7 @@
 <script>
 import CreateFunctionDialog from './components/CreateFunctionDialog'
 import EditFunctionDialog from './components/EditFunctionDialog'
-import { fetchList, deleteAblity } from '@/api/device/function'
+import { fetchList, deleteAbility } from '@/api/device/function'
 
 export default {
   components: {
@@ -120,7 +120,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteAblity(id)
+          deleteAbility(id)
             .then(res => {
               if (res.code === 200) {
                 this.$message({

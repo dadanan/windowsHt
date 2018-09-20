@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
-export function createDeviceAblity(data) {
+export function createDeviceAbility(data) {
   return request({
-    url: '/temp/api/deviceAbility/createDeviceAblity',
+    url: '/temp/api/deviceAbility/createDeviceAbility',
     method: 'post',
     data
   })
 }
 
-export function deleteAblity(id) {
+export function deleteAbility(id) {
   return request({
-    url: `/temp/api/deviceAbility/deleteAblity/${id}`,
+    url: `/temp/api/deviceAbility/deleteAbility/${id}`,
     method: 'delete'
   })
 }
@@ -23,9 +23,9 @@ export function fetchList(data) {
   })
 }
 
-export function updateDeviceAblity(data) {
+export function updateDeviceAbility(data) {
   return request({
-    url: '/temp/api/deviceAbility/updateDeviceAblity',
+    url: '/temp/api/deviceAbility/updateDeviceAbility',
     method: 'put',
     data
   })

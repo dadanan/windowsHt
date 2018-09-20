@@ -415,16 +415,13 @@ export default {
       })
     },
     getUserInfo() {
-      getCurrentUser()
-        .then(res => {
-          if (res.code === 200) {
-            this.profileForm = res.data
-            this.$store.commit('SET_USER', res.data)
-          }
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+      getCurrentUser().then(res => {
+        if (res.code === 200) {
+          const data = res.data
+          this.profileForm = data
+          this.$store.commit('SET_USER', data)
+        }
+      })
     }
   },
   created() {

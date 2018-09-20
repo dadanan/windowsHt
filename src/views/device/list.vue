@@ -302,7 +302,7 @@ export default {
         .then(() => {
           const form = this.selectedDeviceList
           deleteOneDevice({
-            typeId: form[0].id,
+            deviceId: form[0].id,
             mac: form[0].mac
           })
             .then(res => {

@@ -44,3 +44,10 @@ export function selectModelsByTypeIds(typeIds) {
     method: 'get'
   })
 }
+
+export function selectBackendConfigBySLD(sld) {
+  return request({
+    url: `/temp/api/customer/selectBackendConfigBySLD/${sld}`,
+    method: 'get'
+  })
+}

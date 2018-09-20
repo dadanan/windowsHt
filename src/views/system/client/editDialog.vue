@@ -52,7 +52,7 @@
           </el-table-column>
           <el-table-column label="功能项" show-overflow-tooltip sortable>
             <template slot-scope="scope">
-              {{ scope.row.deviceTypeAblitys.map(el => el.ablityName).join('、') }}
+              {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
             </template>
           </el-table-column>
           <el-table-column label="码表" show-overflow-tooltip sortable>
@@ -170,7 +170,7 @@
           <el-form-item label="名称">
             <el-input v-model='backendConfig.name'></el-input>
           </el-form-item>
-          <el-form-item label="系统登陆名">
+          <el-form-item label="超级管理员用户名">
             <el-input v-model='baseInfo.loginName'></el-input>
           </el-form-item>
           <el-form-item label="二级域名">
@@ -347,12 +347,14 @@ export default {
       })
     },
     updateDetail() {
+      this.backendConfig.enableStatus = this.backendConfig.enableStatus ? 1 : 2
+
       const form = {
         ...this.baseInfo,
         typeIds: this.selectedDeviceList.map(item => item.id).join(','),
         h5Config: this.h5Config,
         androidConfig: this.androidConfig,
-        backendConfig: this.androidConfig,
+        backendConfig: this.backendConfig,
         id: this.id
       }
       updateDetail(form)

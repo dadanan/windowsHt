@@ -2,7 +2,7 @@
   <el-dialog top='4vh' :close-on-click-modal=false title="添加功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="名称">
-        <el-input v-model="form.ablityName"></el-input>
+        <el-input v-model="form.abilityName"></el-input>
       </el-form-item>
       <el-form-item label="指令">
         <el-input v-model="form.dirValue"></el-input>
@@ -27,7 +27,7 @@
           </el-select>
         </el-form-item>
         <template v-if="form.configType === 2 || form.configType === 3">
-          <el-form-item v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
+          <el-form-item v-for="(option, i) in form.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="指令"></el-input>
@@ -53,7 +53,7 @@
               <el-input v-model="form.maxVal" placeholder="最大值"></el-input>
             </div>
           </el-form-item>
-          <el-form-item v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
+          <el-form-item v-for="(option, i) in form.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="选项指令"></el-input>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { createDeviceAblity } from '@/api/device/function'
+import { createDeviceAbility } from '@/api/device/function'
 
 export default {
   props: {
@@ -88,14 +88,14 @@ export default {
   data() {
     return {
       form: {
-        ablityName: '',
+        abilityName: '',
         dirValue: '',
         remark: '',
         permissions: [],
         writeStatus: 0,
         readStatus: 0,
         configType: 1,
-        deviceAblityOptions: [],
+        deviceAbilityOptions: [],
         runStatus: 0
       },
       typeList: [
@@ -124,8 +124,8 @@ export default {
   },
   methods: {
     createHandler() {
-      this.form['ablityType'] = this.form.configType
-      createDeviceAblity(this.form)
+      this.form['abilityType'] = this.form.configType
+      createDeviceAbility(this.form)
         .then(res => {
           this.$emit('add-data', {
             ...this.form,
@@ -153,11 +153,11 @@ export default {
     handleConfigTypeChange(type) {
       this.$set(this.form, 'configType', type)
       if (type === 1) {
-        delete this.form.deviceAblityOptions
+        delete this.form.deviceAbilityOptions
         return
       }
       if (type === 2 || type === 3) {
-        this.$set(this.form, 'deviceAblityOptions', [
+        this.$set(this.form, 'deviceAbilityOptions', [
           {
             optionName: '',
             optionValue: ''
@@ -168,11 +168,11 @@ export default {
       if (type === 4) {
         this.form.maxVal = ''
         this.form.minVal = ''
-        delete this.form.deviceAblityOptions
+        delete this.form.deviceAbilityOptions
         return
       }
       if (type === 5) {
-        this.$set(this.form, 'deviceAblityOptions', [
+        this.$set(this.form, 'deviceAbilityOptions', [
           {
             optionName: '',
             optionValue: '',
@@ -183,19 +183,19 @@ export default {
       }
     },
     deleteConfigOption(i) {
-      this.form.deviceAblityOptions.splice(i, 1)
+      this.form.deviceAbilityOptions.splice(i, 1)
     },
     addConfigOption() {
       const type = this.form.configType
       if (type === 2 || type === 3) {
-        this.form.deviceAblityOptions.push({
+        this.form.deviceAbilityOptions.push({
           optionName: '',
           optionValue: ''
         })
         return
       }
       if (type === 5) {
-        this.form.deviceAblityOptions.push({
+        this.form.deviceAbilityOptions.push({
           optionName: '',
           optionValue: '',
           minVal: '',

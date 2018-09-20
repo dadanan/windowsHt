@@ -51,10 +51,10 @@
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="theType.deviceTypeAblitys" style="width: 100%" class="mb20" border>
+      <el-table :data="theType.deviceTypeAbilitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
-            <el-input v-model='scope.row.ablityName' disabled></el-input>
+            <el-input v-model='scope.row.abilityName' disabled></el-input>
           </template>
         </el-table-column>
         <el-table-column label="显示名称">
@@ -64,12 +64,12 @@
         </el-table-column>
         <el-table-column label="功能类型(标签)">
           <template slot-scope="scope">
-            {{typeModel[scope.row.ablityType]}}
+            {{typeModel[scope.row.abilityType]}}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button v-if='scope.row.ablityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
+            <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
         <el-table-column label="是否使用">
@@ -111,7 +111,7 @@
             </el-table-column>
             <el-table-column label="功能类型(标签)">
               <template slot-scope="scope">
-                {{typeModel[scope.row.ablityType]}}
+                {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
             <!-- <el-table-column label="描述">
@@ -127,10 +127,10 @@
             </el-table-column>
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
-                <el-select v-model="scope.row.ablityId">
-                  <el-option v-if='iItem.definedName' v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
+                <el-select v-model="scope.row.abilityId">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
                   </el-option>
-                  <el-option v-else v-for="iItem in useableAblity(scope.row.ablityType)" :key="iItem.id" :label="iItem.ablityName" :value="iItem.id">
+                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.id">
                   </el-option>
                 </el-select>
               </template>
@@ -148,25 +148,25 @@
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义" :visible.sync="dialogFormVisible" append-to-body>
       <el-form label-width="100px" class="mb-22">
         <el-form-item label="功能项名称">
-          <el-input v-model="modifyData.ablityName" disabled></el-input>
+          <el-input v-model="modifyData.abilityName" disabled></el-input>
         </el-form-item>
         <el-form-item label="功能分类">
-          <el-input v-model="modifyData.ablityType" disabled></el-input>
+          <el-input v-model="modifyData.abilityType" disabled></el-input>
         </el-form-item>
         <d-title>自定义部分</d-title>
-        <el-form-item v-if='modifyData.ablityType===2 || modifyData.ablityType === 3' v-for="(option, i) in modifyData.deviceModelAblityOptions" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.ablityType === 4'>
+        <el-form-item v-if='modifyData.abilityType === 4'>
           <div class="input-group">
             <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.ablityType === 5' v-for="(option, i) in modifyData.deviceAblityOptions" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceAbilityOptions" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
@@ -223,7 +223,7 @@ export default {
       dialogFormVisible: false,
       typeList: [],
       theType: {}, // 用户选择的类型数据
-      ablitySelected: [
+      abilitySelected: [
         {
           name: '功能项1',
           id: 1
@@ -237,7 +237,7 @@ export default {
           id: 3
         }
       ],
-      deviceTypeAblitys: [],
+      deviceTypeAbilitys: [],
       step: 1,
       options: [
         {
@@ -265,29 +265,29 @@ export default {
     }
   },
   methods: {
-    useableAblity(key) {
-      return this.theType.deviceTypeAblitys.filter(
-        item => item.ablityType === key
+    useableAbility(key) {
+      return this.theType.deviceTypeAbilitys.filter(
+        item => item.abilityType === key
       )
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
       const newArray =
         this.theType &&
-        this.theType.deviceTypeAblitys &&
-        this.theType.deviceTypeAblitys.map(item => {
+        this.theType.deviceTypeAbilitys &&
+        this.theType.deviceTypeAbilitys.map(item => {
           return {
             id: item.id,
-            ablityId: item.ablityId,
+            abilityId: item.abilityId,
             definedName: item.definedName,
             maxVal: item.maxVal,
             minVal: item.minVal,
-            deviceModelAblityOptions:
-              item.deviceAblityOptions &&
-              item.deviceAblityOptions.map(iItem => {
+            deviceModelAbilityOptions:
+              item.deviceAbilityOptions &&
+              item.deviceAbilityOptions.map(iItem => {
                 return {
                   id: iItem.id,
-                  ablityOptionId: iItem.ablityOptionId,
+                  abilityOptionId: iItem.abilityOptionId,
                   definedName: iItem.optionName,
                   maxVal: iItem.maxVal,
                   minVal: iItem.minVal
@@ -310,7 +310,7 @@ export default {
               item.modelFormatItems.map(iItem => {
                 return {
                   id: iItem.id,
-                  ablityId: iItem.ablityId,
+                  abilityId: iItem.abilityId,
                   itemId: iItem.modelFormatId,
                   showName: iItem.showName,
                   showStatus: iItem.showStatus ? 1 : 0
@@ -327,7 +327,7 @@ export default {
         modelNo: theType.typeNo,
         name: theType.showName,
         remark: theType.remark,
-        deviceModelAblitys: newArray,
+        deviceModelAbilitys: newArray,
         deviceModelFormat: {
           modelFormatPages
         }
@@ -376,8 +376,8 @@ export default {
               this.pageOfForamt.forEach((page, pIndex) => {
                 page.modelFormatItems &&
                   page.modelFormatItems.forEach((item, index) => {
-                    item.ablityType =
-                      pageOfForamt[pIndex].wxFormatItemVos[index].ablityType
+                    item.abilityType =
+                      pageOfForamt[pIndex].wxFormatItemVos[index].abilityType
                   })
               })
             } else {
@@ -466,8 +466,8 @@ export default {
         // 遍历类型，把功能项集中起来
         const temp = []
         res.data.forEach(item => {
-          if (item.deviceTypeAblitys && item.deviceTypeAblitys.length > 0) {
-            temp.push(...item.deviceTypeAblitys)
+          if (item.deviceTypeAbilitys && item.deviceTypeAbilitys.length > 0) {
+            temp.push(...item.deviceTypeAbilitys)
           }
         })
         this.abilityList = temp
@@ -485,12 +485,12 @@ export default {
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
       this.theType.showName = newData.name
-      this.abilityList = newData.deviceModelAblitys
+      this.abilityList = newData.deviceModelAbilitys
       this.abilityList.forEach(item => {
-        item['ablityName'] = item.definedName
+        item['abilityName'] = item.definedName
         item.isUsed = true
-        item.deviceAblityOptions &&
-          item.deviceAblityOptions.forEach(iItem => {
+        item.deviceAbilityOptions &&
+          item.deviceAbilityOptions.forEach(iItem => {
             iItem.optionName = iItem.definedName
             iItem.definedName = ''
           })

@@ -14,15 +14,15 @@
         <el-input v-model="form.source"></el-input>
       </el-form-item>
       <el-form-item label="功能项">
-        <el-table :data="deviceTypeAblitys" style="width: 100%" class="mb20" border>
+        <el-table :data="deviceTypeAbilitys" style="width: 100%" class="mb20" border>
           <el-table-column label="功能项名称">
             <template slot-scope="scope">
-              {{scope.row.ablityName}}
+              {{scope.row.abilityName}}
             </template>
           </el-table-column>
           <el-table-column label="功能项类型">
             <template slot-scope="scope">
-              {{typeModel[scope.row.ablityType]}}
+              {{typeModel[scope.row.abilityType]}}
             </template>
           </el-table-column>
           <el-table-column label="是否选择">
@@ -69,11 +69,11 @@ export default {
         name: '',
         icon: '',
         source: '',
-        deviceTypeAblitys: [],
+        deviceTypeAbilitys: [],
         stopWatch: '',
         remark: ''
       },
-      deviceTypeAblitys: [],
+      deviceTypeAbilitys: [],
       typeModel: {
         1: '文本类',
         2: '单选类',
@@ -84,23 +84,23 @@ export default {
     }
   },
   created() {
-    this.getdeviceTypeAblitys()
+    this.getdeviceTypeAbilitys()
   },
   methods: {
     createForm() {
-      const userDeviceTypeAblitys = this.deviceTypeAblitys.filter(
+      const userDeviceTypeAbilitys = this.deviceTypeAbilitys.filter(
         item => item.isChecked
       )
 
-      const newDeviceTypeAblitys = userDeviceTypeAblitys.map(item => {
+      const newDeviceTypeAbilitys = userDeviceTypeAbilitys.map(item => {
         return {
-          ablityId: item.id
+          abilityId: item.id
         }
       })
 
       const form = {
         ...this.form,
-        deviceTypeAblitys: newDeviceTypeAblitys
+        deviceTypeAbilitys: newDeviceTypeAbilitys
       }
 
       createDeviceType(form)
@@ -108,12 +108,12 @@ export default {
           this.$emit('update:visible', false)
           this.$emit('add-data', {
             ...form,
-            deviceTypeAblitys: userDeviceTypeAblitys,
+            deviceTypeAbilitys: userDeviceTypeAbilitys,
             id: res.data
           })
           console.log({
             ...form,
-            deviceTypeAblitys: userDeviceTypeAblitys,
+            deviceTypeAbilitys: userDeviceTypeAbilitys,
             id: res.data
           })
         })
@@ -127,12 +127,12 @@ export default {
     getURL2(url) {
       this.form.stopWatch = url
     },
-    getdeviceTypeAblitys() {
+    getdeviceTypeAbilitys() {
       fetchList({
         page: 1,
         limit: 1000
       }).then(response => {
-        this.deviceTypeAblitys = response.data
+        this.deviceTypeAbilitys = response.data
       })
     }
   }

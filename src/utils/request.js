@@ -5,7 +5,7 @@ import store from '@/store'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  baseURL: window.location.origin, // api的base_url,为了应对多个二级域名，因此baseUrl不写死
   timeout: 5000 // request timeout
 })
 

@@ -69,7 +69,7 @@
               </el-table-column>
               <el-table-column label="功能类型(标签)">
                 <template slot-scope="scope">
-                  <el-select v-model='scope.row.ablityType' placeholder="请选择">
+                  <el-select v-model='scope.row.abilityType' placeholder="请选择">
                     <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </template>

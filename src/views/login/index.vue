@@ -4,9 +4,10 @@
       <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
         <div class="login-header">
           <div class="login-header__logo">
-            <img src="/static/images/logo.svg" alt="logo">
+            <img v-if='logo' :src="logo" alt="logo">
+            <img v-else src="/static/images/logo.svg" alt="logo">
           </div>
-          <div class="login-header__title">空气管理平台</div>
+          <div class="login-header__title">{{siteName}}</div>
         </div>
         <el-form-item prop="username">
           <span class="svg-container svg-container_login">
@@ -14,7 +15,6 @@
           </span>
           <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')" />
         </el-form-item>
-
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -34,7 +34,7 @@
       </el-form>
     </el-card>
 
-    <el-dialog top='4vh' :close-on-click-modal=false  title="密码找回提示" :visible.sync="showDialog" append-to-body>
+    <el-dialog top='4vh' :close-on-click-modal=false title="密码找回提示" :visible.sync="showDialog" append-to-body>
       <pre>
         *1 若超级管理员忘记密码，可以联系环可平台客服人员；
 
@@ -53,6 +53,7 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
+import { selectBackendConfigBySLD } from '@/api/customer'
 
 export default {
   components: { LangSelect, SocialSign },
@@ -90,6 +91,14 @@ export default {
       showDialog: false
     }
   },
+  computed: {
+    logo() {
+      return this.$store.getters.logo
+    },
+    siteName() {
+      return this.$store.getters.siteName
+    }
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -116,7 +125,29 @@ export default {
           return false
         }
       })
+    },
+    getSld() {
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      if (sld) {
+        return sld[1]
+      }
+      return ''
+    },
+    selectBackendConfigBySLD() {
+      selectBackendConfigBySLD(this.getSld()).then(res => {
+        const data = res.data
+        if (data.logo) {
+          this.$store.commit('SET_LOGO', data.logo)
+        }
+        if (data.name) {
+          document.title = data.name
+          this.$store.commit('SET_SITENAME', data.name)
+        }
+      })
     }
+  },
+  created() {
+    this.selectBackendConfigBySLD()
   }
 }
 </script>

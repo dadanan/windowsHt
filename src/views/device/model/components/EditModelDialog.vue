@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="编辑设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="编辑设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="typeNo">
         <el-input v-model="data.typeNo"></el-input>
@@ -14,15 +14,15 @@
         <el-input v-model="data.source"></el-input>
       </el-form-item>
       <el-form-item label="功能项">
-        <el-table :data="deviceTypeAblitys" style="width: 100%" class="mb20" border>
+        <el-table :data="deviceTypeAbilitys" style="width: 100%" class="mb20" border>
           <el-table-column label="功能项名称">
             <template slot-scope="scope">
-              {{scope.row.ablityName}}
+              {{scope.row.abilityName}}
             </template>
           </el-table-column>
           <el-table-column label="功能项类型">
             <template slot-scope="scope">
-              {{typeModel[scope.row.ablityType]}}
+              {{typeModel[scope.row.abilityType]}}
             </template>
           </el-table-column>
           <el-table-column label="是否选择">
@@ -67,7 +67,7 @@ export default {
   },
   data() {
     return {
-      deviceTypeAblitys: [], // API获取所有数据
+      deviceTypeAbilitys: [], // API获取所有数据
       typeModel: {
         1: '文本类',
         2: '单选类',
@@ -91,7 +91,7 @@ export default {
       //  * @return true / false
       //  */
       // const isStillChecked = id => {
-      //   return this.userDeviceTypeAblitys.findIndex(item => item === id) !== -1
+      //   return this.userDeviceTypeAbilitys.findIndex(item => item === id) !== -1
       // }
 
       // /**
@@ -100,22 +100,22 @@ export default {
       //  */
       // const isNotCheckedBefore = id => {
       //   return (
-      //     this.data.deviceTypeAblitys.findIndex(
-      //       item => item.ablityId === id
+      //     this.data.deviceTypeAbilitys.findIndex(
+      //       item => item.abilityId === id
       //     ) === -1
       //   )
       // }
 
       // // 遍历用户 上次选择的功能项数据， 然后判断加不加status:2
-      // const newDeviceTypeAblitys = this.data.deviceTypeAblitys.map(item => {
-      //   if (isStillChecked(item.ablityId)) {
+      // const newDeviceTypeAbilitys = this.data.deviceTypeAbilitys.map(item => {
+      //   if (isStillChecked(item.abilityId)) {
       //     return {
-      //       ablityId: item.ablityId,
+      //       abilityId: item.abilityId,
       //       id: item.id
       //     }
       //   } else {
       //     return {
-      //       ablityId: item.ablityId,
+      //       abilityId: item.abilityId,
       //       id: item.id,
       //       status: 2
       //     }
@@ -123,11 +123,11 @@ export default {
       // })
 
       // // 遍历用户当前选择的功能项，如果不在“用户上次选择的功能项数据中”，id设置为0
-      // let tempArray = this.userDeviceTypeAblitys.map(id => {
+      // let tempArray = this.userDeviceTypeAbilitys.map(id => {
       //   console.log(isNotCheckedBefore(id))
       //   if (isNotCheckedBefore(id)) {
       //     return {
-      //       ablityId: id
+      //       abilityId: id
       //     }
       //   }
       // })
@@ -135,19 +135,19 @@ export default {
       // // 去掉 undefined 元素项
       // tempArray = tempArray.filter(item => item)
 
-      const userDeviceTypeAblitys = this.deviceTypeAblitys.filter(
+      const userDeviceTypeAbilitys = this.deviceTypeAbilitys.filter(
         item => item.isChecked
       )
 
-      const newDeviceTypeAblitys = userDeviceTypeAblitys.map(item => {
+      const newDeviceTypeAbilitys = userDeviceTypeAbilitys.map(item => {
         return {
-          ablityId: item.id
+          abilityId: item.id
         }
       })
 
       const form = {
         ...this.data,
-        deviceTypeAblitys: newDeviceTypeAblitys
+        deviceTypeAbilitys: newDeviceTypeAbilitys
       }
 
       updateDeviceType(form)
@@ -156,7 +156,7 @@ export default {
             this.$emit('update:visible', false)
             this.$emit('update-data', {
               ...form,
-              deviceTypeAblitys: userDeviceTypeAblitys
+              deviceTypeAbilitys: userDeviceTypeAbilitys
             })
 
             this.$message({
@@ -180,7 +180,7 @@ export default {
     getURL2(url) {
       this.data.stopWatch = url
     },
-    getdeviceTypeAblitys() {
+    getdeviceTypeAbilitys() {
       fetchList({
         page: 1,
         limit: 1000
@@ -188,27 +188,27 @@ export default {
         res.data.forEach(item => {
           item.isChecked = ''
         })
-        this.deviceTypeAblitys = res.data
+        this.deviceTypeAbilitys = res.data
       })
     }
   },
   created() {
-    this.getdeviceTypeAblitys()
+    this.getdeviceTypeAbilitys()
   },
   watch: {
     data(val) {
       // 判断当前id的功能项是否在用户传入的编辑数据中（即，是否已经被选择）
-      // 如果用户添加完直接编辑，那么数据中将没有ablityId,而应该是id
+      // 如果用户添加完直接编辑，那么数据中将没有abilityId,而应该是id
       const isCheckedBefore = id => {
         return (
-          val.deviceTypeAblitys.findIndex(
-            item => (item.ablityId || item.id) === id
+          val.deviceTypeAbilitys.findIndex(
+            item => (item.abilityId || item.id) === id
           ) !== -1
         )
       }
 
       // 根据用户“已选择”的功能项数据，初始化开关框
-      this.deviceTypeAblitys.forEach(item => {
+      this.deviceTypeAbilitys.forEach(item => {
         if (isCheckedBefore(item.id)) {
           item.isChecked = true
         }

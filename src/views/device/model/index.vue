@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column label="功能项" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.deviceTypeAblitys.map(el => el.ablityName).join('、') }}
+            {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
           </template>
         </el-table-column>
         <el-table-column label="码表" show-overflow-tooltip sortable>

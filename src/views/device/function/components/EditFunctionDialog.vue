@@ -2,7 +2,7 @@
   <el-dialog top='4vh' :close-on-click-modal=false title="编辑功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="名称">
-        <el-input v-model="form.ablityName"></el-input>
+        <el-input v-model="form.abilityName"></el-input>
       </el-form-item>
       <el-form-item label="指令">
         <el-input v-model="form.dirValue"></el-input>
@@ -29,7 +29,7 @@
           </el-select>
         </el-form-item>
         <template v-if="form.configType === 2 || form.configType === 3">
-          <template v-for="(option, i) in form.deviceAblityOptions">
+          <template v-for="(option, i) in form.deviceAbilityOptions">
             <el-form-item v-if="option.status !== 2" :key="i" :label="'选项 ' + i">
               <div class="input-group">
                 <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
@@ -57,7 +57,7 @@
               <el-input v-model="form.maxVal" placeholder="最大值"></el-input>
             </div>
           </el-form-item>
-          <el-form-item v-if="option.status !== 2" v-for="(option, i) in form.deviceAblityOptions" :key="i" :label="'选项 ' + i">
+          <el-form-item v-if="option.status !== 2" v-for="(option, i) in form.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="选项指令"></el-input>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { updateDeviceAblity } from '@/api/device/function'
+import { updateDeviceAbility } from '@/api/device/function'
 
 export default {
   props: {
@@ -126,13 +126,13 @@ export default {
       delete this.form.permissions
 
       // 抛弃用户新增，却又溢出的项（没有id，有status）
-      this.form.deviceAblityOptions = this.form.deviceAblityOptions.filter(
+      this.form.deviceAbilityOptions = this.form.deviceAbilityOptions.filter(
         item =>
           item.hasOwnProperty('id') ||
           (!item.hasOwnProperty('id') && !item.hasOwnProperty('status'))
       )
 
-      updateDeviceAblity(this.form)
+      updateDeviceAbility(this.form)
         .then(res => {
           if (res.code === 200) {
             this.$message({
@@ -171,7 +171,7 @@ export default {
         return
       }
       if (type === 2 || type === 3) {
-        this.$set(this.form, 'deviceAblityOptions', [
+        this.$set(this.form, 'deviceAbilityOptions', [
           {
             optionName: '',
             optionValue: ''
@@ -182,11 +182,11 @@ export default {
       if (type === 4) {
         this.form.maxVal = ''
         this.form.minVal = ''
-        delete this.form.deviceAblityOptions
+        delete this.form.deviceAbilityOptions
         return
       }
       if (type === 5) {
-        this.$set(this.form, 'deviceAblityOptions', [
+        this.$set(this.form, 'deviceAbilityOptions', [
           {
             optionName: '',
             optionValue: '',
@@ -197,7 +197,7 @@ export default {
       }
     },
     deleteConfigOption(data, i) {
-      this.form.deviceAblityOptions.splice(
+      this.form.deviceAbilityOptions.splice(
         i,
         1,
         Object.assign({}, data, { status: 2 })
@@ -206,14 +206,14 @@ export default {
     addConfigOption() {
       const type = this.form.configType
       if (type === 2 || type === 3) {
-        this.form.deviceAblityOptions.push({
+        this.form.deviceAbilityOptions.push({
           optionName: '',
           optionValue: ''
         })
         return
       }
       if (type === 5) {
-        this.form.deviceAblityOptions.push({
+        this.form.deviceAbilityOptions.push({
           optionName: '',
           optionValue: '',
           minVal: '',

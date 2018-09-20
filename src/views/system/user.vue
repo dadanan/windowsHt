@@ -71,15 +71,6 @@
         <el-form-item label="绑定模板 ID" prop='templateId'>
           <el-input type='number' v-model="creatingData.templateId"></el-input>
         </el-form-item>
-        <el-form-item label="AppID" prop='appId'>
-          <el-input v-model="creatingData.appId"></el-input>
-        </el-form-item>
-        <el-form-item label="AppSecret" prop='appSecret'>
-          <el-input v-model="creatingData.appSecret"></el-input>
-        </el-form-item>
-        <el-form-item label="二级域名" prop='secondDomain'>
-          <el-input v-model="creatingData.secondDomain"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isCreateUserDialogVisible = false">取消</el-button>
@@ -117,15 +108,6 @@
         </el-form-item>
         <el-form-item prop='templateId' label="绑定模板 ID">
           <el-input v-model="editingData.templateId"></el-input>
-        </el-form-item>
-        <el-form-item prop='appId' label="AppID">
-          <el-input v-model="editingData.appId"></el-input>
-        </el-form-item>
-        <el-form-item prop='appSecret' label="AppSecret">
-          <el-input v-model="editingData.appSecret"></el-input>
-        </el-form-item>
-        <el-form-item prop='secondDomain' label="二级域名">
-          <el-input v-model="editingData.secondDomain"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,30 +192,6 @@ export default {
         ],
         templateId: [
           { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' }
-        ],
-        appId: [
-          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
-          {
-            required: true,
-            message: '请输入合法AppID',
-            trigger: 'blur'
-          }
-        ],
-        appSecret: [
-          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' },
-          {
-            required: true,
-            message: '请输入合法appSecret',
-            trigger: 'blur'
-          }
-        ],
-        secondDomain: [
-          { min: 1, max: 30, message: '最长为30个字符', trigger: 'blur' },
-          {
-            required: true,
-            message: '请输入合法secondDomain',
-            trigger: 'blur'
-          }
         ]
       }
     }

@@ -15,10 +15,18 @@ const user = {
     permission: [],
     setting: {
       articlePlatform: []
-    }
+    },
+    logo: '', // 后台Logo
+    siteName: '' // 网站名称
   },
 
   mutations: {
+    SET_LOGO: (state, logo) => {
+      state.logo = logo
+    },
+    SET_SITENAME: (state, name) => {
+      state.siteName = siteName
+    },
     SET_CODE: (state, code) => {
       state.code = code
     },
