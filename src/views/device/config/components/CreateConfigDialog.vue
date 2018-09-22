@@ -1,4 +1,4 @@
-保存型号<template>
+<template>
   <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%' class='create-config-container'>
     <el-steps :active="step" finish-status="success" class="mb20" align-center>
       <el-step title="设备配置"></el-step>
@@ -123,9 +123,9 @@
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.abilityId">
-                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.definedName" :value="iItem.abilityId">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.definedName" :value="iItem.abilityId" :key='iItem.id'>
                   </el-option>
-                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.abilityName" :value="iItem.abilityId">
+                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.abilityName" :value="iItem.abilityId" :key='iItem.id'>
                   </el-option>
                 </el-select>
               </template>
@@ -361,6 +361,7 @@ export default {
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
       this.getTypeById(temp[0].typeIds)
+      this.form.typeId = ''
     },
     getCustomer() {
       getCustomer({

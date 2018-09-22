@@ -188,8 +188,7 @@ export default {
           thePageWxFormatItemVos = thePageWxFormatItemVos.filter(item =>
             item.hasOwnProperty('id')
           )
-
-          item.wxFormatItemVos.forEach(iItem => {
+          item.wxFormatItemVos.forEach((iItem, iIndex) => {
             if (
               thePageWxFormatItemVos.findIndex(temp => temp.id === iItem.id) ===
               -1
@@ -197,7 +196,12 @@ export default {
               // 如果没找到，说明用户删除了
               iItem['status'] = 2
             }
-            newWxFormatItemVos.push(iItem)
+            // 添加时，name和类型取自用户表单数据
+            newWxFormatItemVos.push({
+              ...iItem,
+              name: thePageWxFormatItemVos[iIndex].name,
+              abilityType: thePageWxFormatItemVos[iIndex].abilityType
+            })
           })
           newWxFormatItemVos.push(...tempArray)
 
@@ -256,7 +260,6 @@ export default {
         limit: 100,
         page: 1
       }).then(res => {
-        console.log('res', res)
         this.types = res.data
       })
     }

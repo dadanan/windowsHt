@@ -185,8 +185,8 @@
           </el-form-item>
           <el-form-item label="类型">
             <el-radio-group v-model='backendConfig.type'>
-              <el-radio label="独立" :value='0'></el-radio>
-              <el-radio label="挂靠" :value='1'></el-radio>
+              <el-radio :label="0">独立</el-radio>
+              <el-radio :label="1">挂靠</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>

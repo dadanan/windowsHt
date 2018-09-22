@@ -128,9 +128,9 @@
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.abilityId">
-                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.id">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
                   </el-option>
-                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.id">
+                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
                   </el-option>
                 </el-select>
               </template>
@@ -311,7 +311,7 @@ export default {
                 return {
                   id: iItem.id,
                   abilityId: iItem.abilityId,
-                  itemId: iItem.modelFormatId,
+                  itemId: iItem.itemId,
                   showName: iItem.showName,
                   showStatus: iItem.showStatus ? 1 : 0
                 }
@@ -334,7 +334,8 @@ export default {
       }
       // form.deviceModelFormat = form.modelFormatVo
       delete form.modelFormatVo
-
+      // console.log('form', form)
+      // return
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('add-data', {
@@ -397,6 +398,11 @@ export default {
     handleTypeChange(id) {
       this.theType = this.typeList.filter(item => item.id === id)[0]
       this.theType.showName = this.theType.name
+
+      this.theType.deviceTypeAbilitys &&
+        this.theType.deviceTypeAbilitys.forEach(item => {
+          item['definedName'] = item.abilityName
+        })
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
@@ -405,6 +411,7 @@ export default {
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
       this.getTypeById(temp[0].typeIds)
+      this.form.typeId = ''
     },
     getCustomer() {
       getCustomer({
@@ -485,6 +492,13 @@ export default {
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
       this.theType.showName = newData.name
+
+      // 第三步：预设自定义名称
+      this.theType.deviceTypeAbilitys &&
+        this.theType.deviceTypeAbilitys.forEach(item => {
+          item['definedName'] = item.abilityName
+        })
+
       this.abilityList = newData.deviceModelAbilitys
       this.abilityList.forEach(item => {
         item['abilityName'] = item.definedName
