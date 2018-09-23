@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false  title="添加设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="100px" class="mb-22">
       <el-form-item label="typeNo">
         <el-input v-model="form.typeNo"></el-input>
@@ -35,6 +35,9 @@
       </el-form-item>
       <el-form-item label="码表">
         <image-uploader excel @get-url='getURL2'></image-uploader>
+      </el-form-item>
+      <el-form-item label="JSON串">
+        <el-input v-model="form.json" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
