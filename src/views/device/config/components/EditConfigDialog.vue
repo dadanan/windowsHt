@@ -402,6 +402,7 @@ export default {
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
+          item.isUsed = true
         })
     },
     modifyAbilityItem(data) {

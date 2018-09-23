@@ -407,6 +407,43 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/engineering',
+    component: Layout,
+    name: 'engineering',
+    redirect: 'noredirect',
+    alwaysShow: true,
+    meta: {
+      title: 'engineering',
+      icon: 'hand-holding-usd'
+    },
+    children: [
+      {
+        path: 'means',
+        component: () => import('@/views/blank'),
+        name: 'means',
+        meta: {
+          title: 'means'
+        }
+      },
+      {
+        path: 'measure',
+        component: () => import('@/views/blank'),
+        name: 'measure',
+        meta: {
+          title: 'measure'
+        }
+      },
+      {
+        path: 'maintenance',
+        component: () => import('@/views/blank'),
+        name: 'maintenance',
+        meta: {
+          title: 'maintenance'
+        }
+      }
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     name: 'system',
