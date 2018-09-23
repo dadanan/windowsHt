@@ -3,78 +3,143 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="isCreateRoleDialogVisible = true">添加</el-button>
+          <el-button type="primary"
+                     @click="isCreateRoleDialogVisible = true">添加</el-button>
         </el-button-group>
       </div>
-      <el-table :data="roleList" style="width: 100%" class="mb20" border>
+      <el-table :data="roleList"
+                style="width: 100%"
+                class="mb20"
+                border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="roleName" label="角色名称" show-overflow-tooltip sortable>
+        <el-table-column prop="roleName"
+                         label="角色名称"
+                         show-overflow-tooltip
+                         sortable>
         </el-table-column>
-        <el-table-column prop="roleDesc" label="简介" show-overflow-tooltip sortable>
+        <el-table-column prop="roleDesc"
+                         label="简介"
+                         show-overflow-tooltip
+                         sortable>
         </el-table-column>
-        <el-table-column prop="userCount" label="系统用户数量" show-overflow-tooltip sortable>
+        <el-table-column prop="userCount"
+                         label="系统用户数量"
+                         show-overflow-tooltip
+                         sortable>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
-            <el-button type="text" @click="deleteRole(scope.row.id)">删除</el-button>
+            <el-button type="text"
+                       @click="showEditRoleDialog(scope.row)">编辑</el-button>
+            <el-button type="text"
+                       @click="deleteRole(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="roleList.length">
+      <el-pagination :current-page="1"
+                     :page-sizes="[50]"
+                     :page-size="50"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="roleList.length">
       </el-pagination>
     </el-card>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="添加角色" :visible.sync="isCreateRoleDialogVisible">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-tree ref="tree" :data="permissionList" show-checkbox node-key="id" :default-expand-all='true' :props="defaultProps" class="permission-list">
-          </el-tree>
-        </el-col>
-        <el-col :span="12">
-          <el-form :rules='rules' ref='addForm' :model='addForm' label-position="left" label-width="150px">
-            <el-form-item label="角色名" prop='roleName'>
-              <el-input v-model='addForm.roleName'></el-input>
-            </el-form-item>
-            <el-form-item label="简介" prop='roleDesc'>
-              <el-input v-model='addForm.roleDesc'></el-input>
-            </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
-      <div slot="footer" class="dialog-footer">
+    <el-dialog top='4vh'
+               :close-on-click-modal=false
+               title="添加角色"
+               :visible.sync="isCreateRoleDialogVisible">
+      <el-scrollbar class="main-scroll"
+                    wrap-class="scrollbar-wrap"
+                    view-class="scrollbar-view"
+                    tag="div">
+        <el-row :gutter="20"
+                style="width: 100%">
+          <el-col :span="12">
+            <el-tree ref="tree"
+                     :data="permissionList"
+                     show-checkbox
+                     node-key="id"
+                     :default-expand-all='true'
+                     :props="defaultProps"
+                     class="permission-list">
+            </el-tree>
+          </el-col>
+          <el-col :span="12">
+            <el-form :rules='rules'
+                     ref='addForm'
+                     :model='addForm'
+                     label-position="left"
+                     label-width="150px">
+              <el-form-item label="角色名"
+                            prop='roleName'>
+                <el-input v-model='addForm.roleName'></el-input>
+              </el-form-item>
+              <el-form-item label="简介"
+                            prop='roleDesc'>
+                <el-input v-model='addForm.roleDesc'></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+      </el-scrollbar>
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="isCreateRoleDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="validate('addForm','createRole')">确定</el-button>
+        <el-button type="primary"
+                   @click="validate('addForm','createRole')">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑角色" :visible.sync="isEditRoleDialogVisible">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-tree :data="permissionList" ref='editTree' show-checkbox node-key="id" :default-expand-all='true' :props="defaultProps" class="permission-list">
-          </el-tree>
-        </el-col>
-        <el-col :span="12">
-          <el-form :model='editingData' :rules='rules' ref='editingData' label-position="left" label-width="150px">
-            <el-form-item label="角色名" prop='roleName'>
-              <el-input v-model="editingData.roleName"></el-input>
-            </el-form-item>
-            <el-form-item label="简介" prop='roleDesc'>
-              <el-input v-model='editingData.roleDesc'></el-input>
-            </el-form-item>
-            <el-form-item label="修改时间">
-              <div>{{new Date(editingData.lastUpdateTime).toLocaleString()}}</div>
-            </el-form-item>
-            <el-form-item label="创建时间">
-              <div>{{new Date(editingData.createTime).toLocaleString()}}</div>
-            </el-form-item>
-            <el-form-item label="系统用户数量">
-              <div>{{editingData.userCount}}</div>
-            </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
-      <div slot="footer" class="dialog-footer">
+    <el-dialog top='4vh'
+               :close-on-click-modal=false
+               title="编辑角色"
+               :visible.sync="isEditRoleDialogVisible">
+      <el-scrollbar class="main-scroll"
+                    wrap-class="scrollbar-wrap"
+                    view-class="scrollbar-view"
+                    tag="div">
+        <el-row :gutter="20"
+                style="width: 100%">
+          <el-col :span="12">
+            <el-tree :data="permissionList"
+                     ref='editTree'
+                     show-checkbox
+                     node-key="id"
+                     :default-expand-all='true'
+                     :props="defaultProps"
+                     class="permission-list">
+            </el-tree>
+          </el-col>
+          <el-col :span="12">
+            <el-form :model='editingData'
+                     :rules='rules'
+                     ref='editingData'
+                     label-position="left"
+                     label-width="150px">
+              <el-form-item label="角色名"
+                            prop='roleName'>
+                <el-input v-model="editingData.roleName"></el-input>
+              </el-form-item>
+              <el-form-item label="简介"
+                            prop='roleDesc'>
+                <el-input v-model='editingData.roleDesc'></el-input>
+              </el-form-item>
+              <el-form-item label="修改时间">
+                <div>{{new Date(editingData.lastUpdateTime).toLocaleString()}}</div>
+              </el-form-item>
+              <el-form-item label="创建时间">
+                <div>{{new Date(editingData.createTime).toLocaleString()}}</div>
+              </el-form-item>
+              <el-form-item label="系统用户数量">
+                <div>{{editingData.userCount}}</div>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+      </el-scrollbar>
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="isEditRoleDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="validate('editingData','editRole')">确定</el-button>
+        <el-button type="primary"
+                   @click="validate('editingData','editRole')">确定</el-button>
       </div>
     </el-dialog>
   </div>
