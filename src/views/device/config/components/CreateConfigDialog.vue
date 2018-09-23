@@ -1,21 +1,40 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备型号" :visible="visible" @update:visible="$emit('update:visible', $event)" width='60%' class='create-config-container'>
-    <el-steps :active="step" finish-status="success" class="mb20" align-center>
+  <el-dialog top='4vh'
+             :close-on-click-modal=false
+             title="添加设备型号"
+             :visible="visible"
+             @update:visible="$emit('update:visible', $event)"
+             width='60%'
+             class='create-config-container'>
+    <el-steps :active="step"
+              finish-status="success"
+              class="mb20"
+              align-center>
       <el-step title="设备配置"></el-step>
       <el-step title="客户信息设置"></el-step>
       <el-step title="硬件功能项"></el-step>
       <el-step title="版式配置"></el-step>
     </el-steps>
-    <el-form v-if='step === 1' label-width="100px" class="mb-22">
+    <el-form v-if='step === 1'
+             label-width="100px"
+             class="mb-22">
       <el-form-item label="客户">
-        <el-select v-model="form.customerId" @change="handleCustomerChange">
-          <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
+        <el-select v-model="form.customerId"
+                   @change="handleCustomerChange">
+          <el-option v-for="model in customterList"
+                     :key="model.id"
+                     :label="model.name"
+                     :value="model.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类型">
-        <el-select v-model="form.typeId" @change="handleTypeChange">
-          <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
+        <el-select v-model="form.typeId"
+                   @change="handleTypeChange">
+          <el-option v-for="model in typeList"
+                     :key="model.id"
+                     :label="model.name"
+                     :value="model.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -27,29 +46,42 @@
           <el-input v-model="theType.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
+          <image-uploader :url='theType.icon'
+                          @get-url='setURL(arguments,theType,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="theType.remark"
+                    type="textarea"
+                    :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </template>
       <el-form-item label="软件">
-        <file @get-url='setURL(arguments,null,"software")' :file-name='getImageName(this.software)'></file>
+        <file @get-url='setURL(arguments,null,"software")'
+              :file-name='getImageName(this.software)'></file>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
+    <el-form v-else-if='step === 2'
+             label-width="100px"
+             class="mb-22">
       <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
-        <image-uploader :url='form.qrcode' @get-url='setURL(arguments,form,"qrcode")'></image-uploader>
+        <image-uploader :url='form.qrcode'
+                        @get-url='setURL(arguments,form,"qrcode")'></image-uploader>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="theType.deviceTypeAbilitys" style="width: 100%" class="mb20" border>
+    <el-form v-else-if='step===3'
+             label-width="100px"
+             class="mb-22">
+      <el-table :data="theType.deviceTypeAbilitys"
+                style="width: 100%"
+                class="mb20"
+                border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
-            <el-input v-model='scope.row.abilityName' disabled></el-input>
+            <el-input v-model='scope.row.abilityName'
+                      disabled></el-input>
           </template>
         </el-table-column>
         <el-table-column label="显示名称">
@@ -64,28 +96,43 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
+            <el-button v-if='scope.row.abilityType!==1'
+                       type="primary"
+                       @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
         <el-table-column label="是否使用">
           <template slot-scope="scope">
-            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
+            <el-switch style="display: block"
+                       v-model="scope.row.isUsed"
+                       active-color="#13ce66"
+                       inactive-color="#ff4949"
+                       active-text="使用"
+                       inactive-text="不使用">
             </el-switch>
           </template>
         </el-table-column>
       </el-table>
     </el-form>
-    <el-form v-else-if='step===4' label-width="100px" class="mb-22">
+    <el-form v-else-if='step===4'
+             label-width="100px"
+             class="mb-22">
       <el-form-item label="版式选择">
-        <el-select v-model="form.formatId" @change="handleFormatChange">
-          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+        <el-select v-model="form.formatId"
+                   @change="handleFormatChange">
+          <el-option v-for="format in formatSelectedList"
+                     :key="format.id"
+                     :label="format.name"
+                     :value="format.id">
           </el-option>
         </el-select>
       </el-form-item>
       <template v-for='item in pageOfForamt'>
-        <el-card class='box-card' :key='item.id'>
+        <el-card class='box-card'
+                 :key='item.id'>
           <el-form-item label='页面预览'>
-            <img class='format-page-img' :src='item.showImg'>
+            <img class='format-page-img'
+                 :src='item.showImg'>
           </el-form-item>
           <el-form-item :label=' "页序 - " + item.pageNo '>
             <el-radio-group v-model="item.showStatus">
@@ -97,8 +144,13 @@
             {{item.name}}
           </el-form-item>
           <d-title>配置页面功能项</d-title>
-          <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
-            <el-table-column type="index" label='标号 ' width="50"></el-table-column>
+          <el-table :data="item.wxFormatItemVos"
+                    style="width: 100%"
+                    class="mb20"
+                    border>
+            <el-table-column type="index"
+                             label='标号 '
+                             width="50"></el-table-column>
             <el-table-column label="显示名称">
               <template slot-scope="scope">
                 <el-input v-model='scope.row.showName'></el-input>
@@ -114,18 +166,32 @@
                 <el-input v-model='scope.row.remark'></el-input>
               </template>
             </el-table-column> -->
-            <el-table-column label="是否显示" show-overflow-tooltip>
+            <el-table-column label="是否显示"
+                             show-overflow-tooltip>
               <template slot-scope="scope">
-                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                <el-switch style="display: block"
+                           v-model="scope.row.showStatus"
+                           active-color="#13ce66"
+                           inactive-color="#ff4949"
+                           active-text="显示"
+                           inactive-text="不显示">
                 </el-switch>
               </template>
             </el-table-column>
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.abilityId">
-                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.definedName" :value="iItem.abilityId" :key='iItem.id'>
+                  <el-option v-if='iItem.definedName'
+                             v-for="iItem in useableAbility(scope.row.abilityType)"
+                             :label="iItem.definedName"
+                             :value="iItem.abilityId"
+                             :key='iItem.id'>
                   </el-option>
-                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.abilityName" :value="iItem.abilityId" :key='iItem.id'>
+                  <el-option v-else
+                             v-for="iItem in useableAbility(scope.row.abilityType)"
+                             :label="iItem.abilityName"
+                             :value="iItem.abilityId"
+                             :key='iItem.id'>
                   </el-option>
                 </el-select>
               </template>
@@ -134,45 +200,77 @@
         </el-card>
       </template>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <div slot="footer"
+         class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" v-if='step!==1 ' @click="backStep()">上一步</el-button>
-      <el-button type="primary" v-if='step!==4 ' @click="nextStep()">下一步</el-button>
-      <el-button type="primary" v-else @click="createDeviceModel">确定</el-button>
+      <el-button type="primary"
+                 v-if='step!==1 '
+                 @click="backStep()">上一步</el-button>
+      <el-button type="primary"
+                 v-if='step!==4 '
+                 @click="nextStep()">下一步</el-button>
+      <el-button type="primary"
+                 v-else
+                 @click="createDeviceModel">确定</el-button>
     </div>
-    <el-dialog top='4vh' :close-on-click-modal=false title="自定义" :visible.sync="dialogFormVisible" append-to-body>
-      <el-form label-width="100px" class="mb-22">
+    <el-dialog top='4vh'
+               :close-on-click-modal=false
+               title="自定义"
+               :visible.sync="dialogFormVisible"
+               append-to-body>
+      <el-form label-width="100px"
+               class="mb-22">
         <el-form-item label="功能项名称">
-          <el-input v-model="modifyData.abilityName" disabled></el-input>
+          <el-input v-model="modifyData.abilityName"
+                    disabled></el-input>
         </el-form-item>
         <el-form-item label="功能分类">
-          <el-input v-model="modifyData.abilityType" disabled></el-input>
+          <el-input v-model="modifyData.abilityType"
+                    disabled></el-input>
         </el-form-item>
         <d-title>自定义部分</d-title>
-        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceAbilityOptions" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3'
+                      v-for="(option, i) in modifyData.deviceAbilityOptions"
+                      :key="i"
+                      :label="'选项 ' + i">
           <div class="input-group">
-            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+            <el-input v-model="option.optionName"
+                      placeholder="选项名称"></el-input>
+            <el-input v-model="option.optionValue"
+                      placeholder="选项指令"
+                      disabled></el-input>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.abilityType === 4'>
           <div class="input-group">
-            <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
-            <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
+            <el-input v-model="modifyData.minVal"
+                      placeholder="最小值"></el-input>
+            <el-input v-model="modifyData.maxVal"
+                      placeholder="最大值"></el-input>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceAbilityOptions" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType === 5'
+                      v-for="(option, i) in modifyData.deviceAbilityOptions"
+                      :key="i"
+                      :label="'选项 ' + i">
           <div class="input-group">
-            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
-            <el-input v-model="option.minVal" placeholder="最小值"></el-input>
-            <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+            <el-input v-model="option.optionName"
+                      placeholder="选项名称"></el-input>
+            <el-input v-model="option.optionValue"
+                      placeholder="选项指令"
+                      disabled></el-input>
+            <el-input v-model="option.minVal"
+                      placeholder="最小值"></el-input>
+            <el-input v-model="option.maxVal"
+                      placeholder="最大值"></el-input>
           </div>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary"
+                   @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </el-dialog>
@@ -330,7 +428,7 @@ export default {
         }
         this.$alert(
           `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
-            this.formatSelected[0].htmlUrl
+          this.formatSelected[0].htmlUrl
           }?customerId=${this.form.customerId}`,
           '预览地址',
           {
