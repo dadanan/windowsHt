@@ -59,6 +59,11 @@
         <file @get-url='setURL(arguments,null,"software")'
               :file-name='getImageName(this.software)'></file>
       </el-form-item>
+      <el-form-item label="适用从机型号">
+        <el-checkbox-group v-model="childModelIds">
+          <el-checkbox v-for="item in deviceModelData" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
     </el-form>
     <el-form v-else-if='step === 2'
              label-width="100px"
@@ -296,7 +301,8 @@ export default {
     visible: {
       type: Boolean,
       default: false
-    }
+    },
+    deviceModelData: Array
   },
   data() {
     return {
@@ -305,6 +311,7 @@ export default {
         customerId: '',
         showStatus: true
       },
+      childModelIds: [],
       formatId: '',
       formatSelectedList: [], // 用户可选择的总版式列表
       formatSelected: [], // 用户选择的某个版式列表
@@ -407,6 +414,7 @@ export default {
       const theType = this.theType
       const form = {
         ...this.form,
+        childModelIds: this.childModelIds.join(','),
         description: theType.remark,
         icon: theType.icon,
         modelNo: theType.typeNo,
@@ -428,7 +436,7 @@ export default {
         }
         this.$alert(
           `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
-          this.formatSelected[0].htmlUrl
+            this.formatSelected[0].htmlUrl
           }?customerId=${this.form.customerId}`,
           '预览地址',
           {
