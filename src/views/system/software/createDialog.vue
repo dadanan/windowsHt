@@ -32,6 +32,8 @@
                        @click.native="selectClick"
                        placeholder="请选择"
                        :multiple="addForm.owerType === 3"
+                       collapse-tags
+                       ref="customer"
                        :disabled="!addForm.owerType || addForm.owerType === 2">
               <el-option v-for="item in customers"
                          :key="item.id"
@@ -212,6 +214,13 @@ export default {
 
       this.addForm.typeIds = this.addForm.typeIds.join(',')
 
+      // 转换为字符串
+      if (Array.isArray(this.addForm.customerIds)) {
+        this.addForm.customerIds = this.addForm.customerIds.join(',')
+      } else if (typeof this.addForm.customerIds === 'number') {
+        this.addForm.customerIds = this.addForm.customerIds.toString()
+      }
+
       const form = {
         ...this.addForm,
         wxFormatPageVos: this.pages
@@ -267,13 +276,20 @@ export default {
       })
     },
     handleOwerTypeChange(value) {
-      if (value === 2) {
-        this.addForm.customerIds = ''
+      this.$set(this.addForm, 'customerIds', '')
+      this.$refs.customer.selectedLabel = ''
+      // 专用为多选
+      if (value === 3) {
+        this.$set(this.addForm, 'customerIds', [])
       }
     },
     selectClick() {
       if (!this.addForm.owerType) {
         this.$message.warning('请先选择级别！')
+        return
+      }
+      if (this.addForm.owerType === 2) {
+        this.$message.warning('当前级别无需选择客户！')
       }
     }
   },

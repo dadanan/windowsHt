@@ -46,8 +46,12 @@
       <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
-    <create-config-dialog :visible.sync="createConfigDialogVisible" @add-data='addData'></create-config-dialog>
-    <edit-config-dialog :data='editingData' :visible.sync="editConfigDialogVisible"></edit-config-dialog>
+    <create-config-dialog :visible.sync="createConfigDialogVisible" 
+    :deviceModelData="list"
+    @add-data='addData'></create-config-dialog>
+    <edit-config-dialog :data='editingData' 
+    :deviceModelData="list"
+    :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
         <el-form-item>

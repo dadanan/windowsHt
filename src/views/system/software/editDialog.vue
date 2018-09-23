@@ -30,7 +30,12 @@
           </el-form-item>
           <el-form-item label="客户">
             <el-select v-model="addForm.customerIds"
-                       placeholder="请选择">
+                       placeholder="请选择"
+                       @click.native="selectClick"
+                       :multiple="addForm.owerType === 3"
+                       collapse-tags
+                       ref="editCustomer"
+                       :disabled="!addForm.owerType || addForm.owerType === 2">
               <el-option v-for="item in customers"
                          :key="item.id"
                          :label="item.name"
@@ -52,6 +57,7 @@
           </el-form-item>
           <el-form-item label="级别">
             <el-select v-model="addForm.owerType"
+                      @change="handleOwerTypeChange"
                        placeholder="请选择">
               <el-option v-for="item in level"
                          :key="item.value"
@@ -215,6 +221,13 @@ export default {
 
       this.addForm.typeIds = this.addForm.typeIds.join(',')
 
+      // 转换为字符串
+      if (Array.isArray(this.addForm.customerIds)) {
+        this.addForm.customerIds = this.addForm.customerIds.join(',')
+      } else if (typeof this.addForm.customerIds === 'number') {
+        this.addForm.customerIds = this.addForm.customerIds.toString()
+      }
+
       // 通过对比编辑时传入的版式页面功能项数据和当前用户操作的数据，
       // 找出之前存在但用户删除了的，将其标记为status:2
       this.addForm.wxFormatPageVos &&
@@ -309,6 +322,23 @@ export default {
       }).then(res => {
         this.types = res.data
       })
+    },
+    handleOwerTypeChange(value) {
+      this.$set(this.addForm, 'customerIds', null)
+      this.$refs.editCustomer.selectedLabel = null
+      // 专用为多选
+      if (value === 3) {
+        this.$set(this.addForm, 'customerIds', [])
+      }
+    },
+    selectClick() {
+      if (!this.addForm.owerType) {
+        this.$message.warning('请先选择级别！')
+        return
+      }
+      if (this.addForm.owerType === 2) {
+        this.$message.warning('当前级别无需选择客户！')
+      }
     }
   },
   watch: {
@@ -318,6 +348,13 @@ export default {
       this.addForm.typeIds = this.addForm.typeIds
         .split(',')
         .map(id => Number(id))
+
+      const customerIds = this.addForm.customerIds.split(',').map(Number)
+      if (this.addForm.owerType === 3) {
+        this.addForm.customerIds = customerIds
+      } else {
+        this.addForm.customerIds = customerIds[0]
+      }
 
       if (tempForm.wxFormatPageVos && tempForm.wxFormatPageVos.length > 0) {
         // 克隆有必要
