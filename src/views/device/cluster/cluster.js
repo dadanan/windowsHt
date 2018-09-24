@@ -44,13 +44,13 @@ export const columnData = [
 ]
 
 export const dialogDatas = {
-  Create: {
-    title: '新增'
+  create: {
+    title: '添加设备集群'
   },
-  Detail: {
-    title: '查看详情'
+  detail: {
+    title: '查看设备集群详情'
   },
-  Edit: {
-    title: '编辑'
+  edit: {
+    title: '编辑设备集群'
   }
 }

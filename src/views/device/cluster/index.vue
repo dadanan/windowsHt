@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="openDialog('Create')">添加
+          <el-button type="primary" icon="el-icon-plus" @click="openDialog('create')">添加
           </el-button>
         </el-button-group>
       </div>
@@ -19,8 +19,8 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width='200'>
           <template slot-scope="scope">
-            <el-button type="text" @click="openDialog('Detail', scope.row)">查看详情</el-button>
-            <el-button type="text" @click="openDialog('Edit', scope.row)">编辑</el-button>
+            <el-button type="text" @click="openDialog('detail', scope.row)">查看详情</el-button>
+            <el-button type="text" @click="openDialog('edit', scope.row)">编辑</el-button>
             <el-button type="text" @click="deleteRow(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -32,10 +32,12 @@
                      :total="clusterList.length"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible"
-                    :title="title">
+                    :title="title"
+                    :fullscreen="fullscreen"
+                    @closed="handleClosed">
       <div :is="dialogComp"
            :datas="rowData"
-           @close="handleClose"></div>
+           @close="visible = false"></div>
     </default-dialog>
   </div>
 </template>
@@ -49,9 +51,9 @@ import { tableData, columnData, dialogDatas } from './cluster.js'
 export default {
   components: {
     DefaultDialog,
-    Detail: Detail,
-    Create: Create,
-    Edit: Edit
+    detail: Detail,
+    create: Create,
+    edit: Edit
   },
   data() {
     return {
@@ -61,6 +63,7 @@ export default {
       loading: false,
       dialogComp: '',
       visible: false,
+      fullscreen: false,
       title: '',
       rowData: {}
     }
@@ -98,17 +101,17 @@ export default {
       this.title = dialogDatas[comp].title
       this.rowData = data
       this.dialogComp = comp
+      if (comp === 'detail') {
+        this.fullscreen = true
+      }
 
       this.$nextTick(() => {
         this.visible = true
       })
     },
-    handleClose() {
-      this.visible = false
-
-      this.$nextTick(() => {
-        this.dialogComp = ''
-      })
+    handleClosed() {
+      this.fullscreen = false
+      this.dialogComp = ''
     }
   }
 }
