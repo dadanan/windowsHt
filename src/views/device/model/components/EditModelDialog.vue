@@ -35,7 +35,7 @@
           </el-table>
         </el-form-item>
         <el-form-item label="码表">
-          <el-input v-model="form.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="data.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="data.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
