@@ -366,6 +366,17 @@ export default {
     // 集群
     handleDeviceCluster() {
       this.isOperable().then(_ => {
+        // 判断集群id是否一致，不一致不可集群
+        const groupids = this.selectedDeviceList.filter(v => v.groupId !== -1)
+        if (
+          groupids.length &&
+          groupids.some(v => v.groupId !== groupids[0].groupId)
+        ) {
+          this.$message.warning(
+            '请确保所有选中设备的集群名称一致（无集群除外）'
+          )
+          return
+        }
         this.deviceClusterDialogVisible = true
       })
     },
