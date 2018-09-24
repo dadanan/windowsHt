@@ -35,10 +35,7 @@
           </el-table>
         </el-form-item>
         <el-form-item label="码表">
-          <image-uploader :url='data.stopWatch' @get-url='getURL2' :imageName='getImageName(data.stopWatch)' excel></image-uploader>
-        </el-form-item>
-        <el-form-item label="JSON串">
-          <el-input v-model="data.json" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="form.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="data.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>

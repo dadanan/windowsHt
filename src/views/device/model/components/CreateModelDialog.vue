@@ -35,7 +35,7 @@
           </el-table>
         </el-form-item>
         <el-form-item label="码表">
-          <image-uploader excel @get-url='getURL2'></image-uploader>
+          <el-input v-model="form.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
