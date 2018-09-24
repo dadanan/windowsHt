@@ -6,16 +6,16 @@
           <el-button type="primary" @click="deviceImportDialogVisible = true">导入</el-button>
           <el-button type="primary" @click="deviceAddDialogVisible = true">添加</el-button>
           <el-button type="primary" @click="deleteOneDeviceHandler">删除</el-button>
-          <el-button type="primary" @click='deviceRecoverDialogVisible = true'>恢复</el-button>
-          <el-button type="primary" @click="deviceAllocateDialogVisible = true">分配</el-button>
-          <el-button type="primary" @click="deviceFreeDialogVisible = true">召回</el-button>
-          <el-button type="primary" @click="deviceDisableDialogVisible = true">禁用</el-button>
-          <el-button type="primary" @click="deviceAbleDialogVisible = true">启用</el-button>
-          <el-button type="primary" @click="deviceClusterDialogVisible = true">集群</el-button>
+          <el-button type="primary" @click='handleDeviceRecover'>恢复</el-button>
+          <el-button type="primary" @click="handleDeviceAllocate">分配</el-button>
+          <el-button type="primary" @click="handleDeviceFree">召回</el-button>
+          <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
+          <el-button type="primary" @click="handleDeviceAble">启用</el-button>
+          <el-button type="primary" @click="handleDeviceCluster">集群</el-button>
           <!-- <el-button type="primary" @click="deviceClusterControlDialogVisible = true">群控</el-button> -->
-          <el-button type="primary" @click="deviceBindDialogVisible = true">绑定</el-button>
-          <el-button type="primary" @click="deviceUnbindDialogVisible = true">解绑</el-button>
-          <el-button type="primary">导出</el-button>
+          <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
+          <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
+          <el-button type="primary" @click="handleExport">导出</el-button>
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
@@ -294,40 +294,116 @@ export default {
       this.deviceList.unshift(...list)
     },
     deleteOneDeviceHandler() {
-      this.$confirm('将执行删除操作, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.isOperable().then(_ => {
+        this.$confirm('将执行删除操作, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            const form = this.selectedDeviceList
+            deleteOneDevice({
+              deviceId: form[0].id,
+              mac: form[0].mac
+            })
+              .then(res => {
+                this.deviceList.forEach(item => {
+                  // 如果在用户选择的删除列表中
+                  if (
+                    this.selectedDeviceList.some(obj => obj.mac === item.mac)
+                  ) {
+                    item.status = 2
+                  }
+                })
+                this.selectedDeviceList = []
+                this.$message({
+                  type: 'success',
+                  message: `设备删除成功: ${form[0].name}`
+                })
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
       })
-        .then(() => {
-          const form = this.selectedDeviceList
-          deleteOneDevice({
-            deviceId: form[0].id,
-            mac: form[0].mac
-          })
-            .then(res => {
-              this.deviceList.forEach(item => {
-                // 如果在用户选择的删除列表中
-                if (this.selectedDeviceList.some(obj => obj.mac === item.mac)) {
-                  item.status = 2
-                }
-              })
-              this.selectedDeviceList = []
-              this.$message({
-                type: 'success',
-                message: `设备删除成功: ${form[0].name}`
-              })
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
+    },
+    // 恢复
+    handleDeviceRecover() {
+      this.isOperable().then(_ => {
+        this.deviceRecoverDialogVisible = true
+      })
+    },
+    // 分配
+    handleDeviceAllocate() {
+      this.isOperable().then(_ => {
+        this.deviceAllocateDialogVisible = true
+      })
+    },
+    // 召回
+    handleDeviceFree() {
+      this.isOperable().then(_ => {
+        this.deviceFreeDialogVisible = true
+      })
+    },
+    // 禁用
+    handleDeviceDisable() {
+      this.isOperable().then(_ => {
+        this.deviceDisableDialogVisible = true
+      })
+    },
+    // 启用
+    handleDeviceAble() {
+      this.isOperable().then(_ => {
+        this.deviceAbleDialogVisible = true
+      })
+    },
+    // 集群
+    handleDeviceCluster() {
+      this.isOperable().then(_ => {
+        // 判断集群id是否一致，不一致不可集群
+        const groupids = this.selectedDeviceList.filter(v => v.groupId !== -1)
+        if (
+          groupids.length &&
+          groupids.some(v => v.groupId !== groupids[0].groupId)
+        ) {
+          this.$message.warning(
+            '请确保所有选中设备的集群名称一致（无集群除外）'
+          )
+          return
+        }
+        this.deviceClusterDialogVisible = true
+      })
+    },
+    // 绑定
+    handleDeviceBind() {
+      this.isOperable().then(_ => {
+        this.deviceBindDialogVisible = true
+      })
+    },
+    // 解绑
+    handleDeviceUnbind() {
+      this.isOperable().then(_ => {
+        this.deviceUnbindDialogVisible = true
+      })
+    },
+    // 导出
+    handleExport() {
+      this.isOperable().then(_ => {})
+    },
+    isOperable() {
+      return new Promise(resolve => {
+        if (this.selectedDeviceList.length) {
+          resolve()
+        } else {
+          this.$message.warning('请选择设备后再进行操作')
+        }
+      })
     }
   },
   created() {
