@@ -105,7 +105,7 @@ export default {
       }).then(() => {
         this.$message({
           message: '添加集群成功！',
-          tpye: 'success'
+          type: 'success'
         })
         this.$emit('update:visible', false)
       })

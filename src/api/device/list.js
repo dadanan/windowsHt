@@ -103,3 +103,10 @@ export function queryTeamInfo(data) {
     data
   })
 }
+
+export function queryChildDevice(id) {
+  return request({
+    url: `/temp/api/device/queryChildDevice/${id}`,
+    method: 'post'
+  })
+}
