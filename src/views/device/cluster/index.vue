@@ -29,7 +29,8 @@
                      :page-sizes="[10, 20, 50]"
                      :page-size="1"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="clusterList.length"></el-pagination>
+                     :total="clusterList.length"
+                     @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible"
                     :title="title"
@@ -43,11 +44,13 @@
 </template>
 
 <script>
+import { queryGroupByPage, queryGroupCount } from '@/api/device/cluster'
 import DefaultDialog from '@/components/DefaultDialog'
 import Detail from './components/Detail'
 import Create from './components/Create'
 import Edit from './components/Edit'
 import { tableData, columnData, dialogDatas } from './cluster.js'
+
 export default {
   components: {
     DefaultDialog,
@@ -65,10 +68,39 @@ export default {
       visible: false,
       fullscreen: false,
       title: '',
-      rowData: {}
+      rowData: {},
+      page: 1,
+      limit: 10,
+      total: 1
     }
   },
+  created() {
+    // this.queryGroupCount()
+    // this.queryGroupByPage()
+  },
   methods: {
+    queryGroupCount() {
+      // 从这里返回页码的问题是，每页的条数是可变的，所有页码也应该是可变的
+      queryGroupCount().then(res => {
+        if (res.code === 200) {
+          this.total = res.data
+        }
+      })
+    },
+    queryGroupByPage() {
+      queryGroupByPage({
+        page: this.page,
+        limit: this.limit
+      }).then(res => {})
+    },
+    handleSizeChange(val) {
+      this.limit = val
+      this.queryGroupByPage()
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.queryGroupByPage()
+    },
     deleteRow() {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',

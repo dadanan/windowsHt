@@ -56,12 +56,12 @@
     </div>
     <div class="photos">集群相册</div>
     <el-card class="el-card--solid">
-      <img :src="img" v-for="(img, i) in images" :key="i" @dblclick="imageUrl = img">
-    </el-card>
-    <el-dialog :visible.sync="imgVisible">
-      <div class="item">
-        <img width="100%" :src="imageUrl">
+      <div class="item" v-for="(img, i) in images" :key="i" @dblclick="handlePreview(img)">
+        <img :src="img">
       </div>
+    </el-card>
+    <el-dialog :visible="imgVisible" :before-close="() => imgVisible = false" append-to-body>
+      <img width="100%" :src="imageUrl">
     </el-dialog>
   </div>
 </template>
@@ -120,6 +120,15 @@ export default {
           label: '告警状态'
         }
       ]
+    }
+  },
+  methods: {
+    handlePreview(img) {
+      this.imageUrl = img
+
+      this.$nextTick(() => {
+        this.imgVisible = true
+      })
     }
   },
   watch: {
