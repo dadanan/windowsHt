@@ -94,6 +94,7 @@ export default {
         permissions: [],
         writeStatus: 0,
         readStatus: 0,
+        abilityType: 1,
         configType: 1,
         deviceAbilityOptions: [],
         runStatus: 0
@@ -124,18 +125,14 @@ export default {
   },
   methods: {
     createHandler() {
-      this.form['abilityType'] = this.form.configType
-      createDeviceAbility(this.form)
-        .then(res => {
-          this.$emit('add-data', {
-            ...this.form,
-            id: res.data
-          })
-          this.$emit('update:visible', false)
+      this.form.abilityType = this.form.configType
+      createDeviceAbility(this.form).then(res => {
+        this.$emit('add-data', {
+          ...this.form,
+          id: res.data
         })
-        .catch(err => {
-          console.log('err', err)
-        })
+        this.$emit('update:visible', false)
+      })
     },
     handlePermissionListChange(permissions) {
       if (permissions.some(el => el === 'w')) {
