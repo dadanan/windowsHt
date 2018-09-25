@@ -324,8 +324,8 @@ export default {
       })
     },
     handleOwerTypeChange(value) {
-      this.$set(this.addForm, 'customerIds', null)
-      this.$refs.editCustomer.selectedLabel = null
+      this.$set(this.addForm, 'customerIds', '')
+      this.$refs.editCustomer.selectedLabel = ''
       // 专用为多选
       if (value === 3) {
         this.$set(this.addForm, 'customerIds', [])
@@ -349,11 +349,17 @@ export default {
         .split(',')
         .map(id => Number(id))
 
-      const customerIds = this.addForm.customerIds.split(',').map(Number)
+      // customerIds可能为null
+      const customerIds = this.addForm.customerIds
+        ? this.addForm.customerIds
+            .split(',')
+            .filter(v => v)
+            .map(Number)
+        : []
       if (this.addForm.owerType === 3) {
         this.addForm.customerIds = customerIds
       } else {
-        this.addForm.customerIds = customerIds[0]
+        this.addForm.customerIds = customerIds[0] || ''
       }
 
       if (tempForm.wxFormatPageVos && tempForm.wxFormatPageVos.length > 0) {
