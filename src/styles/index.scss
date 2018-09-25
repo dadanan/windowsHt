@@ -10,7 +10,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
 }
 
 label {
@@ -90,7 +91,7 @@ div:focus {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: " ";
+    content: ' ';
     clear: both;
     height: 0;
   }
@@ -103,7 +104,7 @@ code {
   display: block;
   line-height: 36px;
   font-size: 15px;
-  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
 
   a {
     color: #337ab7;
@@ -116,12 +117,12 @@ code {
 }
 
 .warn-content {
-  background: rgba(66, 185, 131, .1);
+  background: rgba(66, 185, 131, 0.1);
   border-radius: 2px;
   padding: 16px;
   padding: 1rem;
   line-height: 1.6rem;
-  word-spacing: .05rem;
+  word-spacing: 0.05rem;
 
   a {
     color: #42b983;
@@ -144,7 +145,7 @@ code {
 }
 
 .text-center {
-  text-align: center
+  text-align: center;
 }
 
 .sub-navbar {
@@ -155,7 +156,13 @@ code {
   text-align: right;
   padding-right: 20px;
   transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(33, 120, 241, 1) 100%,
+    rgba(33, 120, 241, 1) 100%
+  );
 
   .subtitle {
     font-size: 20px;
@@ -295,7 +302,6 @@ code {
   }
 }
 
-
 .input-group {
   display: flex;
   margin: 0 -5px;
@@ -312,7 +318,7 @@ code {
 }
 
 .alert-text {
-  color: #F56C6C;
+  color: #f56c6c;
   font-size: 12px;
 }
 
@@ -340,7 +346,7 @@ code {
 .el-table {
   &__header-wrapper {
     .has-gutter {
-      tr>th.gutter {
+      tr > th.gutter {
         display: table !important;
       }
     }
@@ -348,7 +354,7 @@ code {
 }
 
 .main-scroll {
-  height: 680px;
+  height: 600px;
 }
 
 .scrollbar-wrap {
@@ -356,5 +362,5 @@ code {
 }
 
 .scrollbar-view {
-  padding-right: 15px
+  padding-right: 15px;
 }
