@@ -126,11 +126,13 @@ export default {
       delete this.form.permissions
 
       // 抛弃用户新增，却又溢出的项（没有id，有status）
-      this.form.deviceAbilityOptions = this.form.deviceAbilityOptions.filter(
-        item =>
-          item.hasOwnProperty('id') ||
-          (!item.hasOwnProperty('id') && !item.hasOwnProperty('status'))
-      )
+      this.form.deviceAbilityOptions = this.form.deviceAbilityOptions
+        ? this.form.deviceAbilityOptions.filter(
+            item =>
+              item.hasOwnProperty('id') ||
+              (!item.hasOwnProperty('id') && !item.hasOwnProperty('status'))
+          )
+        : []
 
       updateDeviceAbility(this.form)
         .then(res => {
