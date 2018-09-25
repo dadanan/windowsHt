@@ -54,13 +54,23 @@
         </el-button>
       </el-button-group>
     </div>
-    <!-- <el-card class="el-card--solid">
-      <div>集群相册</div>
-    </el-card> -->
+    <div class="photos">集群相册</div>
+    <el-card class="el-card--solid">
+      <img :src="img" v-for="(img, i) in images" :key="i" @dblclick="imageUrl = img">
+    </el-card>
+    <el-dialog :visible.sync="imgVisible">
+      <div class="item">
+        <img width="100%" :src="imageUrl">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+const img = require('@/assets/404_images/404.png')
+
+const images = new Array(20).fill(img)
+
 export default {
   props: {
     datas: {
@@ -72,6 +82,9 @@ export default {
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
+      images: images,
+      imgVisible: false,
+      imageUrl: '',
       form: {
         name: '集群',
         typeId: '集群',
@@ -128,6 +141,30 @@ export default {
   margin: 0 10px;
   &--full {
     flex: 1;
+  }
+}
+.photos {
+  font-size: 16px;
+  color: #303133;
+  margin: 20px 0;
+  font-size: 16px;
+}
+.item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 1.6%;
+  min-width: 120px;
+  width: 11%;
+  height: 120px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  img {
+    width: 100%;
   }
 }
 </style>
