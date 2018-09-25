@@ -395,7 +395,7 @@ export default {
         this.pageOfForamt &&
         this.pageOfForamt.map(item => {
           return {
-            pageId: item.pageNo,
+            pageId: item.id,
             showName: item.name,
             showStatus: item.showStatus ? 1 : 0,
             modelFormatItems:
