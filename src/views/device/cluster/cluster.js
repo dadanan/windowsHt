@@ -18,11 +18,11 @@ export const columnData = [
     label: '名称'
   },
   {
-    prop: 'device',
+    prop: 'devicecount',
     label: '群内设备'
   },
   {
-    prop: 'introduce',
+    prop: 'introduction',
     label: '介绍'
   },
   {
@@ -30,15 +30,15 @@ export const columnData = [
     label: '地点'
   },
   {
-    prop: 'createtime',
+    prop: 'createTime',
     label: '创建时间'
   },
   {
-    prop: 'create',
+    prop: 'customerName',
     label: '创建人'
   },
   {
-    prop: 'mark',
+    prop: 'remark',
     label: '备注'
   }
 ]

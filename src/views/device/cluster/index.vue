@@ -25,11 +25,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1"
+      <el-pagination :current-page="page"
                      :page-sizes="[10, 20, 50]"
-                     :page-size="1"
+                     :page-size="limit"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="clusterList.length"></el-pagination>
+                     :total="total"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible"
                     :title="title"
@@ -48,6 +48,11 @@ import Detail from './components/Detail'
 import Create from './components/Create'
 import Edit from './components/Edit'
 import { tableData, columnData, dialogDatas } from './cluster.js'
+import {
+  queryGroupByPage,
+  deleteGroupById,
+  queryGroupCount
+} from '@/api/device/cluster'
 export default {
   components: {
     DefaultDialog,
@@ -65,30 +70,45 @@ export default {
       visible: false,
       fullscreen: false,
       title: '',
-      rowData: {}
+      rowData: {},
+      page: 1,
+      limit: 10,
+      total: 0
     }
   },
+  created() {
+    this.queryGroupByPage()
+    this.queryGroupCount()
+  },
   methods: {
-    deleteRow() {
+    queryGroupByPage() {
+      queryGroupByPage({
+        page: this.page,
+        limit: this.limit
+      }).then(res => {
+        if (res.code === 200) {
+          this.clusterList = res.data
+        }
+      })
+    },
+    deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          // deleteOneTeam({
-          //   teamId: id
-          // })
-          //   .then(res => {
-          //     this.list = this.list.filter(item => item.id !== id)
-          //     this.$message({
-          //       type: 'success',
-          //       message: `删除成功！`
-          //     })
-          //   })
-          //   .catch(err => {
-          //     console.log(err)
-          //   })
+          deleteGroupById(id)
+            .then(res => {
+              this.clusterList = this.clusterList.filter(item => item.id !== id)
+              this.$message({
+                type: 'success',
+                message: `删除成功！`
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
         .catch(() => {
           this.$message({
@@ -112,6 +132,13 @@ export default {
     handleClosed() {
       this.fullscreen = false
       this.dialogComp = ''
+    },
+    queryGroupCount() {
+      queryGroupCount().then(res => {
+        if (res.code === 200) {
+          this.total = res.data
+        }
+      })
     }
   }
 }
