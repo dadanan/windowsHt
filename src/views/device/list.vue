@@ -19,9 +19,59 @@
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
+      <el-table @expand-change="expandChanged" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+
+            <el-table v-if='scope.row.childCount!==0' :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
+              <el-table-column type="index"></el-table-column>
+              <el-table-column prop="name" label="从设备名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
+              </el-table-column>
+              <el-table-column prop="childId" label="从设备ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
+              </el-table-column>
+              <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
+              </el-table-column>
+              <el-table-column label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
+                <template slot-scope="scope">
+                  {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
+                </template>
+              </el-table-column>
+              <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+                <template slot-scope="scope">
+                  {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
+                </template>
+              </el-table-column>
+              <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
+                <template slot-scope="scope">
+                  {{scope.row.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
+                </template>
+              </el-table-column>
+              <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
+                <template slot-scope="scope">
+                  {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+              </el-table-column>
+              <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+              </el-table-column>
+              <el-table-column prop="createTime" label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.createTime">
+              </el-table-column>
+              <el-table-column prop="lastUpdateTime" label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+              </el-table-column>
+              <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-alert v-else title="该主设备下没有对应从设备！" type="info" center show-icon :closable="false"></el-alert>
+
+          </template>
+        </el-table-column>
         <el-table-column type="selection"></el-table-column>
-        <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
         </el-table-column>
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
@@ -138,7 +188,7 @@
       </el-form>
       <el-form label-width="100px" label-location="left">
         <el-form-item label="已删除设备">
-          <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedHandle">
+          <el-radio-group v-model='showDeviceDeleted'>
             <el-radio :label="true">显示</el-radio>
             <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
@@ -184,7 +234,7 @@ import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
-import { getList, deleteOneDevice } from '@/api/device/list'
+import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
 
 export default {
   components: {
@@ -257,14 +307,25 @@ export default {
         // 如果不显示删除设备，返回状态不等于 2 的
         list = list.filter(item => item.status !== 2)
       }
-      // if(){
-
-      // }
       return list
     }
   },
   methods: {
-    showDeviceDeletedHandle(val) {},
+    expandChanged(data) {
+      if (
+        data.childCount === 0 ||
+        (data.childDeviceList && data.childDeviceList.length > 0)
+      ) {
+        return
+      }
+      this.queryChildDevice(data.id, data)
+    },
+    queryChildDevice(id, data) {
+      queryChildDevice(id).then(res => {
+        // 把获取到的从设备数据添加到主设备数据中
+        data.childDeviceList = res.data
+      })
+    },
     showDetail(data) {
       this.deviceDetailDialogVisible = true
       this.detailData = data
@@ -275,6 +336,10 @@ export default {
     getList() {
       getList(this.query)
         .then(res => {
+          res.data &&
+            res.data.forEach(item => {
+              item['childDeviceList'] = []
+            })
           this.deviceList = res.data || []
         })
         .catch(err => {

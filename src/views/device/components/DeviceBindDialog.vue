@@ -141,7 +141,9 @@ export default {
       })
     },
     queryTeamInfo() {
-      console.log(11)
+      if (!this.openId) {
+        return
+      }
       queryTeamInfo({
         openId: this.openId
       }).then(res => {

@@ -1,22 +1,12 @@
 <template>
-  <el-dialog top='4vh'
-             :close-on-click-modal=false
-             title="编辑设备类型"
-             :visible="visible"
-             @update:visible="$emit('update:visible', $event)">
-    <el-scrollbar class="main-scroll"
-                  wrap-class="scrollbar-wrap"
-                  view-class="scrollbar-view"
-                  tag="div">
-      <el-form label-width="100px"
-               class="mb-22">
+  <el-dialog top='4vh' :close-on-click-modal=false title="编辑设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
+    <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
+      <el-form label-width="100px" class="mb-22">
         <el-form-item label="typeNo">
           <el-input v-model="data.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='data.icon'
-                          @get-url='getURL'
-                          :imageName='getImageName(data.icon)'></image-uploader>
+          <image-uploader :url='data.icon' @get-url='getURL' :imageName='getImageName(data.icon)'></image-uploader>
         </el-form-item>
         <el-form-item label="名称">
           <el-input v-model="data.name"></el-input>
@@ -25,10 +15,7 @@
           <el-input v-model="data.source"></el-input>
         </el-form-item>
         <el-form-item label="功能项">
-          <el-table :data="deviceTypeAbilitys"
-                    style="width: 100%"
-                    class="mb20"
-                    border>
+          <el-table :data="deviceTypeAbilitys" style="width: 100%" class="mb20" border>
             <el-table-column label="功能项名称">
               <template slot-scope="scope">
                 {{scope.row.abilityName}}
@@ -41,35 +28,23 @@
             </el-table-column>
             <el-table-column label="是否选择">
               <template slot-scope="scope">
-                <el-switch style="display: block"
-                           v-model="scope.row.isChecked"
-                           active-color="#13ce66"
-                           inactive-color="#ff4949"
-                           active-text="选择"
-                           inactive-text="不选择">
+                <el-switch style="display: block" v-model="scope.row.isChecked" active-color="#13ce66" inactive-color="#ff4949" active-text="选择" inactive-text="不选择">
                 </el-switch>
               </template>
             </el-table-column>
           </el-table>
         </el-form-item>
         <el-form-item label="码表">
-          <image-uploader :url='data.stopWatch'
-                          @get-url='getURL2'
-                          :imageName='getImageName(data.stopWatch)'
-                          excel></image-uploader>
+          <el-input v-model="data.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="data.remark"
-                    type="textarea"
-                    :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="data.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </el-form>
     </el-scrollbar>
-    <div slot="footer"
-         class="dialog-footer">
+    <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary"
-                 @click="updateForm">确定</el-button>
+      <el-button type="primary" @click="updateForm">确定</el-button>
     </div>
   </el-dialog>
 </template>

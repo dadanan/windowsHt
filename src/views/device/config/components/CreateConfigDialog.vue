@@ -395,7 +395,7 @@ export default {
         this.pageOfForamt &&
         this.pageOfForamt.map(item => {
           return {
-            pageId: item.pageNo,
+            pageId: item.id,
             showName: item.name,
             showStatus: item.showStatus ? 1 : 0,
             modelFormatItems:
@@ -458,6 +458,7 @@ export default {
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
+          item.isUsed = true
         })
     },
     modifyAbilityItem(data) {

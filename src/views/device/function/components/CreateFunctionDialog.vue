@@ -22,11 +22,11 @@
       </el-form-item>
       <template v-if="form.writeStatus">
         <el-form-item label="功能类型(标签)">
-          <el-select v-model='form.configType' placeholder="请选择" @change="handleConfigTypeChange">
+          <el-select v-model='form.abilityType' placeholder="请选择" @change="handleConfigTypeChange">
             <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <template v-if="form.configType === 2 || form.configType === 3">
+        <template v-if="form.abilityType === 2 || form.abilityType === 3">
           <el-form-item v-for="(option, i) in form.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
@@ -38,7 +38,7 @@
             <el-button type="primary" @click="addConfigOption">新增选项</el-button>
           </el-form-item>
         </template>
-        <template v-else-if="form.configType === 4">
+        <template v-else-if="form.abilityType === 4">
           <el-form-item label="极值">
             <div class="input-group">
               <el-input v-model="form.minVal" placeholder="最小值"></el-input>
@@ -46,7 +46,7 @@
             </div>
           </el-form-item>
         </template>
-        <template v-else-if="form.configType === 5">
+        <template v-else-if="form.abilityType === 5">
           <el-form-item label="极值">
             <div class="input-group">
               <el-input v-model="form.minVal" placeholder="最小值"></el-input>
@@ -94,7 +94,8 @@ export default {
         permissions: [],
         writeStatus: 0,
         readStatus: 0,
-        configType: 1,
+        abilityType: 1,
+        abilityType: 1,
         deviceAbilityOptions: [],
         runStatus: 0
       },
@@ -124,18 +125,14 @@ export default {
   },
   methods: {
     createHandler() {
-      this.form['abilityType'] = this.form.configType
-      createDeviceAbility(this.form)
-        .then(res => {
-          this.$emit('add-data', {
-            ...this.form,
-            id: res.data
-          })
-          this.$emit('update:visible', false)
+      this.form.abilityType = this.form.abilityType
+      createDeviceAbility(this.form).then(res => {
+        this.$emit('add-data', {
+          ...this.form,
+          id: res.data
         })
-        .catch(err => {
-          console.log('err', err)
-        })
+        this.$emit('update:visible', false)
+      })
     },
     handlePermissionListChange(permissions) {
       if (permissions.some(el => el === 'w')) {
@@ -151,7 +148,7 @@ export default {
       }
     },
     handleConfigTypeChange(type) {
-      this.$set(this.form, 'configType', type)
+      this.$set(this.form, 'abilityType', type)
       if (type === 1) {
         delete this.form.deviceAbilityOptions
         return
@@ -186,7 +183,7 @@ export default {
       this.form.deviceAbilityOptions.splice(i, 1)
     },
     addConfigOption() {
-      const type = this.form.configType
+      const type = this.form.abilityType
       if (type === 2 || type === 3) {
         this.form.deviceAbilityOptions.push({
           optionName: '',

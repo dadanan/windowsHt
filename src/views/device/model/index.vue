@@ -24,10 +24,7 @@
             {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
           </template>
         </el-table-column>
-        <el-table-column label="码表" show-overflow-tooltip sortable>
-          <template slot-scope="scope">
-            <img class='table-inside-image' :src='scope.row.stopWatch'>
-          </template>
+        <el-table-column prop='stopWatch' label="码表" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
         </el-table-column>

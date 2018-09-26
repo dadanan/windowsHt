@@ -82,7 +82,10 @@ const user = {
               'big-picture-mode/solution:1:get',
               'big-picture-mode/project:1:get',
               'big-picture-mode:solution:get',
-              'big-picture-mode:project:get'
+              'big-picture-mode:project:get',
+              'engineering:means:get',
+              'engineering:measure:get',
+              'engineering:maintenance:get',
             )
             if (data.permissions && data.permissions.length > 0) {
               // 验证返回的permission是否是一个非空数组

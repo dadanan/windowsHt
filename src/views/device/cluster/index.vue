@@ -29,7 +29,8 @@
                      :page-sizes="[10, 20, 50]"
                      :page-size="limit"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="total"></el-pagination>
+                     :total="total"
+                     @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible"
                     :title="title"
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import { queryGroupByPage, queryGroupCount } from '@/api/device/cluster'
 import DefaultDialog from '@/components/DefaultDialog'
 import Detail from './components/Detail'
 import Create from './components/Create'
