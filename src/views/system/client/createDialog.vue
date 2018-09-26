@@ -258,7 +258,7 @@
                   <el-input v-model='baseInfo.sld'></el-input>
                 </div>
                 <p>
-                  &nbsp;&nbsp;+&nbsp;&nbsp;/hcoclout.com/admin
+                  &nbsp;&nbsp;+&nbsp;&nbsp;/hcocloud.com/
                 </p>
               </div>
             </el-form-item>
