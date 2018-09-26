@@ -1,17 +1,3 @@
-export const tableData = () => {
-  const data = {
-    name: '1',
-    device: '1',
-    introduce: '1',
-    local: '1',
-    createtime: '1',
-    create: '1',
-    mark: '1'
-  }
-
-  return new Array(10).fill(data)
-}
-
 export const columnData = [
   {
     prop: 'name',
@@ -26,7 +12,7 @@ export const columnData = [
     label: '介绍'
   },
   {
-    prop: 'local',
+    prop: 'location',
     label: '地点'
   },
   {
@@ -40,6 +26,39 @@ export const columnData = [
   {
     prop: 'remark',
     label: '备注'
+  }
+]
+
+export const deviceColumnData = [
+  {
+    prop: 'name',
+    label: '名称'
+  },
+  {
+    prop: 'modelId',
+    label: '型号'
+  },
+  {
+    prop: 'introduce',
+    label: '缩图'
+  },
+  {
+    prop: 'onlineStatus',
+    label: '在线状态',
+    formatter: (row, column) => {
+      return row[column.property] ? '在线' : '离线'
+    }
+  },
+  {
+    prop: 'workStatus',
+    label: '工作状态',
+    formatter: (row, column) => {
+      return row[column.property] ? '关机' : '空闲'
+    }
+  },
+  {
+    prop: 'create',
+    label: '告警状态'
   }
 ]
 

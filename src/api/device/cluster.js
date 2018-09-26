@@ -9,7 +9,7 @@ export function queryGroupByPage(data) {
   })
 }
 
-// 根据查询条件分页查询设备
+// 根据id查询集群详情
 export function queryGroupById(id) {
   return request({
     url: `/temp/api/deviceGroup/queryGroupById/${id}`,

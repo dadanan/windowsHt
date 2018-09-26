@@ -6,23 +6,28 @@
           <el-form label-width="100px" style="min-height: 440px" label-position="left">
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-form-item label="名称">
+                <el-form-item label="集群名">
                   <el-input v-model="form.name" disabled></el-input>
                 </el-form-item>
+                <el-form-item label="客户">
+              <el-select v-model="form.customerId" disabled>
+                <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
+              </el-select>
+            </el-form-item>
                 <el-form-item label="介绍">
-                  <el-input v-model="form.typeId" disabled></el-input>
+                  <el-input v-model="form.introduction" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="地点">
-                  <el-input v-model="form.customerName" disabled></el-input>
+                  <el-input v-model="form.location" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间">
-                  <el-input v-model="form.mac" disabled></el-input>
+                  <el-input v-model="form.createTime" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="创建人">
-                  <el-input v-model="form.create" disabled></el-input>
+                  <el-input v-model="form.customerName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
-                  <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.mark" disabled>
+                  <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark" disabled>
                     </el-input>
                 </el-form-item>
               </el-col>
@@ -36,7 +41,7 @@
           </el-card>
       </div>
     </div>
-    <el-table :data="deviceData" class="mb20" border>
+    <el-table :data="form.deviceList" class="mb20" style="margin-top: 15px" border>
       <el-table-column v-for="value in columnData"
                       :label="value.label"
                       :prop="value.prop"
@@ -67,6 +72,10 @@
 </template>
 
 <script>
+import { select } from '@/api/customer'
+import { queryGroupById } from '@/api/device/cluster'
+import { deviceColumnData } from '../cluster.js'
+
 const img = require('@/assets/404_images/404.png')
 
 const images = new Array(20).fill(img)
@@ -85,49 +94,41 @@ export default {
       images: images,
       imgVisible: false,
       imageUrl: '',
+      query: {
+        limit: 100,
+        page: 1
+      },
       form: {
-        name: '集群',
-        typeId: '集群',
-        customerName: '本地xx号xx楼',
-        mac: '2018-09-24 11: 11: 24',
-        create: 'ww',
-        mark: '无'
+        deviceList: [],
+        customerId: ''
       },
       deviceData: [],
-      columnData: [
-        {
-          prop: 'name',
-          label: '名称'
-        },
-        {
-          prop: 'device',
-          label: '型号'
-        },
-        {
-          prop: 'introduce',
-          label: '缩图'
-        },
-        {
-          prop: 'local',
-          label: '在线状态'
-        },
-        {
-          prop: 'createtime',
-          label: '工作状态'
-        },
-        {
-          prop: 'create',
-          label: '告警状态'
-        }
-      ]
+      columnData: deviceColumnData,
+      customerList: []
     }
   },
+  created() {
+    this.select()
+    this.queryGroupById()
+  },
   methods: {
+    queryGroupById() {
+      queryGroupById(this.datas.id).then(res => {
+        if (res.code === 200) {
+          this.form = { ...res.data }
+        }
+      })
+    },
     handlePreview(img) {
       this.imageUrl = img
 
       this.$nextTick(() => {
         this.imgVisible = true
+      })
+    },
+    select() {
+      select(this.query).then(res => {
+        this.customerList = res.data || []
       })
     }
   },

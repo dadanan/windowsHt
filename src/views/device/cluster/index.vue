@@ -44,12 +44,11 @@
 </template>
 
 <script>
-import { queryGroupByPage, queryGroupCount } from '@/api/device/cluster'
 import DefaultDialog from '@/components/DefaultDialog'
 import Detail from './components/Detail'
 import Create from './components/Create'
 import Edit from './components/Edit'
-import { tableData, columnData, dialogDatas } from './cluster.js'
+import { columnData, dialogDatas } from './cluster.js'
 import {
   queryGroupByPage,
   deleteGroupById,
@@ -65,7 +64,7 @@ export default {
   data() {
     return {
       addDialogVisible: false,
-      clusterList: tableData(),
+      clusterList: [],
       columnData: columnData,
       loading: false,
       dialogComp: '',
@@ -92,6 +91,14 @@ export default {
           this.clusterList = res.data
         }
       })
+    },
+    handleSizeChange(val) {
+      this.limit = val
+      this.queryGroupByPage()
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.queryGroupByPage()
     },
     deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
