@@ -1,18 +1,8 @@
 <template>
-  <el-dialog top='4vh'
-             :close-on-click-modal=false
-             title="编辑客户"
-             :visible="visible"
-             @update:visible="$emit('update:visible', $event)">
-    <el-scrollbar class="main-scroll"
-                  wrap-class="scrollbar-wrap"
-                  view-class="scrollbar-view"
-                  tag="div">
+  <el-dialog top='4vh' :close-on-click-modal=false title="编辑客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
+    <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <div>
-        <el-steps :active="createStep"
-                  finish-status="success"
-                  class="mb20"
-                  align-center>
+        <el-steps :active="createStep" finish-status="success" class="mb20" align-center>
           <el-step title="基本信息"></el-step>
           <el-step title="设备类型设置"></el-step>
           <el-step title="H5 端 APP 设置"></el-step>
@@ -20,8 +10,7 @@
           <el-step title="管理后台设置"></el-step>
         </el-steps>
         <div v-if="createStep == 1">
-          <el-form label-position="left"
-                   label-width="150px">
+          <el-form label-position="left" label-width="150px">
             <el-form-item label="客户名称">
               <el-input v-model="baseInfo.name"></el-input>
             </el-form-item>
@@ -36,28 +25,18 @@
             </el-form-item>
             <el-form-item label="客户类型">
               <el-select v-model="baseInfo.userType">
-                <el-option label="厂家"
-                           value="1"></el-option>
-                <el-option label="品牌商"
-                           value="2"></el-option>
-                <el-option label=" 工程商"
-                           value="3"></el-option>
+                <el-option label="厂家" value="1"></el-option>
+                <el-option label="品牌商" value="2"></el-option>
+                <el-option label=" 工程商" value="3"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input type="textarea"
-                        :rows="2"
-                        placeholder="请输入内容"
-                        v-model="baseInfo.remark"></el-input>
+              <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="baseInfo.remark"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div v-if="createStep == 2">
-          <el-table :data="deviceList"
-                    @selection-change="handleSelectionChange"
-                    style="width: 100%"
-                    class="mb20"
-                    border>
+          <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
             <el-table-column type="selection">
             </el-table-column>
             <el-table-column type="index"></el-table-column>
@@ -66,111 +45,72 @@
                 <!-- <img class='table-inside-image block' :src="scope.row.icon" :alt="scope.row.name"> -->
               </template>
             </el-table-column>
-            <el-table-column prop="name"
-                             label="名称"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column prop="typeNo"
-                             label="typeNo"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column prop="typeNo" label="typeNo" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column prop="source"
-                             label="来源"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column prop="source" label="来源" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column label="功能项"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column label="功能项" show-overflow-tooltip sortable>
               <template slot-scope="scope">
                 {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
               </template>
             </el-table-column>
-            <el-table-column label="码表"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column label="码表" show-overflow-tooltip sortable>
               <template slot-scope="scope">
                 <img class='table-inside-image'
                      :src='scope.row.stopWatch'>
               </template>
             </el-table-column>
-            <el-table-column prop="remark"
-                             label="备注"
-                             show-overflow-tooltip
-                             sortable>
+            <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column label="操作"
-                             show-overflow-tooltip>
+            <el-table-column label="操作" show-overflow-tooltip>
               <template slot-scope="scope">
-                <el-button type="text"
-                           @click="deleteModel(scope.row.id)">删除</el-button>
+                <el-button type="text" @click="deleteModel(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination :current-page="1"
-                         :page-sizes="[100, 200, 300, 400]"
-                         :page-size="100"
-                         layout="total, sizes, prev, pager, next, jumper"
-                         :total="deviceList.length">
+          <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
           </el-pagination>
         </div>
         <div v-if="createStep == 3">
-          <el-form label-position="left"
-                   label-width="150px">
+          <el-form label-position="left" label-width="150px">
             <el-form-item label="默认组名">
               <el-input v-model="h5Config.defaultTeamName"></el-input>
             </el-form-item>
             <el-form-item label="高级设置密码">
-              <el-input type="text"
-                        v-model="h5Config.password"></el-input>
+              <el-input type="text" v-model="h5Config.password"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <image-uploader :url='h5Config.backgroundImg'
-                              @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+              <image-uploader :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
-              <el-select v-model="h5Config.htmlTypeId"
-                         @change='pageFormatChanged'>
-                <el-option v-for='item in pageFormatList'
-                           :label='item.name'
-                           :value='item.id'
-                           :key='item.id'></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="页面概览">
-              <img class='page-preview-img'
-                   :src='h5PreviewImg'>
+              <el-checkbox-group v-model="h5Config.htmlTypeId">
+                <el-checkbox v-for='item in pageFormatList' :label='item.id' :key='item.id'>{{item.name}}</el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
             <el-form-item label="名称">
               <el-input v-model="h5Config.themeName"></el-input>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='h5Config.logo'
-                              @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+              <image-uploader :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="H5 版本">
               <el-select v-model="h5Config.version">
-                <el-option label="版本 1"
-                           value="1"></el-option>
-                <el-option label="版本 2"
-                           value="2"></el-option>
-                <el-option label="版本 3"
-                           value="3"></el-option>
+                <el-option label="版本 1" value="1"></el-option>
+                <el-option label="版本 2" value="2"></el-option>
+                <el-option label="版本 3" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
         </div>
         <div v-if="createStep == 4">
-          <el-form label-position="left"
-                   label-width="150px">
+          <el-form label-position="left" label-width="150px">
             <el-form-item label="APP 名称">
               <el-input v-model='androidConfig.name'></el-input>
             </el-form-item>
             <el-form-item label="APP Logo">
-              <image-uploader :url='androidConfig.logo'
-                              @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+              <image-uploader :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
@@ -179,48 +119,36 @@
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
             </el-form-item>
             <el-form-item label="安卓场景">
-              <el-card class="box-card"
-                       v-for='(item,index) in androidConfig.androidSceneList'
-                       :key="index">
+              <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList' :key="index">
                 <div class='tool'>
-                  <span class='close'
-                        @click='deleteScene(index)'></span>
-                  <span class='add'
-                        @click='addScene'></span>
+                  <span class='close' @click='deleteScene(index)'></span>
+                  <span class='add' @click='addScene'></span>
                 </div>
                 <div>
                   <el-form-item label="场景名称">
                     <el-input v-model='item.name'></el-input>
                   </el-form-item>
                   <el-form-item label="场景描述">
-                    <el-input v-model='item.description'
-                              type='textarea'></el-input>
+                    <el-input v-model='item.description' type='textarea'></el-input>
                   </el-form-item>
                   <el-form-item label="场景封面">
-                    <image-uploader :url='item.imgsCover'
-                                    @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+                    <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
                   </el-form-item>
                   <el-form-item label="场景图册列表">
-                    <el-card v-for='(list,listIndex) in item.androidSceneImgList'
-                             :key="listIndex"
-                             class="box-card">
+                    <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="listIndex" class="box-card">
                       <div class='tool'>
-                        <span class='close'
-                              @click='deleteSceneImg(item,listIndex)'></span>
-                        <span class='add'
-                              @click='addSceneImg(item)'></span>
+                        <span class='close' @click='deleteSceneImg(item,listIndex)'></span>
+                        <span class='add' @click='addSceneImg(item)'></span>
                       </div>
                       <div>
                         <el-form-item label="名称">
                           <el-input v-model='list.name'></el-input>
                         </el-form-item>
                         <el-form-item label="描述">
-                          <el-input v-model='list.description'
-                                    type='textarea'></el-input>
+                          <el-input v-model='list.description' type='textarea'></el-input>
                         </el-form-item>
                         <el-form-item label="图片/视频">
-                          <image-uploader :url='list.imgVideo'
-                                          @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                          <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
                         </el-form-item>
                       </div>
                     </el-card>
@@ -231,14 +159,12 @@
           </el-form>
         </div>
         <div v-if="createStep == 5">
-          <el-form label-position="left"
-                   label-width="150px">
+          <el-form label-position="left" label-width="150px">
             <el-form-item label="开放">
               <el-switch v-model='backendConfig.enableStatus'></el-switch>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='backendConfig.logo'
-                              @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+              <image-uploader :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="名称">
               <el-input v-model='backendConfig.name'></el-input>
@@ -268,15 +194,9 @@
     </el-scrollbar>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type=" primary "
-                 @click="backStep "
-                 v-if="createStep !==1">上一步</el-button>
-      <el-button type="primary "
-                 @click="nextStep "
-                 v-if="createStep !== 5">下一步</el-button>
-      <el-button type="primary "
-                 @click="updateDetail "
-                 v-else>确定</el-button>
+      <el-button type=" primary " @click="backStep " v-if="createStep !==1">上一步</el-button>
+      <el-button type="primary " @click="nextStep " v-if="createStep !== 5">下一步</el-button>
+      <el-button type="primary " @click="updateDetail " v-else>确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -311,7 +231,7 @@ export default {
       h5Config: {
         backgroundImg: '',
         defaultTeamName: '',
-        htmlTypeId: undefined,
+        htmlTypeId: [],
         logo: '',
         password: '',
         themeName: '',
@@ -355,16 +275,10 @@ export default {
         limit: 1000,
         page: 1
       },
-      pageFormatList: [],
-      h5PreviewImg: ''
+      pageFormatList: []
     }
   },
   methods: {
-    pageFormatChanged(id) {
-      this.h5PreviewImg = this.pageFormatList.filter(
-        item => item.id === id
-      )[0].previewImg
-    },
     getForamtList() {
       getForamtList(this.listQuery).then(res => {
         this.pageFormatList = res.data
@@ -429,10 +343,15 @@ export default {
     updateDetail() {
       this.backendConfig.enableStatus = this.backendConfig.enableStatus ? 1 : 2
 
+      // 这样 htmlTypeId 就不会影响到页面源数据了
+      const h5Config = Object.assign({}, this.h5Config)
+      // 拼接成一个字符串
+      h5Config.htmlTypeId = h5Config.htmlTypeId.join(',')
+
       const form = {
         ...this.baseInfo,
         typeIds: this.selectedDeviceList.map(item => item.id).join(','),
-        h5Config: this.h5Config,
+        h5Config,
         androidConfig: this.androidConfig,
         backendConfig: this.backendConfig,
         id: this.id
@@ -471,7 +390,15 @@ export default {
         sld: val.sld,
         remark: val.remark
       }
-      this.h5Config = tempForm.h5Config
+
+      const h5Config = tempForm.h5Config
+      if (h5Config) {
+        if (h5Config.htmlTypeId + '') {
+          h5Config.htmlTypeId = String(h5Config.htmlTypeId).split(',')
+        }
+        this.h5Config = h5Config
+      }
+
       this.androidConfig = val.androidConfig || {}
       this.backendConfig = val.backendConfig || {}
 

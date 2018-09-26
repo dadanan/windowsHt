@@ -7,30 +7,30 @@
             <img v-if='logo' :src="logo" alt="logo">
             <img v-else src="/static/images/logo.svg" alt="logo">
           </div>
-          <div class="login-header__title">{{siteName}}</div>
-        </div>
-        <el-form-item prop="username">
-          <span class="svg-container svg-container_login">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')" />
-        </el-form-item>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" :placeholder="$t('login.password')" />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon icon-class="eye" />
-          </span>
-        </el-form-item>
-        <div class="login-form-item">
-          <el-button type="text" @click="showDialog = true">忘记密码?</el-button>
-        </div>
-        <div class="login-form-item">
-          <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
-        </div>
-        <!--<el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>-->
+            <div class="login-header__title">{{siteName}}</div>
+          </div>
+          <el-form-item prop="username">
+            <span class="svg-container svg-container_login">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')" />
+          </el-form-item>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" :placeholder="$t('login.password')" />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon icon-class="eye" />
+            </span>
+          </el-form-item>
+          <div class="login-form-item">
+            <el-button type="text" @click="showDialog = true">忘记密码?</el-button>
+          </div>
+          <div class="login-form-item">
+            <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
+          </div>
+          <!--<el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>-->
       </el-form>
     </el-card>
 
@@ -134,16 +134,18 @@ export default {
       return ''
     },
     selectBackendConfigBySLD() {
-      selectBackendConfigBySLD(this.getSld()).then(res => {
-        const data = res.data
-        if (data.logo) {
-          this.$store.commit('SET_LOGO', data.logo)
-        }
-        if (data.name) {
-          document.title = data.name
-          this.$store.commit('SET_SITENAME', data.name)
-        }
-      })
+      selectBackendConfigBySLD(this.getSld())
+        .then(res => {
+          const data = res.data
+          if (data.logo) {
+            this.$store.commit('SET_LOGO', data.logo)
+          }
+          if (data.name) {
+            document.title = data.name
+            this.$store.commit('SET_SITENAME', data.name)
+          }
+        })
+        .catch(() => {})
     }
   },
   created() {
