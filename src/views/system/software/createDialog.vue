@@ -62,6 +62,11 @@
             <d-title>页面功能项</d-title>
             <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
               <el-table-column type="index" label='标号' width="50"></el-table-column>
+              <el-table-column label="名称">
+                <template slot-scope="scope">
+                  <el-input v-model='scope.row.name'></el-input>
+                </template>
+              </el-table-column>
               <el-table-column label="功能类型(标签)">
                 <template slot-scope="scope">
                   <el-select v-model='scope.row.abilityType' placeholder="请选择">
@@ -69,14 +74,14 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column label="挑选功能项">
+              <!-- <el-table-column label="挑选功能项">
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.abilityId">
                     <el-option v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.name" :value="iItem.abilityId" :key='iItem.id'>
                     </el-option>
                   </el-select>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>

@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column label="运行状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{ scope.row.runStatus === 0 ? '可运行' : '不可运行' }}
+            {{ scope.row.runStatus === 1 ? '可运行' : '不可运行' }}
           </template>
         </el-table-column>
         <el-table-column label="读写权限" show-overflow-tooltip sortable>
