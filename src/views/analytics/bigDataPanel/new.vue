@@ -135,174 +135,174 @@
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
                     </div>
-                    <div class="bdp-project-list__item__text">龙湖一期</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project2.jpg" alt="九亭工坊">
+                      <div class="bdp-project-list__item__text">龙湖一期</div>
                     </div>
-                    <div class="bdp-project-list__item__text">九亭工坊</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project3.jpg" alt="桃浦智创">
+                    <div class="bdp-project-list__item">
+                      <div class="bdp-project-list__item__img">
+                        <img src="/static/images/bdp_project2.jpg" alt="九亭工坊">
                     </div>
-                    <div class="bdp-project-list__item__text">桃浦智创</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project4.jpg" alt="恒大丽宫">
+                        <div class="bdp-project-list__item__text">九亭工坊</div>
+                      </div>
+                      <div class="bdp-project-list__item">
+                        <div class="bdp-project-list__item__img">
+                          <img src="/static/images/bdp_project3.jpg" alt="桃浦智创">
                     </div>
-                    <div class="bdp-project-list__item__text">恒大丽宫</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project5.jpg" alt="新微大厦">
+                          <div class="bdp-project-list__item__text">桃浦智创</div>
+                        </div>
+                        <div class="bdp-project-list__item">
+                          <div class="bdp-project-list__item__img">
+                            <img src="/static/images/bdp_project4.jpg" alt="恒大丽宫">
                     </div>
-                    <div class="bdp-project-list__item__text">新微大厦</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project6.jpg" alt="万科虹桥">
+                            <div class="bdp-project-list__item__text">恒大丽宫</div>
+                          </div>
+                          <div class="bdp-project-list__item">
+                            <div class="bdp-project-list__item__img">
+                              <img src="/static/images/bdp_project5.jpg" alt="新微大厦">
                     </div>
-                    <div class="bdp-project-list__item__text">万科虹桥</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project7.jpg" alt="绿地大厦">
+                              <div class="bdp-project-list__item__text">新微大厦</div>
+                            </div>
+                            <div class="bdp-project-list__item">
+                              <div class="bdp-project-list__item__img">
+                                <img src="/static/images/bdp_project6.jpg" alt="万科虹桥">
                     </div>
-                    <div class="bdp-project-list__item__text">绿地大厦</div>
-                  </div>
-                  <div class="bdp-project-list__item">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project8.jpg" alt="万达武汉">
+                                <div class="bdp-project-list__item__text">万科虹桥</div>
+                              </div>
+                              <div class="bdp-project-list__item">
+                                <div class="bdp-project-list__item__img">
+                                  <img src="/static/images/bdp_project7.jpg" alt="绿地大厦">
                     </div>
-                    <div class="bdp-project-list__item__text">万达武汉</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bdp__col">
-            <div class="bdp__panel">
-              <div class="bdp__panel-title">
-                <div class="bdp__panel-title__text">最新消息</div>
-                <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
-              </div>
-              <div class="bdp__panel-body">
-                <div class="bdp-message-list">
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="bdp__panel">
-              <div class="bdp__panel-title">
-                <div class="bdp__panel-title__text">解决方案</div>
-                <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
-              </div>
-              <div class="bdp__panel-body bdp__panel-body--mini">
-                <div class="bdp-solution-list">
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--bieshu"></div>
+                                  <div class="bdp-project-list__item__text">绿地大厦</div>
+                                </div>
+                                <div class="bdp-project-list__item">
+                                  <div class="bdp-project-list__item__img">
+                                    <img src="/static/images/bdp_project8.jpg" alt="万达武汉">
                     </div>
-                    <div class="bdp-solution-list__item__text">别墅</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--dafang"></div>
+                                    <div class="bdp-project-list__item__text">万达武汉</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="bdp__col">
+                            <div class="bdp__panel">
+                              <div class="bdp__panel-title">
+                                <div class="bdp__panel-title__text">最新消息</div>
+                                <div class="bdp__panel-title__opt">
+                                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                                </div>
+                              </div>
+                              <div class="bdp__panel-body">
+                                <div class="bdp-message-list">
+                                  <div class="bdp-message-list__item">
+                                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                                  </div>
+                                  <div class="bdp-message-list__item">
+                                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                                  </div>
+                                  <div class="bdp-message-list__item">
+                                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                                  </div>
+                                  <div class="bdp-message-list__item">
+                                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                                  </div>
+                                  <div class="bdp-message-list__item">
+                                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="bdp__panel">
+                              <div class="bdp__panel-title">
+                                <div class="bdp__panel-title__text">解决方案</div>
+                                <div class="bdp__panel-title__opt">
+                                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                                </div>
+                              </div>
+                              <div class="bdp__panel-body bdp__panel-body--mini">
+                                <div class="bdp-solution-list">
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--bieshu"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">别墅</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--dafang"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">大房</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--jujia"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">居家</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--bangong"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">办公</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--xuexiao"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">学校</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--yiyuan"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">医院</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--shangchang"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">商场</div>
+                                  </div>
+                                  <div class="bdp-solution-list__item">
+                                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                                      <div class="bdp-sprite bdp-sprite--zhantin"></div>
+                                    </div>
+                                    <div class="bdp-solution-list__item__text">展厅</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="bdp__panel">
+                              <div class="bdp__panel-title">
+                                <div class="bdp__panel-title__text">告警信息</div>
+                                <div class="bdp__panel-title__opt">
+                                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                                </div>
+                              </div>
+                              <div class="bdp__panel-body">
+                                <chart :options="alarmInfoChartOptions" class="bdp-chart"></chart>
+                              </div>
+                            </div>
+                            <div class="bdp__panel">
+                              <div class="bdp__panel-title">
+                                <div class="bdp__panel-title__text">维护信息</div>
+                                <div class="bdp__panel-title__opt">
+                                  <div class="bdp-sprite bdp-sprite--cog"></div>
+                                </div>
+                              </div>
+                              <div class="bdp__panel-body">
+                                <chart :options="fixInfoChartOptions" class="bdp-chart"></chart>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="bdp-solution-list__item__text">大房</div>
                   </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--jujia"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">居家</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--bangong"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">办公</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--xuexiao"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">学校</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--yiyuan"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">医院</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--shangchang"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">商场</div>
-                  </div>
-                  <div class="bdp-solution-list__item">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--zhantin"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">展厅</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="bdp__panel">
-              <div class="bdp__panel-title">
-                <div class="bdp__panel-title__text">告警信息</div>
-                <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
-              </div>
-              <div class="bdp__panel-body">
-                <chart :options="alarmInfoChartOptions" class="bdp-chart"></chart>
-              </div>
-            </div>
-            <div class="bdp__panel">
-              <div class="bdp__panel-title">
-                <div class="bdp__panel-title__text">维护信息</div>
-                <div class="bdp__panel-title__opt">
-                  <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
-              </div>
-              <div class="bdp__panel-body">
-                <chart :options="fixInfoChartOptions" class="bdp-chart"></chart>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>

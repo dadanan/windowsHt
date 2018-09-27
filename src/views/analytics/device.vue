@@ -5,8 +5,7 @@
     </div>
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanData.数据展示" :key="item.id" v-if="item.isVisible">
-        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit"
-                   :style="{ backgroundColor: '#58D68D' }"></data-card>
+        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#58D68D' }"></data-card>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -45,47 +44,28 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-table
-        :data="tableData"
-        style="width: 100%" class="mb20" border>
+      <el-table :data="tableData" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column
-          prop="type"
-          label="类型">
+        <el-table-column prop="type" label="类型">
         </el-table-column>
-        <el-table-column
-          prop="name"
-          label="名称">
+        <el-table-column prop="name" label="名称">
         </el-table-column>
-        <el-table-column
-          prop="user"
-          label="用户">
+        <el-table-column prop="user" label="用户">
         </el-table-column>
-        <el-table-column
-          prop="onlineState"
-          label="在线状态">
+        <el-table-column prop="onlineState" label="在线状态">
         </el-table-column>
-        <el-table-column
-          prop="powerState"
-          label="使用状态">
+        <el-table-column prop="powerState" label="使用状态">
         </el-table-column>
-        <el-table-column
-          prop="alarmState"
-          label="告警状态">
+        <el-table-column prop="alarmState" label="告警状态">
         </el-table-column>
       </el-table>
       <div class="excel-container">
-        <el-pagination
-          :current-page="1"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+        <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
         </el-pagination>
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="编辑看板" :visible.sync="dialogEditKanbanVisible" class="kanban-edit">
+    <el-dialog top='4vh' :close-on-click-modal=false title="编辑看板" :visible.sync="dialogEditKanbanVisible" class="kanban-edit">
       <el-form label-position="left" label-width="100px">
         <el-form-item label="数据展示">
           <el-checkbox v-model="item.isVisible" v-for="item in kanbanData.数据展示" :key="item.id">{{ item.name }}
@@ -105,311 +85,356 @@
 </template>
 
 <script>
-  import DataCard from '@/components/DataCard'
-  import DTitle from '@/components/Title'
+import DataCard from '@/components/DataCard'
+import DTitle from '@/components/Title'
 
-  export default {
-    components: {
-      DataCard,
-      DTitle
-    },
-    data() {
-      const mockData = []
-      for (let i = 0; i < 15; i++) {
-        mockData.push(
+export default {
+  components: {
+    DataCard,
+    DTitle
+  },
+  data() {
+    const mockData = []
+    for (let i = 0; i < 15; i++) {
+      mockData.push({
+        type: '测试类型',
+        name: '测试设备',
+        user: '测试用户',
+        onlineState: '离线',
+        powerState: '关机',
+        alarmState: '无'
+      })
+    }
+    return {
+      kanbanData: {
+        数据展示: [
           {
-            type: '测试类型',
-            name: '测试设备',
-            user: '测试用户',
-            onlineState: '离线',
-            powerState: '关机',
-            alarmState: '无'
+            id: 0,
+            icon: 'hdd',
+            name: '当前设备总数',
+            value: 998,
+            isVisible: true
+          },
+          {
+            id: 1,
+            icon: 'hdd',
+            name: '今日设备新增数',
+            value: 20,
+            isVisible: true
+          },
+          {
+            id: 2,
+            icon: 'hdd',
+            name: '当前设备故障数',
+            value: 84,
+            isVisible: true
+          },
+          {
+            id: 3,
+            icon: 'hdd',
+            name: '当前设备故障率',
+            value: 84,
+            isVisible: true
+          },
+          {
+            id: 4,
+            icon: 'hdd',
+            name: '当前设备在线数',
+            value: 84,
+            isVisible: false
+          },
+          {
+            id: 5,
+            icon: 'hdd',
+            name: '当前设备在线率',
+            value: 84,
+            isVisible: false
+          },
+          {
+            id: 6,
+            icon: 'hdd',
+            name: '当前设备开机数',
+            value: 84,
+            isVisible: false
+          },
+          {
+            id: 7,
+            icon: 'hdd',
+            name: '当前设备开机率',
+            value: 84,
+            isVisible: false
           }
-        )
-      }
-      return {
-        kanbanData: {
-          '数据展示': [
-            {
-              id: 0,
-              icon: 'hdd',
-              name: '当前设备总数',
-              value: 998,
-              isVisible: true
-            },
-            {
-              id: 1,
-              icon: 'hdd',
-              name: '今日设备新增数',
-              value: 20,
-              isVisible: true
-            },
-            {
-              id: 2,
-              icon: 'hdd',
-              name: '当前设备故障数',
-              value: 84,
-              isVisible: true
-            },
-            {
-              id: 3,
-              icon: 'hdd',
-              name: '当前设备故障率',
-              value: 84,
-              isVisible: true
-            },
-            {
-              id: 4,
-              icon: 'hdd',
-              name: '当前设备在线数',
-              value: 84,
-              isVisible: false
-            },
-            {
-              id: 5,
-              icon: 'hdd',
-              name: '当前设备在线率',
-              value: 84,
-              isVisible: false
-            },
-            {
-              id: 6,
-              icon: 'hdd',
-              name: '当前设备开机数',
-              value: 84,
-              isVisible: false
-            },
-            {
-              id: 7,
-              icon: 'hdd',
-              name: '当前设备开机率',
-              value: 84,
-              isVisible: false
-            }
-          ],
-          '图表展示': [
-            {
-              id: 0,
-              name: '新增设备趋势图',
-              options: {
-                title: {
-                  text: '新增设备趋势图'
-                },
-                tooltip: {},
-                legend: {},
-                xAxis: {
-                  data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-                },
-                yAxis: {},
-                series: [
-                  {
-                    name: '设备数量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                  },
-                  {
-                    name: '设备增长率',
-                    data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                    type: 'line',
-                    smooth: true
-                  }
+        ],
+        图表展示: [
+          {
+            id: 0,
+            name: '新增设备趋势图',
+            options: {
+              title: {
+                text: '新增设备趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
                 ]
               },
-              isVisible: true
+              yAxis: {},
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '设备增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
             },
-            {
-              id: 1,
-              name: '设备区域排行图',
-              options: {
-                title: {
-                  text: '设备区域排行图'
-                },
-                tooltip: {},
-                xAxis: {
-                  type: 'value'
-                },
-                yAxis: {
-                  type: 'category',
-                  data: ['其他', '江苏省', '广东省', '福建省', '湖南省', '河南省', '河北省', '江西省', '青海省', '海南省']
-                },
-                series: [
-                  {
-                    name: '设备数量',
-                    type: 'bar',
-                    data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
-                  }
+            isVisible: true
+          },
+          {
+            id: 1,
+            name: '设备区域排行图',
+            options: {
+              title: {
+                text: '设备区域排行图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                  '其他',
+                  '江苏省',
+                  '广东省',
+                  '福建省',
+                  '湖南省',
+                  '河南省',
+                  '河北省',
+                  '江西省',
+                  '青海省',
+                  '海南省'
                 ]
               },
-              isVisible: true
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
             },
-            {
-              id: 2,
-              name: '故障设备区域分布',
-              options: {
-                title: {
-                  text: '故障设备区域分布'
-                },
-                tooltip: {},
-                xAxis: {
-                  type: 'value'
-                },
-                yAxis: {
-                  type: 'category',
-                  data: ['其他', '江苏省', '广东省', '福建省', '湖南省', '河南省', '河北省', '江西省', '青海省', '海南省']
-                },
-                series: [
-                  {
-                    name: '故障设备数量',
-                    type: 'bar',
-                    data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
-                  }
+            isVisible: true
+          },
+          {
+            id: 2,
+            name: '故障设备区域分布',
+            options: {
+              title: {
+                text: '故障设备区域分布'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                  '其他',
+                  '江苏省',
+                  '广东省',
+                  '福建省',
+                  '湖南省',
+                  '河南省',
+                  '河北省',
+                  '江西省',
+                  '青海省',
+                  '海南省'
                 ]
               },
-              isVisible: true
+              series: [
+                {
+                  name: '故障设备数量',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
             },
-            {
-              id: 3,
-              name: '设备类型分布',
-              options: {
-                title: {
-                  text: '设备类型分布'
-                },
-                tooltip: {
-                  formatter: '{b}: {c} ({d}%)'
-                },
-                legend: {},
-                series: [
-                  {
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    data: [
-                      { value: 60, name: '设备类型1' },
-                      { value: 10, name: '设备类型2' },
-                      { value: 5, name: '设备类型3' },
-                      { value: 98, name: '设备类型4' }
-                    ]
-                  }
+            isVisible: true
+          },
+          {
+            id: 3,
+            name: '设备类型分布',
+            options: {
+              title: {
+                text: '设备类型分布'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '设备类型1' },
+                    { value: 10, name: '设备类型2' },
+                    { value: 5, name: '设备类型3' },
+                    { value: 98, name: '设备类型4' }
+                  ]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 4,
+            name: '设备告警曲线图',
+            options: {
+              title: {
+                text: '设备告警曲线图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
                 ]
               },
-              isVisible: true
+              yAxis: {},
+              series: [
+                {
+                  name: '告警数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '告警增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
             },
-            {
-              id: 4,
-              name: '设备告警曲线图',
-              options: {
-                title: {
-                  text: '设备告警曲线图'
-                },
-                tooltip: {},
-                legend: {},
-                xAxis: {
-                  data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-                },
-                yAxis: {},
-                series: [
-                  {
-                    name: '告警数量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                  },
-                  {
-                    name: '告警增长率',
-                    data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                    type: 'line',
-                    smooth: true
-                  }
-                ]
+            isVisible: false
+          },
+          {
+            id: 5,
+            name: '告警类型占比图',
+            options: {
+              title: {
+                text: '告警类型占比图'
               },
-              isVisible: false
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '告警类型1' },
+                    { value: 10, name: '告警类型2' },
+                    { value: 5, name: '告警类型3' },
+                    { value: 98, name: '告警类型4' }
+                  ]
+                }
+              ]
             },
-            {
-              id: 5,
-              name: '告警类型占比图',
-              options: {
-                title: {
-                  text: '告警类型占比图'
-                },
-                tooltip: {
-                  formatter: '{b}: {c} ({d}%)'
-                },
-                legend: {},
-                series: [
-                  {
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    data: [
-                      { value: 60, name: '告警类型1' },
-                      { value: 10, name: '告警类型2' },
-                      { value: 5, name: '告警类型3' },
-                      { value: 98, name: '告警类型4' }
-                    ]
-                  }
-                ]
+            isVisible: false
+          },
+          {
+            id: 6,
+            name: '告警设备类型占比图',
+            options: {
+              title: {
+                text: '告警类型占比图'
               },
-              isVisible: false
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '设备类型1' },
+                    { value: 10, name: '设备类型2' },
+                    { value: 5, name: '设备类型3' },
+                    { value: 98, name: '设备类型4' }
+                  ]
+                }
+              ]
             },
-            {
-              id: 6,
-              name: '告警设备类型占比图',
-              options: {
-                title: {
-                  text: '告警类型占比图'
-                },
-                tooltip: {
-                  formatter: '{b}: {c} ({d}%)'
-                },
-                legend: {},
-                series: [
-                  {
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    data: [
-                      { value: 60, name: '设备类型1' },
-                      { value: 10, name: '设备类型2' },
-                      { value: 5, name: '设备类型3' },
-                      { value: 98, name: '设备类型4' }
-                    ]
-                  }
-                ]
-              },
-              isVisible: false
-            }
-          ]
-        },
-        dialogEditKanbanVisible: false,
-        form: {
-          type: '',
-          keywords: '',
-          date: ''
-        },
-        tableData: mockData
-      }
-    },
-    methods: {
-      search() {
+            isVisible: false
+          }
+        ]
       },
-      resetForm() {
-        this.$refs.form.resetFields()
-      }
+      dialogEditKanbanVisible: false,
+      form: {
+        type: '',
+        keywords: '',
+        date: ''
+      },
+      tableData: mockData
+    }
+  },
+  methods: {
+    search() {},
+    resetForm() {
+      this.$refs.form.resetFields()
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .chart {
-    height: 360px;
-    width: 100%;
-  }
+.chart {
+  height: 360px;
+  width: 100%;
+}
 </style>
 
 <style lang="scss">
-  .kanban-edit {
-    .el-checkbox {
-      margin-right: 30px;
-    }
-
-    .el-checkbox + .el-checkbox {
-      margin-left: 0;
-    }
+.kanban-edit {
+  .el-checkbox {
+    margin-right: 30px;
   }
+
+  .el-checkbox + .el-checkbox {
+    margin-left: 0;
+  }
+}
 </style>

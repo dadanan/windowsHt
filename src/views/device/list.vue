@@ -90,8 +90,6 @@
             {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
           </template>
         </el-table-column>
-        <el-table-column prop="groupId" label="集群 ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupId">
-        </el-table-column>
         <el-table-column prop="groupName" label="集群名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
         <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
@@ -157,9 +155,6 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.enableStatus">启用状态</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.clusterID">集群 ID</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.clusterName">集群名</el-checkbox>
