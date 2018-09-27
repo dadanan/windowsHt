@@ -87,7 +87,7 @@
               <image-uploader :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
-              <el-checkbox-group v-model="h5Config.htmlTypeId">
+              <el-checkbox-group v-model="h5Config.htmlTypeIds">
                 <el-checkbox v-for='item in pageFormatList' :label='item.id' :key='item.id'>{{item.name}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -113,6 +113,9 @@
             </el-form-item>
             <el-form-item label="APP Logo">
               <image-uploader :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+            </el-form-item>
+            <el-form-item label="客户公众号二维码">
+              <image-uploader :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
@@ -234,7 +237,7 @@ export default {
       h5Config: {
         backgroundImg: '',
         defaultTeamName: '',
-        htmlTypeId: [],
+        htmlTypeIds: [],
         logo: '',
         password: '',
         themeName: '',
@@ -347,10 +350,10 @@ export default {
     saveDetail() {
       this.backendConfig.enableStatus = this.backendConfig.enableStatus ? 1 : 2
 
-      // 这样 htmlTypeId 就不会影响到页面源数据了
+      // 这样 htmlTypeIds 就不会影响到页面源数据了
       const h5Config = Object.assign({}, this.h5Config)
       // 拼接成一个字符串
-      h5Config.htmlTypeId = h5Config.htmlTypeId.join(',')
+      h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
 
       const form = {
         ...this.baseInfo,

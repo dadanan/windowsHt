@@ -97,50 +97,50 @@
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-          <el-form-item :label=' "页序 - " + item.pageId '>
-            <el-radio-group v-model="item.showStatus">
-              <el-radio :label="true">显示</el-radio>
-              <el-radio :label="false">不显示</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label='页面名称'>
-            {{item.showName || item.name}}
-          </el-form-item>
-          <d-title>配置页面功能项</d-title>
-          <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
-            <el-table-column type="index" label='标号 ' width="50"></el-table-column>
-            <el-table-column label="显示名称">
-              <template slot-scope="scope">
-                <el-input v-model='scope.row.showName'></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="功能类型(标签)">
-              <template slot-scope="scope">
-                {{typeModel[scope.row.abilityType]}}
-              </template>
-            </el-table-column>
-            <!-- <el-table-column label="描述">
+            <el-form-item :label=' "页序 - " + item.pageId '>
+              <el-radio-group v-model="item.showStatus">
+                <el-radio :label="true">显示</el-radio>
+                <el-radio :label="false">不显示</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label='页面名称'>
+              {{item.showName || item.name}}
+            </el-form-item>
+            <d-title>配置页面功能项</d-title>
+            <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
+              <el-table-column type="index" label='标号 ' width="50"></el-table-column>
+              <el-table-column label="显示名称">
+                <template slot-scope="scope">
+                  <el-input v-model='scope.row.showName'></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="功能类型(标签)">
+                <template slot-scope="scope">
+                  {{typeModel[scope.row.abilityType]}}
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="描述">
               <template slot-scope="scope">
                 <el-input v-model='scope.row.remark'></el-input>
               </template>
             </el-table-column> -->
-            <el-table-column label="是否显示" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
-                </el-switch>
-              </template>
-            </el-table-column>
-            <el-table-column label="挑选功能项">
-              <template slot-scope="scope">
-                <el-select v-model="scope.row.abilityId">
-                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
-                  </el-option>
-                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
-                  </el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column label="是否显示" show-overflow-tooltip>
+                <template slot-scope="scope">
+                  <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                  </el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column label="挑选功能项">
+                <template slot-scope="scope">
+                  <el-select v-model="scope.row.abilityId">
+                    <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
+                    </el-option>
+                    <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+            </el-table>
         </el-card>
       </template>
     </el-form>
@@ -509,12 +509,13 @@ export default {
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
+          item.isUsed = true
         })
 
       this.abilityList = newData.deviceModelAbilitys
       this.abilityList.forEach(item => {
         item['abilityName'] = item.definedName
-        item.isUsed = true
+        item.showStatus = true
         item.deviceAbilityOptions &&
           item.deviceAbilityOptions.forEach(iItem => {
             iItem.optionName = iItem.definedName
