@@ -160,9 +160,7 @@ export default {
   },
   methods: {
     useableAbility(key) {
-      return this.abilityList.filter(
-        item => item.abilityType === key
-      )
+      return this.abilityList.filter(item => item.abilityType === key)
     },
     typeSelectedHandler(selection) {
       // 获取多个类型中的功能项交集
@@ -197,17 +195,18 @@ export default {
         item.pageNo = index + 1
       })
 
-      this.addForm.typeIds = this.addForm.typeIds.join(',')
+      const addForm = Object.assign({}, this.addForm)
+      addForm.typeIds = addForm.typeIds.join(',')
 
       // 转换为字符串
-      if (Array.isArray(this.addForm.customerIds)) {
-        this.addForm.customerIds = this.addForm.customerIds.join(',')
+      if (Array.isArray(addForm.customerIds)) {
+        addForm.customerIds = addForm.customerIds.join(',')
       } else if (typeof this.addForm.customerIds === 'number') {
-        this.addForm.customerIds = this.addForm.customerIds.toString()
+        addForm.customerIds = addForm.customerIds.toString()
       }
 
       const form = {
-        ...this.addForm,
+        ...addForm,
         wxFormatPageVos: this.pages
       }
       createWxFormat(form).then(res => {

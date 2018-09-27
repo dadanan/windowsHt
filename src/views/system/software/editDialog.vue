@@ -168,19 +168,20 @@ export default {
         item.pageNo = index + 1
       })
 
-      this.addForm.typeIds = this.addForm.typeIds.join(',')
+      const addForm = Object.assign({}, this.addForm)
+      addForm.typeIds = addForm.typeIds.join(',')
 
       // 转换为字符串
-      if (Array.isArray(this.addForm.customerIds)) {
-        this.addForm.customerIds = this.addForm.customerIds.join(',')
+      if (Array.isArray(addForm.customerIds)) {
+        addForm.customerIds = addForm.customerIds.join(',')
       } else if (typeof this.addForm.customerIds === 'number') {
-        this.addForm.customerIds = this.addForm.customerIds.toString()
+        addForm.customerIds = addForm.customerIds.toString()
       }
 
       // 通过对比编辑时传入的版式页面功能项数据和当前用户操作的数据，
       // 找出之前存在但用户删除了的，将其标记为status:2
-      this.addForm.wxFormatPageVos &&
-        this.addForm.wxFormatPageVos.forEach((item, index) => {
+      addForm.wxFormatPageVos &&
+        addForm.wxFormatPageVos.forEach((item, index) => {
           if (!item.wxFormatItemVos || item.wxFormatItemVos.length === 0) {
             return
           }
@@ -218,7 +219,7 @@ export default {
         })
 
       const form = {
-        ...this.addForm,
+        ...addForm,
         wxFormatPageVos: this.pages
       }
       updateWxFormat(form).then(res => {
