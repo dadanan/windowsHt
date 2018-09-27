@@ -137,10 +137,10 @@ export default {
         // 确保每个key都存在并去掉不需要的key
         // 暂不考虑必填项
         devices.map(v => {
-          for (let item in tabelProps) {
-            if (v.indexOf(item) === -1) delete v[item]
-            if (!v.includes(item)) v[item] = ''
-          }
+          tabelProps.map(tp => {
+            if (Object.keys(v).indexOf(tp) === -1) delete v[tp]
+            if (!Object.keys(v).includes(tp)) v[tp] = ''
+          })
         })
 
         this.importList = devices

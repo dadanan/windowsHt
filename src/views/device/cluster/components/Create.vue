@@ -22,7 +22,7 @@
         </el-table>
       </el-form-item>
       <el-form-item label="客户">
-        <el-select v-model="customerId" placeholder='请选择'>
+        <el-select v-model="form.customerId" placeholder='请选择'>
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
       </el-form-item>
@@ -41,26 +41,12 @@
       <el-button @click="handleCancel">取消</el-button>
       <el-button type="primary" @click='createCluster'>确定</el-button>
     </div>
-    <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
-      <el-table-column type="selection"></el-table-column>
-      <el-table-column type="index"></el-table-column>
-      <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" @click="deleteDevice(scope.$index)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="table-opts">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click='createCluster'>确定</el-button>
-    </div>
   </el-scrollbar>
 </template>
 
 <script>
 import { select } from '@/api/customer'
+import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
   props: {
@@ -70,7 +56,9 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+        customerId: ''
+      },
       addForm: {
         mac: ''
       },
@@ -81,7 +69,6 @@ export default {
       deviceList: [],
       selectedDeviceList: [],
       customerList: [],
-      customerId: '',
       deviceData: [
         {
           prop: 'name',
@@ -118,7 +105,12 @@ export default {
         this.customerList = res.data || []
       })
     },
-    createCluster() {},
+    createCluster() {
+      // addOrUpdateGroupAndDevice({
+      //   ...this.form,
+      //   deviceList: this.deviceList
+      // }).then(res => {})
+    },
     handleCancel() {
       this.$emit('close')
     }

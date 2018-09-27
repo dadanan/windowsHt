@@ -32,3 +32,12 @@ export function queryGroupCount() {
     method: 'get'
   })
 }
+
+// 创建或更新集群
+export function addOrUpdateGroupAndDevice(data) {
+  return request({
+    url: `/temp/api/deviceGroup/addOrUpdateGroupAndDevice`,
+    method: 'post',
+    data
+  })
+}
