@@ -12,13 +12,14 @@
                :before-remove="beforeRemove"
                list-type="picture"
                :limit="limit"
-               :show-file-list="showLileList">
+               :show-file-list="showLileList"
+               :multiple="multiple">
       <el-button size="small"
                  type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
     </el-upload>
     <video ref="video"
-            class="video"
+           class="video"
            :src="videoSrc"></video>
     <canvas ref="imgCanves"></canvas>
   </div>
@@ -48,6 +49,10 @@ export default {
     },
     limit: Number, //  最大允许上传视频的个数
     disabled: Boolean, // 是否禁用
+    multiple: {
+      type: Boolean,
+      default: true
+    },
     showLileList: {
       type: Boolean,
       default: false
