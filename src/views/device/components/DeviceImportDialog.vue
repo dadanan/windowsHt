@@ -7,7 +7,8 @@
           <el-input v-model="file" disabled></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">导入文件</el-button>
+          <el-button type="primary" @click="$refs.excelUpload.click()">导入文件</el-button>
+          <input type="file" ref="excelUpload" @change="handleExcelChange" class="excelUpload">
         </el-form-item>
       </el-form>
     </div>
@@ -59,31 +60,103 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      visible: {
-        type: Boolean,
-        default: false
-      }
-    },
-    data() {
-      const importList = []
+import XLSX from '@/assets/xlsx/xlsx.core.min.js'
 
-      for (let i = 0; i < 5; i++) {
-        importList.push({
-          name: '测试设备',
-          type: '测试型号',
-          typeID: '1221313',
-          mac: 'a2131f12',
-          productDatetime: '2016-07-01',
-          version: 'v1.0.0'
+const tabelProps = [
+  'name',
+  'type',
+  'typeID',
+  'mac',
+  'productDatetime',
+  'version'
+]
+
+export default {
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    // const importList = []
+
+    // for (let i = 0; i < 5; i++) {
+    //   importList.push({
+    //     name: '测试设备',
+    //     type: '测试型号',
+    //     typeID: '1221313',
+    //     mac: 'a2131f12',
+    //     productDatetime: '2016-07-01',
+    //     version: 'v1.0.0'
+    //   })
+    // }
+    return {
+      file: '',
+      description: '',
+      importList: []
+    }
+  },
+  methods: {
+    handleExcelChange(e) {
+      const file = e.target.files[0]
+      const fileReader = new FileReader()
+
+      let data
+      let workbook
+      let devices = []
+
+      fileReader.readAsBinaryString(file)
+
+      fileReader.onload = e => {
+        try {
+          data = e.target.result
+          workbook = XLSX.read(data, {
+            type: 'binary'
+          }) // 以二进制流方式读取得到整份excel表格对象
+        } catch (e) {
+          console.log(e)
+          this.$message.error('文件类型不正确')
+          return
+        }
+
+        let fromTo = ''
+        // 遍历每张表读取
+        for (let sheet in workbook.Sheets) {
+          if (workbook.Sheets.hasOwnProperty(sheet)) {
+            fromTo = workbook.Sheets[sheet]['!ref']
+            devices = devices.concat(
+              XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
+            )
+            break // 只取第一张表
+          }
+        }
+
+        if (!devices.length) return
+
+        // 确保每个key都存在并去掉不需要的key
+        // 暂不考虑必填项
+        devices.map(v => {
+          for (let item in tabelProps) {
+            if (v.indexOf(item) === -1) delete v[item]
+            if (!v.includes(item)) v[item] = ''
+          }
         })
+
+        this.importList = devices
       }
-      return {
-        file: '/usr/device.xsl',
-        description: '',
-        importList
-      }
+
+      this.file = file.name
+      this.$refs.excelUpload.value = null
     }
   }
+}
 </script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+.excelUpload {
+  position: absolute;
+  z-index: -1;
+}
+</style>
+
