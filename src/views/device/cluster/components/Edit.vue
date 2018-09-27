@@ -4,7 +4,7 @@
                 view-class="scrollbar-view"
                 tag="div">
         <el-form label-position="left" label-width="80px">
-            <el-form-item label="名称">
+            <el-form-item label="集群名">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="群内设备">
@@ -12,7 +12,7 @@
                     <el-input v-model="addForm.mac" placeholder="设备 MAC"></el-input>
                     <el-button type="primary" class="add" @click="addDevice">添加</el-button>
                 </div>
-                <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
+                <el-table :data="form.deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
                     <el-table-column type="selection"></el-table-column>
                     <el-table-column type="index"></el-table-column>
                     <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
@@ -24,14 +24,19 @@
                     </el-table-column>
                 </el-table>
             </el-form-item>
+            <el-form-item label="客户">
+              <el-select v-model="form.customerId" placeholder='请选择'>
+                <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="群介绍">
-                <el-input v-model="form.introduce"></el-input>
+                <el-input v-model="form.introduction"></el-input>
             </el-form-item>
             <el-form-item label="地点">
-                <el-input v-model="form.local"></el-input>
+                <el-input v-model="form.location"></el-input>
             </el-form-item>
             <el-form-item label="添加备注">
-                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.mark">
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
                 </el-input>
             </el-form-item>
         </el-form>
@@ -44,15 +49,30 @@
 </template>
 
 <script>
+import { select } from '@/api/customer'
+import { queryGroupById } from '@/api/device/cluster'
+
 export default {
+  props: {
+    datas: {
+      type: Object
+    }
+  },
   data() {
     return {
-      form: {},
+      form: {
+        deviceList: [],
+        customerId: ''
+      },
       addForm: {
         mac: ''
       },
-      deviceList: [],
+      query: {
+        limit: 100,
+        page: 1
+      },
       selectedDeviceList: [],
+      customerList: [],
       deviceData: [
         {
           prop: 'name',
@@ -69,17 +89,33 @@ export default {
       ]
     }
   },
+  created() {
+    this.select()
+    this.queryGroupById()
+  },
   methods: {
+    queryGroupById() {
+      queryGroupById(this.datas.id).then(res => {
+        if (res.code === 200) {
+          this.form = { ...res.data }
+        }
+      })
+    },
     addDevice() {
-      this.deviceList.push({
+      this.form.deviceList.push({
         mac: this.addForm.mac
       })
     },
     deleteDevice(index) {
-      this.deviceList.splice(index, 1)
+      this.form.deviceList.splice(index, 1)
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+    },
+    select() {
+      select(this.query).then(res => {
+        this.customerList = res.data || []
+      })
     },
     createCluster() {},
     handleCancel() {

@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
     <el-form label-position="left" label-width="80px">
-      <el-form-item label="名称">
+      <el-form-item label="集群名">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="群内设备">
@@ -21,6 +21,11 @@
           </el-table-column>
         </el-table>
       </el-form-item>
+      <el-form-item label="客户">
+        <el-select v-model="customerId" placeholder='请选择'>
+          <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="群介绍">
         <el-input v-model="form.introduce"></el-input>
       </el-form-item>
@@ -36,19 +41,47 @@
       <el-button @click="handleCancel">取消</el-button>
       <el-button type="primary" @click='createCluster'>确定</el-button>
     </div>
+    <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
+      <el-table-column type="selection"></el-table-column>
+      <el-table-column type="index"></el-table-column>
+      <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="text" @click="deleteDevice(scope.$index)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="table-opts">
+      <el-button @click="handleCancel">取消</el-button>
+      <el-button type="primary" @click='createCluster'>确定</el-button>
+    </div>
   </el-scrollbar>
 </template>
 
 <script>
+import { select } from '@/api/customer'
+
 export default {
+  props: {
+    datas: {
+      type: Object
+    }
+  },
   data() {
     return {
       form: {},
       addForm: {
         mac: ''
       },
+      query: {
+        limit: 100,
+        page: 1
+      },
       deviceList: [],
       selectedDeviceList: [],
+      customerList: [],
+      customerId: '',
       deviceData: [
         {
           prop: 'name',
@@ -65,6 +98,9 @@ export default {
       ]
     }
   },
+  created() {
+    this.select()
+  },
   methods: {
     addDevice() {
       this.deviceList.push({
@@ -76,6 +112,11 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+    },
+    select() {
+      select(this.query).then(res => {
+        this.customerList = res.data || []
+      })
     },
     createCluster() {},
     handleCancel() {

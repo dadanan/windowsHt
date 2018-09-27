@@ -25,11 +25,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1"
+      <el-pagination :current-page="page"
                      :page-sizes="[10, 20, 50]"
-                     :page-size="1"
+                     :page-size="limit"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="clusterList.length"
+                     :total="total"
                      @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible"
@@ -44,13 +44,16 @@
 </template>
 
 <script>
-import { queryGroupByPage, queryGroupCount } from '@/api/device/cluster'
 import DefaultDialog from '@/components/DefaultDialog'
 import Detail from './components/Detail'
 import Create from './components/Create'
 import Edit from './components/Edit'
-import { tableData, columnData, dialogDatas } from './cluster.js'
-
+import { columnData, dialogDatas } from './cluster.js'
+import {
+  queryGroupByPage,
+  deleteGroupById,
+  queryGroupCount
+} from '@/api/device/cluster'
 export default {
   components: {
     DefaultDialog,
@@ -61,7 +64,7 @@ export default {
   data() {
     return {
       addDialogVisible: false,
-      clusterList: tableData(),
+      clusterList: [],
       columnData: columnData,
       loading: false,
       dialogComp: '',
@@ -71,27 +74,23 @@ export default {
       rowData: {},
       page: 1,
       limit: 10,
-      total: 1
+      total: 0
     }
   },
   created() {
-    // this.queryGroupCount()
-    // this.queryGroupByPage()
+    this.queryGroupByPage()
+    this.queryGroupCount()
   },
   methods: {
-    queryGroupCount() {
-      // 从这里返回页码的问题是，每页的条数是可变的，所有页码也应该是可变的
-      queryGroupCount().then(res => {
-        if (res.code === 200) {
-          this.total = res.data
-        }
-      })
-    },
     queryGroupByPage() {
       queryGroupByPage({
         page: this.page,
         limit: this.limit
-      }).then(res => {})
+      }).then(res => {
+        if (res.code === 200) {
+          this.clusterList = res.data
+        }
+      })
     },
     handleSizeChange(val) {
       this.limit = val
@@ -101,26 +100,24 @@ export default {
       this.page = val
       this.queryGroupByPage()
     },
-    deleteRow() {
+    deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          // deleteOneTeam({
-          //   teamId: id
-          // })
-          //   .then(res => {
-          //     this.list = this.list.filter(item => item.id !== id)
-          //     this.$message({
-          //       type: 'success',
-          //       message: `删除成功！`
-          //     })
-          //   })
-          //   .catch(err => {
-          //     console.log(err)
-          //   })
+          deleteGroupById(id)
+            .then(res => {
+              this.clusterList = this.clusterList.filter(item => item.id !== id)
+              this.$message({
+                type: 'success',
+                message: `删除成功！`
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
         .catch(() => {
           this.$message({
@@ -144,6 +141,13 @@ export default {
     handleClosed() {
       this.fullscreen = false
       this.dialogComp = ''
+    },
+    queryGroupCount() {
+      queryGroupCount().then(res => {
+        if (res.code === 200) {
+          this.total = res.data
+        }
+      })
     }
   }
 }
