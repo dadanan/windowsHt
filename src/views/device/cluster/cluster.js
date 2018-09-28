@@ -53,7 +53,7 @@ export const deviceColumnData = [
     prop: 'workStatus',
     label: '工作状态',
     formatter: (row, column) => {
-      return row[column.property] ? '关机' : '空闲'
+      return row[column.property] ? '关机/空闲' : '开机/租赁中'
     }
   },
   {
