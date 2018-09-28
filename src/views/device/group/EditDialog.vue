@@ -15,11 +15,11 @@
           <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"imgOrVideoList")' :isList='true'></image-uploader>
+          <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
-        <!-- <el-form-item label="视频">
-        <image-uploader @get-url='getURL' :isList='true'></image-uploader>
-      </el-form-item> -->
+        <el-form-item label="视频">
+          <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+        </el-form-item>
         <el-form-item label="介绍" prop="sceneDescription">
           <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
         </el-form-item>
@@ -106,6 +106,13 @@ export default {
       const image = argu[0]
       data[name] = image
     },
+    setImg(file) {
+      this.form.imgOrVideoList = [...this.form.imgOrVideoList, file.url]
+    },
+    removeImg(file) {
+      const index = this.form.imgOrVideoList.findIndex(v => v === file.url)
+      this.form.imgOrVideoList.splice(index, 1)
+    },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
         data.linkAgeStatus = false
@@ -114,6 +121,13 @@ export default {
           message: '开启设备‘可关联’需要存在两个及以上的设备！'
         })
       }
+    },
+    handleVideoSuccess(file, fileList) {
+      this.form.imgOrVideoList = [...this.form.imgOrVideoList, file.videoUrl]
+    },
+    handleVideoRemove(file) {
+      const index = this.form.imgOrVideoList.findIndex(v => v === file.videoUrl)
+      this.form.imgOrVideoList.splice(index, 1)
     },
     newRow() {
       this.teamDeviceCreateRequestList.push({})
