@@ -5,10 +5,6 @@
         <el-input v-model="team.name"></el-input>
       </el-form-item>
       <el-form-item label="受托人">
-        <!-- <el-select v-model="form.openId" placeholder="请选择">
-          <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
-          </el-option>
-        </el-select> -->
         <el-input placeholder="OpenID..." v-model='form.openId'></el-input>
       </el-form-item>
       <el-form-item label="托管二维码">
@@ -31,7 +27,6 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import { trusteeTeam, createTrusteeQrCode } from '@/api/device/team'
-import { queryUsers } from '@/api/device/list'
 import DTitle from '@/components/Title'
 import Qrcode from '@xkeshi/vue-qrcode'
 
@@ -78,25 +73,13 @@ export default {
       }).then(res => {
         this.url = res.data
       })
-    },
-    getCustomerList() {
-      const user = this.$store.getters.user.user
-      queryUsers({
-        customerId: user.id
-      }).then(res => {
-        this.customerList = res.data
-      })
     }
   },
   watch: {
     data(val) {
-      console.lol('123', val)
       this.team = val[0]
       this.createTrusteeQrCode(this.team.id)
     }
-  },
-  created() {
-    this.getCustomerList()
   }
 }
 </script>

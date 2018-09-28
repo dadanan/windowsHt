@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-upload class="upload-demo" :action="host" :on-success="handleSuccess" :on-preview="file => $emit('on-preview', file)" :on-remove="(file, fileList) => $emit('on-remove', file, fileList)" :on-progress="(event, file, fileList) => $emit('on-progress', event, file, fileList)" :on-change="(file, fileList) => $emit('on-change', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showLileList" :multiple="multiple">
+    <el-upload class="upload-demo" :action="host" :data='attachedData' :on-success="handleSuccess" :on-preview="file => $emit('on-preview', file)" :on-remove="(file, fileList) => $emit('on-remove', file, fileList)" :on-progress="(event, file, fileList) => $emit('on-progress', event, file, fileList)" :on-change="(file, fileList) => $emit('on-change', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showLileList" :multiple="multiple">
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
     </el-upload>
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { policyBase64, host, OSSAccessKeyId, signature } from './config'
+
 export default {
   props: {
     accept: {
@@ -32,7 +34,6 @@ export default {
       default: 100
     },
     limit: Number, //  最大允许上传视频的个数
-    disabled: Boolean, // 是否禁用
     multiple: {
       type: Boolean,
       default: true
@@ -44,9 +45,16 @@ export default {
   },
   data() {
     return {
-      host: 'http://2018-9-16-image.oss-cn-beijing.aliyuncs.com',
       fileList: [],
-      videoSrc: ''
+      videoSrc: '',
+      host: host,
+      attachedData: {
+        key: '${filename}',
+        policy: policyBase64,
+        OSSAccessKeyId,
+        success_action_status: 200,
+        signature
+      }
     }
   },
   methods: {

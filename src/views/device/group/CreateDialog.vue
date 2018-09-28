@@ -6,10 +6,6 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="创建人" prop="createUserOpenId">
-          <!-- <el-select v-model="form.createUserOpenId" @change='customerChanged' placeholder="请选择">
-          <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
-          </el-option>
-        </el-select> -->
           <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
         <el-form-item label="组标">
@@ -21,9 +17,9 @@
         <el-form-item label="图册">
           <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"imgOrVideoList")' :isList='true'></image-uploader>
         </el-form-item>
-        <!-- <el-form-item label="视频">
-        <image-uploader @get-url='getURL' :isList='true'></image-uploader>
-      </el-form-item> -->
+        <el-form-item label="视频">
+          <video-uploader :limit='2' :showLileList='true' :multiple='true'></video-uploader>
+        </el-form-item>
         <el-form-item label="介绍" prop="sceneDescription">
           <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
         </el-form-item>
@@ -68,14 +64,15 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import VideoUploader from '@/components/Upload/VideoUpload'
 import { createNewTeam, queryDeviceInfo } from '@/api/device/team'
-import { queryUsers } from '@/api/device/list'
 import { select } from '@/api/customer'
 import DTitle from '@/components/Title'
 
 export default {
   components: {
     ImageUploader,
+    VideoUploader,
     DTitle
   },
   props: {
@@ -97,15 +94,10 @@ export default {
         limit: 100,
         page: 1
       },
-      deviceList: [],
-      customerList: []
+      deviceList: []
     }
   },
   methods: {
-    customerChanged(key) {
-      const customer = this.customerList.filter(item => item.appid === key)[0]
-      this.queryDeviceInfo(customer.id)
-    },
     queryDeviceInfo(id) {
       queryDeviceInfo({ customerId: id }).then(res => {
         this.deviceList = res.data
@@ -153,20 +145,9 @@ export default {
       const match = url.match('aliyuncs.com/(.*)')
       return match ? match[1] : ''
     },
-    getCustomerList() {
-      const user = this.$store.getters.user.user
-      queryUsers({
-        customerId: user.id
-      }).then(res => {
-        this.customerList = res.data
-      })
-    },
     handleCancel() {
       this.$emit('update:visible', false)
     }
-  },
-  created() {
-    this.getCustomerList()
   }
 }
 </script>

@@ -6,10 +6,6 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="创建人" prop="createUserOpenId">
-          <!-- <el-select v-model="form.createUserOpenId" @change='customerChanged' placeholder="请选择">
-          <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
-          </el-option>
-        </el-select> -->
           <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
         <el-form-item label="组标">
@@ -69,7 +65,6 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import { updateTeam, queryDeviceInfo } from '@/api/device/team'
-import { queryUsers } from '@/api/device/list'
 import { select } from '@/api/customer'
 import DTitle from '@/components/Title'
 
@@ -98,15 +93,10 @@ export default {
         limit: 100,
         page: 1
       },
-      deviceList: [],
-      customerList: []
+      deviceList: []
     }
   },
   methods: {
-    customerChanged(key) {
-      const customer = this.customerList.filter(item => item.appid === key)[0]
-      this.queryDeviceInfo(customer.id)
-    },
     queryDeviceInfo(id) {
       queryDeviceInfo({ customerId: id }).then(res => {
         this.deviceList = res.data
@@ -150,25 +140,14 @@ export default {
       const match = url.match('aliyuncs.com/(.*)')
       return match ? match[1] : ''
     },
-    getCustomerList() {
-      const user = this.$store.getters.user.user
-      queryUsers({
-        customerId: user.id
-      }).then(res => {
-        this.customerList = res.data
-      })
-    },
+
     handleCancel() {
       this.$emit('update:visible', false)
     }
   },
-  created() {
-    this.getCustomerList()
-  },
   watch: {
     data(val) {
       const data = JSON.parse(JSON.stringify(val))
-      console.log('da', data)
       if (data.deviceTeamItemVos) {
         this.teamDeviceCreateRequestList = data.deviceTeamItemVos
       } else {
