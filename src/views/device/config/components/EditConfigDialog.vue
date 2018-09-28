@@ -191,7 +191,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
-import { fetchList as getTypeList, createDeviceType } from '@/api/device/type'
+import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
 import { updateDeviceModel } from '@/api/device/model'
@@ -259,7 +259,6 @@ export default {
         }
       ],
       customterList: [],
-      abilityList: [],
       modifyData: {}, // 正在自定义的功能配置项数据
       typeModel: {
         1: '文本类',
@@ -410,7 +409,7 @@ export default {
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
-          item.isUsed = true
+          this.$set(item, 'isUsed', true)
         })
     },
     modifyAbilityItem(data) {
@@ -441,11 +440,6 @@ export default {
       }
       if (this.step++ > 3) this.step = 0
     },
-    createDeviceType() {
-      createDeviceType(this.form).then(res => {
-        console.log(res)
-      })
-    },
     getModelList() {
       getTypeList({
         page: 1,
@@ -474,19 +468,18 @@ export default {
       )
       this.pageOfForamt =
         this.formatSelected && this.formatSelected[0].wxFormatPageVos
+
+      this.pageOfForamt.forEach(page => {
+        page.wxFormatItemVos &&
+          page.wxFormatItemVos.forEach(item => {
+            item.showName = item.name
+            this.$set(item, 'showStatus', true)
+          })
+      })
     },
     getTypeById(ids) {
       selectListByTypeIds(ids).then(res => {
         this.typeList = res.data
-
-        // 遍历类型，把功能项集中起来
-        const temp = []
-        res.data.forEach(item => {
-          if (item.deviceTypeAbilitys && item.deviceTypeAbilitys.length > 0) {
-            temp.push(...item.deviceTypeAbilitys)
-          }
-        })
-        this.abilityList = temp
       })
     }
   },
@@ -495,7 +488,6 @@ export default {
       console.log('edit', val)
       const newData = JSON.parse(JSON.stringify(val))
 
-      this.form = newData
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
         : []
@@ -509,19 +501,8 @@ export default {
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
-          item.isUsed = true
+          this.$set(item, 'isUsed', true)
         })
-
-      this.abilityList = newData.deviceModelAbilitys
-      this.abilityList.forEach(item => {
-        item['abilityName'] = item.definedName
-        item.showStatus = true
-        item.deviceAbilityOptions &&
-          item.deviceAbilityOptions.forEach(iItem => {
-            iItem.optionName = iItem.definedName
-            iItem.definedName = ''
-          })
-      })
 
       this.pageOfForamt = newData.modelFormatVo.modelFormatPages
 
@@ -537,6 +518,8 @@ export default {
       } else {
         // 如果用户上次没有配置版式数据的话
       }
+
+      this.form = newData
     },
     visible(val) {
       if (val) {

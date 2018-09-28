@@ -187,7 +187,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
-import { fetchList as getTypeList, createDeviceType } from '@/api/device/type'
+import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
 import { createDeviceModel } from '@/api/device/model'
@@ -251,7 +251,6 @@ export default {
         }
       ],
       customterList: [],
-      abilityList: [],
       modifyData: {}, // 正在自定义的功能配置项数据
       typeModel: {
         1: '文本类',
@@ -360,7 +359,7 @@ export default {
       theType.deviceTypeAbilitys &&
         theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
-          item['isUsed'] = true
+          this.$set(item, 'isUsed', true)
         })
 
       this.theType = theType
@@ -393,11 +392,6 @@ export default {
         this.selectFormatsByCustomerId()
       }
       if (this.step++ > 3) this.step = 0
-    },
-    createDeviceType() {
-      createDeviceType(this.form).then(res => {
-        console.log(res)
-      })
     },
     getModelList() {
       getTypeList({
@@ -432,22 +426,13 @@ export default {
         page.wxFormatItemVos &&
           page.wxFormatItemVos.forEach(item => {
             item.showName = item.name
-            item.showStatus = true
+            this.$set(item, 'showStatus', true)
           })
       })
     },
     getTypeById(ids) {
       selectListByTypeIds(ids).then(res => {
         this.typeList = res.data
-
-        // 遍历类型，把功能项集中起来
-        const temp = []
-        res.data.forEach(item => {
-          if (item.deviceTypeAbilitys && item.deviceTypeAbilitys.length > 0) {
-            temp.push(...item.deviceTypeAbilitys)
-          }
-        })
-        this.abilityList = temp
       })
     }
   },
