@@ -14,7 +14,7 @@
     </div>
     <el-table
       :data="importList"
-      style="width: 100%" class="mb20" border>
+      style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
       <el-table-column type="selection"></el-table-column>
       <el-table-column type="index"></el-table-column>
       <el-table-column
@@ -53,14 +53,15 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="$emit('update:visible', false)">导入选中项</el-button>
-      <el-button type="primary" @click="$emit('update:visible', false)">导入全部</el-button>
+      <el-button type="primary" @click="handleImportPart">导入选中项</el-button>
+      <el-button type="primary" @click="handleImportAll">导入全部</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import XLSX from '@/assets/xlsx/xlsx.core.min.js'
+import { createDevice } from '@/api/device/list'
 
 const tabelProps = [
   'name',
@@ -68,7 +69,7 @@ const tabelProps = [
   'typeID',
   'mac',
   'productDatetime',
-  'version'
+  'hardVersion'
 ]
 
 export default {
@@ -94,10 +95,44 @@ export default {
     return {
       file: '',
       description: '',
-      importList: []
+      importList: [],
+      selections: []
     }
   },
   methods: {
+    handleSelectionChange(selection) {
+      this.selections = selection
+    },
+    handleImportPart() {
+      if (!this.selections.length) {
+        this.$message.error('还没有选中任何设备')
+        return
+      }
+      this.createDevice(this.selections)
+    },
+    handleImportAll() {
+      this.createDevice(this.importList)
+    },
+    createDevice(data) {
+      const list = [...data]
+      list.forEach(item => {
+        item.birthTime = +new Date()
+      })
+      const form = {
+        deviceList: list
+      }
+      createDevice(form)
+        .then(res => {
+          form.deviceList.forEach((item, index) => {
+            item.id = res.data[index].deviceId
+          })
+          this.$emit('update:visible', false)
+          this.$emit('add-data', form)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     handleExcelChange(e) {
       const file = e.target.files[0]
       const fileReader = new FileReader()
