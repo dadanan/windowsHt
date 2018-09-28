@@ -25,9 +25,11 @@
             {{scope.row.owerType === 1 ? '私有' : (scope.row.owerType === 2 ? '共有' : '专有')}}
           </template>
         </el-table-column>
-        <el-table-column prop="version" label="版本" show-overflow-tooltip sortable>
+        <el-table-column prop="htmlUrl" label="预览地址" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="description" label="备注" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="version" label="版本" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -47,7 +49,7 @@
 <script>
 import CreateModelDialog from './software/createDialog'
 import EditModelDialog from './software/editDialog'
-import { select, deleteById } from '@/api/format'
+import { select, deleteById, selectById } from '@/api/format'
 import { select as getCustomer } from '@/api/customer'
 
 export default {
@@ -70,8 +72,13 @@ export default {
       this.softwareList.unshift(data)
     },
     showEditDialog(data) {
-      this.isEditDialogVisible = true
-      this.editingData = data
+      this.selectById(data.id)
+    },
+    selectById(id) {
+      selectById(id).then(res => {
+        this.editingData = res.data
+        this.isEditDialogVisible = true
+      })
     },
     deleteRow(id) {
       this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
@@ -113,21 +120,13 @@ export default {
           })
         })
     },
-    getDetail(id) {
-      // selectById(id)
-      //   .then(res => {
-      //     this.editingData = res.data
-      //   })
-      //   .catch(err => {
-      //     console.log(err)
-      //   })
-    },
     updateData(data) {
-      // this.clientList.map(item => {
-      //   if (item.id === data.id) {
-      //     Object.assign(item, data)
-      //   }
-      // })
+      console.log(123, data)
+      this.softwareList.forEach((item, index) => {
+        if (item.id === data.id) {
+          this.softwareList.splice(index, 1, data)
+        }
+      })
     },
     getSoftwareList() {
       select({

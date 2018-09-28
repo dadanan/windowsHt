@@ -4,7 +4,6 @@
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="isCreateClientDialogVisible = true">添加</el-button>
-          <el-button type="primary" @click="suspendSelected">挂起</el-button>
           <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
@@ -49,7 +48,7 @@
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateClientDialogVisible"></create-model-dialog>
     <edit-model-dialog @update-data='updateData' :visible.sync="isEditClientDialogVisible" :data='editingData'></edit-model-dialog>
-    <el-dialog top='4vh' :close-on-click-modal=false  title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
@@ -224,25 +223,6 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          })
-        })
-    },
-    suspendSelected() {
-      this.$confirm('此操作将挂起选中设备, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '挂起成功!'
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消挂起'
           })
         })
     }

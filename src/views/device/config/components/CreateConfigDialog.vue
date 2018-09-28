@@ -187,11 +187,11 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
-import { fetchList as getTypeList, createDeviceType } from '@/api/device/model'
+import { fetchList as getTypeList, createDeviceType } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
-import { createDeviceModel } from '@/api/device/config'
-import { selectListByTypeIds } from '@/api/device/model'
+import { createDeviceModel } from '@/api/device/model'
+import { selectListByTypeIds } from '@/api/device/type'
 import DTitle from '@/components/Title'
 
 export default {

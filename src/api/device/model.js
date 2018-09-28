@@ -1,54 +1,55 @@
 import request from '@/utils/request'
 
-export function createDeviceType(data) {
+export function createDeviceModel(data) {
   return request({
-    url: '/temp/api/deviceType/createDeviceType',
+    url: '/temp/api/deviceModel/createDeviceModel',
     method: 'post',
     data
   })
 }
 
-export function deleteDeviceType(id) {
+export function deleteModelById(id) {
   return request({
-    url: `/temp/api/deviceType/deleteDeviceTypeById/${id}`,
+    url: `/temp/api/deviceModel/deleteModelById/${id}`,
     method: 'delete'
   })
 }
 
-export function fetchList(data) {
+export function select(data) {
   return request({
-    url: '/temp/api/deviceType/select',
+    url: '/temp/api/deviceModel/select',
     method: 'post',
-    data
-  })
-}
-
-export function updateDeviceType(data) {
-  return request({
-    url: '/temp/api/deviceType/updateDeviceType',
-    method: 'put',
     data
   })
 }
 
 export function selectById(id) {
   return request({
-    url: `/temp/api/deviceType/selectById/${id}`,
+    url: `/temp/api/deviceModel/selectById/${id}`,
     method: 'get'
   })
 }
 
-export function selectAllTypes(data) {
+export function selectByTypeId(id) {
   return request({
-    url: `/temp/api/deviceType/selectAllTypes`,
-    method: 'post',
+    url: `/temp/api/deviceModel/selectByTypeId/${id}`,
+    method: 'get'
+  })
+}
+
+export function updateDeviceModel(data) {
+  return request({
+    url: '/temp/api/deviceModel/updateDeviceModel',
+    method: 'put',
     data
   })
 }
 
-export function selectListByTypeIds(ids) {
+export function createWxDeviceIds(data) {
   return request({
-    url: `/temp/api/deviceType/selectListByTypeIds/${ids}`,
-    method: 'get'
+    url: `/temp/api/deviceModel/createWxDeviceIds?customerId=${
+      data.customerId
+    }&productId=${data.productId}&addCount=${data.addCount}`,
+    method: 'post'
   })
 }

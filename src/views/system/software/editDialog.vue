@@ -100,7 +100,7 @@ import ImageUploader from '@/components/Upload/image'
 import DTitle from '@/components/Title'
 import { updateWxFormat } from '@/api/format'
 import { select } from '@/api/customer'
-import { selectAllTypes } from '@/api/device/model'
+import { selectAllTypes } from '@/api/device/type'
 
 export default {
   props: {
@@ -227,7 +227,7 @@ export default {
           type: 'success',
           message: '更新成功'
         })
-        this.$emit('add-data', form)
+        this.$emit('update-data', form)
         this.$emit('update:visible', false)
       })
     },

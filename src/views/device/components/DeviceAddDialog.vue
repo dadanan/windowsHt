@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/device/model'
+import { fetchList } from '@/api/device/type'
 import { createDevice } from '@/api/device/list'
 
 export default {

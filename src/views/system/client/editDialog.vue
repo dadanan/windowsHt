@@ -36,7 +36,7 @@
           </el-form>
         </div>
         <div v-if="createStep == 2">
-          <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
+          <el-table ref='typeTree' :data="typeList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
             <el-table-column type="selection">
             </el-table-column>
             <el-table-column type="index"></el-table-column>
@@ -70,7 +70,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
+          <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="typeList.length">
           </el-pagination>
         </div>
         <div v-if="createStep == 3">
@@ -206,7 +206,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import { fetchList } from '@/api/device/model'
+import { fetchList } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
 
@@ -273,7 +273,7 @@ export default {
       // 动态功能
       dynamicTags: ['功能1', '功能2', '功能3'],
       selectedDeviceList: [],
-      deviceList: [],
+      typeList: [],
       listQuery: {
         limit: 1000,
         page: 1
@@ -300,7 +300,7 @@ export default {
     },
     getList() {
       fetchList(this.listQuery).then(response => {
-        this.deviceList = response.data
+        this.typeList = response.data
       })
     },
     handleSelectionChange(selection) {
@@ -344,7 +344,8 @@ export default {
       })
     },
     updateDetail() {
-      this.backendConfig.enableStatus = this.backendConfig.enableStatus ? 1 : 2
+      const backendConfig = Object.assign({}, this.backendConfig)
+      backendConfig.enableStatus = backendConfig.enableStatus ? 1 : 2
 
       // 这样 htmlTypeIds 就不会影响到页面源数据了
       const h5Config = Object.assign({}, this.h5Config)
@@ -356,7 +357,7 @@ export default {
         typeIds: this.selectedDeviceList.map(item => item.id).join(','),
         h5Config,
         androidConfig: this.androidConfig,
-        backendConfig: this.backendConfig,
+        backendConfig: backendConfig,
         id: this.id
       }
       updateDetail(form)
@@ -367,10 +368,7 @@ export default {
               message: res.msg
             })
           } else {
-            this.$emit('add-data', {
-              ...form,
-              id: res.data
-            })
+            this.$emit('update-data', form)
             this.$emit('update:visible', false)
           }
         })
@@ -382,28 +380,23 @@ export default {
   watch: {
     data(val) {
       const tempForm = JSON.parse(JSON.stringify(val))
-      this.id = val.id
-      this.baseInfo = {
-        name: val.name,
-        publicName: val.publicName,
-        appid: val.appid,
-        appsecret: val.appsecret,
-        userType: val.userType,
-        loginName: val.loginName,
-        sld: val.sld,
-        remark: val.remark
-      }
-
+      this.id = tempForm.id
+      this.baseInfo = tempForm
       const h5Config = tempForm.h5Config
       if (h5Config) {
-        if (h5Config.htmlTypeIds + '') {
-          h5Config.htmlTypeIds = String(h5Config.htmlTypeIds).split(',')
+        if (h5Config.htmlTypeIds) {
+          h5Config.htmlTypeIds = h5Config.htmlTypeIds
+            .split(',')
+            .map(id => Number(id))
         }
         this.h5Config = h5Config
       }
 
-      this.androidConfig = val.androidConfig || {}
-      this.backendConfig = val.backendConfig || {}
+      this.androidConfig = tempForm.androidConfig || {}
+      this.backendConfig = tempForm.backendConfig || {}
+
+      this.backendConfig.enableStatus =
+        Boolean(this.backendConfig.enableStatus) || false
 
       if (
         !this.androidConfig.androidSceneList ||
@@ -430,6 +423,21 @@ export default {
     visible(val) {
       if (val) {
         this.createStep = 1
+      }
+    },
+    createStep(step) {
+      if (step === 2) {
+        let tempType = this.baseInfo.typeIds && this.baseInfo.typeIds.split(',')
+        if (tempType) {
+          const tempArray = this.typeList.filter(type =>
+            tempType.some(id => id == type.id)
+          )
+          this.$nextTick(() => {
+            tempArray.forEach(item => {
+              this.$refs.typeTree.toggleRowSelection(item)
+            })
+          })
+        }
       }
     }
   },

@@ -3,16 +3,16 @@
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <el-form label-width="100px" class="mb-22">
         <el-form-item label="typeNo">
-          <el-input v-model="data.typeNo"></el-input>
+          <el-input v-model="form.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='data.icon' @get-url='getURL' :imageName='getImageName(data.icon)'></image-uploader>
+          <image-uploader :url='form.icon' @get-url='getURL' :imageName='getImageName(form.icon)'></image-uploader>
         </el-form-item>
         <el-form-item label="名称">
-          <el-input v-model="data.name"></el-input>
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="来源">
-          <el-input v-model="data.source"></el-input>
+          <el-input v-model="form.source"></el-input>
         </el-form-item>
         <el-form-item label="功能项">
           <el-table :data="deviceTypeAbilitys" style="width: 100%" class="mb20" border>
@@ -35,10 +35,10 @@
           </el-table>
         </el-form-item>
         <el-form-item label="码表">
-          <el-input v-model="data.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="form.stopWatch" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="data.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </el-form>
     </el-scrollbar>
@@ -52,7 +52,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import { fetchList } from '@/api/device/function'
-import { updateDeviceType } from '@/api/device/model'
+import { updateDeviceType, selectById } from '@/api/device/type'
 
 export default {
   components: {
@@ -76,7 +76,8 @@ export default {
         3: '多选类',
         4: '阈值类',
         5: '阈值选择类'
-      }
+      },
+      form: {}
     }
   },
   methods: {
@@ -148,7 +149,7 @@ export default {
       })
 
       const form = {
-        ...this.data,
+        ...this.form,
         deviceTypeAbilitys: newDeviceTypeAbilitys
       }
 
@@ -179,9 +180,6 @@ export default {
     getURL(url) {
       this.data.icon = url
     },
-    getURL2(url) {
-      this.data.stopWatch = url
-    },
     getdeviceTypeAbilitys() {
       fetchList({
         page: 1,
@@ -199,6 +197,8 @@ export default {
   },
   watch: {
     data(val) {
+      const form = JSON.parse(JSON.stringify(val))
+      this.form = form
       // 判断当前id的功能项是否在用户传入的编辑数据中（即，是否已经被选择）
       // 如果用户添加完直接编辑，那么数据中将没有abilityId,而应该是id
       const isCheckedBefore = id => {

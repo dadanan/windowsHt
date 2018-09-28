@@ -37,3 +37,10 @@ export function selectFormatsByCustomerId(customerId, typeId) {
     method: 'get'
   })
 }
+
+export function selectById(id) {
+  return request({
+    url: `/temp/api/wxFormat/selectById/${id}`,
+    method: 'get'
+  })
+}

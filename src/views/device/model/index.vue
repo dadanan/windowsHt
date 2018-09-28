@@ -46,7 +46,7 @@
 <script>
 import CreateModelDialog from './components/CreateModelDialog'
 import EditModelDialog from './components/EditModelDialog'
-import { fetchList, deleteDeviceType } from '@/api/device/model'
+import { fetchList, deleteDeviceType, selectById } from '@/api/device/type'
 
 export default {
   components: {
@@ -69,11 +69,16 @@ export default {
   },
   methods: {
     showEditRoleDialog(data) {
-      this.editModelDialogVisible = true
-      this.editingData = data
+      this.selectById(data.id)
     },
     addData(data) {
       this.list.unshift(data)
+    },
+    selectById(id) {
+      selectById(id).then(res => {
+        this.editModelDialogVisible = true
+        this.editingData = res.data
+      })
     },
     updateData(data) {
       this.list.map(item => {

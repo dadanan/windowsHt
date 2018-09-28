@@ -35,8 +35,8 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 2">
-          <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
+        <div v-else-if="createStep == 2">
+          <el-table ref='typeTree' :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
             <el-table-column type="selection">
             </el-table-column>
             <el-table-column type="index"></el-table-column>
@@ -75,7 +75,7 @@
           <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
           </el-pagination>
         </div>
-        <div v-if="createStep == 3">
+        <div v-else-if="createStep == 3">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="默认组名">
               <el-input v-model="h5Config.defaultTeamName"></el-input>
@@ -84,7 +84,7 @@
               <el-input type="text" v-model="h5Config.password"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <image-uploader :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -95,7 +95,7 @@
               <el-input v-model="h5Config.themeName"></el-input>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+              <image-uploader :key='2' :url='h5Config.logoKey' @get-url='setURL(arguments,h5Config,"logoKey")'></image-uploader>
             </el-form-item>
             <el-form-item label="H5 版本">
               <el-select v-model="h5Config.version">
@@ -106,22 +106,22 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 4">
+        <div v-else-if="createStep == 4">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="APP 名称">
               <el-input v-model='androidConfig.name'></el-input>
             </el-form-item>
             <el-form-item label="APP Logo">
-              <image-uploader :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+              <image-uploader :key='3' :url='androidConfig.logoKey' @get-url='setURL(arguments,androidConfig,"logoKey")'></image-uploader>
             </el-form-item>
             <el-form-item label="客户公众号二维码">
-              <image-uploader :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
+              <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
             <el-form-item label="APP安装包">
-              <file-uploader format='apk' @get-url='setURL(arguments,androidConfig,"logo")'></file-uploader>
+              <file-uploader format='apk'></file-uploader>
             </el-form-item>
             <el-form-item label="设备切换密码">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
@@ -140,7 +140,7 @@
                     <el-input v-model='item.description' type='textarea'></el-input>
                   </el-form-item>
                   <el-form-item label="场景封面">
-                    <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+                    <image-uploader :key='6' :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
                   </el-form-item>
                   <el-form-item label="场景图册列表">
                     <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="listIndex" class="box-card">
@@ -156,7 +156,7 @@
                           <el-input v-model='list.description' type='textarea'></el-input>
                         </el-form-item>
                         <el-form-item label="图片/视频">
-                          <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                          <image-uploader :key='7' :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
                         </el-form-item>
                       </div>
                     </el-card>
@@ -166,17 +166,18 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 5">
+        <div v-else>
           <el-form label-position="left" label-width="150px">
             <el-form-item label="开放">
               <el-switch v-model='backendConfig.enableStatus'></el-switch>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+              <image-uploader :key='5' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="名称">
               <el-input v-model='backendConfig.name'></el-input>
             </el-form-item>
+            <!-- 用户名和二级域名传参数时 放在baseInfo里 -->
             <el-form-item label="超级管理员用户名">
               <el-input v-model='baseInfo.loginName'></el-input>
             </el-form-item>
@@ -212,7 +213,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import FileUploader from '@/components/Upload/file'
-import { fetchList } from '@/api/device/model'
+import { fetchList } from '@/api/device/type'
 import { saveDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
 
@@ -239,6 +240,8 @@ export default {
         defaultTeamName: '',
         htmlTypeIds: [],
         logo: '',
+        qrcode: '',
+        logoKey: '',
         password: '',
         themeName: '',
         version: ''
@@ -261,7 +264,8 @@ export default {
           }
         ],
         deviceChangePassword: '',
-        logo: '',
+        logoKey: '',
+        qrcode: '',
         name: '',
         version: ''
       },
@@ -386,6 +390,15 @@ export default {
     visible(val) {
       if (val) {
         this.createStep = 1
+      }
+    },
+    createStep(step) {
+      if (step === 2) {
+        this.$nextTick(() => {
+          this.selectedDeviceList.forEach(item => {
+            this.$refs.typeTree.toggleRowSelection(item)
+          })
+        })
       }
     }
   },

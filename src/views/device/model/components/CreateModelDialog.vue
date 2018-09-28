@@ -52,7 +52,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import { fetchList } from '@/api/device/function'
-import { createDeviceType } from '@/api/device/model'
+import { createDeviceType } from '@/api/device/type'
 
 export default {
   components: {
@@ -122,9 +122,6 @@ export default {
     },
     getURL(url) {
       this.form.icon = url
-    },
-    getURL2(url) {
-      this.form.stopWatch = url
     },
     getdeviceTypeAbilitys() {
       fetchList({
