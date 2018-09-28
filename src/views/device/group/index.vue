@@ -3,143 +3,70 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary"
-                     @click="getTrusteeship">托管</el-button>
-          <el-button type="primary"
-                     @click="createDialogVisible = true">添加</el-button>
-          <el-button type="primary"
-                     @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
+          <el-button type="primary" @click="getTrusteeship">托管</el-button>
+          <el-button type="primary" @click="createDialogVisible = true">添加</el-button>
+          <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table :data="computeList"
-                v-loading.body="loading"
-                class="mb20"
-                border
-                @selection-change="handleSelectionChange">
+      <el-table :data="computeList" v-loading.body="loading" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="id"
-                         label="组ID"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.id'>
+        <el-table-column prop="id" label="组ID" show-overflow-tooltip sortable v-if='clientColumnVisible.id'>
         </el-table-column>
-        <el-table-column prop="name"
-                         label="组名"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.name'>
+        <el-table-column prop="name" label="组名" show-overflow-tooltip sortable v-if='clientColumnVisible.name'>
         </el-table-column>
-        <el-table-column label="组标"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.icon'>
+        <el-table-column label="组标" show-overflow-tooltip sortable v-if='clientColumnVisible.icon'>
           <template slot-scope="scope">
             <img class='table-img'
                  :src='scope.row.icon'>
           </template>
         </el-table-column>
-        <el-table-column prop="createUserNickName"
-                         label="创建者"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.createUserNickName'>
+        <el-table-column prop="createUserNickName" label="创建者" show-overflow-tooltip sortable v-if='clientColumnVisible.createUserNickName'>
         </el-table-column>
-        <el-table-column prop="createTime"
-                         label="创建时间"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.createTime'>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable v-if='clientColumnVisible.createTime'>
         </el-table-column>
-        <el-table-column prop="ownerNickName"
-                         label="归属"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.ownerNickName'>
+        <el-table-column prop="ownerNickName" label="归属" show-overflow-tooltip sortable v-if='clientColumnVisible.ownerNickName'>
         </el-table-column>
-        <el-table-column prop="ownerOpenId"
-                         label="归属者OpenID"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.ownerOpenId'>
+        <el-table-column prop="ownerOpenId" label="归属者OpenID" show-overflow-tooltip sortable v-if='clientColumnVisible.ownerOpenId'>
         </el-table-column>
-        <el-table-column label="封面"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.cover'>
+        <el-table-column label="封面" show-overflow-tooltip sortable v-if='clientColumnVisible.cover'>
           <template slot-scope="scope">
             <img class='table-img'
                  :src='scope.row.cover'>
           </template>
         </el-table-column>
-        <el-table-column prop="imgVideosList"
-                         label="图册/视频列表"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.imgVideosList'>
+        <el-table-column prop="imgVideosList" label="图册/视频列表" show-overflow-tooltip sortable v-if='clientColumnVisible.imgVideosList'>
           ...
         </el-table-column>
-        <el-table-column prop="remark"
-                         label="介绍"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.remark'>
+        <el-table-column prop="remark" label="介绍" show-overflow-tooltip sortable v-if='clientColumnVisible.remark'>
         </el-table-column>
-        <el-table-column prop="sceneDescription"
-                         label="场景描述"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.sceneDescription'>
+        <el-table-column prop="sceneDescription" label="场景描述" show-overflow-tooltip sortable v-if='clientColumnVisible.sceneDescription'>
         </el-table-column>
-        <el-table-column label="组状态"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.teamStatus'>
+        <el-table-column label="组状态" show-overflow-tooltip sortable v-if='clientColumnVisible.teamStatus'>
           <template slot-scope="scope">
             {{scope.row.teamStatus === 1 ? '普通终端组' : '托管组'}}
           </template>
         </el-table-column>
-        <el-table-column label="组类型"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.teamType'>
+        <el-table-column label="组类型" show-overflow-tooltip sortable v-if='clientColumnVisible.teamType'>
           <template slot-scope="scope">
             {{scope.row.teamType === 1 ? '用户组' : (scope.row.teamType === 2? '联动组' :'自成组') }}
           </template>
         </el-table-column>
-        <el-table-column prop="deviceCount"
-                         label="设备数量"
-                         show-overflow-tooltip
-                         sortable
-                         v-if='clientColumnVisible.deviceCount'>
+        <el-table-column prop="deviceCount" label="设备数量" show-overflow-tooltip sortable v-if='clientColumnVisible.deviceCount'>
         </el-table-column>
-        <el-table-column label="操作"
-                         width='100'>
+        <el-table-column label="操作" width='100'>
           <template slot-scope="scope">
-            <el-button type="text"
-                       @click="showEditRoleDialog(scope.row)">编辑</el-button>
-            <el-button type="text"
-                       @click="deleteRow(scope.row.id)">删除</el-button>
+            <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
+            <el-button type="text" @click="deleteRow(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1"
-                     :page-sizes="[10, 20, 40]"
-                     :page-size="list.length"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="list.length">
+      <el-pagination :current-page="1" :page-sizes="[10, 20, 40]" :page-size="list.length" layout="total, sizes, prev, pager, next, jumper" :total="list.length">
       </el-pagination>
-      <create-dialog :visible.sync="createDialogVisible"
-                     @add-data='addData'></create-dialog>
-      <edit-dialog :visible.sync="editDialogVisible"
-                   @update-data='updateData'
-                   :data='editingData'></edit-dialog>
-      <trusteeship-dialog :visible.sync="trusteeshipDialogVisible"
-                          :data='selectionTable'></trusteeship-dialog>
+      <create-dialog :visible.sync="createDialogVisible" @add-data='addData'></create-dialog>
+      <edit-dialog :visible.sync="editDialogVisible" @update-data='updateData' :data='editingData'></edit-dialog>
+      <trusteeship-dialog :visible.sync="trusteeshipDialogVisible" :data='selectionTable'></trusteeship-dialog>
     </el-card>
-    <el-dialog top='4vh'
-               :close-on-click-modal=false
-               title="自定义显示列"
-               :visible.sync="isClientColumnVisibleDialogVisible">
+    <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
@@ -185,8 +112,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary"
-                   @click="isClientColumnVisibleDialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="isClientColumnVisibleDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -260,7 +186,7 @@ export default {
     addData(data) {
       this.list.unshift(data)
     },
-    updateData() { },
+    updateData() {},
     deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',

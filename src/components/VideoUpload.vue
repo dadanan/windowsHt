@@ -1,26 +1,10 @@
 <template>
   <div>
-    <el-upload class="upload-demo"
-               :action="host"
-               :on-success="handleSuccess"
-               :on-preview="file => $emit('on-preview', file)"
-               :on-remove="(file, fileList) => $emit('on-remove', file, fileList)"
-               :on-progress="(event, file, fileList) => $emit('on-progress', event, file, fileList)"
-               :on-change="(file, fileList) => $emit('on-change', file, fileList)"
-               :file-list="fileList"
-               :before-upload="beforeUpload"
-               :before-remove="beforeRemove"
-               list-type="picture"
-               :limit="limit"
-               :show-file-list="showLileList"
-               :multiple="multiple">
-      <el-button size="small"
-                 type="primary">点击上传</el-button>
+    <el-upload class="upload-demo" :action="host" :on-success="handleSuccess" :on-preview="file => $emit('on-preview', file)" :on-remove="(file, fileList) => $emit('on-remove', file, fileList)" :on-progress="(event, file, fileList) => $emit('on-progress', event, file, fileList)" :on-change="(file, fileList) => $emit('on-change', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showLileList" :multiple="multiple">
+      <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
     </el-upload>
-    <video ref="video"
-           class="video"
-           :src="videoSrc"></video>
+    <video ref="video" class="video" :src="videoSrc"></video>
     <canvas ref="imgCanves"></canvas>
   </div>
 </template>

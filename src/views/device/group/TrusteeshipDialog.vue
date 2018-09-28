@@ -90,7 +90,7 @@ export default {
   },
   watch: {
     data(val) {
-      console.lol('123',val)
+      console.lol('123', val)
       this.team = val[0]
       this.createTrusteeQrCode(this.team.id)
     }

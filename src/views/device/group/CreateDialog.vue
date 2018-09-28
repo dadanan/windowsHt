@@ -1,94 +1,57 @@
 <template>
-  <el-dialog top='4vh'
-             :close-on-click-modal=false
-             title="添加设备组"
-             :visible="visible"
-             :before-close="handleCancel"
-             @update:visible="$emit('update:visible', $event)">
-    <el-scrollbar class="main-scroll"
-                  wrap-class="scrollbar-wrap"
-                  view-class="scrollbar-view"
-                  tag="div">
-      <el-form label-width="100px"
-               class="mb-22">
-        <el-form-item label="组名"
-                      prop="name">
+  <el-dialog top='4vh' :close-on-click-modal=false title="添加设备组" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
+    <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
+      <el-form label-width="100px" class="mb-22">
+        <el-form-item label="组名" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="创建人"
-                      prop="createUserOpenId">
+        <el-form-item label="创建人" prop="createUserOpenId">
           <!-- <el-select v-model="form.createUserOpenId" @change='customerChanged' placeholder="请选择">
           <el-option v-for="item in customerList" :key="item.id" :label="item.name" :value="item.appid">
           </el-option>
         </el-select> -->
-          <el-input placeholder="OpenID..."
-                    v-model='form.createUserOpenId'></el-input>
+          <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
         <el-form-item label="组标">
-          <image-uploader :url='form.teamIcon'
-                          @get-url='setURL(arguments,form,"teamIcon")'></image-uploader>
+          <image-uploader :url='form.teamIcon' @get-url='setURL(arguments,form,"teamIcon")'></image-uploader>
         </el-form-item>
         <el-form-item label="封面">
-          <image-uploader :url='form.teamCover'
-                          @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
+          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :url='form.teamCover'
-                          @get-url='setURL(arguments,form,"imgOrVideoList")'
-                          :isList='true'></image-uploader>
+          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"imgOrVideoList")' :isList='true'></image-uploader>
         </el-form-item>
         <!-- <el-form-item label="视频">
         <image-uploader @get-url='getURL' :isList='true'></image-uploader>
       </el-form-item> -->
-        <el-form-item label="介绍"
-                      prop="sceneDescription">
-          <el-input type='textarea'
-                    :rows='3'
-                    v-model="form.sceneDescription"></el-input>
+        <el-form-item label="介绍" prop="sceneDescription">
+          <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
         </el-form-item>
         <d-title>组内设备</d-title>
-        <el-table :data='teamDeviceCreateRequestList'
-                  style="width: 100%"
-                  class="mb20"
-                  border>
+        <el-table :data='teamDeviceCreateRequestList' style="width: 100%" class="mb20" border>
           <el-table-column type="index"></el-table-column>
-          <el-table-column label="名称"
-                           show-overflow-tooltip>
+          <el-table-column label="名称" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-input size="small"
-                        v-model="scope.row.name"></el-input>
+              <el-input size="small" v-model="scope.row.name"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="mac"
-                           show-overflow-tooltip>
+          <el-table-column label="mac" show-overflow-tooltip>
             <template slot-scope="scope">
               <!-- <el-select v-model="scope.row.mac" placeholder="请选择">
               <el-option v-for="item in deviceList" :key="item.mac" :label="item.name" :value="item.mac">
               </el-option>
             </el-select> -->
-              <el-input v-model='scope.row.mac'
-                        placeholder="mac"></el-input>
+              <el-input v-model='scope.row.mac' placeholder="mac"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="管理名称"
-                           show-overflow-tooltip>
+          <el-table-column label="管理名称" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-input size="small"
-                        v-model="scope.row.manageName"
-                        placeholder="施工管理的备注名"></el-input>
+              <el-input size="small" v-model="scope.row.manageName" placeholder="施工管理的备注名"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="联动设置"
-                           show-overflow-tooltip
-                           width='180'>
+          <el-table-column label="联动设置" show-overflow-tooltip width='180'>
             <template slot-scope="scope">
-              <el-switch @change='switchChanged(scope.row)'
-                         style="display: block"
-                         v-model="scope.row.linkAgeStatus"
-                         active-color="#13ce66"
-                         inactive-color="#ff4949"
-                         active-text="关联"
-                         inactive-text="非关联">
+              <el-switch @change='switchChanged(scope.row)' style="display: block" v-model="scope.row.linkAgeStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="关联" inactive-text="非关联">
               </el-switch>
             </template>
           </el-table-column>
@@ -96,11 +59,9 @@
         <el-button @click='newRow'>+添加设备</el-button>
       </el-form>
     </el-scrollbar>
-    <div slot="footer"
-         class="dialog-footer">
+    <div slot="footer" class="dialog-footer">
       <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary"
-                 @click='createNewTeam'>确定</el-button>
+      <el-button type="primary" @click='createNewTeam'>确定</el-button>
     </div>
   </el-dialog>
 </template>

@@ -9,13 +9,7 @@
       </div>
       <el-table :data="clusterList" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column v-for="value in columnData"
-                         :label="value.label"
-                         :prop="value.prop"
-                         :key="value.prop"
-                         :formatter="value.formatter"
-                         :width="value.width"
-                         show-overflow-tooltip>
+        <el-table-column v-for="value in columnData" :label="value.label" :prop="value.prop" :key="value.prop" :formatter="value.formatter" :width="value.width" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width='200'>
           <template slot-scope="scope">
@@ -25,20 +19,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="page"
-                     :page-sizes="[10, 20, 50]"
-                     :page-size="limit"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total"
-                     @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination :current-page="page" :page-sizes="[10, 20, 50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
-    <default-dialog :visible.sync="visible"
-                    :title="title"
-                    :fullscreen="fullscreen"
-                    @closed="handleClosed">
-      <div :is="dialogComp"
-           :datas="rowData"
-           @close="visible = false"></div>
+    <default-dialog :visible.sync="visible" :title="title" :fullscreen="fullscreen" @closed="handleClosed">
+      <div :is="dialogComp" :datas="rowData" @close="visible = false"></div>
     </default-dialog>
   </div>
 </template>

@@ -16,33 +16,27 @@
             <weather :option="OptionData.WeatherOptionData"></weather>
           </div>
         </el-col>
-
         <el-col :span="24">
           <device-option :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions" @toggleDialog="toggleDialog"></device-option>
           <div ref="device" class="col" data-tilt>
-
             <chart-device-data :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></chart-device-data>
           </div>
         </el-col>
-
         <el-col :span="24">
           <div ref="users" class="col" data-tilt>
             <chart-user-data :options="OptionData.UserChartOptions" @click="toggleDialog(2)"></chart-user-data>
           </div>
           <user-option :id="2" :visible.sync="DialogVisile[2]" :options="OptionData.UserChartOptions" @toggleDialog="toggleDialog"></user-option>
-
         </el-col>
-
         <div ref="type" class="duang" data-tilt>
           <el-col :span="24" class="col">
-            <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData" <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)">
-              </chart-device-type>
+            <device-type-option :id="3" :visible.sync="DialogVisile[3]" :options="OptionData.DeviceTypeChartData"></device-type-option>
+            <chart-device-type :options="OptionData.DeviceTypeChartData" @click="toggleDialog(3)">
+            </chart-device-type>
           </el-col>
         </div>
       </el-col>
-
       <el-col :span="14">
-
         <h1>大数据看板</h1>
         <div ref="main" data-tilt>
           <el-col :span="24" id="middle-top">
@@ -54,7 +48,6 @@
           <project-sample-option :id="5" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[5]" @toggleDialog="toggleDialog"></project-sample-option>
           <sample-detail-prompt :id="7" :options="OptionData.ProjectSampleData" :visible.sync="DialogVisile[7]" @toggleDialog="toggleDialog"></sample-detail-prompt>
         </el-col>
-
       </el-col>
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
@@ -62,7 +55,6 @@
           <message :types="OptionData.MessageOptions.types" :msgs="OptionData.MessageOptions.data"></message>
         </el-col>
         <el-col :span="24" class="col">
-
           <solution-option :id="4" :visible.sync="DialogVisile[4]" :options="OptionData.SolutionData" @toggleDialog="toggleDialog"></solution-option>
           <solution-panel @itemSelected="itemSelected" :options="OptionData.SolutionData"></solution-panel>
         </el-col>
