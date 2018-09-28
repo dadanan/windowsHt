@@ -41,8 +41,10 @@ export default {
       default: ''
     },
     url: {
-      // 图片链接
       type: String
+    },
+    urls: {
+      type: Array
     },
     excel: {
       // 是否只支持上传Excel格式
@@ -61,6 +63,13 @@ export default {
     }
   },
   methods: {
+    getImageName(url) {
+      if (!url) {
+        return ''
+      }
+      const match = url.match('aliyuncs.com/(.*)')
+      return match ? match[1] : ''
+    },
     handleSuccess(res, file) {
       const url = `${this.host}/${file.name}`
       if (!this.isList) {
@@ -106,6 +115,16 @@ export default {
   },
   created() {
     this.imageUrl = this.url
+  },
+  watch: {
+    urls(val) {
+      this.fileList = val.map(url => {
+        return {
+          url,
+          name: this.getImageName(url)
+        }
+      })
+    }
   }
 }
 </script>

@@ -15,7 +15,7 @@
           <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"imgOrVideoList")' :isList='true'></image-uploader>
+          <image-uploader :urls='form.imgOrVideoList' @get-url='setURL(arguments,form,"imgOrVideoList")' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
           <video-uploader :limit='2' :showLileList='true' :multiple='true'></video-uploader>
