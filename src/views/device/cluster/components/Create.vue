@@ -27,16 +27,16 @@
         </el-select>
       </el-form-item>
       <el-form-item label="图册">
-        <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+        <image-uploader :urls='form.imageVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
       <el-form-item label="群介绍">
         <el-input v-model="form.introduce"></el-input>
       </el-form-item>
       <el-form-item label="地点">
-        <el-input v-model="form.local"></el-input>
+        <el-input v-model="form.createLocation"></el-input>
       </el-form-item>
       <el-form-item label="添加备注">
-        <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.mark">
+        <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
         </el-input>
       </el-form-item>
     </el-form>
@@ -124,10 +124,21 @@ export default {
       })
     },
     createCluster() {
-      addOrUpdateGroupAndDevice({
+      const data = {
         ...this.form,
-        deviceList: this.deviceList
-      }).then(res => {})
+        deviceQueryRequest: {
+          deviceList: this.deviceList
+        }
+      }
+      addOrUpdateGroupAndDevice(data).then(res => {
+        if (res.code === 200 && res.data) {
+          data.id = res.data.id
+          this.$emit('update', data)
+          this.$message.success('添加成功')
+        } else {
+          this.$message.error(msg)
+        }
+      })
     },
     handleCancel() {
       this.$emit('close')

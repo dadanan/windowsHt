@@ -9,7 +9,7 @@
           <el-input v-model="addForm.mac" placeholder="设备 MAC"></el-input>
           <el-button type="primary" class="add" @click="addDevice">添加</el-button>
         </div>
-        <el-table :data="form.deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
+        <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
           <el-table-column type="selection"></el-table-column>
           <el-table-column type="index"></el-table-column>
           <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
@@ -27,13 +27,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="图册">
-        <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+        <image-uploader :urls='form.imageVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
       <el-form-item label="群介绍">
         <el-input v-model="form.introduction"></el-input>
       </el-form-item>
       <el-form-item label="地点">
-        <el-input v-model="form.location"></el-input>
+        <el-input v-model="form.createLocation"></el-input>
       </el-form-item>
       <el-form-item label="添加备注">
         <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
@@ -51,6 +51,7 @@
 import ImageUploader from '@/components/Upload/image'
 import { select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
+import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
   components: { ImageUploader },
@@ -62,11 +63,12 @@ export default {
   data() {
     return {
       form: {
-        deviceList: [],
         customerId: '',
         teamCover: '',
-        imageVideoList: []
+        imageVideoList: [],
+        introduction: ''
       },
+      deviceList: [],
       addForm: {
         mac: ''
       },
@@ -98,26 +100,34 @@ export default {
   },
   methods: {
     setImg(file) {
-      this.form.imageVideoList = [...this.form.imageVideoList, file.url]
+      this.form.imageVideoList = [
+        ...this.form.imageVideoList,
+        { imgVideo: file.url }
+      ]
     },
     removeImg(file) {
-      const index = this.form.imageVideoList.findIndex(v => v === file.url)
+      const index = this.form.imageVideoList.findIndex(
+        v => v.imgVideo === file.url
+      )
       this.form.imageVideoList.splice(index, 1)
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
         if (res.code === 200) {
-          this.form = { ...res.data }
+          this.form = {
+            ...res.data,
+            imageVideoList: res.data.imageVideoList || []
+          }
         }
       })
     },
     addDevice() {
-      this.form.deviceList.push({
+      this.deviceList.push({
         mac: this.addForm.mac
       })
     },
     deleteDevice(index) {
-      this.form.deviceList.splice(index, 1)
+      this.deviceList.splice(index, 1)
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
@@ -127,7 +137,23 @@ export default {
         this.customerList = res.data || []
       })
     },
-    createCluster() {},
+    createCluster() {
+      const data = {
+        ...this.form,
+        deviceQueryRequest: {
+          deviceList: this.deviceList
+        }
+      }
+      addOrUpdateGroupAndDevice(data).then(res => {
+        if (res.code === 200 && res.data) {
+          data.id = res.data.id
+          this.$emit('update', data)
+          this.$message.success('更新成功')
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     handleCancel() {
       this.$emit('close')
     }

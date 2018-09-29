@@ -22,7 +22,7 @@
       <el-pagination :current-page="page" :page-sizes="[10, 20, 50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible" :title="title" :fullscreen="fullscreen" @closed="handleClosed">
-      <div :is="dialogComp" :datas="rowData" @close="visible = false"></div>
+      <div :is="dialogComp" :datas="rowData" @close="visible = false" @update="handleUpdate"></div>
     </default-dialog>
   </div>
 </template>
@@ -83,6 +83,16 @@ export default {
     handleCurrentChange(val) {
       this.page = val
       this.queryGroupByPage()
+    },
+    handleUpdate(data) {
+      const index = this.clusterList.findIndex(v => v.id === data.id)
+      index !== -1
+        ? this.clusterList.splice(index, 1, data)
+        : (this.clusterList = [data, ...this.clusterList])
+
+      console.log(index)
+      this.visible = false
+      this.handleClosed()
     },
     deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
