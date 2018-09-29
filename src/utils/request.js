@@ -37,15 +37,15 @@ service.interceptors.response.use(
    */
   response => {
     // 如果当前请求是为了获取logo和name，则报错时不显示出来
-    if (
-      response.request.responseURL.match(
-        'api/customer/selectBackendConfigBySLD'
-      )
-    ) {
-      return Promise.reject('该客户不存在！')
-    }
     const res = response.data
     if (res.code !== 200) {
+      if (
+        response.request.responseURL.match(
+          'api/customer/selectBackendConfigBySLD'
+        )
+      ) {
+        return Promise.reject('该客户不存在！')
+      }
       Message({
         message: res.msg,
         type: 'error',
