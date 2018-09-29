@@ -136,7 +136,7 @@ export default {
           this.$emit('update', data)
           this.$message.success('添加成功')
         } else {
-          this.$message.error(msg)
+          res.msg && this.$message.error(res.msg)
         }
       })
     },
