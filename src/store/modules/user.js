@@ -25,7 +25,7 @@ const user = {
       state.logo = logo
     },
     SET_SITENAME: (state, name) => {
-      state.siteName = siteName
+      state.siteName = name
     },
     SET_CODE: (state, code) => {
       state.code = code
@@ -85,7 +85,7 @@ const user = {
               'big-picture-mode:project:get',
               'engineering:means:get',
               'engineering:measure:get',
-              'engineering:maintenance:get',
+              'engineering:maintenance:get'
             )
             if (data.permissions && data.permissions.length > 0) {
               // 验证返回的permission是否是一个非空数组

@@ -178,7 +178,7 @@ export default {
         })
     },
     getURL(url) {
-      this.data.icon = url
+      this.form.icon = url
     },
     getdeviceTypeAbilitys() {
       fetchList({

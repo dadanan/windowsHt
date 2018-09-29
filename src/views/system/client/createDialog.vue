@@ -95,7 +95,7 @@
               <el-input v-model="h5Config.themeName"></el-input>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :key='2' :url='h5Config.logoKey' @get-url='setURL(arguments,h5Config,"logoKey")'></image-uploader>
+              <image-uploader :key='2' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="H5 版本">
               <el-select v-model="h5Config.version">
@@ -112,7 +112,7 @@
               <el-input v-model='androidConfig.name'></el-input>
             </el-form-item>
             <el-form-item label="APP Logo">
-              <image-uploader :key='3' :url='androidConfig.logoKey' @get-url='setURL(arguments,androidConfig,"logoKey")'></image-uploader>
+              <image-uploader :key='3' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="客户公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
@@ -241,7 +241,7 @@ export default {
         htmlTypeIds: [],
         logo: '',
         qrcode: '',
-        logoKey: '',
+        logo: '',
         password: '',
         themeName: '',
         version: ''
@@ -264,7 +264,7 @@ export default {
           }
         ],
         deviceChangePassword: '',
-        logoKey: '',
+        logo: '',
         qrcode: '',
         name: '',
         version: ''
