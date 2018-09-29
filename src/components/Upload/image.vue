@@ -1,6 +1,6 @@
 <template>
   <div class="file-container">
-    <el-upload class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}'>
+    <el-upload class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess"  :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}'>
       <el-button v-if='isList' size="small" type="primary">点击上传</el-button>
       <template v-else>
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -80,11 +80,17 @@ export default {
         return
       }
 
-      this.fileList.push({
+      const item = {
         name: file.name,
         url
-      })
-      this.$emit('get-url', this.fileList)
+      }
+
+      this.fileList.push(item)
+      this.$emit('get-url', item, this.fileList)
+    },
+    handleRemove(file, fileList) {
+      this.fileList = fileList
+      this.$emit('remove-url', file, fileList)
     },
     beforeAvatarUpload(file) {
       let isValid = false
