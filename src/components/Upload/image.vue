@@ -124,10 +124,10 @@ export default {
   },
   watch: {
     urls(val) {
-      this.fileList = val.map(url => {
+      this.fileList = val.map(data => {
         return {
-          url,
-          name: this.getImageName(url)
+          url: data.imgVideo,
+          name: this.getImageName(data.imgVideo)
         }
       })
     }

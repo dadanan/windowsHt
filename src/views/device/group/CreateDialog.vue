@@ -15,7 +15,7 @@
           <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+          <image-uploader :urls='form.imgOrVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
           <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
@@ -108,10 +108,15 @@ export default {
       data[name] = image
     },
     setImg(file) {
-      this.form.imgOrVideoList = [...this.form.imgOrVideoList, file.url]
+      this.form.imgOrVideoList = [
+        ...this.form.imgOrVideoList,
+        { imgVideo: file.url }
+      ]
     },
     removeImg(file) {
-      const index = this.form.imgOrVideoList.findIndex(v => v === file.url)
+      const index = this.form.imgOrVideoList.findIndex(
+        v => v.imgVideo === file.url
+      )
       this.form.imgOrVideoList.splice(index, 1)
     },
     switchChanged(data) {
