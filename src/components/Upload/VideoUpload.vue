@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-upload class="upload-demo" :action="host" :data='attachedData' :on-success="handleSuccess" :on-preview="file => $emit('on-preview', file)" :on-remove="(file, fileList) => $emit('on-remove', file, fileList)" :on-progress="(event, file, fileList) => $emit('on-progress', event, file, fileList)" :on-change="(file, fileList) => $emit('on-change', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showLileList" :multiple="multiple">
+    <el-upload class="upload-demo" :action="host" :data='attachedData' :on-success="handleSuccess" :on-remove="handleRemove" :on-progress="(event, file, fileList) => $emit('onProgress', event, file, fileList)" :on-change="(file, fileList) => $emit('onChange', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showFileList" :multiple="multiple">
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
     </el-upload>
     <video ref="video" class="video" :src="videoSrc"></video>
-    <canvas ref="imgCanves"></canvas>
+    <canvas ref="imgCanves" class="imgCanves"></canvas>
   </div>
 </template>
 
@@ -38,14 +38,15 @@ export default {
       type: Boolean,
       default: true
     },
-    showLileList: {
+    showFileList: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {
     return {
       fileList: [],
+      fileUrl: [],
       videoSrc: '',
       host: host,
       attachedData: {
@@ -81,18 +82,24 @@ export default {
         .getContext('2d')
         .drawImage(video, 0, 0, canvas.width, canvas.height)
 
-      this.fileList.push({
+      const item = {
         name: file.name,
-        url: canvas.toDataURL('image/png')
-      })
+        url: canvas.toDataURL('image/png'),
+        videoUrl: `${this.host}/${file.name}`
+      }
 
-      this.$emit('on-success', file, this.fileList)
+      this.fileList.push(item)
+
+      this.$emit('onSuccess', item, this.fileList)
     },
     handleSuccess(row, file) {
       const video = this.$refs.video
-
       this.videoSrc = file.url
       video.onloadeddata = () => this.onloadeddata(file)
+    },
+    handleRemove(file, fileList) {
+      this.fileList = fileList
+      this.$emit('onRemove', file, fileList)
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
@@ -100,3 +107,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.imgCanves,
+.video {
+  position: absolute;
+  z-index: -1;
+}
+</style>
+

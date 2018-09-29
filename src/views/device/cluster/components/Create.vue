@@ -26,6 +26,9 @@
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="图册">
+        <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+      </el-form-item>
       <el-form-item label="群介绍">
         <el-input v-model="form.introduce"></el-input>
       </el-form-item>
@@ -45,10 +48,12 @@
 </template>
 
 <script>
+import ImageUploader from '@/components/Upload/image'
 import { select } from '@/api/customer'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
+  components: { ImageUploader },
   props: {
     datas: {
       type: Object
@@ -57,7 +62,8 @@ export default {
   data() {
     return {
       form: {
-        customerId: ''
+        customerId: '',
+        imageVideoList: []
       },
       addForm: {
         mac: ''
@@ -89,6 +95,18 @@ export default {
     this.select()
   },
   methods: {
+    setImg(file) {
+      this.form.imageVideoList = [
+        ...this.form.imageVideoList,
+        { imgVideo: file.url }
+      ]
+    },
+    removeImg(file) {
+      const index = this.form.imageVideoList.findIndex(
+        v => v.imgVideo === file.url
+      )
+      this.form.imageVideoList.splice(index, 1)
+    },
     addDevice() {
       this.deviceList.push({
         mac: this.addForm.mac
@@ -106,10 +124,10 @@ export default {
       })
     },
     createCluster() {
-      // addOrUpdateGroupAndDevice({
-      //   ...this.form,
-      //   deviceList: this.deviceList
-      // }).then(res => {})
+      addOrUpdateGroupAndDevice({
+        ...this.form,
+        deviceList: this.deviceList
+      }).then(res => {})
     },
     handleCancel() {
       this.$emit('close')

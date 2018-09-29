@@ -26,6 +26,9 @@
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="图册">
+        <image-uploader :url='form.teamCover' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+      </el-form-item>
       <el-form-item label="群介绍">
         <el-input v-model="form.introduction"></el-input>
       </el-form-item>
@@ -45,10 +48,12 @@
 </template>
 
 <script>
+import ImageUploader from '@/components/Upload/image'
 import { select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 
 export default {
+  components: { ImageUploader },
   props: {
     datas: {
       type: Object
@@ -58,7 +63,9 @@ export default {
     return {
       form: {
         deviceList: [],
-        customerId: ''
+        customerId: '',
+        teamCover: '',
+        imageVideoList: []
       },
       addForm: {
         mac: ''
@@ -90,6 +97,13 @@ export default {
     this.queryGroupById()
   },
   methods: {
+    setImg(file) {
+      this.form.imageVideoList = [...this.form.imageVideoList, file.url]
+    },
+    removeImg(file) {
+      const index = this.form.imageVideoList.findIndex(v => v === file.url)
+      this.form.imageVideoList.splice(index, 1)
+    },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
         if (res.code === 200) {
