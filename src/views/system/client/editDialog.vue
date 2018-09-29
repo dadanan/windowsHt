@@ -343,7 +343,7 @@ export default {
       // transition-group动画必须提供唯一id且id不能为循环出来的index值
       data.androidSceneImgList.push({
         description: '',
-        id: data.id + 1,
+        id: this.$options.filters.GUID(),
         imgVideo: '',
         name: ''
       })
