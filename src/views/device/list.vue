@@ -136,7 +136,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible" :detail-data='detailData'></device-detail-dialog>
-    <device-export-dialog :visible.sync="deviceExportDialogVisible" :total="total" :query="query"></device-export-dialog>
+    <device-export-dialog :visible.sync="deviceExportDialogVisible" :total="total" :query="query" :deviceColumnVisible="deviceColumnVisible"></device-export-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
         <el-form-item>
@@ -231,7 +231,12 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import { getList, deleteOneDevice, queryChildDevice, queryCount } from '@/api/device/list'
+import {
+  getList,
+  deleteOneDevice,
+  queryChildDevice,
+  queryCount
+} from '@/api/device/list'
 
 export default {
   components: {
@@ -248,7 +253,7 @@ export default {
     DeviceBindDialog,
     DeviceUnbindDialog,
     DeviceDetailDialog,
-    DeviceExportDialog,
+    DeviceExportDialog
   },
   data() {
     return {
@@ -346,7 +351,7 @@ export default {
           console.log('err', err)
         })
     },
-    queryCount(){
+    queryCount() {
       queryCount().then(res => {
         if (res.code === 200 && res.data) {
           this.total = res.data
