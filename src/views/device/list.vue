@@ -15,7 +15,7 @@
           <!-- <el-button type="primary" @click="deviceClusterControlDialogVisible = true">群控</el-button> -->
           <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
           <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
-          <el-button type="primary" @click="handleExport">导出</el-button>
+          <el-button type="primary" @click="deviceExportDialogVisible = true">导出</el-button>
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
@@ -120,7 +120,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -136,6 +136,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible" :detail-data='detailData'></device-detail-dialog>
+    <device-export-dialog :visible.sync="deviceExportDialogVisible" :total="total" :query="query"></device-export-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
         <el-form-item>
@@ -229,7 +230,8 @@ import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
-import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
+import DeviceExportDialog from './components/DeviceExportDialog'
+import { getList, deleteOneDevice, queryChildDevice, queryCount } from '@/api/device/list'
 
 export default {
   components: {
@@ -245,7 +247,8 @@ export default {
     DeviceClusterControlDialog,
     DeviceBindDialog,
     DeviceUnbindDialog,
-    DeviceDetailDialog
+    DeviceDetailDialog,
+    DeviceExportDialog,
   },
   data() {
     return {
@@ -263,6 +266,7 @@ export default {
       deviceBindDialogVisible: false,
       deviceUnbindDialogVisible: false,
       deviceDetailDialogVisible: false,
+      deviceExportDialogVisible: false,
       selectedDeviceList: [],
       deviceColumnVisible: {
         name: true,
@@ -288,6 +292,7 @@ export default {
         limit: 100,
         page: 1
       },
+      total: 1,
       detailData: {},
       showDeviceDeleted: false,
       showDeviceCallBack: false,
@@ -340,6 +345,15 @@ export default {
         .catch(err => {
           console.log('err', err)
         })
+    },
+    queryCount(){
+      queryCount().then(res => {
+        if (res.code === 200 && res.data) {
+          this.total = res.data
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
     addData(data) {
       const list = data.deviceList
@@ -452,10 +466,6 @@ export default {
         this.deviceUnbindDialogVisible = true
       })
     },
-    // 导出
-    handleExport() {
-      this.isOperable().then(_ => {})
-    },
     isOperable() {
       return new Promise(resolve => {
         if (this.selectedDeviceList.length) {
@@ -468,6 +478,7 @@ export default {
   },
   created() {
     this.getList()
+    this.queryCount()
   }
 }
 </script>
