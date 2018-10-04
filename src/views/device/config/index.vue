@@ -21,6 +21,11 @@
         </el-table-column>
         <el-table-column prop="typeName" label="类型" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column label="产品二维码">
+          <template slot-scope="scope">
+            <img :src="scope.row.productQrCode" :alt="scope.row.name" class="table-img">
+          </template>
+        </el-table-column>
         <el-table-column label="功能项" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             ...

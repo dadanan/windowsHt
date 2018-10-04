@@ -47,7 +47,7 @@
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
-        <image-uploader :url='form.qrcode' @get-url='setURL(arguments,form,"qrcode")'></image-uploader>
+        <image-uploader :url='form.productQrCode' @get-url='setURL(arguments,form,"productQrCode")'></image-uploader>
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
@@ -212,7 +212,9 @@ export default {
       form: {
         typeId: '',
         customerId: '',
-        showStatus: true
+        showStatus: true,
+        productQrCode: '',
+        productId: ''
       },
       childModelIds: [],
       formatId: '',
