@@ -55,8 +55,9 @@
     </div>
     <div class="photos">集群相册</div>
     <el-card class="el-card--solid">
-      <div class="item" v-for="(img, i) in images" :key="i" @dblclick="handlePreview(img)">
-        <img :src="img">
+      <div v-if="!form.imageVideoList.length">暂无集群相册</div>
+      <div v-else class="item" v-for="(img, i) in form.imageVideoList" :key="i" @dblclick="handlePreview(img.imgVideo)">
+        <img :src="img.imgVideo">
       </div>
     </el-card>
     <el-dialog :visible="imgVisible" :before-close="() => imgVisible = false" append-to-body>
@@ -94,7 +95,8 @@ export default {
       },
       form: {
         deviceList: [],
-        customerId: ''
+        customerId: '',
+        imageVideoList: []
       },
       deviceData: [],
       columnData: deviceColumnData,
@@ -109,7 +111,10 @@ export default {
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
         if (res.code === 200) {
-          this.form = { ...res.data }
+          this.form = {
+            ...res.data,
+            imageVideoList: res.data.imageVideoList || []
+          }
         }
       })
     },
@@ -135,6 +140,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-card--solid {
+  display: flex;
+  flex-wrap: wrap;
+}
 .flex {
   display: flex;
   margin-left: -10px;

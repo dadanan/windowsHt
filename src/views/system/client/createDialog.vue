@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="创建客户" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="创建客户" width="800px" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <div>
         <el-steps :active="createStep" finish-status="success" class="mb20" align-center>
@@ -142,24 +142,28 @@
                   <el-form-item label="场景封面">
                     <image-uploader :key='6' :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
                   </el-form-item>
-                  <el-form-item label="场景图册列表">
-                    <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="listIndex" class="box-card">
-                      <div class='tool'>
-                        <span class='close-icon' @click='deleteSceneImg(item,listIndex)'></span>
-                        <span class='add-icon' @click='addSceneImg(item)'></span>
-                      </div>
-                      <div>
-                        <el-form-item label="名称">
-                          <el-input v-model='list.name'></el-input>
-                        </el-form-item>
-                        <el-form-item label="描述">
-                          <el-input v-model='list.description' type='textarea'></el-input>
-                        </el-form-item>
-                        <el-form-item label="图片/视频">
-                          <image-uploader :key='7' :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
-                        </el-form-item>
-                      </div>
-                    </el-card>
+                  <el-form-item label="场景图册列表" class="pictureList">
+                    <transition-group name="fade">
+                      <el-card v-for='(list, listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
+                        <div class='tool'>
+                          <i class="el-icon-back up" @click="handleUp(item, listIndex)" v-if="listIndex"></i>
+                          <i class="el-icon-back down" @click="handleDown(item, listIndex)" v-if="item.androidSceneImgList.length - listIndex !== 1"></i>
+                          <span class='close-icon' @click='deleteSceneImg(item, listIndex)'></span>
+                          <span class='add-icon' @click='addSceneImg(item)'></span>
+                        </div>
+                        <div>
+                          <el-form-item label="名称">
+                            <el-input v-model='list.name'></el-input>
+                          </el-form-item>
+                          <el-form-item label="描述">
+                            <el-input v-model='list.description' type='textarea'></el-input>
+                          </el-form-item>
+                          <el-form-item label="图片/视频">
+                            <image-uploader :key='7' :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                          </el-form-item>
+                        </div>
+                      </el-card>
+                    </transition-group>
                   </el-form-item>
                 </div>
               </el-card>
@@ -343,9 +347,10 @@ export default {
       data.androidSceneImgList.splice(index, 1)
     },
     addSceneImg(data) {
+      // transition-group动画必须提供唯一id且id不能为循环出来的index值
       data.androidSceneImgList.push({
         description: '',
-        id: 0,
+        id: this.$options.filters.GUID(),
         imgVideo: '',
         name: ''
       })
@@ -384,6 +389,20 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    handleUp(data, index) {
+      data.androidSceneImgList[index] = data.androidSceneImgList.splice(
+        index - 1,
+        1,
+        data.androidSceneImgList[index]
+      )[0]
+    },
+    handleDown(data, index) {
+      data.androidSceneImgList[index] = data.androidSceneImgList.splice(
+        index + 1,
+        1,
+        data.androidSceneImgList[index]
+      )[0]
     }
   },
   watch: {
@@ -427,5 +446,23 @@ export default {
 }
 .page-preview-img {
   width: 100%;
+}
+.pictureList {
+  .tool > * {
+    cursor: pointer;
+    & + * {
+      margin-left: 12px;
+    }
+  }
+  .up,
+  .down {
+    color: #ccc;
+  }
+  .up {
+    transform: rotate(90deg);
+  }
+  .down {
+    transform: rotate(-90deg);
+  }
 }
 </style>
