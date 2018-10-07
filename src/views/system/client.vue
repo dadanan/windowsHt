@@ -43,7 +43,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50, 100, 150, 200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="clientList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateClientDialogVisible"></create-model-dialog>
@@ -173,6 +173,14 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getCustomer()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getCustomer()
     },
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)

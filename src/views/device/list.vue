@@ -51,6 +51,11 @@
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
                 </template>
               </el-table-column>
+              <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+                <template slot-scope="scope">
+                  {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
+                </template>
+              </el-table-column>
               <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
               </el-table-column>
               <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -102,6 +107,11 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
+         <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+          <template slot-scope="scope">
+            {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
+          </template>
+        </el-table-column>
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
         <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
@@ -120,7 +130,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+     <el-pagination :current-page="query.page" :page-sizes="[50, 100, 150, 200]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -165,6 +175,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.assignStatus">分配状态</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
@@ -290,7 +303,8 @@ export default {
         createTime: false,
         lastUpdateTime: false,
         bindCustomer: false,
-        location: false
+        location: false,
+        assignStatus: true
       },
       deviceColumnControlDialogVisible: false,
       query: {
@@ -302,7 +316,8 @@ export default {
       showDeviceDeleted: false,
       showDeviceCallBack: false,
       showDeviceBind: false,
-      showDeviceAllocate: false
+      showDeviceAllocate: false,
+      unassignStatus: ''
     }
   },
   computed: {
@@ -311,6 +326,10 @@ export default {
       if (!this.showDeviceDeleted) {
         // 如果不显示删除设备，返回状态不等于 2 的
         list = list.filter(item => item.status !== 2)
+      }
+      if (!this.showDeviceAllocate) {
+        // 如果不显示分配设备，返回状态不等于 0 的
+        list = list.filter(item => item.assignStatus !== 0)
       }
       return list
     }
@@ -337,6 +356,9 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+      if (this.selectedDeviceList.length) {
+        this.unassignStatus = this.selectedDeviceList[0].assignStatus
+      }
     },
     getList() {
       getList(this.query)
@@ -359,6 +381,14 @@ export default {
           this.$message.error(res.msg)
         }
       })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.getList()
     },
     addData(data) {
       const list = data.deviceList

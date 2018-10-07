@@ -60,7 +60,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[10, 20, 40]" :page-size="list.length" layout="total, sizes, prev, pager, next, jumper" :total="list.length">
+      <el-pagination :current-page="query.page" :page-sizes="[50, 100, 150, 200]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="list.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
       <create-dialog :visible.sync="createDialogVisible" @add-data='addData'></create-dialog>
       <edit-dialog :visible.sync="editDialogVisible" @update-data='updateData' :data='editingData'></edit-dialog>
@@ -214,6 +214,14 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.queryTeamList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.queryTeamList()
     }
   },
   created() {

@@ -213,6 +213,7 @@ export default {
       this.loading = true
       select(this.listQuery).then(res => {
         this.list = res.data
+        this.total = this.list.length
         this.loading = false
       })
     },
