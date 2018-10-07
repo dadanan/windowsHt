@@ -16,8 +16,7 @@
         </el-table-column>
         <el-table-column label="组标" show-overflow-tooltip sortable v-if='clientColumnVisible.icon'>
           <template slot-scope="scope">
-            <img class='table-img'
-                 :src='scope.row.icon'>
+            <img class='table-img' :src='scope.row.icon'>
           </template>
         </el-table-column>
         <el-table-column prop="createUserNickName" label="创建者" show-overflow-tooltip sortable v-if='clientColumnVisible.createUserNickName'>
@@ -30,8 +29,7 @@
         </el-table-column>
         <el-table-column label="封面" show-overflow-tooltip sortable v-if='clientColumnVisible.cover'>
           <template slot-scope="scope">
-            <img class='table-img'
-                 :src='scope.row.cover'>
+            <img class='table-img' :src='scope.row.cover'>
           </template>
         </el-table-column>
         <el-table-column prop="imgVideosList" label="图册/视频列表" show-overflow-tooltip sortable v-if='clientColumnVisible.imgVideosList'>
@@ -218,15 +216,6 @@ export default {
   },
   created() {
     this.queryTeamList()
-    const url = 'http://www.hcocloud.com:8887/huankeadmin/api/device/upload'
-    axios
-      .options(url)
-      .then(res => {
-        console.log('res', res)
-      })
-      .catch(err => {
-        console.log('err', err)
-      })
   },
   components: {
     CreateDialog,
