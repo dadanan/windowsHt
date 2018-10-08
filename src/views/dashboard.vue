@@ -100,35 +100,35 @@ export default {
               id: 0,
               icon: 'hdd',
               name: '当前设备总数',
-              value: 998,
+              value: 10,
               isVisible: true
             },
             {
               id: 1,
               icon: 'hdd',
               name: '今日设备新增数',
-              value: 20,
+              value: 0,
               isVisible: true
             },
             {
               id: 2,
               icon: 'hdd',
               name: '今日设备订单率',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 3,
               icon: 'hdd',
               name: '当前设备故障数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 4,
               icon: 'hdd',
               name: '当前设备在线率',
-              value: 84,
+              value: 0,
               isVisible: false
             }
           ],
@@ -137,35 +137,35 @@ export default {
               id: 5,
               icon: 'hdd',
               name: '当前用户总人数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 6,
               icon: 'hdd',
               name: '昨日用户增长率',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 7,
               icon: 'hdd',
               name: '今日活跃用户数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 8,
               icon: 'hdd',
               name: '昨日用户活跃率',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 9,
               icon: 'hdd',
               name: '当前用户活跃率',
-              value: 84,
+              value: 0,
               isVisible: false
             }
           ],
@@ -174,42 +174,42 @@ export default {
               id: 10,
               icon: 'hdd',
               name: 'PM 2.5 传感器总数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 11,
               icon: 'hdd',
               name: '甲醛传感器总数',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 12,
               icon: 'hdd',
               name: 'CO2 传感器总数',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 13,
               icon: 'hdd',
               name: 'TVOC 传感器数据总数',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 14,
               icon: 'hdd',
               name: '优良环境数',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 15,
               icon: 'hdd',
               name: '优良环境比率',
-              value: 84,
+              value: 0,
               unit: '',
               isVisible: true
             }
@@ -219,28 +219,28 @@ export default {
               id: 16,
               icon: 'hdd',
               name: '今日订单数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 17,
               icon: 'hdd',
               name: '昨日订单数',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 18,
               icon: 'hdd',
               name: '昨日订单增长率',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 19,
               icon: 'hdd',
               name: '本月订单数',
-              value: 84,
+              value: 0,
               isVisible: false
             }
           ],
@@ -249,21 +249,21 @@ export default {
               id: 20,
               icon: 'hdd',
               name: '当前设备告警数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 21,
               icon: 'hdd',
               name: '今日新增告警记录',
-              value: 84,
+              value: 0,
               isVisible: false
             },
             {
               id: 22,
               icon: 'hdd',
               name: '当前设备故障率',
-              value: 84,
+              value: 0,
               isVisible: false
             }
           ],
@@ -272,14 +272,14 @@ export default {
               id: 23,
               icon: 'hdd',
               name: '今日分润账单数',
-              value: 84,
+              value: 0,
               isVisible: true
             },
             {
               id: 24,
               icon: 'hdd',
               name: '今日分润金额',
-              value: 84,
+              value: 0,
               isVisible: false
             }
           ]

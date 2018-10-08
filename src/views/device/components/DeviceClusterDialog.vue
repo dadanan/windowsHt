@@ -45,13 +45,13 @@
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="addNewGroupAndDevice">确认集群</el-button>
+      <el-button type="primary" @click="addOrUpdateGroupAndDevice">确认集群</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { addNewGroupAndDevice } from '@/api/device/group'
+import { addOrUpdateGroupAndDevice } from '@/api/device/group'
 import { select } from '@/api/customer'
 
 export default {
@@ -89,8 +89,8 @@ export default {
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
-    addNewGroupAndDevice() {
-      addNewGroupAndDevice({
+    addOrUpdateGroupAndDevice() {
+      addOrUpdateGroupAndDevice({
         name: this.name,
         customerId: this.customerId,
         deviceQueryRequest: {

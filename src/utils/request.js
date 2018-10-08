@@ -30,9 +30,9 @@ service.interceptors.request.use(
     //   config.headers['X-Token'] = getToken()
     // }
     startLoading()
-    // setTimeout(function() {
-    //   endLoading()
-    // }, 3000)
+    setTimeout(function() {
+      endLoading()
+    }, 3000)
     return config
   },
   error => {

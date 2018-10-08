@@ -58,8 +58,7 @@
             </el-table-column>
             <el-table-column label="码表" show-overflow-tooltip sortable>
               <template slot-scope="scope">
-                <img class='table-inside-image'
-                     :src='scope.row.stopWatch'>
+                <img class='table-inside-image' :src='scope.row.stopWatch'>
               </template>
             </el-table-column>
             <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
@@ -82,7 +81,7 @@
               <el-input type="text" v-model="h5Config.password"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <image-uploader :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -93,7 +92,7 @@
               <el-input v-model="h5Config.themeName"></el-input>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+              <image-uploader :key='2' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="H5 版本">
               <el-select v-model="h5Config.version">
@@ -110,13 +109,13 @@
               <el-input v-model='androidConfig.name'></el-input>
             </el-form-item>
             <el-form-item label="APP Logo">
-              <image-uploader :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+              <image-uploader :key='3' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
             <el-form-item label="客户公众号二维码">
-              <image-uploader :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
+              <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
             <el-form-item label="设备切换密码">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
@@ -139,25 +138,25 @@
                   </el-form-item>
                   <el-form-item label="场景图册列表" class="pictureList">
                     <transition-group name="fade">
-                    <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
-                      <div class='tool'>
+                      <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
+                        <div class='tool'>
                           <i class="el-icon-back up" @click="handleUp(item, listIndex)" v-if="listIndex"></i>
                           <i class="el-icon-back down" @click="handleDown(item, listIndex)" v-if="item.androidSceneImgList.length - listIndex !== 1"></i>
                           <span class='close-icon' @click='deleteSceneImg(item, listIndex)'></span>
                           <span class='add-icon' @click='addSceneImg(item)'></span>
-                      </div>
-                      <div>
-                        <el-form-item label="名称">
-                          <el-input v-model='list.name'></el-input>
-                        </el-form-item>
-                        <el-form-item label="描述">
-                          <el-input v-model='list.description' type='textarea'></el-input>
-                        </el-form-item>
-                        <el-form-item label="图片/视频">
-                          <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
-                        </el-form-item>
-                      </div>
-                    </el-card>
+                        </div>
+                        <div>
+                          <el-form-item label="名称">
+                            <el-input v-model='list.name'></el-input>
+                          </el-form-item>
+                          <el-form-item label="描述">
+                            <el-input v-model='list.description' type='textarea'></el-input>
+                          </el-form-item>
+                          <el-form-item label="图片/视频">
+                            <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                          </el-form-item>
+                        </div>
+                      </el-card>
                     </transition-group>
                   </el-form-item>
                 </div>
@@ -171,7 +170,7 @@
               <el-switch v-model='backendConfig.enableStatus'></el-switch>
             </el-form-item>
             <el-form-item label="Logo">
-              <image-uploader :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+              <image-uploader :key='7' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
             </el-form-item>
             <el-form-item label="名称">
               <el-input v-model='backendConfig.name'></el-input>

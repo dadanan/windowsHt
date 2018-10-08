@@ -132,42 +132,6 @@
                       globalCoord: false // 缺省为 false
                     }
                   }
-                },
-                {
-                  value: 12, name: '检测探头',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ffd500' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#ff6b00' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 20, name: '净化器',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ba9af0' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#7035d1' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
                 }
               ]
             }

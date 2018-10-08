@@ -42,9 +42,7 @@
             <el-table-column type="index"></el-table-column>
             <el-table-column label="缩图">
               <template slot-scope="scope">
-                <img class='table-inside-image block'
-                     :src="scope.row.icon"
-                     :alt="scope.row.name">
+                <img class='table-inside-image block' :src="scope.row.icon" :alt="scope.row.name">
               </template>
             </el-table-column>
             <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
@@ -60,8 +58,7 @@
             </el-table-column>
             <el-table-column label="码表" show-overflow-tooltip sortable>
               <template slot-scope="scope">
-                <img class='table-inside-image'
-                     :src='scope.row.stopWatch'>
+                <img class='table-inside-image' :src='scope.row.stopWatch'>
               </template>
             </el-table-column>
             <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
@@ -140,7 +137,7 @@
                     <el-input v-model='item.description' type='textarea'></el-input>
                   </el-form-item>
                   <el-form-item label="场景封面">
-                    <image-uploader :key='6' :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+                    <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
                   </el-form-item>
                   <el-form-item label="场景图册列表" class="pictureList">
                     <transition-group name="fade">
@@ -159,7 +156,7 @@
                             <el-input v-model='list.description' type='textarea'></el-input>
                           </el-form-item>
                           <el-form-item label="图片/视频">
-                            <image-uploader :key='7' :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                            <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
                           </el-form-item>
                         </div>
                       </el-card>

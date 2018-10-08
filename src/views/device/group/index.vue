@@ -60,7 +60,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[50, 100, 150, 200]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="list.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[2,3,4,5]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
       <create-dialog :visible.sync="createDialogVisible" @add-data='addData'></create-dialog>
       <edit-dialog :visible.sync="editDialogVisible" @update-data='updateData' :data='editingData'></edit-dialog>
@@ -122,7 +122,7 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList, deleteOneTeam, queryTeamById } from '@/api/device/team'
+import { queryTeamList,queryTeamCount, deleteOneTeam, queryTeamById } from '@/api/device/team'
 import axios from 'axios'
 
 export default {
@@ -147,10 +147,11 @@ export default {
         teamType: true
       },
       query: {
-        limit: 100,
+        limit:10,
         page: 1
       },
-      selectionTable: []
+      selectionTable: [],
+      total: 0
     }
   },
   computed: {
@@ -171,7 +172,14 @@ export default {
     },
     queryTeamList() {
       queryTeamList(this.query).then(res => {
-        this.list = res.data
+        this.list = res.data.filter(item => item.status === 1)
+        console.log(this.list)
+      })
+    },
+    queryTeamCount() {
+      queryTeamCount().then(res => {
+        console.log(res.data)
+        this.total = res.data
       })
     },
     showEditRoleDialog(data) {
@@ -225,6 +233,7 @@ export default {
     }
   },
   created() {
+    this.queryTeamCount()
     this.queryTeamList()
     const url = 'http://www.hcocloud.com:8887/huankeadmin/api/device/upload'
     axios

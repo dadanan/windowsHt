@@ -52,7 +52,7 @@
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible" :deviceModelData="list" @add-data='addData'></create-config-dialog>
-    <edit-config-dialog :data='editingData' :deviceModelData="list" :visible.sync="editConfigDialogVisible"></edit-config-dialog>
+    <edit-config-dialog :data='editingData' @update-data='updateData' :deviceModelData="list" :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
         <el-form-item>
@@ -170,6 +170,13 @@ export default {
     },
     addData(data) {
       this.list.unshift(data)
+    },
+    updateData(data) {
+      this.list.map(item => {
+        if (item.id === data.id) {
+          Object.assign(item, data)
+        }
+      })
     },
     showEditDialog(data) {
       this.editConfigDialogVisible = true

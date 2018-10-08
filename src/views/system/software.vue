@@ -125,7 +125,7 @@ export default {
         })
     },
     updateData(data) {
-      console.log(123, data)
+      // console.log(123, data)
       this.softwareList.forEach((item, index) => {
         if (item.id === data.id) {
           this.softwareList.splice(index, 1, data)
@@ -138,6 +138,7 @@ export default {
         page: 1
       }).then(res => {
         this.softwareList = res.data
+        console.log(this.softwareList)
       })
     },
      handleSizeChange(val) {

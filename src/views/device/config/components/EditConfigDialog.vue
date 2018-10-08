@@ -345,7 +345,7 @@ export default {
       // return
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
-        this.$emit('add-data', {
+        this.$emit('update-data', {
           ...form,
           id: res.data
         })

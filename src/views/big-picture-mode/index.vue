@@ -234,6 +234,10 @@
                     <div class="bdp-sprite bdp-sprite--laba"></div>
                     <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
                   </div>
+                  <div class="bdp-message-list__item">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -813,10 +817,17 @@
   import DeviceTypeDialog from './compoments/DeviceTypeDialog'
   import DeviceDialog from './compoments/DeviceDialog'
   import UserDialog from './compoments/UserDialog'
+  import {selectCustomerUserCount,selectTypePercent,selectDeviceCount} from '@/api/big-picture-mode/bigPictureMode'
 
   export default {
     data() {
       return {
+        userCount: [],
+        addCount: [],
+        addPercent: [],
+        devAddPercent: [],
+        deviceCount: [],
+        devAddCount:[],
         showProjectDropdown: false,
         deviceDataChartOptions: {
           color: ['#ff6600', '#2797fa'],
@@ -866,8 +877,8 @@
               type: 'value',
               name: '设备数量',
               min: 0,
-              max: 1500,
-              interval: 300,
+              max: 50,
+              interval:10,
               axisLine: {
                 lineStyle: {
                   color: '#fff'
@@ -886,8 +897,8 @@
               type: 'value',
               name: '增长率',
               min: 0,
-              max: 100,
-              interval: 20,
+              max: 600,
+              interval: 50,
               axisLabel: {
                 formatter: '{value}%'
               },
@@ -922,7 +933,7 @@
                   )
                 }
               },
-              data: [10, 100, 258, 400, 984, 52, 14, 23, 90, 1000, 1254, 1500]
+              data: []
             },
             {
               name: '增长率',
@@ -930,7 +941,7 @@
               yAxisIndex: 1,
               smooth: true,
               showSymbol: false,
-              data: [10, 20, 50, 25, 73, 87, 64, 41, 50, 69, 100, 1],
+              data: [],
               lineStyle: {
                 color: {
                   type: 'linear',
@@ -997,8 +1008,8 @@
               type: 'value',
               name: '用户数量',
               min: 0,
-              max: 1500,
-              interval: 300,
+              max: 50,
+              interval: 10,
               axisLine: {
                 lineStyle: {
                   color: '#fff'
@@ -1017,8 +1028,8 @@
               type: 'value',
               name: '增长率',
               min: 0,
-              max: 100,
-              interval: 20,
+              max: 500,
+              interval: 50,
               axisLabel: {
                 formatter: '{value}%'
               },
@@ -1053,7 +1064,7 @@
                   )
                 }
               },
-              data: [10, 100, 258, 400, 984, 52, 14, 23, 90, 1000, 1254, 1500]
+              data:[]
             },
             {
               name: '增长率',
@@ -1061,7 +1072,7 @@
               yAxisIndex: 1,
               smooth: true,
               showSymbol: false,
-              data: [10, 20, 50, 25, 73, 87, 64, 41, 50, 69, 100, 1],
+              data: [],
               lineStyle: {
                 color: {
                   type: 'linear',
@@ -1109,7 +1120,8 @@
               label: { formatter: '{d}%', color: '#fff' },
               data: [
                 {
-                  value: 58, name: '设备类型1',
+                  value: 90, 
+                  name: '设备类型1',
                   itemStyle: {
                     color: {
                       type: 'linear',
@@ -1127,7 +1139,8 @@
                   }
                 },
                 {
-                  value: 10, name: '设备类型2',
+                  value: 10,
+                  name: '设备类型2',
                   itemStyle: {
                     color: {
                       type: 'linear',
@@ -1139,42 +1152,6 @@
                         offset: 0, color: '#ace296' // 0% 处的颜色
                       }, {
                         offset: 1, color: '#23a400' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 12, name: '设备类型3',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ffd500' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#ff6b00' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 20, name: '设备类型4',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ba9af0' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#7035d1' // 100% 处的颜色
                       }],
                       globalCoord: false // 缺省为 false
                     }
@@ -1406,6 +1383,44 @@
           screenfull.exit()
         }
       },
+      selectCustomerUserCount() {
+        selectCustomerUserCount().then(res => {
+          for(let i= 0;i<res.data.length;i++){
+            this.addCount.push(res.data[i].addCount)
+            if(res.data[i].addPercent === "--"){
+              this.addPercent.push(0)
+            }else{
+              this.addPercent.push((res.data[i].addPercent).substring(0,3))
+            }
+            this.userCount.push(res.data[i].userCount)
+          }
+          this.userDataChartOptions.series[0].data = this.userCount
+          this.userDataChartOptions.series[1].data = this.addPercent
+        })
+      },
+      selectDeviceCount() {
+        selectDeviceCount().then(res => {
+          for(let i= 0;i<res.data.length;i++){
+            this.devAddCount.push(res.data[i].addCount)
+            if(res.data[i].addPercent === "--"){
+              this.devAddPercent.push(0)
+            }else{
+              this.devAddPercent.push((res.data[i].addPercent).substring(0,3))
+            }
+            this.deviceCount.push(res.data[i].deviceCount)
+          }
+          this.deviceDataChartOptions.series[0].data = this.deviceCount
+          this.deviceDataChartOptions.series[1].data = this.devAddPercent
+        })
+      },
+      selectTypePercent() {
+        selectTypePercent().then(res => {
+          for(let i = 0; i<res.data.length;i++){
+            this.deviceTypeChartOptions.series[0].data[i].value = (res.data[i].typePercent).substring(0,3)
+            this.deviceTypeChartOptions.series[0].data[i].name = (res.data[i].typeName)
+          }
+        })
+      },
       handleShowProjectDropdown() {
         this.showProjectDropdown = !this.showProjectDropdown
       },
@@ -1415,6 +1430,11 @@
       handleProject() {
         this.$router.push({ name: 'big-picture-mode-project' })
       }
+    },
+    created() {
+      this.selectCustomerUserCount()
+      this.selectTypePercent()
+      this.selectDeviceCount()
     }
   }
 </script>

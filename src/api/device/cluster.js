@@ -8,7 +8,6 @@ export function queryGroupByPage(data) {
     data
   })
 }
-
 // 根据id查询集群详情
 export function queryGroupById(id) {
   return request({

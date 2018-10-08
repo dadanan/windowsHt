@@ -63,7 +63,7 @@ export default {
     return {
       loading: true,
       list: [],
-      total: 0,
+      total: 1,
       listQuery: { limit: 100, page: 1 },
       permissionListMap: { r: '可读', w: '可写' },
       configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
@@ -101,17 +101,17 @@ export default {
       this.loading = true
       fetchList(this.listQuery).then(res => {
         this.list = res.data
-        this.total = res.data.length
+        // this.total = res.data.length
         this.loading = false
       })
     },
     handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
+      // this.listQuery.limit = val
+      // this.getList()
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
+      // this.listQuery.page = val
+      // this.getList()
     },
     deleteFunction(id) {
       this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {

@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function addNewGroupAndDevice(data) {
+export function addOrUpdateGroupAndDevice(data) {
   return request({
-    url: '/temp/api/deviceGroup/addNewGroupAndDevice',
+    url: '/temp/api/deviceGroup/addOrUpdateGroupAndDevice',
     method: 'post',
     data
   })
