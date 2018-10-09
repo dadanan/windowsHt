@@ -10,17 +10,17 @@
           <el-step title="管理后台设置"></el-step>
         </el-steps>
         <div v-if="createStep == 1">
-          <el-form label-position="left" label-width="150px">
-            <el-form-item label="客户名称">
+          <el-form label-position="left" label-width="150px" :model='baseInfo' :rules='rules' ref='baseInfo' >
+            <el-form-item label="客户名称" prop='userName'>
               <el-input v-model="baseInfo.name"></el-input>
             </el-form-item>
-            <el-form-item label="公众号名称">
+            <el-form-item label="公众号名称" prop='publicName'>
               <el-input v-model="baseInfo.publicName"></el-input>
             </el-form-item>
-            <el-form-item label="APP ID">
+            <el-form-item label="APP ID" prop='appid'>
               <el-input v-model="baseInfo.appid"></el-input>
             </el-form-item>
-            <el-form-item label="APP Secret">
+            <el-form-item label="APP Secret" prop='appsecret'>
               <el-input v-model="baseInfo.appsecret"></el-input>
             </el-form-item>
             <el-form-item label="客户类型">
@@ -227,6 +227,24 @@ export default {
   },
   data() {
     return {
+      rules: {
+        userName: [
+          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        publicName: [
+          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+          { required: true, message: '请输入公众号名称', trigger: 'blur' }
+        ],
+        appid: [
+          { min: 1, max: 20, message: '最长为20个字符', trigger: 'blur' },
+          {required: true,message: '请输入appid',trigger: 'blur'}
+        ],
+        appsecret: [
+          { min: 1, max: 33, message: '最长为50个字符', trigger: 'blur' },
+          {required: true,message: '请输入appsecret',trigger: 'blur'}
+        ]
+      },
       baseInfo: {
         name: '',
         publicName: '',

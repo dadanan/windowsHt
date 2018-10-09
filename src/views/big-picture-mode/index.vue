@@ -1,24 +1,7 @@
 <template>
   <div class="bdp">
     <div class="bdp__container">
-      <vue-particles
-        color="#dedede"
-        :particleOpacity="0.7"
-        :particlesNumber="80"
-        shapeType="circle"
-        :particleSize="4"
-        linesColor="#dedede"
-        :linesWidth="1"
-        :lineLinked="true"
-        :lineOpacity="0.4"
-        :linesDistance="150"
-        :moveSpeed="3"
-        :hoverEffect="true"
-        hoverMode="grab"
-        :clickEffect="true"
-        clickMode="push"
-        class="bdp-effect"
-      >
+      <vue-particles color="#dedede" :particleOpacity="0.7" :particlesNumber="80" shapeType="circle" :particleSize="4" linesColor="#dedede" :linesWidth="1" :lineLinked="true" :lineOpacity="0.4" :linesDistance="150" :moveSpeed="3" :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push" class="bdp-effect">
       </vue-particles>
       <div class="bdp__title">
         <div class="bdp-sprite bdp-sprite--back bdp-back" @click="back">
@@ -48,8 +31,7 @@
                           <div class="bdp-weather__text2">2018-07-07 13:28 周三</div>
                         </div>
                         <div>
-                          <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span
-                            class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
+                          <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
                           <div class="bdp-weather__text6 bdp-weather__mb2">湿度: 53%</div>
                           <div class="bdp-weather__text6">PM2.5: 58ug/m3</div>
                         </div>
@@ -143,6 +125,7 @@
                   <div class="bdp-sprite bdp-sprite--cog" @click="handleShowProjectDropdown"></div>
                   <div class="project-dropdown" :class="{ 'show': showProjectDropdown }">
                     <span>设置</span>
+                    <span>添加案例</span>
                     <span>设备分析</span>
                     <span>用户分析</span>
                     <span>订单分析</span>
@@ -150,8 +133,14 @@
                   </div>
                 </div>
               </div>
-              <div class="bdp__panel-body">
+              <div class="bdp__panel-body advertisement">
                 <div class="bdp-project-list">
+                  <div class="bdp-project-list__item" @click="handleProject">
+                    <div class="bdp-project-list__item__img">
+                      <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
+                    </div>
+                    <div class="bdp-project-list__item__text">龙湖一期</div>
+                  </div>
                   <div class="bdp-project-list__item" @click="handleProject">
                     <div class="bdp-project-list__item__img">
                       <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
@@ -335,478 +324,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .project-dropdown {
-    display: none;
-    position: absolute;
-    top: 34px;
-    right: 0;
-    flex-direction: column;
-    background-color: rgba(0, 0, 0, .5);
-    border: 1px solid #0a4e7f;
-    font-weight: normal;
-    text-align: center;
-    width: 150px;
-
-    &.show {
-      display: flex;
-    }
-    span {
-      line-height: 40px;
-      padding: 0 40px;
-      font-size: 15px;
-      border-bottom: 1px solid #0a4e7f;
-      cursor: pointer;
-      &:hover {
-        color: #008dff;
-      }
-    }
-    span:nth-child(1) {
-      font-size: 20px;
-      cursor: unset;
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
-
-  .bdp-effect {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 5px;
-  }
-
-  .bdp-map-full {
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 63px;
-  }
-
-  .bdp-map-cog {
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-
-  .bdp-map-back {
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-  }
-
-  .bdp-back {
-    text-indent: 18px;
-    color: #fff;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    top: 6px;
-    left: 30px;
-    position: relative;
-  }
-
-  .bdp-count {
-    background: url("/static/images/bdp_count_bg.png");
-    width: 417px;
-    height: 75px;
-    position: absolute;
-    top: 55px;
-    left: 0;
-    right: 0;
-    margin: auto;
-
-    &__text1 {
-      font-size: 16px;
-      font-family: "Microsoft YaHei";
-      color: rgb(255, 255, 255);
-      margin-bottom: 5px;
-    }
-
-    &__text2, &__text3 {
-      font-size: 25px;
-      font-family: "Microsoft YaHei";
-      color: rgb(91, 255, 232);
-      font-weight: bold;
-    }
-
-    &__text3 {
-      color: #ffc600;
-    }
-  }
-
-  .bdp-message-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    &__item {
-      display: flex;
-      /*justify-content: center;*/
-      align-items: center;
-      font-size: 12px;
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-      line-height: 2.5;
-      white-space: nowrap;
-      .bdp-sprite {
-        margin-right: 15px;
-      }
-
-      &__text {
-        flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-
-  .bdp-solution-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    height: 100%;
-    &__item {
-      cursor: pointer;
-      flex: 25%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      &__img {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      &__text {
-        text-align: center;
-        font-size: 12px;
-        font-family: "Microsoft YaHei", serif;
-        color: rgb(0, 180, 255);
-        margin-top: 5px;
-      }
-    }
-  }
-
-  .bdp-project-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    height: 100%;
-    &__item {
-      cursor: pointer;
-      &__img {
-        width: 172px;
-        height: 87px;
-        background-size: 100%, 100%;
-        background: rgba(2, 177, 252, 0.26) url("/static/images/bdp_project_item_panel.png") no-repeat;
-        padding: 8px;
-
-        img {
-          display: block;
-          height: 100%;
-          width: 100%;
-        }
-      }
-      &__text {
-        margin-top: 5px;
-        font-size: 14px;
-        font-family: "Microsoft YaHei", serif;
-        color: rgb(255, 255, 255);
-        text-align: center;
-      }
-    }
-  }
-
-  .bdp {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1002;
-    overflow: auto;
-
-    &__container {
-      width: 1920px;
-      height: 1080px;
-      background: url("/static/images/bdp_topbar.png") no-repeat, url("/static/images/bdp_bg.jpg") no-repeat;
-      background-size: 100%, 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    &__title {
-      height: 85px;
-      position: relative;
-    }
-
-    &__panel {
-      width: 452px;
-      height: 222px;
-      background: url("/static/images/bdp_panel.png") no-repeat;
-      background-size: 100% 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__panel-body {
-      padding: 15px;
-      flex: 1;
-
-      &--mini {
-        padding: 5px;
-      }
-
-      &--medium {
-        padding: 10px;
-      }
-    }
-
-    &__map-panel {
-      width: 852px;
-      background: url("/static/images/bdp_map_panel.png") no-repeat;
-      background-size: 100%;
-      height: 630px;
-      position: relative;
-    }
-
-    &__project-panel {
-      width: 852px;
-      height: 292px;
-      background: url("/static/images/bdp_project_panel.png") no-repeat;
-      background-size: 100% 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__panel-title {
-      position: relative;
-      height: 39px;
-      line-height: 39px;
-      font-size: 18px;
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      &__text {
-        text-align: center;
-        width: 170px;
-      }
-
-      &__opt {
-        position: relative;
-        margin-right: 10px;
-        align-items: center;
-        display: flex;
-
-        & > * {
-          cursor: pointer;
-        }
-      }
-    }
-
-    &__content {
-      padding: 10px 30px 36px;
-      flex: 1;
-      position: relative;
-    }
-
-    &__row {
-      display: flex;
-      justify-content: space-between;
-      height: 100%;
-    }
-
-    &__col {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  }
-
-  .bdp-weather {
-    height: 100%;
-
-    &__text1 {
-      font-size: 18px;
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-    }
-
-    &__text2 {
-      font-size: 14px;
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(0, 180, 255);
-    }
-
-    &__text6 {
-      font-size: 14px;
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-    }
-
-    &__mb1 {
-      margin-bottom: 10px;
-    }
-
-    &__mb2 {
-      margin-bottom: 15px;
-    }
-
-    &__mr1 {
-      margin-right: 10px;
-    }
-
-    &__text3 {
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-      font-size: 42px;
-    }
-
-    &__text4 {
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-      font-size: 14px;
-    }
-
-    &__text5 {
-      font-family: "Microsoft YaHei", serif;
-      color: rgb(255, 255, 255);
-      font-size: 14px;
-    }
-
-    &__text7 {
-      display: inline-block;
-      text-align: center;
-      padding-top: 2px;
-    }
-
-    &__pos {
-      margin-right: 15px;
-    }
-  }
-
-  .bdp-sprite {
-    background-image: url("/static/images/bdp_sprite.png");
-
-    &--cog {
-      background-position: -84px -59px;
-      width: 22px;
-      height: 22px;
-    }
-
-    &--sun {
-      background-position: -201px -122px;
-      width: 96px;
-      height: 96px;
-    }
-
-    &--pos {
-      background-position: -145px -55px;
-      width: 19px;
-      height: 26px;
-    }
-
-    &--bad {
-      background-position: -1px -102px;
-      width: 52px;
-      height: 20px;
-    }
-
-    &--iconbg {
-      background-position: -210px -49px;
-      width: 59px;
-      height: 59px;
-    }
-
-    &--bieshu {
-      background-position: -1px -3px;
-      width: 35px;
-      height: 34px;
-    }
-
-    &--dafang {
-      background-position: -51px -2px;
-      width: 35px;
-      height: 35px;
-    }
-
-    &--jujia {
-      background-position: -101px -8px;
-      width: 37px;
-      height: 29px;
-    }
-
-    &--bangong {
-      background-position: -153px -4px;
-      width: 33px;
-      height: 33px;
-    }
-
-    &--xuexiao {
-      background-position: -300px 0;
-      width: 37px;
-      height: 37px;
-    }
-
-    &--yiyuan {
-      background-position: -250px -2px;
-      width: 35px;
-      height: 35px;
-    }
-
-    &--shangchang {
-      background-position: -201px -2px;
-      width: 34px;
-      height: 35px;
-    }
-
-    &--zhantin {
-      background-position: -352px -3px;
-      width: 33px;
-      height: 34px;
-    }
-
-    &--laba {
-      background-position: -179px -62px;
-      width: 16px;
-      height: 14px;
-    }
-
-    &--back {
-      background-position: 0 -142px;
-      width: 131px;
-      height: 42px;
-    }
-
-    &--full {
-      background-position: -46px -58px;
-      width: 23px;
-      height: 23px;
-    }
-
-    &--backbtn {
-      background-position: -7px -57px;
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .bdp-chart {
-    height: 100%;
-    width: 100%;
-  }
-</style>
 
 <script>
   import echarts from 'echarts'
@@ -1439,3 +956,492 @@
   }
 </script>
 
+<style lang="scss" scoped>
+.project-dropdown {
+  display: none;
+  position: absolute;
+  top: 34px;
+  right: 0;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid #0a4e7f;
+  font-weight: normal;
+  text-align: center;
+  width: 150px;
+
+  &.show {
+    display: flex;
+  }
+  span {
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    border-bottom: 1px solid #0a4e7f;
+    cursor: pointer;
+    &:hover {
+      color: #008dff;
+    }
+  }
+  span:nth-child(1) {
+    font-size: 20px;
+    cursor: unset;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.bdp-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5px;
+}
+
+.bdp-map-full {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 63px;
+}
+
+.bdp-map-cog {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.bdp-map-back {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.bdp-back {
+  text-indent: 18px;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  top: 6px;
+  left: 30px;
+  position: relative;
+}
+
+.bdp-count {
+  background: url('/static/images/bdp_count_bg.png');
+  width: 417px;
+  height: 75px;
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  &__text1 {
+    font-size: 16px;
+    font-family: 'Microsoft YaHei';
+    color: rgb(255, 255, 255);
+    margin-bottom: 5px;
+  }
+
+  &__text2,
+  &__text3 {
+    font-size: 25px;
+    font-family: 'Microsoft YaHei';
+    color: rgb(91, 255, 232);
+    font-weight: bold;
+  }
+
+  &__text3 {
+    color: #ffc600;
+  }
+}
+
+.bdp-message-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  &__item {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    font-size: 12px;
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+    line-height: 2.5;
+    white-space: nowrap;
+    .bdp-sprite {
+      margin-right: 15px;
+    }
+
+    &__text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.bdp-solution-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  height: 100%;
+  &__item {
+    cursor: pointer;
+    flex: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &__img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &__text {
+      text-align: center;
+      font-size: 12px;
+      font-family: 'Microsoft YaHei', serif;
+      color: rgb(0, 180, 255);
+      margin-top: 5px;
+    }
+  }
+}
+
+.advertisement {
+  height: 253px;
+}
+
+.bdp-project-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  height: 100%;
+  overflow: auto;
+  &__item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    &__img {
+      width: 172px;
+      height: 82px;
+      background-size: 100%, 100%;
+      background: rgba(2, 177, 252, 0.26)
+        url('/static/images/bdp_project_item_panel.png') no-repeat;
+      padding: 8px;
+
+      img {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    &__text {
+      margin-top: 5px;
+      font-size: 14px;
+      font-family: 'Microsoft YaHei', serif;
+      color: rgb(255, 255, 255);
+      text-align: center;
+    }
+  }
+}
+
+.bdp {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1002;
+  overflow: auto;
+  /* 滚动条 */
+  ::-webkit-scrollbar-thumb:horizontal {
+    /*水平滚动条的样式*/
+    width: 0px;
+  }
+  ::-webkit-scrollbar {
+    width: 2px; /*滚动条的宽度*/
+  }
+  ::-webkit-scrollbar-thumb:vertical {
+    /*垂直滚动条的样式*/
+    -webkit-border-radius: 4px;
+    outline-offset: -2px;
+    border: 2px solid #0b2a57;
+  }
+
+  &__container {
+    width: 1920px;
+    height: 1080px;
+    background: url('/static/images/bdp_topbar.png') no-repeat,
+      url('/static/images/bdp_bg.jpg') no-repeat;
+    background-size: 100%, 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  &__title {
+    height: 85px;
+    position: relative;
+  }
+
+  &__panel {
+    width: 452px;
+    height: 222px;
+    background: url('/static/images/bdp_panel.png') no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__panel-body {
+    padding: 15px;
+    flex: 1;
+
+    &--mini {
+      padding: 5px;
+    }
+
+    &--medium {
+      padding: 10px;
+    }
+  }
+
+  &__map-panel {
+    width: 852px;
+    background: url('/static/images/bdp_map_panel.png') no-repeat;
+    background-size: 100%;
+    height: 630px;
+    position: relative;
+  }
+
+  &__project-panel {
+    width: 852px;
+    height: 292px;
+    background: url('/static/images/bdp_project_panel.png') no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__panel-title {
+    position: relative;
+    height: 39px;
+    line-height: 39px;
+    font-size: 18px;
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    &__text {
+      text-align: center;
+      width: 170px;
+    }
+
+    &__opt {
+      position: relative;
+      margin-right: 10px;
+      align-items: center;
+      display: flex;
+
+      & > * {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__content {
+    padding: 10px 30px 36px;
+    flex: 1;
+    position: relative;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.bdp-weather {
+  height: 100%;
+
+  &__text1 {
+    font-size: 18px;
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+  }
+
+  &__text2 {
+    font-size: 14px;
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(0, 180, 255);
+  }
+
+  &__text6 {
+    font-size: 14px;
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+  }
+
+  &__mb1 {
+    margin-bottom: 10px;
+  }
+
+  &__mb2 {
+    margin-bottom: 15px;
+  }
+
+  &__mr1 {
+    margin-right: 10px;
+  }
+
+  &__text3 {
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+    font-size: 42px;
+  }
+
+  &__text4 {
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+  }
+
+  &__text5 {
+    font-family: 'Microsoft YaHei', serif;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+  }
+
+  &__text7 {
+    display: inline-block;
+    text-align: center;
+    padding-top: 2px;
+  }
+
+  &__pos {
+    margin-right: 15px;
+  }
+}
+
+.bdp-sprite {
+  background-image: url('/static/images/bdp_sprite.png');
+
+  &--cog {
+    background-position: -84px -59px;
+    width: 22px;
+    height: 22px;
+  }
+
+  &--sun {
+    background-position: -201px -122px;
+    width: 96px;
+    height: 96px;
+  }
+
+  &--pos {
+    background-position: -145px -55px;
+    width: 19px;
+    height: 26px;
+  }
+
+  &--bad {
+    background-position: -1px -102px;
+    width: 52px;
+    height: 20px;
+  }
+
+  &--iconbg {
+    background-position: -210px -49px;
+    width: 59px;
+    height: 59px;
+  }
+
+  &--bieshu {
+    background-position: -1px -3px;
+    width: 35px;
+    height: 34px;
+  }
+
+  &--dafang {
+    background-position: -51px -2px;
+    width: 35px;
+    height: 35px;
+  }
+
+  &--jujia {
+    background-position: -101px -8px;
+    width: 37px;
+    height: 29px;
+  }
+
+  &--bangong {
+    background-position: -153px -4px;
+    width: 33px;
+    height: 33px;
+  }
+
+  &--xuexiao {
+    background-position: -300px 0;
+    width: 37px;
+    height: 37px;
+  }
+
+  &--yiyuan {
+    background-position: -250px -2px;
+    width: 35px;
+    height: 35px;
+  }
+
+  &--shangchang {
+    background-position: -201px -2px;
+    width: 34px;
+    height: 35px;
+  }
+
+  &--zhantin {
+    background-position: -352px -3px;
+    width: 33px;
+    height: 34px;
+  }
+
+  &--laba {
+    background-position: -179px -62px;
+    width: 16px;
+    height: 14px;
+  }
+
+  &--back {
+    background-position: 0 -142px;
+    width: 131px;
+    height: 42px;
+  }
+
+  &--full {
+    background-position: -46px -58px;
+    width: 23px;
+    height: 23px;
+  }
+}
+
+.bdp-chart {
+  height: 100%;
+  width: 100%;
+}
+</style>

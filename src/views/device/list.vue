@@ -130,7 +130,7 @@
           </template>
         </el-table-column>
       </el-table>
-     <el-pagination :current-page="query.page" :page-sizes="[50, 100, 150, 200]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+     <el-pagination :current-page="query.page" :page-sizes="[2,4,6,8]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -308,8 +308,9 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 100,
-        page: 1
+        limit: 2,
+        page: 1,
+        status: 1
       },
       total: 1,
       detailData: {},
@@ -328,8 +329,8 @@ export default {
         list = list.filter(item => item.status !== 2)
       }
       if (!this.showDeviceAllocate) {
-        // 如果不显示分配设备，返回状态不等于 0 的
-        list = list.filter(item => item.assignStatus !== 0)
+        // 如果不显示分配设备，返回状态不等于 1 的
+        list = list.filter(item => item.assignStatus !== 1)
       }
       return list
     }
@@ -363,6 +364,7 @@ export default {
     getList() {
       getList(this.query)
         .then(res => {
+          console.log(res.data)
           res.data &&
             res.data.forEach(item => {
               item['childDeviceList'] = []
@@ -377,6 +379,7 @@ export default {
       queryCount().then(res => {
         if (res.code === 200 && res.data) {
           this.total = res.data
+          console.log(this.total)
         } else {
           this.$message.error(res.msg)
         }

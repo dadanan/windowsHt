@@ -41,6 +41,9 @@ export default {
     showFileList: {
       type: Boolean,
       default: true
+    },
+    urls: {
+      type: Array
     }
   },
   data() {
@@ -59,6 +62,13 @@ export default {
     }
   },
   methods: {
+    getName(url) {
+      if (!url) {
+        return ''
+      }
+      const match = url.match('aliyuncs.com/(.*)')
+      return match ? match[1] : ''
+    },
     beforeUpload(file) {
       this.$emit('before-upload', file)
 
@@ -103,6 +113,17 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    }
+  },
+  watch: {
+    urls(val) {
+      this.fileList = val.map(data => {
+        return {
+          videoUrl: data.video,
+          url: canvas.toDataURL('image/png'),
+          name: this.getName(data.video)
+        }
+      })
     }
   }
 }
