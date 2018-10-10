@@ -31,6 +31,11 @@
               </el-table-column>
               <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
               </el-table-column>
+              <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+                <template slot-scope="scope">
+                  {{scope.row.assignStatus === 1 ? '已分配' : '未分配'}}
+                </template>
+              </el-table-column>
               <el-table-column label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
                 <template slot-scope="scope">
                   {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
@@ -55,9 +60,15 @@
               </el-table-column>
               <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
               </el-table-column>
-              <el-table-column prop="createTime" label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.createTime">
+              <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+                <template slot-scope="scope">
+                  {{new Date(scope.row.birthTime).toLocaleString()}}
+                </template>
               </el-table-column>
-              <el-table-column prop="lastUpdateTime" label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+              <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+                <template slot-scope="scope">
+                  {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+                </template>
               </el-table-column>
               <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
               </el-table-column>
@@ -79,6 +90,11 @@
         <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.customerName">
         </el-table-column>
         <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
+        </el-table-column>
+        <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+          <template slot-scope="scope">
+            {{scope.row.assignStatus === 1 ? '已分配' : '未分配'}}
+          </template>
         </el-table-column>
         <el-table-column label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
           <template slot-scope="scope">
@@ -104,13 +120,17 @@
         </el-table-column>
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
-        <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
-        </el-table-column>
         <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
         </el-table-column>
-        <el-table-column prop="createTime" label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.createTime">
+        <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+          <template slot-scope="scope">
+            {{new Date(scope.row.birthTime).toLocaleString()}}
+          </template>
         </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+        <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+          <template slot-scope="scope">
+            {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+          </template>
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
         </el-table-column>
@@ -152,6 +172,9 @@
           <el-checkbox v-model="deviceColumnVisible.typeId">类型</el-checkbox>
         </el-form-item>
         <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.assignStatus">绑定状态</el-checkbox>
+        </el-form-item>
+        <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -167,13 +190,10 @@
           <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
-        </el-form-item>
-        <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelName">设备型号名称</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.createTime">注册时间</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.birthTime">注册时间</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.lastUpdateTime">最后上线时间</el-checkbox>
@@ -278,6 +298,7 @@ export default {
         mac: true,
         customerName: true,
         deviceType: true,
+        assignStatus: true,
         bindStatus: true,
         enableStatus: true,
         groupId: true,
@@ -285,9 +306,8 @@ export default {
         workStatus: true,
         onlineStatus: true,
         typeId: false,
-        modelId: false,
         modelName: false,
-        createTime: false,
+        birthTime: false,
         lastUpdateTime: false,
         bindCustomer: false,
         location: false
@@ -363,6 +383,7 @@ export default {
     addData(data) {
       const list = data.deviceList
       list.forEach(item => {
+        item.assignStatus = 0
         item.bindStatus = 0
         item.enableStatus = 0
         item.groupId = -1
