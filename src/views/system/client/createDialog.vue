@@ -11,7 +11,7 @@
         </el-steps>
         <div v-if="createStep == 1">
           <el-form label-position="left" label-width="150px" :model='baseInfo' :rules='rules' ref='baseInfo' >
-            <el-form-item label="客户名称" prop='userName'>
+            <el-form-item label="客户名称" prop='name'>
               <el-input v-model="baseInfo.name"></el-input>
             </el-form-item>
             <el-form-item label="公众号名称" prop='publicName'>
@@ -73,11 +73,11 @@
           </el-pagination>
         </div>
         <div v-else-if="createStep == 3">
-          <el-form label-position="left" label-width="150px">
-            <el-form-item label="默认组名">
+          <el-form label-position="left" label-width="150px" :model='h5Config' :rules='rules' ref='h5Config'>
+            <el-form-item label="默认组名"  prop='defaultTeamName'>
               <el-input v-model="h5Config.defaultTeamName"></el-input>
             </el-form-item>
-            <el-form-item label="高级设置密码">
+            <el-form-item label="高级设置密码" prop='password'>
               <el-input type="text" v-model="h5Config.password"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
@@ -88,7 +88,7 @@
                 <el-checkbox v-for='item in pageFormatList' :label='item.id' :key='item.id'>{{item.name}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="名称">
+            <el-form-item label="名称" prop='themeName'>
               <el-input v-model="h5Config.themeName"></el-input>
             </el-form-item>
             <el-form-item label="Logo">
@@ -228,8 +228,8 @@ export default {
   data() {
     return {
       rules: {
-        userName: [
-          { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
+        name: [
+          { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         publicName: [
@@ -243,6 +243,22 @@ export default {
         appsecret: [
           { min: 1, max: 33, message: '最长为50个字符', trigger: 'blur' },
           {required: true,message: '请输入appsecret',trigger: 'blur'}
+        ],
+        userType: [
+          { min: 1, max: 33, message: '最长为50个字符', trigger: 'blur' },
+          {required: true,message: '请选择客户类型',trigger: 'blur'}
+        ],
+        defaultTeamName :[
+          { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
+          { required: true, message: '请输入默认组名', trigger: 'blur' }
+        ],
+        password: [
+          { max: 40, message: '最长为40个字符', trigger: 'blur' },
+          {required: true,message: '请输入密码',trigger: 'blur'}
+        ],
+        themeName: [
+          { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
+          { required: true, message: '请输入名称', trigger: 'blur' }
         ]
       },
       baseInfo: {

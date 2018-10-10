@@ -63,9 +63,9 @@ export function queryTeamById(id) {
   })
 }
 // 获取设备组的总数
-export function queryTeamCount(data) {
+export function queryTeamCount(id) {
   return request({
-    url: '/temp/api/team/queryTeamCount',
+    url: `/temp/api/team/queryTeamCount/${id}`,
     method: 'get',
   })
 }

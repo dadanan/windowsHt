@@ -4,14 +4,14 @@ import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
 let loading
-function startLoading() {
+const startLoading = () =>{
   loading = Loading.service({
     lock: true,
     text: '加载中……',
     background: 'rgba(0, 0, 0, 0.7)'
   })
 }
-function endLoading() {
+const endLoading = ()=>{
   loading.close()
 }
 

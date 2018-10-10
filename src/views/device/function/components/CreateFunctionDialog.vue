@@ -1,17 +1,17 @@
 <template>
   <el-dialog top='4vh' :close-on-click-modal=false title="添加功能" :visible="visible" @update:visible="$emit('update:visible', $event)">
-    <el-form label-width="100px" class="mb-22">
-      <el-form-item label="名称">
+    <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
+      <el-form-item label="名称" prop="abilityName">
         <el-input v-model="form.abilityName"></el-input>
       </el-form-item>
-      <el-form-item label="指令">
+      <el-form-item label="指令" prop="dirValue">
         <el-input v-model="form.dirValue"></el-input>
       </el-form-item>
       <el-form-item label="运行状态">
         <el-radio v-model="form.runStatus" :label="1">可运行</el-radio>
         <el-radio v-model="form.runStatus" :label="0">不可运行</el-radio>
       </el-form-item>
-      <el-form-item label="备注">
+      <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>
       <el-form-item label="读写权限">
@@ -69,8 +69,8 @@
       </template>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="createHandler">确定</el-button>
+      <el-button @click="resetForm('form')">取消</el-button>
+      <el-button type="primary" @click="submitForm('form')">确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -120,7 +120,21 @@ export default {
           label: '阈值选择类',
           value: 5
         }
-      ]
+      ],
+      rules: {
+        abilityName: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
+        ],
+        dirValue: [
+          { required: true, message: '请输入指令', trigger: 'blur' },
+          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
+        ],
+        remark: [
+          { required: false, message: '请添加备注', trigger: 'blur' },
+          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -133,6 +147,19 @@ export default {
         })
         this.$emit('update:visible', false)
       })
+    },
+    submitForm(formName) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.createHandler()
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm(formName) { //清空表单里面的数据
+      this.$refs[formName].resetFields();
+      this.$emit('update:visible', false)
     },
     handlePermissionListChange(permissions) {
       if (permissions.some(el => el === 'w')) {

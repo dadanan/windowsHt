@@ -130,7 +130,7 @@
           </template>
         </el-table-column>
       </el-table>
-     <el-pagination :current-page="query.page" :page-sizes="[2,4,6,8]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+     <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -197,7 +197,7 @@
       </el-form>
       <el-form label-width="100px" label-location="left">
         <el-form-item label="已删除设备">
-          <el-radio-group v-model='showDeviceDeleted'>
+          <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedChange">
             <el-radio :label="true">显示</el-radio>
             <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
@@ -308,9 +308,9 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 2,
+        limit: 10,
         page: 1,
-        status: 1
+        status: 1,
       },
       total: 1,
       detailData: {},
@@ -324,10 +324,6 @@ export default {
   computed: {
     computeDeviceList() {
       let list = this.deviceList
-      if (!this.showDeviceDeleted) {
-        // 如果不显示删除设备，返回状态不等于 2 的
-        list = list.filter(item => item.status !== 2)
-      }
       if (!this.showDeviceAllocate) {
         // 如果不显示分配设备，返回状态不等于 1 的
         list = list.filter(item => item.assignStatus !== 1)
@@ -343,6 +339,7 @@ export default {
       ) {
         return
       }
+      console.log(data.id)
       this.queryChildDevice(data.id, data)
     },
     queryChildDevice(id, data) {
@@ -350,6 +347,15 @@ export default {
         // 把获取到的从设备数据添加到主设备数据中
         data.childDeviceList = res.data
       })
+    },
+    showDeviceDeletedChange(data){
+      if (!this.showDeviceDeleted) {
+        this.query.status = 1
+      }else{
+        this.query.status = 2
+      }
+      this.getList()
+      this.queryCount()
     },
     showDetail(data) {
       this.deviceDetailDialogVisible = true
@@ -363,26 +369,16 @@ export default {
     },
     getList() {
       getList(this.query)
-        .then(res => {
-          console.log(res.data)
-          res.data &&
-            res.data.forEach(item => {
-              item['childDeviceList'] = []
-            })
-          this.deviceList = res.data || []
+        .then( res => {
+          this.deviceList = res.data
         })
         .catch(err => {
           console.log('err', err)
         })
     },
     queryCount() {
-      queryCount().then(res => {
-        if (res.code === 200 && res.data) {
-          this.total = res.data
-          console.log(this.total)
-        } else {
-          this.$message.error(res.msg)
-        }
+      queryCount(this.query.status).then(res => {
+        this.total = res.data
       })
     },
     handleSizeChange(val) {
@@ -493,9 +489,16 @@ export default {
       })
     },
     // 绑定
-    handleDeviceBind() {
+    // handleDeviceBind() {
+    //   this.isOperable().then(_ => {
+    //     this.deviceBindDialogVisible = true
+    //   })
+    // },
+     handleDeviceBind() {
       this.isOperable().then(_ => {
-        this.deviceBindDialogVisible = true
+        this.assignStatus().then(_ => {
+          this.deviceBindDialogVisible = true
+        })
       })
     },
     // 解绑
@@ -510,6 +513,28 @@ export default {
           resolve()
         } else {
           this.$message.warning('请选择设备后再进行操作')
+        }
+      })
+    },
+    assignStatusList(){
+      if (this.selectedDeviceList.length) {
+        const ass = []
+        for(let i = 0;i<this.selectedDeviceList.length;i++){
+          ass.push(this.selectedDeviceList[i].assignStatus)
+        }
+        if(ass.indexOf("0")){
+          return true
+        }else{
+          return false
+        }
+      }
+    },
+    assignStatus() {
+      return new Promise(resolve => {
+       if(!this.assignStatusList()){
+          resolve()
+        } else {
+          this.$message.warning('选中的设备中有未分配设备，请重新操作')
         }
       })
     }

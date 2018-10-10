@@ -1,7 +1,7 @@
 <template>
   <el-dialog top='4vh' :close-on-click-modal=false title="添加设备组" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
-      <el-form label-width="100px" class="mb-22">
+      <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
         <el-form-item label="组名" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
@@ -57,7 +57,7 @@
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click='createNewTeam'>确定</el-button>
+      <el-button type="primary" @click='submitForm("form")'>确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -89,6 +89,19 @@ export default {
         createUserOpenId: '',
         teamIcon: '',
         teamCover: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入组名', trigger: 'blur' },
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+        ],
+        createUserOpenId: [
+          { required: true, message: '请输入创建人OpenID', trigger: 'blur' },
+          { min: 3, max: 50, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+        ],
+        sceneDescription: [
+          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+        ]
       },
       teamDeviceCreateRequestList: [],
       query: {
@@ -138,6 +151,15 @@ export default {
     },
     newRow() {
       this.teamDeviceCreateRequestList.push({})
+    },
+    submitForm(formName) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.createNewTeam()
+        } else {
+          return false;
+        }
+      });
     },
     createNewTeam() {
       this.teamDeviceCreateRequestList.forEach(item => {

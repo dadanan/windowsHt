@@ -123,7 +123,8 @@ export function exportDeviceData(data) {
 // 获取设备总数
 export function queryCount(data) {
   return request({
-    url: '/temp/api/device/queryCount',
-    method: 'get'
+    url: `/temp/api/device/queryCount/${data}`,
+    method: 'post',
+    data
   })
 }

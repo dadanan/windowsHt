@@ -48,7 +48,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[1, 2, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible" :deviceModelData="list" @add-data='addData'></create-config-dialog>
@@ -118,7 +118,8 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 100
+        limit: 2,
+        status: 1
       },
       createConfigDialogVisible: false,
       editConfigDialogVisible: false,
@@ -217,11 +218,12 @@ export default {
         })
     },
     getList() {
-      this.loading = true
+      // this.loading = true
       select(this.listQuery).then(res => {
+        console.log(res.data)
         this.list = res.data
         this.total = this.list.length
-        this.loading = false
+        // this.loading = false
       })
     },
     selectById(id) {

@@ -14,8 +14,8 @@
         </el-table>
       </el-col>
       <el-col :span="12">
-        <el-form label-width="100px" class="mb-22" label-position="left">
-          <el-form-item label="客户">
+        <el-form label-width="100px" class="mb-22" label-position="left" :model="allocateForm" :rules="rules" ref="allocateForm" >
+          <el-form-item label="客户" prop="customerId">
             <el-select v-model="allocateForm.customerId" @change='customerChanged' style="width: 100%">
               <el-option v-for='item in clientList' :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
@@ -23,7 +23,7 @@
           <el-form-item label="APP ID">
             <el-input v-model="allocateForm.appid" disabled></el-input>
           </el-form-item>
-          <el-form-item label="产品型号">
+          <el-form-item label="产品型号" prop="modelId">
             <el-select @change='modelChanged' v-model="allocateForm.modelId" style="width: 100%">
               <el-option v-for='item in modelList' :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
@@ -38,9 +38,9 @@
       </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="allocatePart">分配选中项</el-button>
-      <el-button type="primary" @click="allocateAll">分配全部</el-button>
+      <el-button @click="resetForm('allocateForm')">取消</el-button>
+      <el-button type="primary" @click="submitForm('allocateForm','1')">分配选中项</el-button>
+      <el-button type="primary" @click="submitForm('allocateForm','2')">分配全部</el-button>
     </div>
   </el-dialog>
 </template>
@@ -75,6 +75,14 @@ export default {
       listQuery: {
         page: 1,
         limit: 100
+      },
+      rules: {
+        customerId: [
+          { required: true, message: '请选择客户', trigger: 'change' }
+        ],
+        modelId: [
+          { required: true, message: '请选择产品型号', trigger: 'change' }
+        ]
       }
     }
   },
@@ -87,6 +95,23 @@ export default {
       const customer = this.clientList.filter(item => item.id === id)[0]
       this.allocateForm.appid = customer.appid
       this.selectModelsByTypeIds(customer.typeIds)
+    },
+    submitForm(formName,id) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if(id == 1){
+            this.allocatePart()
+          }else{
+            this.allocateAll()
+          }
+        } else {
+          return false
+        }
+      });
+    },
+    resetForm(formName) { //清空表单里面的数据
+      this.$emit('update:visible', false)
+      this.$refs[formName].resetFields()
     },
     selectModelsByTypeIds(typeIds) {
       selectModelsByTypeIds(typeIds).then(res => {

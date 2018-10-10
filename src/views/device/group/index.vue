@@ -172,12 +172,10 @@ export default {
     queryTeamList() {
       queryTeamList(this.query).then(res => {
         this.list = res.data.filter(item => item.status === 1)
-        // console.log(this.list)
       })
     },
     queryTeamCount() {
-      queryTeamCount().then(res => {
-        // console.log(res.data)
+      queryTeamCount(this.query.status).then(res => {
         this.total = res.data
       })
     },
