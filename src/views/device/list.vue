@@ -504,7 +504,7 @@ export default {
   },
   created() {
     this.getList()
-    this.queryCount()
+    // this.queryCount()
   }
 }
 </script>
