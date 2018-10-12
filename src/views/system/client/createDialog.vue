@@ -23,7 +23,7 @@
             <el-form-item label="APP Secret" prop='appsecret'>
               <el-input v-model="baseInfo.appsecret"></el-input>
             </el-form-item>
-            <el-form-item label="客户类型">
+            <el-form-item label="客户类型" prop="userType">
               <el-select v-model="baseInfo.userType">
                 <el-option label="厂家" value="1"></el-option>
                 <el-option label="品牌商" value="2"></el-option>
@@ -83,7 +83,7 @@
             <el-form-item label="背景图片">
               <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
-            <el-form-item label="页面版式">
+            <el-form-item label="页面版式" prop="htmlTypeIds">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
                 <el-checkbox v-for='item in pageFormatList' :label='item.id' :key='item.id'>{{item.name}}</el-checkbox>
               </el-checkbox-group>
@@ -94,7 +94,7 @@
             <el-form-item label="Logo">
               <image-uploader :key='2' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
             </el-form-item>
-            <el-form-item label="H5 版本">
+            <el-form-item label="H5 版本" prop="version">
               <el-select v-model="h5Config.version">
                 <el-option label="版本 1" value="1"></el-option>
                 <el-option label="版本 2" value="2"></el-option>
@@ -104,8 +104,8 @@
           </el-form>
         </div>
         <div v-else-if="createStep == 4">
-          <el-form label-position="left" label-width="150px">
-            <el-form-item label="APP 名称">
+          <el-form label-position="left" label-width="150px" :model='androidConfig' :rules='rules' ref='androidConfig'>
+            <el-form-item label="APP 名称" prop="name">
               <el-input v-model='androidConfig.name'></el-input>
             </el-form-item>
             <el-form-item label="APP Logo">
@@ -114,13 +114,13 @@
             <el-form-item label="客户公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
-            <el-form-item label="APP 软件版本">
+            <el-form-item label="APP 软件版本" prop="version">
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
             <el-form-item label="APP安装包">
               <file-uploader format='apk'></file-uploader>
             </el-form-item>
-            <el-form-item label="设备切换密码">
+            <el-form-item label="设备切换密码" prop = "deviceChangePassword">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
             </el-form-item>
             <el-form-item label="安卓场景">
@@ -168,21 +168,21 @@
           </el-form>
         </div>
         <div v-else>
-          <el-form label-position="left" label-width="150px">
+          <el-form label-position="left" label-width="150px" :model='backendConfig' :rules='rules' ref='backendConfig'>
             <el-form-item label="开放">
               <el-switch v-model='backendConfig.enableStatus'></el-switch>
             </el-form-item>
             <el-form-item label="Logo">
               <image-uploader :key='5' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
             </el-form-item>
-            <el-form-item label="名称">
+            <el-form-item label="名称" prop="name">
               <el-input v-model='backendConfig.name'></el-input>
             </el-form-item>
             <!-- 用户名和二级域名传参数时 放在baseInfo里 -->
-            <el-form-item label="超级管理员用户名">
+            <el-form-item label="超级管理员用户名" prop="loginName">
               <el-input v-model='baseInfo.loginName'></el-input>
             </el-form-item>
-            <el-form-item label="二级域名">
+            <el-form-item label="二级域名" prop="sld">
               <div class='sld-inside'>
                 <div class='sld-input'>
                   <el-input v-model='baseInfo.sld'></el-input>
@@ -245,8 +245,8 @@ export default {
           {required: true,message: '请输入appsecret',trigger: 'blur'}
         ],
         userType: [
-          { min: 1, max: 33, message: '最长为50个字符', trigger: 'blur' },
-          {required: true,message: '请选择客户类型',trigger: 'blur'}
+          { min: 1, max: 33, message: '最长为50个字符', trigger: 'change' },
+          {required: true,message: '请选择客户类型',trigger: 'change'}
         ],
         defaultTeamName :[
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
@@ -259,6 +259,16 @@ export default {
         themeName: [
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
           { required: true, message: '请输入名称', trigger: 'blur' }
+        ],
+        htmlTypeIds: [
+          { required: true, message: '请选择页面版式', trigger: 'change' }
+        ],
+        version: [
+          { required: false, message: '请选择H5版本', trigger: 'change' },
+        ],
+        deviceChangePassword: [
+          { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
+          { required: true, message: '请输入设备切换密码', trigger: 'blur' }
         ]
       },
       baseInfo: {
@@ -333,12 +343,41 @@ export default {
       this.createStep--
     },
     nextStep() {
-      this.createStep++
-
+      if(this.createStep == 1){
+        this.submitForm("baseInfo")
+      }else if(this.createStep == 2){
+        if(this.selectedDeviceList.length>0){
+          this.createStep++
+        }else{
+          this.$message.warning('请选择设备类型后再进行操作')
+        }
+      }else if(this.createStep == 3){
+        this.submitForm('h5Config')
+      }else if(this.createStep == 4){
+        this.submitForm('androidConfig')
+      }
       if (this.createStep === 6) {
         this.isCreateClientDialogVisible = false
         this.createStep = 1
       }
+    },
+    submitForm(formName) { //判断表单验证
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+           this.createStep++
+        } else {
+          return false;
+        }
+      });
+    },
+    subForm(formName) { //判断表单验证
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+           this.createStep++
+        } else {
+          return false;
+        }
+      });
     },
     getList() {
       fetchList(this.listQuery).then(response => {

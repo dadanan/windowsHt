@@ -9,34 +9,20 @@
                 <el-form-item label="名称">
                   <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="型号ID">
-                  <el-input v-model="form.modelId" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="型号名">
-                  <el-input v-model="form.modelName" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="设备类型ID">
-                  <el-input v-model="form.typeId" disabled></el-input>
+                <el-form-item label="MAC">
+                  <el-input v-model="form.mac" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="设备归属">
                   <el-input v-model="form.customerName" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="MAC">
-                  <el-input v-model="form.mac" disabled></el-input>
+                <el-form-item label="分配状态">
+                  {{form.assignStatus === 1 ? '已分配' : '未分配'}}
                 </el-form-item>
                 <el-form-item label="绑定状态">
                   {{form.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </el-form-item>
                 <el-form-item label="启用状态">
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="托管状态">
-                  <el-input v-model="placeholder" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="集群ID">
-                  <el-input v-model="form.groupId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="集群名">
                   <el-input v-model="form.groupName" disabled></el-input>
@@ -47,8 +33,22 @@
                 <el-form-item label="工作状态">
                   {{form.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
                 </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="型号ID">
+                  <el-input v-model="form.modelId" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="设备型号名称">
+                  <el-input v-model="form.modelName" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="设备类型ID">
+                  <el-input v-model="form.typeId" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="集群ID">
+                  <el-input v-model="form.groupId" disabled></el-input>
+                </el-form-item>
                 <el-form-item label="注册时间">
-                  {{new Date(form.createTime).toLocaleString()}}
+                  {{new Date(form.birthTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="最后上线时间">
                   {{new Date(form.lastUpdateTime).toLocaleString()}}
@@ -66,12 +66,7 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
-        <el-button-group>
-          <el-button type="primary">集群</el-button>
-          <el-button type="primary">群控</el-button>
-          <el-button type="primary">分享</el-button>
-          <el-button type="primary">授权管理</el-button>
-        </el-button-group>
+        <operation></operation>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList">
@@ -180,6 +175,8 @@
 </template>
 
 <script>
+import Operation from './deviceDetail/Operation'
+
 export default {
   props: {
     visible: {
@@ -202,6 +199,9 @@ export default {
     detailData(val) {
       this.form = JSON.parse(JSON.stringify(val))
     }
+  },
+  components: {
+    Operation
   }
 }
 </script>
