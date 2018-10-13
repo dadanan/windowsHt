@@ -255,7 +255,6 @@ import {
   getList,
   deleteOneDevice,
   queryChildDevice,
-  queryCount
 } from '@/api/device/list'
 
 export default {
@@ -371,15 +370,7 @@ export default {
           console.log('err', err)
         })
     },
-    queryCount() {
-      queryCount().then(res => {
-        if (res.code === 200 && res.data) {
-          this.total = res.data
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
+  
     addData(data) {
       const list = data.deviceList
       list.forEach(item => {
@@ -504,7 +495,6 @@ export default {
   },
   created() {
     this.getList()
-    // this.queryCount()
   }
 }
 </script>

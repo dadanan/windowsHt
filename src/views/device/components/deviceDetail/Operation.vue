@@ -6,7 +6,7 @@
       <el-button type="primary">分享</el-button>
       <el-button type="primary">授权管理</el-button>
     </el-button-group>
-    <el-table :data="abilitysList" style="width: 100%" class="mb20" border>
+    <!-- <el-table :data="abilitysList" style="width: 100%" class="mb20" border>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="name" label="从设备名称" show-overflow-tooltip sortable>
       </el-table-column>
@@ -19,7 +19,7 @@
           {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
   </div>
 </template>
 <script>

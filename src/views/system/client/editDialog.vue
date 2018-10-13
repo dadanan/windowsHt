@@ -25,9 +25,9 @@
             </el-form-item>
             <el-form-item label="客户类型">
               <el-select v-model="baseInfo.userType">
-                <el-option label="厂家" value="1"></el-option>
-                <el-option label="品牌商" value="2"></el-option>
-                <el-option label=" 工程商" value="3"></el-option>
+                <el-option label="厂家" :value="1"></el-option>
+                <el-option label="品牌商" :value="2"></el-option>
+                <el-option label=" 工程商" :value="3"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="备注">

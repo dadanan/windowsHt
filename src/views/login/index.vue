@@ -8,7 +8,7 @@
             <img v-else src="/static/images/logo.svg" alt="logo">
           </div>
           <div v-if='siteName' class="login-header__title">{{siteName}}</div>
-          <div class="login-header__title">环可后台管理</div>
+          <div v-else class="login-header__title">环可后台管理</div>
         </div>
         <el-form-item prop="username">
           <span class="svg-container svg-container_login">
