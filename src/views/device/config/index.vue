@@ -3,12 +3,13 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <!-- <el-button type="primary" @click="isClientColumnVisibleDialogVisible = true">自定义</el-button> -->
+          <el-button type="primary" icon="el-icon-plus" @click="handleDeviceCopy">复制型号</el-button>
           <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加
           </el-button>
         </el-button-group>
       </div>
-      <el-table :data="list" v-loading.body="loading" class="mb20" border>
+      <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
+        <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
@@ -107,8 +108,10 @@ import {
   select,
   selectById,
   deleteModelById,
-  createWxDeviceIds
+  createWxDeviceIds,
+  createDeviceModel
 } from '@/api/device/model'
+import { selectById as selectFormatById } from '@/api/format'
 
 export default {
   data() {
@@ -137,12 +140,91 @@ export default {
         isAndroidEnabled: false,
         use: false
       },
-      editingData: {}
+      editingData: {},
+      selectedDeviceList: [],
+      copyVisible: false
     }
   },
   methods: {
+    createModel(data) {
+      const form = JSON.parse(JSON.stringify(data))
+
+      form.deviceModelFormat = data.modelFormatVo
+      delete form.modelFormatVo
+
+      createDeviceModel(data).then(res => {
+        this.addData({
+          ...data,
+          id: res.data
+        })
+
+        const formatId = data.deviceModelFormat.modelFormatPages[0].formatId
+        if (!Number.isInteger(formatId)) {
+          return
+        }
+
+        selectFormatById(formatId).then(response => {
+          if (!Number.isInteger(data.customerId)) {
+            return
+          }
+
+          this.$alert(
+            `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${
+              response.data.htmlUrl
+            }?customerId=${data.customerId}`,
+            '预览地址',
+            {
+              confirmButtonText: '确定'
+            }
+          )
+        })
+      })
+    },
+    handleDeviceCopy() {
+      if (this.selectedDeviceList.length === 0) {
+        this.$message.warning('请选择设备后再进行操作！')
+        return
+      }
+      if (this.selectedDeviceList.length > 1) {
+        this.$message.warning('只能选择一个设备！')
+        return
+      }
+
+      this.$prompt('请输入型号的ProductID', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[0-9]*$/,
+        inputErrorMessage: '请输入数字'
+      })
+        .then(({ value }) => {
+          const number = value.trim()
+          if (!number) {
+            this.$message({
+              type: 'error',
+              message: '请输入型号的ProductID'
+            })
+            return
+          }
+
+          // 查询，创建新的型号
+          selectById(this.selectedDeviceList[0].id).then(res => {
+            const data = res.data
+            data.productId = number
+            delete data.id
+            this.createModel(data)
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+    },
     createWxDeviceIds(data) {
-      console.log('da', data)
       this.$prompt('请输入数字', 'DeviceID 配额', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

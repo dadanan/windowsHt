@@ -119,11 +119,6 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <!-- <el-table-column label="描述">
-              <template slot-scope="scope">
-                <el-input v-model='scope.row.remark'></el-input>
-              </template>
-            </el-table-column> -->
             <el-table-column label="是否显示" show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
@@ -176,12 +171,12 @@
             <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
-            <el-input v-model="option.minVal" placeholder="最小值"></el-input>
-            <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+            <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
+            <el-input v-model="option.minVal" placeholder="最大值"></el-input>
             <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
         </el-form-item>
@@ -197,6 +192,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
+
 import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
@@ -228,6 +224,7 @@ export default {
         showStatus: true,
         devicePoolCount: ''
       },
+      createFunctionDialogVisible: false,
       childModelIds: [],
       formatId: '',
       formatSelectedList: [], // 用户可选择的总版式列表
@@ -346,10 +343,8 @@ export default {
           modelFormatPages
         }
       }
-      // form.deviceModelFormat = form.modelFormatVo
+      
       delete form.modelFormatVo
-      // console.log('form', form)
-      // return
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('update-data', {
@@ -364,7 +359,7 @@ export default {
         )
 
         this.$alert(
-          `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
+          `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${
             formatSelected[0].htmlUrl
           }?customerId=${this.form.customerId}`,
           '预览地址',
@@ -421,6 +416,7 @@ export default {
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
+      console.log('modifyData', data)
       this.modifyData = data
     },
     handleCustomerChange(id) {

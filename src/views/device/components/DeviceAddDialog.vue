@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="birthTime" label="注册时间" show-overflow-tooltip sortable>
+        <el-table-column prop='birthTime' label="注册时间" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="hardVersion" label="硬件版本" show-overflow-tooltip sortable>
         </el-table-column>
@@ -96,11 +96,13 @@ export default {
   },
   methods: {
     createDevice() {
-      this.deviceList.forEach(item => {
+      const tempDeviceList = JSON.parse(JSON.stringify(this.deviceList))
+      
+      tempDeviceList.forEach(item => {
         item.birthTime = new Date().valueOf()
       })
       const form = {
-        deviceList: this.deviceList
+        deviceList: tempDeviceList
       }
       createDevice(form)
         .then(res => {
