@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" icon="el-icon-plus" @click="handleDeviceCopy">复制型号</el-button>
+          <!-- <el-button type="primary" icon="el-icon-plus" @click="handleDeviceCopy">复制型号</el-button> -->
           <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加
           </el-button>
         </el-button-group>
@@ -168,10 +168,12 @@ export default {
             return
           }
 
+          let url = `${response.data.htmlUrl}?customerId=${data.customerId}`
+          const domain = window.origin.match('://(.*).hcocloud.com')[1]
+          url = url.replace('://pro', '://' + domain)
+
           this.$alert(
-            `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${
-              response.data.htmlUrl
-            }?customerId=${data.customerId}`,
+            `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${url}`,
             '预览地址',
             {
               confirmButtonText: '确定'
