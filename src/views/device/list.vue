@@ -56,11 +56,11 @@
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
                 </template>
               </el-table-column>
-              <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+              <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
                 <template slot-scope="scope">
                   {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
               </el-table-column>
               <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -122,11 +122,11 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
-         <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+         <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
           <template slot-scope="scope">
             {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
         <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -393,6 +393,7 @@ export default {
       getList(this.query)
         .then( res => {
           this.deviceList = res.data
+          // console.log(this.deviceList)
         })
         .catch(err => {
           console.log('err', err)

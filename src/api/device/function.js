@@ -30,3 +30,10 @@ export function updateDeviceAbility(data) {
     data
   })
 }
+// 设备功能管理总数
+export function selectCount(data) {
+  return request({
+    url: `/temp/api/deviceAbility/select/${data}`,
+    method: 'post'
+  })
+}

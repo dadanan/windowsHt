@@ -6,7 +6,7 @@
       <el-button type="primary">分享</el-button>
       <el-button type="primary">授权管理</el-button>
     </el-button-group>
-    <el-table :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
+    <!-- <el-table :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="name" label="从设备名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
       </el-table-column>
@@ -55,7 +55,7 @@
           <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
   </div>
 </template>
 <script>
@@ -65,5 +65,6 @@ export default {
   created() {
     console.log(abilitysList, formatItemsList)
   }
+
 }
 </script>

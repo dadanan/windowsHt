@@ -6,7 +6,7 @@
       <el-step title="硬件功能项"></el-step>
       <el-step title="版式配置"></el-step>
     </el-steps>
-    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules = "rules" ref="form">
+    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
       <el-form-item label="客户" prop="customerId">
         <el-select v-model="form.customerId" @change="handleCustomerChange">
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
@@ -18,6 +18,10 @@
           <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
+      </el-form-item>
+      <!-- 客服 -->
+      <el-form-item label="联系客服">
+        <el-input v-model="form.customer"></el-input>
       </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
@@ -42,8 +46,8 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step === 2' label-width="100px" class="mb-22" :model="form" :rules = "rules" ref="form">
-      <el-form-item label="ProductID" prop="ProductID">
+    <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
+      <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
@@ -90,53 +94,52 @@
       <template v-for='item in pageOfForamt'>
         <el-card class='box-card' :key='item.id'>
           <el-form-item label='页面预览'>
-            <img class='format-page-img'
-                 :src='item.showImg'>
+            <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-            <el-form-item :label=' "页序 - " + item.pageNo '>
-              <el-radio-group v-model="item.showStatus">
-                <el-radio :label="true">显示</el-radio>
-                <el-radio :label="false">不显示</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label='页面名称'>
-              {{item.name}}
-            </el-form-item>
-            <d-title>配置页面功能项</d-title>
-            <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
-              <el-table-column type="index" label='标号 ' width="50"></el-table-column>
-              <el-table-column label="显示名称">
-                <template slot-scope="scope">
-                  <el-input v-model='scope.row.showName'></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="功能类型(标签)">
-                <template slot-scope="scope">
-                  {{typeModel[scope.row.abilityType]}}
-                </template>
-              </el-table-column>
-              <!-- <el-table-column label="描述">
+          <el-form-item :label=' "页序 - " + item.pageNo '>
+            <el-radio-group v-model="item.showStatus">
+              <el-radio :label="true">显示</el-radio>
+              <el-radio :label="false">不显示</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label='页面名称'>
+            {{item.name}}
+          </el-form-item>
+          <d-title>配置页面功能项</d-title>
+          <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
+            <el-table-column type="index" label='标号 ' width="50"></el-table-column>
+            <el-table-column label="显示名称">
+              <template slot-scope="scope">
+                <el-input v-model='scope.row.showName'></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="功能类型(标签)">
+              <template slot-scope="scope">
+                {{typeModel[scope.row.abilityType]}}
+              </template>
+            </el-table-column>
+            <!-- <el-table-column label="描述">
               <template slot-scope="scope">
                 <el-input v-model='scope.row.remark'></el-input>
               </template>
             </el-table-column> -->
-              <el-table-column label="是否显示" show-overflow-tooltip>
-                <template slot-scope="scope">
-                  <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
-                  </el-switch>
-                </template>
-              </el-table-column>
-              <el-table-column label="挑选功能项">
-                <template slot-scope="scope">
-                  <el-select v-model="scope.row.abilityId">
-                    <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.definedName" :value="iItem.abilityId" :key='iItem.id'>
-                    </el-option>
-                    <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.abilityName" :value="iItem.abilityId" :key='iItem.id'>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-            </el-table>
+            <el-table-column label="是否显示" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="挑选功能项">
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.abilityId">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.definedName" :value="iItem.abilityId" :key='iItem.id'>
+                  </el-option>
+                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.abilityName" :value="iItem.abilityId" :key='iItem.id'>
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </template>
     </el-form>
@@ -213,7 +216,8 @@ export default {
         customerId: '',
         showStatus: true,
         productQrCode: '',
-        productId: ''
+        productId: '',
+        customer:''
       },
       childModelIds: [],
       formatId: '',
@@ -267,12 +271,8 @@ export default {
         ],
         typeId: [
           { required: true, message: '请选择设备类型', trigger: 'change' }
-        ],
-        ProductID: [
-          { required: true, message: '请输入ProductID',trigger:"blur"},
-          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
         ]
-      },
+      }
     }
   },
   methods: {
@@ -402,27 +402,21 @@ export default {
     },
     nextStep() {
       console.log(this.step)
-      if(this.step == 1){
+      if (this.step == 1) {
         this.submitForm('form')
-      }else if (this.step == 2) {
-        this.submitForm('form')
-        this.step == 2
-        console.log(222)
-        // this.selectFormatsByCustomerId()
-      }
-      // if (this.step++ > 3) this.step = 0
+      } else if (this.step === 2) {
+        this.selectFormatsByCustomerId()
+        this.step++
+      } else if (this.step++ > 3) this.step = 0
     },
     submitForm(formName) {
-      console.log(formName)
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          this.selectFormatsByCustomerId()
           this.step++
         } else {
-          // console.log('error submit!!');
-          return false;
+          return false
         }
-      });
+      })
     },
     getModelList() {
       getTypeList({

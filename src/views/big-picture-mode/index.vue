@@ -326,500 +326,93 @@
 
 
 <script>
-  import echarts from 'echarts'
-  import ChartDeviceMap from './compoments/ChartDeviceMap2'
-  import * as screenfull from 'screenfull'
-  import SelectLocationDialog from './compoments/SelectLocationDialog'
-  import AlarmDialog from './compoments/AlarmDialog'
-  import DeviceTypeDialog from './compoments/DeviceTypeDialog'
-  import DeviceDialog from './compoments/DeviceDialog'
-  import UserDialog from './compoments/UserDialog'
-  import {selectCustomerUserCount,selectTypePercent,selectDeviceCount} from '@/api/big-picture-mode/bigPictureMode'
+import echarts from 'echarts'
+import ChartDeviceMap from './compoments/ChartDeviceMap2'
+import * as screenfull from 'screenfull'
+import SelectLocationDialog from './compoments/SelectLocationDialog'
+import AlarmDialog from './compoments/AlarmDialog'
+import DeviceTypeDialog from './compoments/DeviceTypeDialog'
+import DeviceDialog from './compoments/DeviceDialog'
+import UserDialog from './compoments/UserDialog'
+import {
+  selectCustomerUserCount,
+  selectTypePercent,
+  selectDeviceCount
+} from '@/api/big-picture-mode/bigPictureMode'
 
-  export default {
-    data() {
-      return {
-        userCount: [],
-        addCount: [],
-        addPercent: [],
-        devAddPercent: [],
-        deviceCount: [],
-        devAddCount:[],
-        showProjectDropdown: false,
-        deviceDataChartOptions: {
-          color: ['#ff6600', '#2797fa'],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross'
-            }
-          },
-          legend: {
-            textStyle: {
-              color: '#fff'
-            }
-          },
-          grid: {
-            // show: false
-            left: 0,
-            top: '28px',
-            right: 0,
-            bottom: 0,
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisLabel: {
-                interval: 0
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            }
-          ],
-          yAxis: [
-            {
-              splitLine: { show: false },
-              type: 'value',
-              name: '设备数量',
-              min: 0,
-              max: 50,
-              interval:10,
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            },
-            {
-              splitLine: { show: false },
-              type: 'value',
-              name: '增长率',
-              min: 0,
-              max: 600,
-              interval: 50,
-              axisLabel: {
-                formatter: '{value}%'
-              },
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            }
-          ],
-          series: [
-            {
-              name: '设备数量',
-              type: 'bar',
-              barWidth: '50%',
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                      { offset: 0, color: '#2797fa' },
-                      // {offset: 0.5, color: '#188df0'},
-                      { offset: 1, color: '#6f47d2' }
-                    ]
-                  )
-                }
-              },
-              data: []
-            },
-            {
-              name: '增长率',
-              type: 'line',
-              yAxisIndex: 1,
-              smooth: true,
-              showSymbol: false,
-              data: [],
-              lineStyle: {
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 1,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: '#ff6600' // 0% 处的颜色
-                  }, {
-                    offset: 1, color: '#f6e40c' // 100% 处的颜色
-                  }],
-                  globalCoord: false // 缺省为 false
-                }
-              }
-            }
-          ]
+export default {
+  data() {
+    return {
+      userCount: [],
+      addCount: [],
+      addPercent: [],
+      devAddPercent: [],
+      deviceCount: [],
+      devAddCount: [],
+      showProjectDropdown: false,
+      deviceDataChartOptions: {
+        color: ['#ff6600', '#2797fa'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
         },
-        userDataChartOptions: {
-          color: ['#ff6600', '#2797fa'],
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross'
-            }
-          },
-          legend: {
-            textStyle: {
-              color: '#fff'
-            }
-          },
-          grid: {
-            // show: false
-            left: 0,
-            top: '28px',
-            right: 0,
-            bottom: 0,
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisLabel: {
-                interval: 0
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            }
-          ],
-          yAxis: [
-            {
-              splitLine: { show: false },
-              type: 'value',
-              name: '用户数量',
-              min: 0,
-              max: 50,
-              interval: 10,
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            },
-            {
-              splitLine: { show: false },
-              type: 'value',
-              name: '增长率',
-              min: 0,
-              max: 500,
-              interval: 50,
-              axisLabel: {
-                formatter: '{value}%'
-              },
-              axisLine: {
-                lineStyle: {
-                  color: '#fff'
-                }
-              },
-              axisPointer: {
-                label: {
-                  color: '#fff',
-                  backgroundColor: '#333',
-                  shadowColor: 'transparent'
-                }
-              }
-            }
-          ],
-          series: [
-            {
-              name: '用户数量',
-              type: 'bar',
-              barWidth: '50%',
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                      { offset: 0, color: '#69f0cd' },
-                      // {offset: 0.5, color: '#188df0'},
-                      { offset: 1, color: '#1ca3f9' }
-                    ]
-                  )
-                }
-              },
-              data:[]
-            },
-            {
-              name: '增长率',
-              type: 'line',
-              yAxisIndex: 1,
-              smooth: true,
-              showSymbol: false,
-              data: [],
-              lineStyle: {
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 1,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: '#ff6600' // 0% 处的颜色
-                  }, {
-                    offset: 1, color: '#f6e40c' // 100% 处的颜色
-                  }],
-                  globalCoord: false // 缺省为 false
-                }
-              }
-            }
-          ]
+        legend: {
+          textStyle: {
+            color: '#fff'
+          }
         },
-        deviceTypeChartOptions: {
-          legend: {
-            orient: 'vertical',
-            right: 10,
-            top: 20,
-            bottom: 20,
-            textStyle: {
-              color: '#fff'
-            }
-          },
-          tooltip: {
-            formatter: '{b}: {c} ({d}%)'
-          },
-          grid: {
-            // show: false
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            containLabel: true
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: ['50%', '70%'],
-              center: ['40%', '50%'],
-              label: { formatter: '{d}%', color: '#fff' },
-              data: [
-                {
-                  value: 90, 
-                  name: '设备类型1',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#1fa6f7' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#5ee5d3' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 10,
-                  name: '设备类型2',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ace296' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#23a400' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                }
-              ]
-            }
-          ]
+        grid: {
+          // show: false
+          left: 0,
+          top: '28px',
+          right: 0,
+          bottom: 0,
+          containLabel: true
         },
-        alarmInfoChartOptions: {
-          legend: {
-            orient: 'vertical',
-            right: 10,
-            top: 20,
-            bottom: 20,
-            textStyle: {
-              color: '#fff'
-            }
-          },
-          tooltip: {
-            formatter: '{b}: {c} ({d}%)'
-          },
-          grid: {
-            // show: false
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            containLabel: true
-          },
-          series: [
-            {
-              type: 'pie',
-              radius: ['50%', '70%'],
-              center: ['40%', '50%'],
-              label: { formatter: '{d}%', color: '#fff' },
-              data: [
-                {
-                  value: 58, name: '已处理',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#1fa6f7' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#5ee5d3' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 10, name: '处理中',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ace296' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#23a400' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 12, name: '待处理',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ffd500' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#ff6b00' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 20, name: '其他',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ba9af0' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#7035d1' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        fixInfoChartOptions: {
-          legend: {
-            textStyle: {
-              color: '#fff'
-            }
-          },
-          grid: {
-            // show: false
-            left: 0,
-            top: '28px',
-            right: 0,
-            bottom: 0,
-            containLabel: true
-          },
-          tooltip: {},
-          dataset: {
-            dimensions: ['月份', '软件升级', '滤芯维护', '传感器校准'],
-            source: [
-              { '月份': '1月', '软件升级': 10, '滤芯维护': 45, '传感器校准': 93 },
-              { '月份': '2月', '软件升级': 23, '滤芯维护': 53, '传感器校准': 80 },
-              { '月份': '3月', '软件升级': 12, '滤芯维护': 60, '传感器校准': 82 },
-              { '月份': '4月', '软件升级': 21, '滤芯维护': 33, '传感器校准': 70 },
-              { '月份': '5月', '软件升级': 7, '滤芯维护': 12, '传感器校准': 50 },
-              { '月份': '6月', '软件升级': 2, '滤芯维护': 98, '传感器校准': 31 }
-            ]
-          },
-          xAxis: {
+        xAxis: [
+          {
             type: 'category',
+            data: [
+              '1月',
+              '2月',
+              '3月',
+              '4月',
+              '5月',
+              '6月',
+              '7月',
+              '8月',
+              '9月',
+              '10月',
+              '11月',
+              '12月'
+            ],
             axisLine: {
               lineStyle: {
                 color: '#fff'
               }
+            },
+            axisLabel: {
+              interval: 0
+            },
+            axisPointer: {
+              label: {
+                color: '#fff',
+                backgroundColor: '#333',
+                shadowColor: 'transparent'
+              }
             }
-          },
-          yAxis: {
+          }
+        ],
+        yAxis: [
+          {
             splitLine: { show: false },
             type: 'value',
-            name: '次数',
+            name: '设备数量',
+            min: 0,
+            max: 50,
+            interval: 10,
             axisLine: {
               lineStyle: {
                 color: '#fff'
@@ -833,127 +426,596 @@
               }
             }
           },
-          series: [
-            {
-              type: 'bar',
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                      { offset: 0, color: '#1ba1fa' },
-                      { offset: 1, color: '#69f0cd' }
-                    ]
-                  )
-                }
+          {
+            splitLine: { show: false },
+            type: 'value',
+            name: '增长率',
+            min: 0,
+            max: 600,
+            interval: 50,
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
               }
             },
-            {
-              type: 'bar',
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                      { offset: 0, color: '#6f47d2' },
-                      { offset: 1, color: '#2599fb' }
-                    ]
-                  )
-                }
-              }
-            },
-            {
-              type: 'bar',
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                      { offset: 0, color: '#ff7200' },
-                      { offset: 1, color: '#ffe000' }
-                    ]
-                  )
-                }
+            axisPointer: {
+              label: {
+                color: '#fff',
+                backgroundColor: '#333',
+                shadowColor: 'transparent'
               }
             }
+          }
+        ],
+        series: [
+          {
+            name: '设备数量',
+            type: 'bar',
+            barWidth: '50%',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#2797fa' },
+                  // {offset: 0.5, color: '#188df0'},
+                  { offset: 1, color: '#6f47d2' }
+                ])
+              }
+            },
+            data: []
+          },
+          {
+            name: '增长率',
+            type: 'line',
+            yAxisIndex: 1,
+            smooth: true,
+            showSymbol: false,
+            data: [],
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: '#ff6600' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#f6e40c' // 100% 处的颜色
+                  }
+                ],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          }
+        ]
+      },
+      userDataChartOptions: {
+        color: ['#ff6600', '#2797fa'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        legend: {
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        grid: {
+          // show: false
+          left: 0,
+          top: '28px',
+          right: 0,
+          bottom: 0,
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: [
+              '1月',
+              '2月',
+              '3月',
+              '4月',
+              '5月',
+              '6月',
+              '7月',
+              '8月',
+              '9月',
+              '10月',
+              '11月',
+              '12月'
+            ],
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
+              }
+            },
+            axisLabel: {
+              interval: 0
+            },
+            axisPointer: {
+              label: {
+                color: '#fff',
+                backgroundColor: '#333',
+                shadowColor: 'transparent'
+              }
+            }
+          }
+        ],
+        yAxis: [
+          {
+            splitLine: { show: false },
+            type: 'value',
+            name: '用户数量',
+            min: 0,
+            max: 50,
+            interval: 10,
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
+              }
+            },
+            axisPointer: {
+              label: {
+                color: '#fff',
+                backgroundColor: '#333',
+                shadowColor: 'transparent'
+              }
+            }
+          },
+          {
+            splitLine: { show: false },
+            type: 'value',
+            name: '增长率',
+            min: 0,
+            max: 500,
+            interval: 50,
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
+              }
+            },
+            axisPointer: {
+              label: {
+                color: '#fff',
+                backgroundColor: '#333',
+                shadowColor: 'transparent'
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: '用户数量',
+            type: 'bar',
+            barWidth: '50%',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#69f0cd' },
+                  // {offset: 0.5, color: '#188df0'},
+                  { offset: 1, color: '#1ca3f9' }
+                ])
+              }
+            },
+            data: []
+          },
+          {
+            name: '增长率',
+            type: 'line',
+            yAxisIndex: 1,
+            smooth: true,
+            showSymbol: false,
+            data: [],
+            lineStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: '#ff6600' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: '#f6e40c' // 100% 处的颜色
+                  }
+                ],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          }
+        ]
+      },
+      deviceTypeChartOptions: {
+        legend: {
+          orient: 'vertical',
+          right: 10,
+          top: 20,
+          bottom: 20,
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        tooltip: {
+          formatter: '{b}: {c} ({d}%)'
+        },
+        grid: {
+          // show: false
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          containLabel: true
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: ['50%', '70%'],
+            center: ['40%', '50%'],
+            label: { formatter: '{d}%', color: '#fff' },
+            data: [
+              {
+                value: 90,
+                name: '设备类型1',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#1fa6f7' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#5ee5d3' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
+              {
+                value: 10,
+                name: '设备类型2',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ace296' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#23a400' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      alarmInfoChartOptions: {
+        legend: {
+          orient: 'vertical',
+          right: 10,
+          top: 20,
+          bottom: 20,
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        tooltip: {
+          formatter: '{b}: {c} ({d}%)'
+        },
+        grid: {
+          // show: false
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          containLabel: true
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: ['50%', '70%'],
+            center: ['40%', '50%'],
+            label: { formatter: '{d}%', color: '#fff' },
+            data: [
+              {
+                value: 58,
+                name: '已处理',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#1fa6f7' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#5ee5d3' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
+              {
+                value: 10,
+                name: '处理中',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ace296' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#23a400' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
+              {
+                value: 12,
+                name: '待处理',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ffd500' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#ff6b00' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
+              {
+                value: 20,
+                name: '其他',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ba9af0' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#7035d1' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      fixInfoChartOptions: {
+        legend: {
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        grid: {
+          // show: false
+          left: 0,
+          top: '28px',
+          right: 0,
+          bottom: 0,
+          containLabel: true
+        },
+        tooltip: {},
+        dataset: {
+          dimensions: ['月份', '软件升级', '滤芯维护', '传感器校准'],
+          source: [
+            { 月份: '1月', 软件升级: 10, 滤芯维护: 45, 传感器校准: 93 },
+            { 月份: '2月', 软件升级: 23, 滤芯维护: 53, 传感器校准: 80 },
+            { 月份: '3月', 软件升级: 12, 滤芯维护: 60, 传感器校准: 82 },
+            { 月份: '4月', 软件升级: 21, 滤芯维护: 33, 传感器校准: 70 },
+            { 月份: '5月', 软件升级: 7, 滤芯维护: 12, 传感器校准: 50 },
+            { 月份: '6月', 软件升级: 2, 滤芯维护: 98, 传感器校准: 31 }
           ]
         },
-        selectLocationDialogVisible: false,
-        alarmDialogVisible: false,
-        deviceTypeDialogVisible: false,
-        deviceDialogVisible: false,
-        userDialogVisible: false
-      }
-    },
-    components: {
-      ChartDeviceMap,
-      SelectLocationDialog,
-      AlarmDialog,
-      DeviceTypeDialog,
-      DeviceDialog,
-      UserDialog
-    },
-    methods: {
-      back() {
-        this.$router.back()
-        if (screenfull.enabled) {
-          screenfull.exit()
-        }
-      },
-      selectCustomerUserCount() {
-        selectCustomerUserCount().then(res => {
-          for(let i= 0;i<res.data.length;i++){
-            this.addCount.push(res.data[i].addCount)
-            if(res.data[i].addPercent === "--"){
-              this.addPercent.push(0)
-            }else{
-              this.addPercent.push((res.data[i].addPercent).substring(0,3))
+        xAxis: {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#fff'
             }
-            this.userCount.push(res.data[i].userCount)
           }
-          this.userDataChartOptions.series[0].data = this.userCount
-          this.userDataChartOptions.series[1].data = this.addPercent
-        })
-      },
-      selectDeviceCount() {
-        selectDeviceCount().then(res => {
-          for(let i= 0;i<res.data.length;i++){
-            this.devAddCount.push(res.data[i].addCount)
-            if(res.data[i].addPercent === "--"){
-              this.devAddPercent.push(0)
-            }else{
-              this.devAddPercent.push((res.data[i].addPercent).substring(0,3))
+        },
+        yAxis: {
+          splitLine: { show: false },
+          type: 'value',
+          name: '次数',
+          axisLine: {
+            lineStyle: {
+              color: '#fff'
             }
-            this.deviceCount.push(res.data[i].deviceCount)
+          },
+          axisPointer: {
+            label: {
+              color: '#fff',
+              backgroundColor: '#333',
+              shadowColor: 'transparent'
+            }
           }
-          this.deviceDataChartOptions.series[0].data = this.deviceCount
-          this.deviceDataChartOptions.series[1].data = this.devAddPercent
-        })
-      },
-      selectTypePercent() {
-        selectTypePercent().then(res => {
-          for(let i = 0; i<res.data.length;i++){
-            this.deviceTypeChartOptions.series[0].data[i].value = (res.data[i].typePercent).substring(0,3)
-            this.deviceTypeChartOptions.series[0].data[i].name = (res.data[i].typeName)
+        },
+        series: [
+          {
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#1ba1fa' },
+                  { offset: 1, color: '#69f0cd' }
+                ])
+              }
+            }
+          },
+          {
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#6f47d2' },
+                  { offset: 1, color: '#2599fb' }
+                ])
+              }
+            }
+          },
+          {
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#ff7200' },
+                  { offset: 1, color: '#ffe000' }
+                ])
+              }
+            }
           }
-        })
+        ]
       },
-      handleShowProjectDropdown() {
-        this.showProjectDropdown = !this.showProjectDropdown
-      },
-      handleSolution() {
-        this.$router.push({ name: 'big-picture-mode-solution' })
-      },
-      handleProject() {
-        this.$router.push({ name: 'big-picture-mode-project' })
-      }
-    },
-    created() {
-      this.selectCustomerUserCount()
-      this.selectTypePercent()
-      this.selectDeviceCount()
+      selectLocationDialogVisible: false,
+      alarmDialogVisible: false,
+      deviceTypeDialogVisible: false,
+      deviceDialogVisible: false,
+      userDialogVisible: false
     }
+  },
+  components: {
+    ChartDeviceMap,
+    SelectLocationDialog,
+    AlarmDialog,
+    DeviceTypeDialog,
+    DeviceDialog,
+    UserDialog
+  },
+  methods: {
+    back() {
+      this.$router.back()
+      if (screenfull.enabled) {
+        screenfull.exit()
+      }
+    },
+    selectCustomerUserCount() {
+      selectCustomerUserCount().then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.addCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.addPercent.push(0)
+          } else {
+            this.addPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.userCount.push(res.data[i].userCount)
+        }
+        this.userDataChartOptions.series[0].data = this.userCount
+        this.userDataChartOptions.series[1].data = this.addPercent
+      })
+    },
+    selectDeviceCount() {
+      selectDeviceCount().then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.devAddCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.devAddPercent.push(0)
+          } else {
+            this.devAddPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.deviceCount.push(res.data[i].deviceCount)
+        }
+        this.deviceDataChartOptions.series[0].data = this.deviceCount
+        this.deviceDataChartOptions.series[1].data = this.devAddPercent
+      })
+    },
+    selectTypePercent() {
+      selectTypePercent().then(res => {
+        const deviceTypeChartOptions = this.deviceTypeChartOptions.series[0]
+        for (let i = 0; i < res.data.length; i++) {
+          deviceTypeChartOptions.data[i].value = res.data[
+            i
+          ].typePercent.substring(0, 3)
+          deviceTypeChartOptions.data[i].name = res.data[i].typeName
+        }
+      })
+    },
+    handleShowProjectDropdown() {
+      this.showProjectDropdown = !this.showProjectDropdown
+    },
+    handleSolution() {
+      this.$router.push({ name: 'big-picture-mode-solution' })
+    },
+    handleProject() {
+      this.$router.push({ name: 'big-picture-mode-project' })
+    }
+  },
+  created() {
+    this.selectCustomerUserCount()
+    this.selectTypePercent()
+    this.selectDeviceCount()
   }
+}
 </script>
 
 <style lang="scss" scoped>

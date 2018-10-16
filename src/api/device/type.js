@@ -52,3 +52,10 @@ export function selectListByTypeIds(ids) {
     method: 'get'
   })
 }
+// 查询设备类型总数
+export function selectCount(ids) {
+  return request({
+    url: `/temp/api/deviceType/selectCount/${ids}`,
+    method: 'post'
+  })
+}

@@ -48,7 +48,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[1, 2, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[10 ,20 ,30 ,40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible" :deviceModelData="list" @add-data='addData'></create-config-dialog>
@@ -105,6 +105,7 @@ import CreateConfigDialog from './components/CreateConfigDialog'
 import EditConfigDialog from './components/EditConfigDialog'
 import {
   select,
+  selectCount,
   selectById,
   deleteModelById,
   createWxDeviceIds
@@ -118,7 +119,7 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 2,
+        limit: 10,
         status: 1
       },
       createConfigDialogVisible: false,
@@ -218,12 +219,13 @@ export default {
         })
     },
     getList() {
-      // this.loading = true
       select(this.listQuery).then(res => {
-        console.log(res.data)
         this.list = res.data
-        this.total = this.list.length
-        // this.loading = false
+      })
+    },
+    selectCount() {
+      selectCount(this.listQuery.status).then(res => {
+        this.total = res.data
       })
     },
     selectById(id) {
@@ -261,6 +263,7 @@ export default {
   },
   created() {
     this.getList()
+    this.selectCount()
   },
   components: {
     CreateConfigDialog,
