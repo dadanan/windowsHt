@@ -349,10 +349,15 @@ export default {
         if (!this.formatSelected[0]) {
           return
         }
+
+        let url = `${this.formatSelected[0].htmlUrl}?customerId=${
+          this.form.customerId
+        }`
+        const domain = window.origin.match('://(.*).hcocloud.com')[1]
+        url = url.replace('://pro', '://' + domain)
+
         this.$alert(
-          `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
-            this.formatSelected[0].htmlUrl
-          }?customerId=${this.form.customerId}`,
+          `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${url}`,
           '预览地址',
           {
             confirmButtonText: '确定'

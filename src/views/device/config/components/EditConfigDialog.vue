@@ -97,50 +97,45 @@
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-            <el-form-item :label=' "页序 - " + item.pageId '>
-              <el-radio-group v-model="item.showStatus">
-                <el-radio :label="true">显示</el-radio>
-                <el-radio :label="false">不显示</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label='页面名称'>
-              {{item.showName || item.name}}
-            </el-form-item>
-            <d-title>配置页面功能项</d-title>
-            <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
-              <el-table-column type="index" label='标号 ' width="50"></el-table-column>
-              <el-table-column label="显示名称">
-                <template slot-scope="scope">
-                  <el-input v-model='scope.row.showName'></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="功能类型(标签)">
-                <template slot-scope="scope">
-                  {{typeModel[scope.row.abilityType]}}
-                </template>
-              </el-table-column>
-              <!-- <el-table-column label="描述">
+          <el-form-item :label=' "页序 - " + item.pageId '>
+            <el-radio-group v-model="item.showStatus">
+              <el-radio :label="true">显示</el-radio>
+              <el-radio :label="false">不显示</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label='页面名称'>
+            {{item.showName || item.name}}
+          </el-form-item>
+          <d-title>配置页面功能项</d-title>
+          <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
+            <el-table-column type="index" label='标号 ' width="50"></el-table-column>
+            <el-table-column label="显示名称">
               <template slot-scope="scope">
-                <el-input v-model='scope.row.remark'></el-input>
+                <el-input v-model='scope.row.showName'></el-input>
               </template>
-            </el-table-column> -->
-              <el-table-column label="是否显示" show-overflow-tooltip>
-                <template slot-scope="scope">
-                  <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
-                  </el-switch>
-                </template>
-              </el-table-column>
-              <el-table-column label="挑选功能项">
-                <template slot-scope="scope">
-                  <el-select v-model="scope.row.abilityId">
-                    <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
-                    </el-option>
-                    <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-            </el-table>
+            </el-table-column>
+            <el-table-column label="功能类型(标签)">
+              <template slot-scope="scope">
+                {{typeModel[scope.row.abilityType]}}
+              </template>
+            </el-table-column>
+            <el-table-column label="是否显示" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="挑选功能项">
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.abilityId">
+                  <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
+                  </el-option>
+                  <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </template>
     </el-form>
@@ -156,27 +151,33 @@
           <el-input v-model="modifyData.abilityName" disabled></el-input>
         </el-form-item>
         <el-form-item label="功能分类">
-          <el-input v-model="modifyData.abilityType" disabled></el-input>
+          {{typeModel[modifyData.abilityType]}}
         </el-form-item>
         <d-title>自定义部分</d-title>
-        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
-          <div class="input-group">
-            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
-          </div>
-        </el-form-item>
+        <template v-if='modifyData.abilityType === 2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceModelAbilityOptions">
+          <el-form-item v-if="option.status !== 2" :key="i" :label="'选项 ' + i">
+            <div class="input-group">
+              <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
+              <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
+              <!-- <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input> -->
+            </div>
+          </el-form-item>
+        </template>
+
         <el-form-item v-if='modifyData.abilityType === 4'>
           <div class="input-group">
             <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
+            <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
           <div class="input-group">
-            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+            <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
-            <el-input v-model="option.minVal" placeholder="最小值"></el-input>
-            <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+            <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
+            <el-input v-model="option.minVal" placeholder="最大值"></el-input>
+            <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -191,6 +192,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
+
 import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
@@ -222,6 +224,7 @@ export default {
         showStatus: true,
         devicePoolCount: ''
       },
+      createFunctionDialogVisible: false,
       childModelIds: [],
       formatId: '',
       formatSelectedList: [], // 用户可选择的总版式列表
@@ -313,14 +316,15 @@ export default {
             maxVal: item.maxVal,
             minVal: item.minVal,
             deviceModelAbilityOptions:
-              item.deviceAbilityOptions &&
-              item.deviceAbilityOptions.map(iItem => {
+              item.deviceModelAbilityOptions &&
+              item.deviceModelAbilityOptions.map(iItem => {
                 return {
                   id: iItem.id,
                   abilityOptionId: iItem.abilityOptionId,
-                  definedName: iItem.optionName,
+                  definedName: iItem.definedName,
                   maxVal: iItem.maxVal,
-                  minVal: iItem.minVal
+                  minVal: iItem.minVal,
+                  status: iItem.status
                 }
               })
           }
@@ -363,10 +367,8 @@ export default {
           modelFormatPages
         }
       }
-      // form.deviceModelFormat = form.modelFormatVo
+
       delete form.modelFormatVo
-      // console.log('form', form)
-      // return
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('update-data', {
@@ -380,10 +382,14 @@ export default {
           item => item.id === this.form.formatId
         )
 
+        let url = `${this.formatSelected[0].htmlUrl}?customerId=${
+          this.form.customerId
+        }`
+        const domain = window.origin.match('://(.*).hcocloud.com')[1]
+        url = url.replace('://pro', '://' + domain)
+
         this.$alert(
-          `您已成功配置好型号数据，请先保存链接，稍后微信内打开即可查看效果: ${
-            formatSelected[0].htmlUrl
-          }?customerId=${this.form.customerId}`,
+          `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${url}`,
           '预览地址',
           {
             confirmButtonText: '确定'
@@ -438,6 +444,7 @@ export default {
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
+      console.log('modifyData', data)
       this.modifyData = data
     },
     handleCustomerChange(id) {
@@ -505,26 +512,37 @@ export default {
       selectListByTypeIds(ids).then(res => {
         this.typeList = res.data
       })
+    },
+    deleteConfigOption(data, i) {
+      this.modifyData.deviceModelAbilityOptions.splice(
+        i,
+        1,
+        Object.assign({}, data, { status: 2 })
+      )
     }
   },
   watch: {
     data(val) {
-      console.log('edit', val)
       const newData = JSON.parse(JSON.stringify(val))
 
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
         : []
+
       const theTypeArray = this.typeList.filter(
         item => item.id === newData.typeId
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
       this.theType.showName = newData.name
+      // 如果存在功能项列表数据，覆盖一下
+      if (newData.deviceModelAbilitys) {
+        this.theType.deviceTypeAbilitys = newData.deviceModelAbilitys
+      }
 
       // 第三步：预设自定义名称
       this.theType.deviceTypeAbilitys &&
         this.theType.deviceTypeAbilitys.forEach(item => {
-          item['definedName'] = item.abilityName
+          item['abilityName'] = item.definedName
           this.$set(item, 'isUsed', true)
         })
 

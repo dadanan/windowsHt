@@ -149,7 +149,7 @@
           </template>
         </el-table-column>
       </el-table>
-     <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -266,12 +266,7 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import {
-  getList,
-  deleteOneDevice,
-  queryChildDevice,
-  queryCount
-} from '@/api/device/list'
+import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
 
 export default {
   components: {
@@ -332,7 +327,7 @@ export default {
       query: {
         limit: 10,
         page: 1,
-        status: 1,
+        status: 1
       },
       total: 1,
       detailData: {},
@@ -370,10 +365,10 @@ export default {
         data.childDeviceList = res.data
       })
     },
-    showDeviceDeletedChange(data){
+    showDeviceDeletedChange(data) {
       if (!this.showDeviceDeleted) {
         this.query.status = 1
-      }else{
+      } else {
         this.query.status = 2
       }
       this.getList()
@@ -391,7 +386,7 @@ export default {
     },
     getList() {
       getList(this.query)
-        .then( res => {
+        .then(res => {
           this.deviceList = res.data
           // console.log(this.deviceList)
         })
@@ -518,7 +513,7 @@ export default {
     //     this.deviceBindDialogVisible = true
     //   })
     // },
-     handleDeviceBind() {
+    handleDeviceBind() {
       this.isOperable().then(_ => {
         this.assignStatus().then(_ => {
           this.deviceBindDialogVisible = true
@@ -540,22 +535,22 @@ export default {
         }
       })
     },
-    assignStatusList(){
+    assignStatusList() {
       if (this.selectedDeviceList.length) {
         const ass = []
-        for(let i = 0;i<this.selectedDeviceList.length;i++){
+        for (let i = 0; i < this.selectedDeviceList.length; i++) {
           ass.push(this.selectedDeviceList[i].assignStatus)
         }
-        if(ass.indexOf("0")){
+        if (ass.indexOf('0')) {
           return true
-        }else{
+        } else {
           return false
         }
       }
     },
     assignStatus() {
       return new Promise(resolve => {
-       if(!this.assignStatusList()){
+        if (!this.assignStatusList()) {
           resolve()
         } else {
           this.$message.warning('选中的设备中有未分配设备，请重新操作')
@@ -565,7 +560,6 @@ export default {
   },
   created() {
     this.getList()
-    this.queryCount()
   }
 }
 </script>
