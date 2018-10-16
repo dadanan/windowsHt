@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="userList.length">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50, 100, 150, 200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="userList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
@@ -125,6 +125,10 @@ import { getRoleList } from '@/api/role'
 export default {
   data() {
     return {
+      listQuery: {
+        limit: 1000,
+        page: 1
+      },
       userList: [],
       isCreateUserDialogVisible: false,
       isEditUserDialogVisible: false,
@@ -320,7 +324,7 @@ export default {
         })
     },
     getUserList() {
-      getUserList()
+      getUserList(this.listQuery)
         .then(res => {
           if (res.code === 200) {
             this.userList = res.data
@@ -329,6 +333,14 @@ export default {
         .catch(err => {
           console.log('err', err)
         })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getUserList()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getUserList()
     },
     getRoleList() {
       getRoleList()

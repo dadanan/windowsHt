@@ -1,7 +1,19 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message , Loading} from 'element-ui'
 import store from '@/store'
 // import { getToken } from '@/utils/auth'
+
+let loading
+const startLoading = () =>{
+  loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+const endLoading = ()=>{
+  loading.close()
+}
 
 // create an axios instance
 const service = axios.create({
@@ -17,6 +29,10 @@ service.interceptors.request.use(
     //   // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     //   config.headers['X-Token'] = getToken()
     // }
+    startLoading()
+    setTimeout(function() {
+      endLoading()
+    }, 3000)
     return config
   },
   error => {
@@ -37,6 +53,7 @@ service.interceptors.response.use(
    */
   response => {
     // 如果当前请求是为了获取logo和name，则报错时不显示出来
+      endLoading()
     const res = response.data
     if (res.code !== 200) {
       if (

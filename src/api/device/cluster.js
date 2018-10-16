@@ -8,7 +8,6 @@ export function queryGroupByPage(data) {
     data
   })
 }
-
 // 根据id查询集群详情
 export function queryGroupById(id) {
   return request({
@@ -26,9 +25,9 @@ export function deleteGroupById(id) {
 }
 
 // 查询集群总数
-export function queryGroupCount() {
+export function queryGroupCount(id) {
   return request({
-    url: '/temp/api/deviceGroup/queryGroupCount',
+    url: `/temp/api/deviceGroup/queryGroupCount/${id}`,
     method: 'get'
   })
 }

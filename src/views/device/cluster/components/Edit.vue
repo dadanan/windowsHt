@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
-    <el-form label-position="left" label-width="80px">
+    <el-form label-position="left" label-width="80px" :model="form" :rules="rules" ref="form">
       <el-form-item label="集群名">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -21,7 +21,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="客户">
+      <el-form-item label="客户" prop="customerId">
         <el-select v-model="form.customerId" placeholder='请选择'>
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
@@ -29,20 +29,20 @@
       <el-form-item label="图册">
         <image-uploader :urls='form.imageVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
-      <el-form-item label="群介绍">
+      <el-form-item label="群介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
       </el-form-item>
-      <el-form-item label="地点">
+      <el-form-item label="地点" prop="createLocation">
         <el-input v-model="form.createLocation"></el-input>
       </el-form-item>
-      <el-form-item label="添加备注">
+      <el-form-item label="添加备注" prop="remark">
         <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
         </el-input>
       </el-form-item>
     </el-form>
     <div class="table-opts">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click='createCluster'>确定</el-button>
+      <el-button @click="resetForm('form')">取消</el-button>
+      <el-button type="primary" @click='submitForm("form")'>确定</el-button>
     </div>
   </el-scrollbar>
 </template>
@@ -75,6 +75,22 @@ export default {
       query: {
         limit: 100,
         page: 1
+      },
+      rules: {
+        customerId: [
+          { required: true, message: '请选择客户', trigger: 'change' }
+        ],
+        introduction: [
+          { required: true, message: '请输入群介绍', trigger: 'blur' },
+        ],
+        createLocation: [
+          { required: true, message: '请输入地点', trigger: 'blur' },
+          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
+        ],
+        remark: [
+          { required: true, message: '请添加备注', trigger: 'blur' },
+          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+        ]
       },
       selectedDeviceList: [],
       customerList: [],
@@ -137,6 +153,19 @@ export default {
         this.customerList = res.data || []
       })
     },
+    submitForm(formName) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.createCluster()
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm(formName) { //清空表单里面的数据
+      this.$refs[formName].resetFields();
+      this.$emit('close')
+    },
     createCluster() {
       const data = {
         ...this.form,
@@ -153,10 +182,10 @@ export default {
           res.msg && this.$message.error(res.msg)
         }
       })
-    },
-    handleCancel() {
-      this.$emit('close')
     }
+    // handleCancel() {
+    //   this.$emit('close')
+    // }
   }
 }
 </script>

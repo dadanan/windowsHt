@@ -36,16 +36,16 @@
       </div>
     </el-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="录入设备信息" :visible.sync="addDeviceDialogVisible">
-      <el-form label-width="80px" label-position="left">
-        <el-form-item label="名称">
+      <el-form label-width="80px" label-position="left" :model="addForm" :rules="rules" ref="addForm">
+        <el-form-item label="名称" prop="name">
           <el-input v-model="addForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="设备类型">
+        <el-form-item label="设备类型" prop="typeId">
           <el-select v-model="addForm.typeId">
             <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="MAC">
+        <el-form-item label="MAC" prop="mac">
           <el-input v-model="addForm.mac"></el-input>
         </el-form-item>
         <el-form-item label="硬件版本">
@@ -56,8 +56,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addDeviceDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="addDevice">确定</el-button>
+        <el-button @click="resetForm('addForm')">取消</el-button>
+        <el-button type="primary" @click="submitForm('addForm')">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -91,7 +91,20 @@ export default {
         limit: 100,
         page: 1
       },
-      deviceList: []
+      deviceList: [],
+      rules: {
+        name: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+        ],
+        typeId: [
+          { required: true, message: '请选择设备类型', trigger: 'change' }
+        ],
+        mac: [
+          { required: true, message: '请输入Mac', trigger: 'blur' },
+          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -116,9 +129,22 @@ export default {
           console.log(err)
         })
     },
-    addDevice() {
-      this.deviceList.push(Object.assign({}, this.addForm))
+    submitForm(formName) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.addDevice()
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm(formName) { //清空表单里面的数据
+      this.$refs[formName].resetFields();
       this.addDeviceDialogVisible = false
+    },
+    addDevice() {
+        this.deviceList.push(Object.assign({}, this.addForm))
+        this.addDeviceDialogVisible = false
     },
     deleteDeviceHandler(index) {
       this.deviceList.splice(index, 1)

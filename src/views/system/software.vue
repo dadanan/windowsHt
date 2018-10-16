@@ -38,7 +38,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="softwareList.length">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50, 100, 150, 200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="softwareList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateDialogVisible"></create-model-dialog>
@@ -64,7 +64,11 @@ export default {
       },
       editingData: {}, // 当前正在编辑的角色数据
       softwareList: [],
-      customers: []
+      customers: [],
+      listQuery: {
+        limit: 1000,
+        page: 1
+      }
     }
   },
   methods: {
@@ -121,7 +125,7 @@ export default {
         })
     },
     updateData(data) {
-      console.log(123, data)
+      // console.log(123, data)
       this.softwareList.forEach((item, index) => {
         if (item.id === data.id) {
           this.softwareList.splice(index, 1, data)
@@ -134,7 +138,16 @@ export default {
         page: 1
       }).then(res => {
         this.softwareList = res.data
+        console.log(this.softwareList)
       })
+    },
+     handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getSoftwareList()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getSoftwareList()
     },
     getCustomer() {
       getCustomer({
