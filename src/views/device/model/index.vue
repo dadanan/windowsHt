@@ -35,7 +35,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10, 20, 40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30,40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="createModelDialogVisible"></create-model-dialog>
@@ -46,7 +46,7 @@
 <script>
 import CreateModelDialog from './components/CreateModelDialog'
 import EditModelDialog from './components/EditModelDialog'
-import { fetchList, deleteDeviceType, selectById } from '@/api/device/type'
+import { fetchList, selectCount, deleteDeviceType, selectById } from '@/api/device/type'
 
 export default {
   components: {
@@ -58,7 +58,11 @@ export default {
       loading: true,
       list: null,
       total: 0,
-      listQuery: {},
+      listQuery: {
+        page: 1,
+        limit: 10,
+        status: 1
+      },
       createModelDialogVisible: false,
       editModelDialogVisible: false,
       editingData: {}
@@ -66,6 +70,7 @@ export default {
   },
   created() {
     this.getList()
+    this.selectCount()
   },
   methods: {
     showEditRoleDialog(data) {
@@ -91,7 +96,13 @@ export default {
       this.loading = true
       fetchList(this.listQuery).then(response => {
         this.list = response.data
-        this.total = response.data.length
+        this.loading = false
+      })
+    },
+    selectCount() {
+      this.loading = true
+      selectCount(this.listQuery.status).then(response => {
+        this.total = response.data
         this.loading = false
       })
     },

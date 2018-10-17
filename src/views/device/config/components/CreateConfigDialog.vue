@@ -6,7 +6,7 @@
       <el-step title="硬件功能项"></el-step>
       <el-step title="版式配置"></el-step>
     </el-steps>
-    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules = "rules" ref="form">
+    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
       <el-form-item label="客户" prop="customerId">
         <el-select v-model="form.customerId" @change="handleCustomerChange">
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
@@ -18,6 +18,10 @@
           <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
+      </el-form-item>
+      <!-- 客服 -->
+      <el-form-item label="联系客服">
+        <el-input v-model="form.customer"></el-input>
       </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
@@ -42,8 +46,8 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step === 2' label-width="100px" class="mb-22" :model="form" :rules = "rules" ref="form">
-      <el-form-item label="ProductID" prop="ProductID">
+    <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
+      <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
       <el-form-item label="二维码">
@@ -212,7 +216,8 @@ export default {
         customerId: '',
         showStatus: true,
         productQrCode: '',
-        productId: ''
+        productId: '',
+        customer:''
       },
       childModelIds: [],
       formatId: '',
@@ -266,12 +271,8 @@ export default {
         ],
         typeId: [
           { required: true, message: '请选择设备类型', trigger: 'change' }
-        ],
-        ProductID: [
-          { required: true, message: '请输入ProductID',trigger:"blur"},
-          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
         ]
-      },
+      }
     }
   },
   methods: {
@@ -406,27 +407,21 @@ export default {
     },
     nextStep() {
       console.log(this.step)
-      if(this.step == 1){
+      if (this.step == 1) {
         this.submitForm('form')
-      }else if (this.step == 2) {
-        this.submitForm('form')
-        this.step == 2
-        console.log(222)
-        // this.selectFormatsByCustomerId()
-      }
-      // if (this.step++ > 3) this.step = 0
+      } else if (this.step === 2) {
+        this.selectFormatsByCustomerId()
+        this.step++
+      } else if (this.step++ > 3) this.step = 0
     },
     submitForm(formName) {
-      console.log(formName)
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          this.selectFormatsByCustomerId()
           this.step++
         } else {
-          // console.log('error submit!!');
-          return false;
+          return false
         }
-      });
+      })
     },
     getModelList() {
       getTypeList({

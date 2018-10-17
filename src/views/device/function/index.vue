@@ -41,7 +41,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[10, 20, 40]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="1" :page-sizes="[10, 20, 30,40]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-function-dialog :visible.sync="createFunctionDialogVisible" @add-data='addData'></create-function-dialog>
@@ -52,7 +52,7 @@
 <script>
 import CreateFunctionDialog from './components/CreateFunctionDialog'
 import EditFunctionDialog from './components/EditFunctionDialog'
-import { fetchList, deleteAbility } from '@/api/device/function'
+import { fetchList, deleteAbility ,selectCount} from '@/api/device/function'
 
 export default {
   components: {
@@ -64,7 +64,7 @@ export default {
       loading: true,
       list: [],
       total: 1,
-      listQuery: { limit: 100, page: 1 },
+      listQuery: { limit: 10, page: 1 ,status: 1},
       permissionListMap: { r: '可读', w: '可写' },
       configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
       createFunctionDialogVisible: false,
@@ -81,6 +81,7 @@ export default {
   },
   created() {
     this.getList()
+    this.selectCount()
   },
   methods: {
     addData(data) {
@@ -101,17 +102,23 @@ export default {
       this.loading = true
       fetchList(this.listQuery).then(res => {
         this.list = res.data
-        // this.total = res.data.length
+        this.loading = false
+      })
+    },
+    selectCount() {
+      this.loading = true
+      selectCount(this.listQuery.status).then(res => {
+        this.total = res.data
         this.loading = false
       })
     },
     handleSizeChange(val) {
-      // this.listQuery.limit = val
-      // this.getList()
+      this.listQuery.limit = val
+      this.getList()
     },
     handleCurrentChange(val) {
-      // this.listQuery.page = val
-      // this.getList()
+      this.listQuery.page = val
+      this.getList()
     },
     deleteFunction(id) {
       this.$confirm('此操作将永久删除该功能, 是否继续?', '提示', {
