@@ -19,7 +19,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="page" :page-sizes="[10, 20, 50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination :current-page="page" :page-sizes="[10,20,30,40]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible" :title="title" :fullscreen="fullscreen" @closed="handleClosed">
       <div :is="dialogComp" :datas="rowData" @close="visible = false" @update="handleUpdate"></div>
@@ -58,7 +58,8 @@ export default {
       rowData: {},
       page: 1,
       limit: 10,
-      total: 0
+      total: 0,
+      status: 1
     }
   },
   created() {
@@ -69,10 +70,11 @@ export default {
     queryGroupByPage() {
       queryGroupByPage({
         page: this.page,
-        limit: this.limit
+        limit: this.limit,
+        status: 1
       }).then(res => {
         if (res.code === 200) {
-          this.clusterList = res.data.filter(v => v.status === 1) // status:1.正常；2.已删除
+          this.clusterList = res.data // status:1.正常；2.已删除
         }
       })
     },
@@ -137,7 +139,7 @@ export default {
       this.dialogComp = ''
     },
     queryGroupCount() {
-      queryGroupCount().then(res => {
+      queryGroupCount(this.status).then(res => {
         if (res.code === 200) {
           this.total = res.data
         }

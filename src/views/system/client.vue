@@ -43,7 +43,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[5,10,15,20]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateClientDialogVisible"></create-model-dialog>
@@ -97,7 +97,7 @@
 
 <script>
 import DTitle from '@/components/Title'
-import { select, deleteCustomerById, selectById } from '@/api/customer'
+import { select, deleteCustomerById, selectById ,selectAllCustomers} from '@/api/customer'
 import ImageUploader from '@/components/Upload/image'
 import CreateModelDialog from './client/createDialog'
 import EditModelDialog from './client/editDialog'
@@ -106,6 +106,7 @@ export default {
   data() {
     return {
       clientList: [],
+      total: 0,
       clientColumnVisible: {
         name: true,
         type: true,
@@ -135,7 +136,7 @@ export default {
       inputVisible: false,
       inputValue: '',
       listQuery: {
-        limit: 1000,
+        limit: 5,
         page: 1
       },
       editingData: {}
@@ -173,6 +174,23 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    selectAllCustomers() {
+      selectAllCustomers()
+        .then(res => {
+          this.total= res.data.length
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getCustomer()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getCustomer()
     },
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
@@ -229,6 +247,7 @@ export default {
   },
   created() {
     this.getCustomer()
+    this.selectAllCustomers()
   },
   components: {
     DTitle,

@@ -30,12 +30,12 @@
           </el-table>
         </el-col>
         <el-col :span="12">
-          <el-form label-position="left" label-width="80px">
-            <el-form-item label="集群名">
-              <el-input v-model='name' placeholder='请输入'></el-input>
+          <el-form label-position="left" label-width="80px" :model="devList" :rules="rules" ref="devList">
+            <el-form-item label="集群名" prop="name">
+              <el-input v-model='devList.name' placeholder='请输入'></el-input>
             </el-form-item>
-            <el-form-item label="客户">
-              <el-select v-model="customerId" placeholder='请选择'>
+            <el-form-item label="客户" prop="customerId">
+              <el-select v-model="devList.customerId" placeholder='请选择'>
                 <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
               </el-select>
             </el-form-item>
@@ -44,8 +44,8 @@
       </el-row>
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="addOrUpdateGroupAndDevice">确认集群</el-button>
+      <el-button @click="resetForm('devList')">取消</el-button>
+      <el-button type="primary" @click="submitForm('devList')">确认集群</el-button>
     </div>
   </el-dialog>
 </template>
@@ -72,11 +72,22 @@ export default {
       addForm: {
         mac: ''
       },
-      customerId: '',
-      name: '',
+      devList: {
+        customerId: '',
+        name: ''
+      },
       query: {
         limit: 100,
         page: 1
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+        ],
+        customerId: [
+          { required: true, message: '请选择客户', trigger: 'change' }
+        ]
       },
       customerList: [],
       selectedDeviceList: []
@@ -89,10 +100,23 @@ export default {
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
+    submitForm(formName) {  //判断表单数据是否为空
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.addOrUpdateGroupAndDevice()
+        } else {
+          return false
+        }
+      });
+    },
+    resetForm(formName) { //清空表单里面的数据
+      this.$emit('update:visible', false)
+      this.$refs[formName].resetFields()
+    },
     addOrUpdateGroupAndDevice() {
       addOrUpdateGroupAndDevice({
-        name: this.name,
-        customerId: this.customerId,
+        name: this.devList.name,
+        customerId: this.devList.customerId,
         deviceQueryRequest: {
           deviceList: this.selectedDeviceList.map(item => {
             return {

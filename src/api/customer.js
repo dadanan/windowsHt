@@ -23,6 +23,13 @@ export function select(data) {
     data
   })
 }
+export function selectAllCustomers(data) {
+  return request({
+    url: '/temp/api/customer/selectAllCustomers',
+    method: 'post',
+    data
+  })
+}
 
 export function deleteCustomerById(id) {
   return request({

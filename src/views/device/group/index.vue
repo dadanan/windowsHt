@@ -58,7 +58,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[10, 20, 40]" :page-size="list.length" layout="total, sizes, prev, pager, next, jumper" :total="list.length">
+      <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
       <create-dialog :visible.sync="createDialogVisible" @add-data='addData'></create-dialog>
       <edit-dialog :visible.sync="editDialogVisible" @update-data='updateData' :data='editingData'></edit-dialog>
@@ -120,7 +120,7 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList, deleteOneTeam, queryTeamById } from '@/api/device/team'
+import { queryTeamList,queryTeamCount, deleteOneTeam, queryTeamById } from '@/api/device/team'
 import axios from 'axios'
 
 export default {
@@ -145,10 +145,12 @@ export default {
         teamType: true
       },
       query: {
-        limit: 100,
-        page: 1
+        limit:10,
+        page: 1,
+        status: 1
       },
-      selectionTable: []
+      selectionTable: [],
+      total: 0
     }
   },
   computed: {
@@ -169,7 +171,12 @@ export default {
     },
     queryTeamList() {
       queryTeamList(this.query).then(res => {
-        this.list = res.data
+        this.list = res.data.filter(item => item.status === 1)
+      })
+    },
+    queryTeamCount() {
+      queryTeamCount(this.query.status).then(res => {
+        this.total = res.data
       })
     },
     showEditRoleDialog(data) {
@@ -212,9 +219,18 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.queryTeamList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.queryTeamList()
     }
   },
   created() {
+    this.queryTeamCount()
     this.queryTeamList()
   },
   components: {

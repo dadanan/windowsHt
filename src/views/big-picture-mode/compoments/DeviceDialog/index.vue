@@ -76,11 +76,14 @@
 
 <script>
   import echarts from 'echarts'
-
+  import {selectDeviceCount,selectTypePercent} from '@/api/big-picture-mode/bigPictureMode'
   export default {
     props: ['visible'],
     data() {
       return {
+        devAddPercent: [],
+        deviceCount: [],
+        devAddCount:[],
         chart1Options: {
           color: ['#ff6600', '#2797fa'],
           tooltip: {
@@ -129,8 +132,8 @@
               type: 'value',
               name: '设备数量',
               min: 0,
-              max: 1500,
-              interval: 300,
+              max: 50,
+              interval: 10,
               axisLine: {
                 lineStyle: {
                   color: '#fff'
@@ -149,8 +152,8 @@
               type: 'value',
               name: '增长率',
               min: 0,
-              max: 100,
-              interval: 20,
+              max: 600,
+              interval: 50,
               axisLabel: {
                 formatter: '{value}%'
               },
@@ -185,7 +188,7 @@
                   )
                 }
               },
-              data: [10, 100, 258, 400, 984, 52, 14, 23, 90, 1000, 1254, 1500]
+              data: []
             },
             {
               name: '增长率',
@@ -193,7 +196,7 @@
               yAxisIndex: 1,
               smooth: true,
               showSymbol: false,
-              data: [10, 20, 50, 25, 73, 87, 64, 41, 50, 69, 100, 1],
+              data: [],
               lineStyle: {
                 color: {
                   type: 'linear',
@@ -275,42 +278,6 @@
                       globalCoord: false // 缺省为 false
                     }
                   }
-                },
-                {
-                  value: 12, name: '检测探头',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ffd500' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#ff6b00' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 20, name: '净化器',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ba9af0' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#7035d1' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
                 }
               ]
             }
@@ -379,42 +346,6 @@
                       globalCoord: false // 缺省为 false
                     }
                   }
-                },
-                {
-                  value: 12, name: '检测探头',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ffd500' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#ff6b00' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
-                },
-                {
-                  value: 20, name: '净化器',
-                  itemStyle: {
-                    color: {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [{
-                        offset: 0, color: '#ba9af0' // 0% 处的颜色
-                      }, {
-                        offset: 1, color: '#7035d1' // 100% 处的颜色
-                      }],
-                      globalCoord: false // 缺省为 false
-                    }
-                  }
                 }
               ]
             }
@@ -425,7 +356,36 @@
     methods: {
       handleClose() {
         this.$emit('update:visible', false)
+      },
+     selectDeviceCount() {
+        selectDeviceCount().then(res => {
+          for(let i= 0;i<res.data.length;i++){
+            this.devAddCount.push(res.data[i].addCount)
+            if(res.data[i].addPercent === "--"){
+              this.devAddPercent.push(0)
+            }else{
+              this.devAddPercent.push((res.data[i].addPercent).substring(0,3))
+            }
+            this.deviceCount.push(res.data[i].deviceCount)
+          }
+          this.chart1Options.series[0].data = this.deviceCount
+          this.chart1Options.series[1].data = this.devAddPercent
+        })
+      },
+      selectTypePercent() {
+        selectTypePercent().then(res => {
+          for(let i = 0; i<res.data.length;i++){
+            this.chart3Options.series[0].data[i].value = (res.data[i].typePercent).substring(0,3)
+            this.chart3Options.series[0].data[i].name = (res.data[i].typeName)
+            this.chart2Options.series[0].data[i].value = (res.data[i].typePercent).substring(0,3)
+            this.chart2Options.series[0].data[i].name = (res.data[i].typeName)
+          }
+        })
       }
+    },
+    created() {
+      this.selectDeviceCount()
+      this.selectTypePercent()
     }
   }
 </script>

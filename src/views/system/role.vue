@@ -21,7 +21,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[50]" :page-size="50" layout="total, sizes, prev, pager, next, jumper" :total="roleList.length">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[5,10,15,20]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="roleList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加角色" :visible.sync="isCreateRoleDialogVisible">
@@ -106,6 +106,10 @@ export default {
       },
       demoForm: {
         name: '管理员'
+      },
+      listQuery: {
+        limit: 5,
+        page: 1
       },
       userID: undefined,
       addForm: {
@@ -327,6 +331,14 @@ export default {
         .catch(err => {
           console.log('err', err)
         })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getRoleList()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getRoleList()
     }
   },
   created() {

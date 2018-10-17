@@ -56,6 +56,11 @@
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
                 </template>
               </el-table-column>
+              <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+                <template slot-scope="scope">
+                  {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
+                </template>
+              </el-table-column>
               <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
               </el-table-column>
               <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -79,7 +84,6 @@
               </el-table-column>
             </el-table>
             <el-alert v-else title="该主设备下没有对应从设备！" type="info" center show-icon :closable="false"></el-alert>
-
           </template>
         </el-table-column>
         <el-table-column type="selection"></el-table-column>
@@ -118,6 +122,11 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
+        <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+          <template slot-scope="scope">
+            {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
+          </template>
+        </el-table-column>
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
         <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -140,7 +149,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -190,6 +199,12 @@
           <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
         </el-form-item>
         <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.assignStatus">分配状态</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
+        </el-form-item>
+        <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelName">设备型号名称</el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -204,7 +219,7 @@
       </el-form>
       <el-form label-width="100px" label-location="left">
         <el-form-item label="已删除设备">
-          <el-radio-group v-model='showDeviceDeleted'>
+          <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedChange">
             <el-radio :label="true">显示</el-radio>
             <el-radio :label="false">不显示</el-radio>
           </el-radio-group>
@@ -251,11 +266,7 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import {
-  getList,
-  deleteOneDevice,
-  queryChildDevice,
-} from '@/api/device/list'
+import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
 
 export default {
   components: {
@@ -309,27 +320,30 @@ export default {
         birthTime: false,
         lastUpdateTime: false,
         bindCustomer: false,
-        location: false
+        location: false,
+        assignStatus: true
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 100,
-        page: 1
+        limit: 10,
+        page: 1,
+        status: 1
       },
       total: 1,
       detailData: {},
       showDeviceDeleted: false,
       showDeviceCallBack: false,
       showDeviceBind: false,
-      showDeviceAllocate: false
+      showDeviceAllocate: true,
+      unassignStatus: ''
     }
   },
   computed: {
     computeDeviceList() {
       let list = this.deviceList
-      if (!this.showDeviceDeleted) {
-        // 如果不显示删除设备，返回状态不等于 2 的
-        list = list.filter(item => item.status !== 2)
+      if (!this.showDeviceAllocate) {
+        // 如果不显示分配设备，返回状态不等于 1 的
+        list = list.filter(item => item.assignStatus == 1)
       }
       return list
     }
@@ -342,6 +356,7 @@ export default {
       ) {
         return
       }
+      console.log(data.id)
       this.queryChildDevice(data.id, data)
     },
     queryChildDevice(id, data) {
@@ -350,27 +365,47 @@ export default {
         data.childDeviceList = res.data
       })
     },
+    showDeviceDeletedChange(data) {
+      if (!this.showDeviceDeleted) {
+        this.query.status = 1
+      } else {
+        this.query.status = 2
+      }
+      this.getList()
+      this.queryCount()
+    },
     showDetail(data) {
       this.deviceDetailDialogVisible = true
       this.detailData = data
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+      if (this.selectedDeviceList.length) {
+        this.unassignStatus = this.selectedDeviceList[0].assignStatus
+      }
     },
     getList() {
       getList(this.query)
         .then(res => {
-          res.data &&
-            res.data.forEach(item => {
-              item['childDeviceList'] = []
-            })
-          this.deviceList = res.data || []
+          this.deviceList = res.data
         })
         .catch(err => {
           console.log('err', err)
         })
     },
-  
+    queryCount() {
+      queryCount(this.query.status).then(res => {
+        this.total = res.data
+      })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.getList()
+    },
     addData(data) {
       const list = data.deviceList
       list.forEach(item => {
@@ -472,9 +507,16 @@ export default {
       })
     },
     // 绑定
+    // handleDeviceBind() {
+    //   this.isOperable().then(_ => {
+    //     this.deviceBindDialogVisible = true
+    //   })
+    // },
     handleDeviceBind() {
       this.isOperable().then(_ => {
-        this.deviceBindDialogVisible = true
+        this.assignStatus().then(_ => {
+          this.deviceBindDialogVisible = true
+        })
       })
     },
     // 解绑
@@ -489,6 +531,28 @@ export default {
           resolve()
         } else {
           this.$message.warning('请选择设备后再进行操作')
+        }
+      })
+    },
+    assignStatusList() {
+      if (this.selectedDeviceList.length) {
+        const ass = []
+        for (let i = 0; i < this.selectedDeviceList.length; i++) {
+          ass.push(this.selectedDeviceList[i].assignStatus)
+        }
+        if (ass.indexOf('0')) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    assignStatus() {
+      return new Promise(resolve => {
+        if (!this.assignStatusList()) {
+          resolve()
+        } else {
+          this.$message.warning('选中的设备中有未分配设备，请重新操作')
         }
       })
     }
