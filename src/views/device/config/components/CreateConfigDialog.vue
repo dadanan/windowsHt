@@ -190,7 +190,7 @@ import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
 import { createDeviceModel } from '@/api/device/model'
-import { selectListByTypeIds } from '@/api/device/type'
+import { selectTypesBySLD } from '@/api/device/type'
 import DTitle from '@/components/Title'
 
 export default {
@@ -377,7 +377,7 @@ export default {
     },
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
-      this.getTypeById(temp[0].typeIds)
+      this.getTypeById()
       this.form.typeId = ''
     },
     getCustomer() {
@@ -436,8 +436,8 @@ export default {
           })
       })
     },
-    getTypeById(ids) {
-      selectListByTypeIds(ids).then(res => {
+    getTypeById() {
+      selectTypesBySLD().then(res => {
         this.typeList = res.data
       })
     }

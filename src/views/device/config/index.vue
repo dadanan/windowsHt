@@ -3,7 +3,7 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <!-- <el-button type="primary" icon="el-icon-plus" @click="handleDeviceCopy">复制型号</el-button> -->
+          <el-button type="primary" icon="el-icon-plus" @click="handleDeviceCopy">复制型号</el-button>
           <el-button type="primary" icon="el-icon-plus" @click="createConfigDialogVisible = true">添加
           </el-button>
         </el-button-group>
@@ -148,11 +148,26 @@ export default {
   methods: {
     createModel(data) {
       const form = JSON.parse(JSON.stringify(data))
+      // 编辑删除id
+      if (form.deviceModelAbilitys) {
+        form.deviceModelAbilitys.forEach(item => {
+          delete item.id
+        })
+      }
 
-      form.deviceModelFormat = data.modelFormatVo
-      delete form.modelFormatVo
+      if (form.deviceModelFormat) {
+        form.deviceModelFormat.modelFormatPages.forEach(item => {
+          delete item.id
+          if (!item.modelFormatItems) {
+            return
+          }
+          item.modelFormatItems.forEach(formatItem => {
+            delete formatItem.id
+          })
+        })
+      }
 
-      createDeviceModel(data).then(res => {
+      createDeviceModel(form).then(res => {
         this.addData({
           ...data,
           id: res.data

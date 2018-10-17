@@ -52,3 +52,10 @@ export function selectListByTypeIds(ids) {
     method: 'get'
   })
 }
+
+export function selectTypesBySLD() {
+  return request({
+    url: `/temp/api/deviceType/selectTypesBySLD`,
+    method: 'get'
+  })
+}

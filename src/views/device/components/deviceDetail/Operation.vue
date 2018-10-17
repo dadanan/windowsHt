@@ -42,7 +42,7 @@ export default {
         // 修改字段名称，和H5代码保持一致
         data.abilitysList = data.deviceModelAbilitys
         data.formatItemsList =
-          data.modelFormatVo.modelFormatPages[0].modelFormatItems
+          data.deviceModelFormat.deviceModelFormat[0].modelFormatItems
 
         this.pageName = data.pageName
         this.formatItemsList = data.formatItemsList

@@ -197,7 +197,7 @@ import { fetchList as getTypeList } from '@/api/device/type'
 import { select as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
 import { updateDeviceModel } from '@/api/device/model'
-import { selectListByTypeIds } from '@/api/device/type'
+import { selectTypesBySLD } from '@/api/device/type'
 import DTitle from '@/components/Title'
 
 export default {
@@ -344,7 +344,6 @@ export default {
         }
       }
 
-      delete form.modelFormatVo
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('update-data', {
@@ -420,12 +419,11 @@ export default {
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
-      console.log('modifyData', data)
       this.modifyData = data
     },
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
-      this.getTypeById(temp[0].typeIds)
+      this.getTypeById()
       this.form.typeId = ''
     },
     getCustomer() {
@@ -484,8 +482,8 @@ export default {
           })
       })
     },
-    getTypeById(ids) {
-      selectListByTypeIds(ids).then(res => {
+    getTypeById() {
+      selectTypesBySLD().then(res => {
         this.typeList = res.data
       })
     },
@@ -522,7 +520,7 @@ export default {
           this.$set(item, 'isUsed', true)
         })
 
-      this.pageOfForamt = newData.modelFormatVo.modelFormatPages
+      this.pageOfForamt = newData.deviceModelFormat.modelFormatPages
 
       // 如果用户上次配置了版式数据，那么转换一些参数
       if (this.pageOfForamt) {
