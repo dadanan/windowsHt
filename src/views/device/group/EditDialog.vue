@@ -15,7 +15,7 @@
           <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :urls='form.imgOrVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+          <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
           <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
@@ -64,6 +64,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import VideoUploader from '@/components/Upload/VideoUpload'
 import { updateTeam, queryDeviceInfo } from '@/api/device/team'
 import { select } from '@/api/customer'
 import DTitle from '@/components/Title'
@@ -71,7 +72,8 @@ import DTitle from '@/components/Title'
 export default {
   components: {
     ImageUploader,
-    DTitle
+    DTitle,
+    VideoUploader
   },
   props: {
     visible: {
@@ -85,7 +87,8 @@ export default {
   data() {
     return {
       form: {
-        imgOrVideoList: [],
+        imagesList: [],
+        videosList: [],
         createUserOpenId: ''
       },
       teamDeviceCreateRequestList: [],
@@ -97,6 +100,15 @@ export default {
     }
   },
   methods: {
+    handleVideoSuccess(file, fileList) {
+      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+    },
+    handleVideoRemove(file) {
+      const index = this.form.videosList.findIndex(
+        v => v.video === file.videoUrl
+      )
+      this.form.videosList.splice(index, 1)
+    },
     queryDeviceInfo(id) {
       queryDeviceInfo({ customerId: id }).then(res => {
         this.deviceList = res.data
@@ -107,16 +119,11 @@ export default {
       data[name] = image
     },
     setImg(file) {
-      this.form.imgOrVideoList = [
-        ...this.form.imgOrVideoList,
-        { imgVideo: file.url }
-      ]
+      this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imgOrVideoList.findIndex(
-        v => v.imgVideo === file.url
-      )
-      this.form.imgOrVideoList.splice(index, 1)
+      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      this.form.imagesList.splice(index, 1)
     },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
@@ -177,14 +184,6 @@ export default {
       } else {
         this.teamDeviceCreateRequestList =
           data.teamDeviceCreateRequestList || []
-      }
-      if (data.cover) {
-        data.cover = data.cover
-        delete data.cover
-      }
-      if (data.icon) {
-        data.icon = data.icon
-        delete data.icon
       }
       this.form = data
     }

@@ -158,8 +158,8 @@
           <el-form-item v-if="option.status !== 2" :key="i" :label="'选项 ' + i">
             <div class="input-group">
               <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
+              <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
               <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
-              <!-- <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input> -->
             </div>
           </el-form-item>
         </template>
@@ -174,11 +174,14 @@
         <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
-            <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+            <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
             <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
             <el-input v-model="option.minVal" placeholder="最大值"></el-input>
             <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="addConfigOption">新增选项</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -311,6 +314,26 @@ export default {
     }
   },
   methods: {
+    addConfigOption() {
+      const type = this.modifyData.abilityType
+      if (type === 2 || type === 3) {
+        this.modifyData.deviceModelAbilityOptions.push({
+          optionName: '',
+          optionValue: '',
+          new: true
+        })
+        return
+      }
+      if (type === 5) {
+        this.modifyData.deviceModelAbilityOptions.push({
+          optionName: '',
+          optionValue: '',
+          minVal: '',
+          maxVal: '',
+          new: true
+        })
+      }
+    },
     useableAbility(key) {
       return this.theType.deviceTypeAbilitys.filter(
         item => item.abilityType === key
