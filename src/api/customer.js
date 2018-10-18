@@ -52,9 +52,9 @@ export function selectModelsByTypeIds(typeIds) {
   })
 }
 
-export function selectBackendConfigBySLD(sld) {
+export function selectBackendConfigBySLD() {
   return request({
-    url: `/temp/api/customer/selectBackendConfigBySLD/${sld}`,
+    url: `/temp/api/customer/selectBackendConfigBySLD`,
     method: 'get'
   })
 }

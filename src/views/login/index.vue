@@ -135,7 +135,7 @@ export default {
       return ''
     },
     selectBackendConfigBySLD() {
-      selectBackendConfigBySLD(this.getSld())
+      selectBackendConfigBySLD()
         .then(res => {
           const data = res.data
           if (data.logo) {
