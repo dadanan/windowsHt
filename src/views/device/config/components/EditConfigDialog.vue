@@ -6,7 +6,7 @@
       <el-step title="硬件功能项"></el-step>
       <el-step title="版式配置"></el-step>
     </el-steps>
-    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules = "rules" ref="form">
+    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
       <el-form-item label="客户" prop="customerId">
         <el-select v-model="form.customerId" @change="handleCustomerChange">
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
@@ -27,7 +27,7 @@
           <el-input v-model="theType.typeNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
+          <image-uploader :key='theType.icon' :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
@@ -242,20 +242,33 @@ export default {
           { required: true, message: '请选择活动区域', trigger: 'change' }
         ],
         date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          {
+            type: 'date',
+            required: true,
+            message: '请选择日期',
+            trigger: 'change'
+          }
         ],
         date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+          {
+            type: 'date',
+            required: true,
+            message: '请选择时间',
+            trigger: 'change'
+          }
         ],
         type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+          {
+            type: 'array',
+            required: true,
+            message: '请至少选择一个活动性质',
+            trigger: 'change'
+          }
         ],
         resource: [
           { required: true, message: '请选择活动资源', trigger: 'change' }
         ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
+        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
       },
       abilitySelected: [
         {

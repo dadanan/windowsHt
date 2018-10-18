@@ -9,10 +9,10 @@
           <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
         <el-form-item label="组标">
-          <image-uploader :url='form.teamIcon' @get-url='setURL(arguments,form,"teamIcon")'></image-uploader>
+          <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="封面">
-          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
+          <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
           <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
@@ -33,10 +33,6 @@
           </el-table-column>
           <el-table-column label="mac" show-overflow-tooltip>
             <template slot-scope="scope">
-              <!-- <el-select v-model="scope.row.mac" placeholder="请选择">
-              <el-option v-for="item in deviceList" :key="item.mac" :label="item.name" :value="item.mac">
-              </el-option>
-            </el-select> -->
               <el-input v-model='scope.row.mac' placeholder="mac"></el-input>
             </template>
           </el-table-column>
@@ -87,8 +83,8 @@ export default {
         imagesList: [],
         videosList: [],
         createUserOpenId: '',
-        teamIcon: '',
-        teamCover: ''
+        icon: '',
+        cover: ''
       },
       rules: {
         name: [
@@ -97,10 +93,20 @@ export default {
         ],
         createUserOpenId: [
           { required: true, message: '请输入创建人OpenID', trigger: 'blur' },
-          { min: 3, max: 50, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+          {
+            min: 3,
+            max: 50,
+            message: '长度在 3 到 100 个字符',
+            trigger: 'blur'
+          }
         ],
         sceneDescription: [
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          {
+            min: 0,
+            max: 100,
+            message: '长度在 0 到 100 个字符',
+            trigger: 'blur'
+          }
         ]
       },
       teamDeviceCreateRequestList: [],
@@ -123,13 +129,10 @@ export default {
     },
     setImg(file) {
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
-      console.log(file, this.form.imagesList)
     },
     removeImg(file) {
-      const index = this.form.imgOrVideoList.findIndex(
-        v => v.imgVideo === file.url
-      )
-      this.form.imgOrVideoList.splice(index, 1)
+      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      this.form.imagesList.splice(index, 1)
     },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
@@ -152,14 +155,15 @@ export default {
     newRow() {
       this.teamDeviceCreateRequestList.push({})
     },
-    submitForm(formName) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createNewTeam()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     createNewTeam() {
       this.teamDeviceCreateRequestList.forEach(item => {
@@ -172,8 +176,8 @@ export default {
       }
       createNewTeam(form).then(res => {
         this.$emit('update:visible', false)
-        form['icon'] = form.teamIcon
-        form['cover'] = form.teamCover
+        form['icon'] = form.icon
+        form['cover'] = form.cover
         this.$emit('add-data', {
           ...form,
           id: res.data

@@ -27,7 +27,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="图册">
-        <image-uploader :urls='form.imageVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+        <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+      </el-form-item>
+      <el-form-item label="视频">
+        <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
       </el-form-item>
       <el-form-item label="群介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
@@ -49,12 +52,13 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import VideoUploader from '@/components/Upload/VideoUpload'
 import { select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
-  components: { ImageUploader },
+  components: { ImageUploader, VideoUploader },
   props: {
     datas: {
       type: Object
@@ -64,8 +68,8 @@ export default {
     return {
       form: {
         customerId: '',
-        teamCover: '',
-        imageVideoList: [],
+        imagesList: [],
+        videosList: [],
         introduction: ''
       },
       deviceList: [],
@@ -81,7 +85,7 @@ export default {
           { required: true, message: '请选择客户', trigger: 'change' }
         ],
         introduction: [
-          { required: true, message: '请输入群介绍', trigger: 'blur' },
+          { required: true, message: '请输入群介绍', trigger: 'blur' }
         ],
         createLocation: [
           { required: true, message: '请输入地点', trigger: 'blur' },
@@ -89,7 +93,12 @@ export default {
         ],
         remark: [
           { required: true, message: '请添加备注', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          {
+            min: 0,
+            max: 100,
+            message: '长度在 0 到 100 个字符',
+            trigger: 'blur'
+          }
         ]
       },
       selectedDeviceList: [],
@@ -115,17 +124,21 @@ export default {
     this.queryGroupById()
   },
   methods: {
+    handleVideoSuccess(file, fileList) {
+      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+    },
+    handleVideoRemove(file) {
+      const index = this.form.videosList.findIndex(
+        v => v.video === file.videoUrl
+      )
+      this.form.videosList.splice(index, 1)
+    },
     setImg(file) {
-      this.form.imageVideoList = [
-        ...this.form.imageVideoList,
-        { imgVideo: file.url }
-      ]
+      this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imageVideoList.findIndex(
-        v => v.imgVideo === file.url
-      )
-      this.form.imageVideoList.splice(index, 1)
+      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      this.form.imagesList.splice(index, 1)
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
@@ -153,17 +166,19 @@ export default {
         this.customerList = res.data || []
       })
     },
-    submitForm(formName) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createCluster()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) { //清空表单里面的数据
-      this.$refs[formName].resetFields();
+    resetForm(formName) {
+      //清空表单里面的数据
+      this.$refs[formName].resetFields()
       this.$emit('close')
     },
     createCluster() {

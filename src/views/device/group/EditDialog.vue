@@ -9,10 +9,10 @@
           <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
         <el-form-item label="组标">
-          <image-uploader :url='form.teamIcon' @get-url='setURL(arguments,form,"teamIcon")'></image-uploader>
+          <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="封面">
-          <image-uploader :url='form.teamCover' @get-url='setURL(arguments,form,"teamCover")'></image-uploader>
+          <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
           <image-uploader :urls='form.imgOrVideoList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
@@ -179,11 +179,11 @@ export default {
           data.teamDeviceCreateRequestList || []
       }
       if (data.cover) {
-        data.teamCover = data.cover
+        data.cover = data.cover
         delete data.cover
       }
       if (data.icon) {
-        data.teamIcon = data.icon
+        data.icon = data.icon
         delete data.icon
       }
       this.form = data

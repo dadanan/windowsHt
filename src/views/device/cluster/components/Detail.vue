@@ -55,8 +55,8 @@
     </div>
     <div class="photos">集群相册</div>
     <el-card class="el-card--solid">
-      <div v-if="!form.imageVideoList.length">暂无集群相册</div>
-      <div v-else class="item" v-for="(img, i) in form.imageVideoList" :key="i" @dblclick="handlePreview(img.imgVideo)">
+      <div v-if="!form.imagesList.length">暂无集群相册</div>
+      <div v-else class="item" v-for="(img, i) in form.imagesList" :key="i" @dblclick="handlePreview(img.imgVideo)">
         <img :src="img.imgVideo">
       </div>
     </el-card>
@@ -96,7 +96,7 @@ export default {
       form: {
         deviceList: [],
         customerId: '',
-        imageVideoList: []
+        imagesList: []
       },
       deviceData: [],
       columnData: deviceColumnData,
@@ -113,7 +113,7 @@ export default {
         if (res.code === 200) {
           this.form = {
             ...res.data,
-            imageVideoList: res.data.imageVideoList || []
+            imagesList: res.data.imagesList || []
           }
         }
       })
