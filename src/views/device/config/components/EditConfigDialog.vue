@@ -8,29 +8,29 @@
     </el-steps>
     <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
       <el-form-item label="客户" prop="customerId">
-        <el-select v-model="form.customerId" @change="handleCustomerChange">
+        <el-select v-model="form.customerId" @change="handleCustomerChange" :disabled="!isPro()">
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类型" prop="typeId">
-        <el-select v-model="form.typeId" @change="handleTypeChange">
+        <el-select v-model="form.typeId" @change="handleTypeChange" :disabled="!isPro()">
           <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
       </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
-          <el-input v-model="theType.showName"></el-input>
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="型号">
-          <el-input v-model="theType.typeNo"></el-input>
+          <el-input v-model="form.modelNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :key='theType.icon' :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
+          <image-uploader :key='form.icon' :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </template>
       <el-form-item label="软件">
@@ -56,7 +56,7 @@
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="theType.deviceTypeAbilitys" style="width: 100%" class="mb20" border>
+      <el-table :data="deviceModelAbilitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
             <el-input v-model='scope.row.abilityName' disabled></el-input>
@@ -180,9 +180,6 @@
             <el-button type="danger" @click="deleteConfigOption(option,i)">删除</el-button>
           </div>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="addConfigOption">新增选项</el-button>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -204,11 +201,6 @@ import { selectTypesBySLD } from '@/api/device/type'
 import DTitle from '@/components/Title'
 
 export default {
-  components: {
-    ImageUploader,
-    DTitle,
-    File
-  },
   props: {
     visible: {
       type: Boolean,
@@ -225,7 +217,11 @@ export default {
         typeId: '',
         customerId: '',
         showStatus: true,
-        devicePoolCount: ''
+        devicePoolCount: '',
+        name: '',
+        modelNo: '',
+        remark: '',
+        icon: ''
       },
       createFunctionDialogVisible: false,
       childModelIds: [],
@@ -235,7 +231,7 @@ export default {
       pageOfForamt: [], // 用户选择的某个版式列表的页面配置
       dialogFormVisible: false,
       typeList: [],
-      theType: {}, // 用户选择的类型数据
+      deviceModelAbilitys: [], // 设备类型里的功能项数据
       rules: {
         customerId: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -287,7 +283,6 @@ export default {
           id: 3
         }
       ],
-      deviceTypeAbilitys: [],
       step: 1,
       options: [
         {
@@ -314,57 +309,46 @@ export default {
     }
   },
   methods: {
-    addConfigOption() {
-      const type = this.modifyData.abilityType
-      if (type === 2 || type === 3) {
-        this.modifyData.deviceModelAbilityOptions.push({
-          optionName: '',
-          optionValue: '',
-          new: true
-        })
-        return
+    getSld() {
+      // 获取二级域名
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      if (sld) {
+        return sld[1]
       }
-      if (type === 5) {
-        this.modifyData.deviceModelAbilityOptions.push({
-          optionName: '',
-          optionValue: '',
-          minVal: '',
-          maxVal: '',
-          new: true
-        })
-      }
+      return ''
+    },
+    isPro() {
+      // 是正式环境或者开发环境？
+      const sld = this.getSld()
+      return sld === 'pro' || sld === ''
     },
     useableAbility(key) {
-      return this.theType.deviceTypeAbilitys.filter(
-        item => item.abilityType === key
-      )
+      return this.deviceModelAbilitys.filter(item => item.abilityType === key)
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
-      const newArray =
-        this.theType &&
-        this.theType.deviceTypeAbilitys &&
-        this.theType.deviceTypeAbilitys.map(item => {
-          return {
-            id: item.id,
-            abilityId: item.abilityId,
-            definedName: item.definedName,
-            maxVal: item.maxVal,
-            minVal: item.minVal,
-            deviceModelAbilityOptions:
-              item.deviceModelAbilityOptions &&
-              item.deviceModelAbilityOptions.map(iItem => {
-                return {
-                  id: iItem.id,
-                  abilityOptionId: iItem.abilityOptionId,
-                  definedName: iItem.definedName,
-                  maxVal: iItem.maxVal,
-                  minVal: iItem.minVal,
-                  status: iItem.status
-                }
-              })
-          }
-        })
+      const newArray = this.deviceModelAbilitys
+      newArray.map(item => {
+        return {
+          id: item.id,
+          abilityId: item.abilityId,
+          definedName: item.definedName,
+          maxVal: item.maxVal,
+          minVal: item.minVal,
+          deviceModelAbilityOptions:
+            item.deviceModelAbilityOptions &&
+            item.deviceModelAbilityOptions.map(iItem => {
+              return {
+                id: iItem.id,
+                abilityOptionId: iItem.abilityOptionId,
+                definedName: iItem.definedName,
+                maxVal: iItem.maxVal,
+                minVal: iItem.minVal,
+                status: iItem.status
+              }
+            })
+        }
+      })
 
       // 调整第四步「版式配置」的数据结构
       const modelFormatPages =
@@ -389,15 +373,10 @@ export default {
           }
         })
 
-      const theType = this.theType
       const form = {
         ...this.form,
         childModelIds: this.childModelIds.join(','),
-        description: theType.remark,
-        icon: theType.icon,
-        modelNo: theType.typeNo,
-        name: theType.showName,
-        remark: theType.remark,
+        description: '',
         deviceModelAbilitys: newArray,
         deviceModelFormat: {
           modelFormatPages
@@ -468,14 +447,23 @@ export default {
       )
     },
     handleTypeChange(id) {
-      this.theType = this.typeList.filter(item => item.id === id)[0]
-      this.theType.showName = this.theType.name
+      const theType = this.typeList.filter(item => item.id === id)[0]
 
-      this.theType.deviceTypeAbilitys &&
-        this.theType.deviceTypeAbilitys.forEach(item => {
+      const form = this.form
+      form.name = theType.name
+      form.modelNo = theType.typeMo
+      form.icon = theType.icon
+      form.remark = theType.remark
+
+      theType.deviceTypeAbilitys &&
+        theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
           this.$set(item, 'isUsed', true)
+          // 将类型的不同名称的功能选项数据换成和型号详情里的对应
+          item['deviceModelAbilityOptions'] = item.deviceAbilityOptions
         })
+
+      this.deviceModelAbilitys = theType.deviceTypeAbilitys
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
@@ -563,22 +551,15 @@ export default {
         ? newData.childModelIds.split(',').map(Number)
         : []
 
-      const theTypeArray = this.typeList.filter(
-        item => item.id === newData.typeId
-      )
-      this.theType = theTypeArray[0] ? theTypeArray[0] : {}
-      this.theType.showName = newData.name
-      // 如果存在功能项列表数据，覆盖一下
-      if (newData.deviceModelAbilitys) {
-        this.theType.deviceTypeAbilitys = newData.deviceModelAbilitys
-      }
-
       // 第三步：预设自定义名称
-      this.theType.deviceTypeAbilitys &&
-        this.theType.deviceTypeAbilitys.forEach(item => {
+      newData.deviceModelAbilitys &&
+        newData.deviceModelAbilitys.forEach(item => {
           item['abilityName'] = item.definedName
           this.$set(item, 'isUsed', true)
         })
+
+      // 如果存在功能项列表数据，覆盖一下
+      this.deviceModelAbilitys = newData.deviceModelAbilitys
 
       this.pageOfForamt = newData.deviceModelFormat.modelFormatPages
 
@@ -606,6 +587,11 @@ export default {
   created() {
     this.getModelList()
     this.getCustomer()
+  },
+  components: {
+    ImageUploader,
+    DTitle,
+    File
   }
 }
 </script>

@@ -8,6 +8,7 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
+        <el-table-column prop="id" label='主键' show-overflow-tooltip sortable></el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
             <img class='table-inside-image block' :src="scope.row.icon" :alt="scope.row.name">
@@ -46,7 +47,12 @@
 <script>
 import CreateModelDialog from './components/CreateModelDialog'
 import EditModelDialog from './components/EditModelDialog'
-import { fetchList, selectCount, deleteDeviceType, selectById } from '@/api/device/type'
+import {
+  fetchList,
+  selectCount,
+  deleteDeviceType,
+  selectById
+} from '@/api/device/type'
 
 export default {
   components: {

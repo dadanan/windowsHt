@@ -25,16 +25,16 @@
       </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
-          <el-input v-model="theType.showName"></el-input>
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="型号">
-          <el-input v-model="theType.typeNo"></el-input>
+          <el-input v-model="form.modelNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='theType.icon' @get-url='setURL(arguments,theType,"icon")'></image-uploader>
+          <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="theType.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
+          <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
         </el-form-item>
       </template>
       <el-form-item label="软件">
@@ -55,7 +55,7 @@
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
-      <el-table :data="theType.deviceTypeAbilitys" style="width: 100%" class="mb20" border>
+      <el-table :data="deviceModelAbilitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
             <el-input v-model='scope.row.abilityName' disabled></el-input>
@@ -118,11 +118,6 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <!-- <el-table-column label="描述">
-              <template slot-scope="scope">
-                <el-input v-model='scope.row.remark'></el-input>
-              </template>
-            </el-table-column> -->
             <el-table-column label="是否显示" show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
@@ -158,7 +153,7 @@
           <el-input v-model="modifyData.abilityType" disabled></el-input>
         </el-form-item>
         <d-title>自定义部分</d-title>
-        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType===2 || modifyData.abilityType === 3' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
@@ -170,7 +165,7 @@
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
           </div>
         </el-form-item>
-        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
+        <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
@@ -217,7 +212,11 @@ export default {
         showStatus: true,
         productQrCode: '',
         productId: '',
-        customer:''
+        customer: '',
+        name: '',
+        modelNo: '',
+        remark: '',
+        icon: ''
       },
       childModelIds: [],
       formatId: '',
@@ -226,7 +225,6 @@ export default {
       pageOfForamt: [], // 用户选择的某个版式列表的页面配置
       dialogFormVisible: false,
       typeList: [],
-      theType: {}, // 用户选择的类型数据
       abilitySelected: [
         {
           name: '功能项1',
@@ -241,7 +239,7 @@ export default {
           id: 3
         }
       ],
-      deviceTypeAbilitys: [],
+      deviceModelAbilitys: [],
       step: 1,
       options: [
         {
@@ -277,24 +275,21 @@ export default {
   },
   methods: {
     useableAbility(key) {
-      return this.theType.deviceTypeAbilitys.filter(
-        item => item.abilityType === key
-      )
+      return this.deviceModelAbilitys.filter(item => item.abilityType === key)
     },
     createDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
       const newArray =
-        this.theType &&
-        this.theType.deviceTypeAbilitys &&
-        this.theType.deviceTypeAbilitys.map(item => {
+        this.deviceModelAbilitys &&
+        this.deviceModelAbilitys.map(item => {
           return {
             abilityId: item.abilityId,
             definedName: item.definedName,
             maxVal: item.maxVal,
             minVal: item.minVal,
             deviceModelAbilityOptions:
-              item.deviceAbilityOptions &&
-              item.deviceAbilityOptions.map(iItem => {
+              item.deviceModelAbilityOptions &&
+              item.deviceModelAbilityOptions.map(iItem => {
                 return {
                   abilityOptionId: iItem.id,
                   definedName: iItem.optionName,
@@ -326,15 +321,9 @@ export default {
           }
         })
 
-      const theType = this.theType
       const form = {
         ...this.form,
         childModelIds: this.childModelIds.join(','),
-        description: theType.remark,
-        icon: theType.icon,
-        modelNo: theType.typeNo,
-        name: theType.showName,
-        remark: theType.remark,
         deviceModelAbilitys: newArray,
         deviceModelFormat: {
           modelFormatPages
@@ -374,18 +363,27 @@ export default {
     },
     handleTypeChange(id) {
       const theType = this.typeList.filter(item => item.id === id)[0]
+
+      const form = this.form
+      form.name = theType.name
+      form.modelNo = theType.typeMo
+      form.icon = theType.icon
+      form.remark = theType.remark
+
       theType.deviceTypeAbilitys &&
         theType.deviceTypeAbilitys.forEach(item => {
           item['definedName'] = item.abilityName
           this.$set(item, 'isUsed', true)
+          // 将类型的不同名称的功能选项数据换成和型号详情里的对应
+          item['deviceModelAbilityOptions'] = item.deviceAbilityOptions
         })
 
-      this.theType = theType
-      this.theType.showName = theType.name
+      this.deviceModelAbilitys = theType.deviceTypeAbilitys
     },
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
       this.modifyData = data
+      console.log('modifyData', this.modifyData)
     },
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
