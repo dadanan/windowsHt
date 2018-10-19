@@ -86,7 +86,7 @@ export default {
         }
       }
       if (this.isNotInList2(ele)) {
-        this.list2.unshift(ele)
+        this.list2.push(ele)
       }
     },
     pushEle(ele) {
@@ -101,7 +101,7 @@ export default {
   background: #fff;
   padding-bottom: 40px;
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
@@ -144,11 +144,11 @@ export default {
 }
 
 .list-complete-item.sortable-chosen {
-  background: #4AB7BD;
+  background: #4ab7bd;
 }
 
 .list-complete-item.sortable-ghost {
-  background: #30B08F;
+  background: #30b08f;
 }
 
 .list-complete-enter,

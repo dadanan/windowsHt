@@ -418,7 +418,7 @@ export default {
         item.groupName = '无集群'
         item.onlineStatus = 0
       })
-      this.deviceList.unshift(...list)
+      this.deviceList.push(...list)
     },
     deleteOneDeviceHandler() {
       this.isOperable().then(_ => {

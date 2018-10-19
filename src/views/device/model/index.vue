@@ -40,7 +40,7 @@
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="createModelDialogVisible"></create-model-dialog>
-    <edit-model-dialog @update-data='updateData' :visible.sync="editModelDialogVisible" :data='editingData'></edit-model-dialog>
+    <edit-model-dialog @update-data='updateData' :visible.sync="editModelDialogVisible" :abilityList='abilityList' :data='editingData'></edit-model-dialog>
   </div>
 </template>
 
@@ -53,6 +53,7 @@ import {
   deleteDeviceType,
   selectById
 } from '@/api/device/type'
+import { fetchList as fetchAbilityList } from '@/api/device/function'
 
 export default {
   components: {
@@ -71,19 +72,32 @@ export default {
       },
       createModelDialogVisible: false,
       editModelDialogVisible: false,
-      editingData: {}
+      editingData: {},
+      abilityList: []
     }
   },
   created() {
     this.getList()
     this.selectCount()
+    this.fetchAbilityList()
   },
   methods: {
+    fetchAbilityList() {
+      fetchAbilityList({
+        page: 1,
+        limit: 1000
+      }).then(res => {
+        res.data.forEach(item => {
+          item.isChecked = false
+        })
+        this.abilityList = res.data
+      })
+    },
     showEditRoleDialog(data) {
       this.selectById(data.id)
     },
     addData(data) {
-      this.list.unshift(data)
+      this.list.push(data)
     },
     selectById(id) {
       selectById(id).then(res => {

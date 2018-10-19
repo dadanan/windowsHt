@@ -270,7 +270,7 @@ export default {
             this.isCreateRoleDialogVisible = false
 
             form.role.id = res.data
-            this.roleList.unshift({
+            this.roleList.push({
               ...form.role,
               userCount: 0
             })

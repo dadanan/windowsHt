@@ -51,7 +51,6 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import { fetchList } from '@/api/device/function'
 import { updateDeviceType, selectById } from '@/api/device/type'
 
 export default {
@@ -65,6 +64,9 @@ export default {
     },
     data: {
       type: Object
+    },
+    abilityList: {
+      type: Array
     }
   },
   data() {
@@ -77,7 +79,14 @@ export default {
         4: '阈值类',
         5: '阈值选择类'
       },
-      form: {}
+      form: {
+        typeNo: '',
+        icon: '',
+        source: '',
+        name: '',
+        stopWatch: '',
+        remark: ''
+      }
     }
   },
   methods: {
@@ -89,55 +98,6 @@ export default {
       return match ? match[1] : ''
     },
     updateForm() {
-      // /**
-      //  * 该id对应的功能项存在与此次用户选择的功能项数据列表中
-      //  * @return true / false
-      //  */
-      // const isStillChecked = id => {
-      //   return this.userDeviceTypeAbilitys.findIndex(item => item === id) !== -1
-      // }
-
-      // /**
-      //  * 该id对应的功能项不在“用户上次选择的功能项数据中”
-      //  * @return true / false
-      //  */
-      // const isNotCheckedBefore = id => {
-      //   return (
-      //     this.data.deviceTypeAbilitys.findIndex(
-      //       item => item.abilityId === id
-      //     ) === -1
-      //   )
-      // }
-
-      // // 遍历用户 上次选择的功能项数据， 然后判断加不加status:2
-      // const newDeviceTypeAbilitys = this.data.deviceTypeAbilitys.map(item => {
-      //   if (isStillChecked(item.abilityId)) {
-      //     return {
-      //       abilityId: item.abilityId,
-      //       id: item.id
-      //     }
-      //   } else {
-      //     return {
-      //       abilityId: item.abilityId,
-      //       id: item.id,
-      //       status: 2
-      //     }
-      //   }
-      // })
-
-      // // 遍历用户当前选择的功能项，如果不在“用户上次选择的功能项数据中”，id设置为0
-      // let tempArray = this.userDeviceTypeAbilitys.map(id => {
-      //   console.log(isNotCheckedBefore(id))
-      //   if (isNotCheckedBefore(id)) {
-      //     return {
-      //       abilityId: id
-      //     }
-      //   }
-      // })
-
-      // // 去掉 undefined 元素项
-      // tempArray = tempArray.filter(item => item)
-
       const userDeviceTypeAbilitys = this.deviceTypeAbilitys.filter(
         item => item.isChecked
       )
@@ -179,31 +139,18 @@ export default {
     },
     getURL(url) {
       this.form.icon = url
-    },
-    getdeviceTypeAbilitys() {
-      fetchList({
-        page: 1,
-        limit: 1000
-      }).then(res => {
-        res.data.forEach(item => {
-          item.isChecked = ''
-        })
-        this.deviceTypeAbilitys = res.data
-      })
     }
-  },
-  created() {
-    this.getdeviceTypeAbilitys()
   },
   watch: {
     data(val) {
       const form = JSON.parse(JSON.stringify(val))
-      this.form = form
+      this.deviceTypeAbilitys = JSON.parse(JSON.stringify(this.abilityList))
+
       // 判断当前id的功能项是否在用户传入的编辑数据中（即，是否已经被选择）
       // 如果用户添加完直接编辑，那么数据中将没有abilityId,而应该是id
       const isCheckedBefore = id => {
         return (
-          val.deviceTypeAbilitys.findIndex(
+          form.deviceTypeAbilitys.findIndex(
             item => (item.abilityId || item.id) === id
           ) !== -1
         )
@@ -215,6 +162,8 @@ export default {
           item.isChecked = true
         }
       })
+
+      this.form = form
     }
   }
 }

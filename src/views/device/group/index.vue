@@ -189,7 +189,7 @@ export default {
       })
     },
     addData(data) {
-      this.list.unshift(data)
+      this.list.push(data)
     },
     updateData() {},
     deleteRow(id) {

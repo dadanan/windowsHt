@@ -270,7 +270,7 @@ export default {
               message: '添加成功!'
             })
             this.isCreateUserDialogVisible = false
-            this.userList.unshift({
+            this.userList.push({
               ...user,
               id: res.data
             })

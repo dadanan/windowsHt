@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     addData(data) {
-      this.clientList.unshift(data)
+      this.clientList.push(data)
     },
     showEditRoleDialog(data) {
       this.isEditClientDialogVisible = true
