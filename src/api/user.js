@@ -38,7 +38,10 @@ export function delUser(id) {
 export function getUserList() {
   return request({
     url: '/server/user/getUserList',
-    method: 'get'
+    method: 'get',
+    headers: {
+      Origin: "http://dev.hcocloud.com"
+    }
   })
 }
 

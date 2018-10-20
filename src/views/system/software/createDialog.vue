@@ -74,14 +74,6 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="挑选功能项">
-                <template slot-scope="scope">
-                  <el-select v-model="scope.row.abilityId">
-                    <el-option v-for="iItem in useableAbility(scope.row.abilityType)" :label="iItem.name" :value="iItem.abilityId" :key='iItem.id'>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column> -->
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="danger" @click="deleteOption(item.wxFormatItemVos,scope)">删除</el-button>

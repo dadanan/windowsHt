@@ -365,6 +365,7 @@ export default {
               })
           }
         })
+        console.log(newArray)
 
       // 调整第四步「版式配置」的数据结构
       const modelFormatPages =
@@ -558,7 +559,7 @@ export default {
   watch: {
     data(val) {
       const newData = JSON.parse(JSON.stringify(val))
-
+      console.log(newData)
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
         : []
@@ -567,6 +568,7 @@ export default {
         item => item.id === newData.typeId
       )
       this.theType = theTypeArray[0] ? theTypeArray[0] : {}
+      // console.log(this.theType)
       this.theType.showName = newData.name
       // 如果存在功能项列表数据，覆盖一下
       if (newData.deviceModelAbilitys) {

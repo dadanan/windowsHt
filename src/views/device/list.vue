@@ -87,6 +87,8 @@
           </template>
         </el-table-column>
         <el-table-column type="selection"></el-table-column>
+        <el-table-column prop="id" label="设备ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.id">
+        </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
         </el-table-column>
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
@@ -181,9 +183,6 @@
           <el-checkbox v-model="deviceColumnVisible.typeId">类型</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.assignStatus">绑定状态</el-checkbox>
-        </el-form-item>
-        <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -200,6 +199,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.assignStatus">分配状态</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.id">设备ID</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
@@ -266,7 +268,7 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
+import { getList, deleteOneDevice, queryChildDevice ,queryCount } from '@/api/device/list'
 
 export default {
   components: {
@@ -312,6 +314,7 @@ export default {
         bindStatus: true,
         enableStatus: true,
         groupId: true,
+        id: true,
         groupName: true,
         workStatus: true,
         onlineStatus: true,
@@ -388,7 +391,7 @@ export default {
       getList(this.query)
         .then(res => {
           this.deviceList = res.data
-          // console.log(this.deviceList)
+          console.log(this.deviceList)
         })
         .catch(err => {
           console.log('err', err)
@@ -560,6 +563,7 @@ export default {
   },
   created() {
     this.getList()
+    this.queryCount()
   }
 }
 </script>

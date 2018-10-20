@@ -11,6 +11,8 @@
       <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
+        <el-table-column prop="id" label="设备ID" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="缩图">
@@ -56,6 +58,9 @@
     <edit-config-dialog :data='editingData' @update-data='updateData' :deviceModelData="list" :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
+        <!-- <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.id">设备ID</el-checkbox>
+        </el-form-item> -->
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
         </el-form-item>
@@ -320,6 +325,7 @@ export default {
     getList() {
       select(this.listQuery).then(res => {
         this.list = res.data
+        console.log(this.list)
       })
     },
     selectCount() {

@@ -41,8 +41,8 @@ export default {
         const data = res.data
         // 修改字段名称，和H5代码保持一致
         data.abilitysList = data.deviceModelAbilitys
-        data.formatItemsList =
-          data.deviceModelFormat.deviceModelFormat[0].modelFormatItems
+        // data.formatItemsList =
+        //   data.deviceModelFormat.deviceModelFormat[0].modelFormatItems
 
         this.pageName = data.pageName
         this.formatItemsList = data.formatItemsList
@@ -63,7 +63,6 @@ export default {
     },
     getIndexFormatData(list) {
       // 获取H5控制页面功能项数据，带isSelect参数
-
       // 根据功能项id筛选功能项
       const findTheAbility = (data, id) => {
         return data.filter(item => item.id === id)[0]
