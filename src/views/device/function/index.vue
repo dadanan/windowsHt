@@ -52,7 +52,7 @@
 <script>
 import CreateFunctionDialog from './components/CreateFunctionDialog'
 import EditFunctionDialog from './components/EditFunctionDialog'
-import { fetchList, deleteAbility ,selectCount} from '@/api/device/function'
+import { fetchList, deleteAbility, selectCount } from '@/api/device/function'
 
 export default {
   components: {
@@ -64,7 +64,7 @@ export default {
       loading: true,
       list: [],
       total: 1,
-      listQuery: { limit: 10, page: 1 ,status: 1},
+      listQuery: { limit: 10, page: 1, status: 1 },
       permissionListMap: { r: '可读', w: '可写' },
       configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
       createFunctionDialogVisible: false,
@@ -127,25 +127,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteAbility(id)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-                // 从表格中移除此条数据
-                this.list = this.list.filter(item => item.id !== id)
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log('err', err)
-            })
+          deleteAbility(id).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              // 从表格中移除此条数据
+              this.list = this.list.filter(item => item.id !== id)
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+          })
         })
         .catch(() => {
           this.$message({

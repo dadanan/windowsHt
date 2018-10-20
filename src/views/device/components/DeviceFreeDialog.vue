@@ -44,7 +44,6 @@ export default {
       this.selectedDeviceList = selection
     },
     callBackPart() {
-      console.log(';1', this.selectedDeviceList)
       callBackDeviceFromCustomer({
         deviceList: this.selectedDeviceList
       }).then(() => {

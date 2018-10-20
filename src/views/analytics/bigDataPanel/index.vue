@@ -423,14 +423,12 @@ export default {
       this.OptionData.WeatherOptionData = options
     },
     toggleDialog(id) {
-      console.log(id + ' is toggle')
       this.DialogVisile.splice(id, 1, !this.DialogVisile[id])
     },
     alertTest() {
       alert('hello world')
     },
     itemSelected(id) {
-      console.log('[解决方案选中] 父组件收到id = ' + id)
       this.OptionData.SolutionData.selectedId = id
       this.toggleDialog(4)
     }

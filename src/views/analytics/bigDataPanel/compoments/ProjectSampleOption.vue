@@ -1,10 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false 
-    title="工程设置"
-    :visible.sync="dialogVisible"
-    width="30%"
-    :before-close="close"
-    :modal="false">
+  <el-dialog top='4vh' :close-on-click-modal=false title="工程设置" :visible.sync="dialogVisible" width="30%" :before-close="close" :modal="false">
     <el-container>
       <el-main>
         <el-form ref="selectedProject" label-width="80px">
@@ -33,66 +28,62 @@
     </el-container>
 
     <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确定</el-button>
-  </span>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+    </span>
   </el-dialog>
 </template>
 
 <script>
-  export default {
-    props: ['id', 'options', 'visible'],
-    data() {
-      return {
-        dataSource: null,
-        dialogVisible: false,
-        selectedProject: {
-          id: 0,
-          name: '名称',
-          selectImg: null,
-          selectIcon: null
-        }
-      }
-    },
-    watch: {
-      visible(newVal) {
-        this.dialogVisible = newVal
-      },
-      selectedProject() {
-        console.log('selectedProject changed')
-      }
-    },
-    created() {
-      this.populateData()
-    },
-    methods: {
-      populateData() {
-        this.dataSource = this.options.data
-      },
-      onSelectProject() {
-        // console.log('selected id = ' + this.selectedProject.id)
-        this.updateProjectAttribute(this.selectedProject.id)
-      },
-      updateProjectAttribute(id) {
-        this.selectedProject.id = id
-        this.selectedProject.name = this.dataSource[id].name
-      },
-      close() {
-        console.log('弹窗关闭了')
-        this.dialogVisible = false
-        this.$emit('toggleDialog', this.id)
+export default {
+  props: ['id', 'options', 'visible'],
+  data() {
+    return {
+      dataSource: null,
+      dialogVisible: false,
+      selectedProject: {
+        id: 0,
+        name: '名称',
+        selectImg: null,
+        selectIcon: null
       }
     }
+  },
+  watch: {
+    visible(newVal) {
+      this.dialogVisible = newVal
+    },
+    selectedProject() {}
+  },
+  created() {
+    this.populateData()
+  },
+  methods: {
+    populateData() {
+      this.dataSource = this.options.data
+    },
+    onSelectProject() {
+      this.updateProjectAttribute(this.selectedProject.id)
+    },
+    updateProjectAttribute(id) {
+      this.selectedProject.id = id
+      this.selectedProject.name = this.dataSource[id].name
+    },
+    close() {
+      this.dialogVisible = false
+      this.$emit('toggleDialog', this.id)
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .project-samples {
-    text-align: center;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  .setting{
-    float: right;
-  }
+.project-samples {
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.setting {
+  float: right;
+}
 </style>

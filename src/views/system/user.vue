@@ -251,9 +251,6 @@ export default {
             })
           }
         })
-        .catch(err => {
-          console.log(err)
-        })
     },
     createUser() {
       const time = new Date().toISOString()
@@ -281,9 +278,6 @@ export default {
             })
           }
         })
-        .catch(err => {
-          console.log('err', err)
-        })
     },
     deleteUser(id) {
       this.$confirm('此操作将永久删除该系统用户, 是否继续?', '提示', {
@@ -309,7 +303,6 @@ export default {
               }
             })
             .catch(err => {
-              console.log(err)
               this.$message({
                 type: 'error',
                 message: '删除失败！'
@@ -328,11 +321,7 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.userList = res.data
-            console.log(this.userList)
           }
-        })
-        .catch(err => {
-          console.log('err', err)
         })
     },
     handleSizeChange(val) {
@@ -349,9 +338,6 @@ export default {
           if (res.code === 200) {
             this.roleList = res.data
           }
-        })
-        .catch(err => {
-          console.log('err', err)
         })
     }
   },

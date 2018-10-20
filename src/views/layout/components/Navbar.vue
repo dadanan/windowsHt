@@ -64,6 +64,7 @@ import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
 import * as screenfull from 'screenfull'
 import { getCurrentUser, updateUser } from '@/api/user'
+import { selectBackendConfigBySLD } from '@/api/customer'
 
 export default {
   components: {
@@ -388,24 +389,20 @@ export default {
           updateUser({
             ...this.profileForm,
             lastUpdateTime: new Date().toISOString()
+          }).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '更新成功!'
+              })
+              this.dialogEditProfileVisible = false
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
           })
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '更新成功!'
-                })
-                this.dialogEditProfileVisible = false
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log(err)
-            })
           return
         }
         this.$message({
@@ -422,10 +419,25 @@ export default {
           this.$store.commit('SET_USER', data)
         }
       })
+    },
+    selectBackendConfigBySLD() {
+      selectBackendConfigBySLD()
+        .then(res => {
+          const data = res.data
+          if (data.logo) {
+            this.$store.commit('SET_LOGO', data.logo)
+          }
+          if (data.name) {
+            document.title = data.name
+            this.$store.commit('SET_SITENAME', data.name)
+          }
+        })
+        .catch(() => {})
     }
   },
   created() {
     this.getUserInfo()
+    this.selectBackendConfigBySLD()
   }
 }
 </script>

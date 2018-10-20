@@ -364,21 +364,17 @@ export default {
         backendConfig: backendConfig,
         id: this.id
       }
-      updateDetail(form)
-        .then(res => {
-          if (res.code !== 200) {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          } else {
-            this.$emit('update-data', form)
-            this.$emit('update:visible', false)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      updateDetail(form).then(res => {
+        if (res.code !== 200) {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        } else {
+          this.$emit('update-data', form)
+          this.$emit('update:visible', false)
+        }
+      })
     },
     handleUp(data, index) {
       data.androidSceneImgList[index] = data.androidSceneImgList.splice(

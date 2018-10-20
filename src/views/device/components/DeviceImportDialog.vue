@@ -129,9 +129,6 @@ export default {
           this.$emit('update:visible', false)
           this.$emit('add-data', form)
         })
-        .catch(err => {
-          console.log(err)
-        })
     },
     handleExcelChange(e) {
       const file = e.target.files[0]
@@ -150,7 +147,6 @@ export default {
             type: 'binary'
           }) // 以二进制流方式读取得到整份excel表格对象
         } catch (e) {
-          console.log(e)
           this.$message.error('文件类型不正确')
           return
         }

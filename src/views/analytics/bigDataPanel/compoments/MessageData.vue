@@ -65,9 +65,7 @@
       getMessages(type) {
         this.messageDataBuffer = ''
         this.systemMsgs.forEach((element) => {
-          // console.log(element.type)
           if (element.type === parseInt(type)) {
-            console.log(element.message)
             this.messageDataBuffer = this.messageDataBuffer + this.getMessagesName(element.type) + ' : ' + element.message + '\n'
           }
         })
@@ -76,7 +74,6 @@
         var catName = ''
         this.msgTypes.forEach((element) => {
           if (element.id === type) {
-            console.log(element.name)
             catName = element.name
             return
           }
@@ -85,7 +82,6 @@
       },
       // Deal wit switching between tabs
       onTabClick: function(tab, event) {
-        console.log(tab.name)
         this.toogleTab(tab.name)
       }
     }

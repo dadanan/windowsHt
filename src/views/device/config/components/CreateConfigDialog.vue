@@ -379,7 +379,6 @@ export default {
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
       this.modifyData = data
-      console.log('modifyData', this.modifyData)
     },
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
@@ -400,7 +399,6 @@ export default {
       }
     },
     nextStep() {
-      console.log(this.step)
       if (this.step == 1) {
         this.submitForm('form')
       } else if (this.step === 2) {

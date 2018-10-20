@@ -10,7 +10,7 @@
           <el-step title="管理后台设置"></el-step>
         </el-steps>
         <div v-if="createStep == 1">
-          <el-form label-position="left" label-width="150px" :model='baseInfo' :rules='rules' ref='baseInfo' >
+          <el-form label-position="left" label-width="150px" :model='baseInfo' :rules='rules' ref='baseInfo'>
             <el-form-item label="客户名称" prop='name'>
               <el-input v-model="baseInfo.name"></el-input>
             </el-form-item>
@@ -74,7 +74,7 @@
         </div>
         <div v-else-if="createStep == 3">
           <el-form label-position="left" label-width="150px" :model='h5Config' :rules='rules' ref='h5Config'>
-            <el-form-item label="默认组名"  prop='defaultTeamName'>
+            <el-form-item label="默认组名" prop='defaultTeamName'>
               <el-input v-model="h5Config.defaultTeamName"></el-input>
             </el-form-item>
             <el-form-item label="高级设置密码" prop='password'>
@@ -120,7 +120,7 @@
             <el-form-item label="APP安装包">
               <file-uploader format='apk'></file-uploader>
             </el-form-item>
-            <el-form-item label="设备切换密码" prop = "deviceChangePassword">
+            <el-form-item label="设备切换密码" prop="deviceChangePassword">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
             </el-form-item>
             <el-form-item label="安卓场景">
@@ -238,23 +238,23 @@ export default {
         ],
         appid: [
           { min: 1, max: 20, message: '最长为20个字符', trigger: 'blur' },
-          {required: true,message: '请输入appid',trigger: 'blur'}
+          { required: true, message: '请输入appid', trigger: 'blur' }
         ],
         appsecret: [
           { min: 1, max: 33, message: '最长为50个字符', trigger: 'blur' },
-          {required: true,message: '请输入appsecret',trigger: 'blur'}
+          { required: true, message: '请输入appsecret', trigger: 'blur' }
         ],
         userType: [
           { min: 1, max: 33, message: '最长为50个字符', trigger: 'change' },
-          {required: true,message: '请选择客户类型',trigger: 'change'}
+          { required: true, message: '请选择客户类型', trigger: 'change' }
         ],
-        defaultTeamName :[
+        defaultTeamName: [
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
           { required: true, message: '请输入默认组名', trigger: 'blur' }
         ],
         password: [
           { max: 40, message: '最长为40个字符', trigger: 'blur' },
-          {required: true,message: '请输入密码',trigger: 'blur'}
+          { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         themeName: [
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
@@ -264,7 +264,7 @@ export default {
           { required: true, message: '请选择页面版式', trigger: 'change' }
         ],
         version: [
-          { required: false, message: '请选择H5版本', trigger: 'change' },
+          { required: false, message: '请选择H5版本', trigger: 'change' }
         ],
         deviceChangePassword: [
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
@@ -343,17 +343,17 @@ export default {
       this.createStep--
     },
     nextStep() {
-      if(this.createStep == 1){
-        this.submitForm("baseInfo")
-      }else if(this.createStep == 2){
-        if(this.selectedDeviceList.length>0){
+      if (this.createStep == 1) {
+        this.submitForm('baseInfo')
+      } else if (this.createStep == 2) {
+        if (this.selectedDeviceList.length > 0) {
           this.createStep++
-        }else{
+        } else {
           this.$message.warning('请选择设备类型后再进行操作')
         }
-      }else if(this.createStep == 3){
+      } else if (this.createStep == 3) {
         this.submitForm('h5Config')
-      }else if(this.createStep == 4){
+      } else if (this.createStep == 4) {
         this.submitForm('androidConfig')
       }
       if (this.createStep === 6) {
@@ -361,23 +361,25 @@ export default {
         this.createStep = 1
       }
     },
-    submitForm(formName) { //判断表单验证
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单验证
+      this.$refs[formName].validate(valid => {
         if (valid) {
-           this.createStep++
+          this.createStep++
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    subForm(formName) { //判断表单验证
-      this.$refs[formName].validate((valid) => {
+    subForm(formName) {
+      //判断表单验证
+      this.$refs[formName].validate(valid => {
         if (valid) {
-           this.createStep++
+          this.createStep++
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     getList() {
       fetchList(this.listQuery).then(response => {
@@ -441,24 +443,20 @@ export default {
         androidConfig: this.androidConfig,
         backendConfig: this.backendConfig
       }
-      saveDetail(form)
-        .then(res => {
-          if (res.code !== 200) {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          } else {
-            this.$emit('add-data', {
-              ...form,
-              id: res.data
-            })
-            this.$emit('update:visible', false)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      saveDetail(form).then(res => {
+        if (res.code !== 200) {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        } else {
+          this.$emit('add-data', {
+            ...form,
+            id: res.data
+          })
+          this.$emit('update:visible', false)
+        }
+      })
     },
     handleUp(data, index) {
       data.androidSceneImgList[index] = data.androidSceneImgList.splice(

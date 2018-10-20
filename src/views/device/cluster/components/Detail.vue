@@ -111,7 +111,6 @@ export default {
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.form = {
             ...res.data,
             imagesList: res.data.imagesList || []
@@ -129,7 +128,6 @@ export default {
     select() {
       select(this.query).then(res => {
         this.customerList = res.data || []
-        console.log(this.customerList)
       })
     }
   },

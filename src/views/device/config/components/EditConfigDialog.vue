@@ -546,7 +546,6 @@ export default {
   watch: {
     data(val) {
       const newData = JSON.parse(JSON.stringify(val))
-      console.log(newData)
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
         : []

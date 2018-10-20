@@ -85,9 +85,9 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
           </el-table-column>
-           <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
+          <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
           </el-table-column>
-           <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
+          <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -113,7 +113,7 @@
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-           <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
+          <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="funcName" label="函数名" show-overflow-tooltip sortable>
           </el-table-column>
@@ -154,7 +154,7 @@
 
 <script>
 import Operation from './deviceDetail/Operation'
-import { queryOperLog , queryDeviceSensorStat } from '@/api/device/list'
+import { queryOperLog, queryDeviceSensorStat } from '@/api/device/list'
 
 export default {
   props: {
@@ -187,25 +187,20 @@ export default {
   },
   methods: {
     queryOperLog(id) {
-      queryOperLog({"limit":this.limit,"page":this.page,"deviceId":id})
-        .then(res => {
+      queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
+        res => {
           this.deviceList = res.data
-          // console.log(this.deviceList)
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+        }
+      )
     },
     queryDeviceSensorStat(id) {
-      queryDeviceSensorStat({"limit":this.limit,"page":this.page,"deviceId":id})
-        .then(res => {
-          console.log(res.data)
-          this.deviceList1 = res.data
-          // console.log(this.deviceList1)
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+      queryDeviceSensorStat({
+        limit: this.limit,
+        page: this.page,
+        deviceId: id
+      }).then(res => {
+        this.deviceList1 = res.data
+      })
     }
   },
   components: {

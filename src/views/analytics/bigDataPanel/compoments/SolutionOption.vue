@@ -42,7 +42,6 @@
         })
       },
       close() {
-        console.log('弹窗关闭了')
         this.dialogVisible = false
         this.$emit('toggleDialog', this.id)
       }

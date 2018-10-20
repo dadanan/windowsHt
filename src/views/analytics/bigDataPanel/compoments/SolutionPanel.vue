@@ -24,7 +24,6 @@
           this.data = this.options.data
         },
         selectItem(id) {
-          console.log('选中 id = ' + id)
           this.$emit('itemSelected', id)
         }
       }

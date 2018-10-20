@@ -98,30 +98,42 @@ export default {
         ],
         remark: [
           { required: false, message: '请添加备注', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          {
+            min: 0,
+            max: 100,
+            message: '长度在 0 到 100 个字符',
+            trigger: 'blur'
+          }
         ],
         stopWatch: [
           { required: true, message: '请添加码表', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          {
+            min: 0,
+            max: 100,
+            message: '长度在 0 到 100 个字符',
+            trigger: 'blur'
+          }
         ]
-      },
+      }
     }
   },
   created() {
     this.getdeviceTypeAbilitys()
   },
   methods: {
-    submitForm(formName) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createForm()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) { //清空表单里面的数据
-      this.$refs[formName].resetFields();
+    resetForm(formName) {
+      //清空表单里面的数据
+      this.$refs[formName].resetFields()
       this.$emit('update:visible', false)
     },
     createForm() {
@@ -137,23 +149,14 @@ export default {
         ...this.form,
         deviceTypeAbilitys: newDeviceTypeAbilitys
       }
-      createDeviceType(form)
-        .then(res => {
-          this.$emit('update:visible', false)
-          this.$emit('add-data', {
-            ...form,
-            deviceTypeAbilitys: userDeviceTypeAbilitys,
-            id: res.data
-          })
-          console.log({
-            ...form,
-            deviceTypeAbilitys: userDeviceTypeAbilitys,
-            id: res.data
-          })
+      createDeviceType(form).then(res => {
+        this.$emit('update:visible', false)
+        this.$emit('add-data', {
+          ...form,
+          deviceTypeAbilitys: userDeviceTypeAbilitys,
+          id: res.data
         })
-        .catch(err => {
-          console.log('err', err)
-        })
+      })
     },
     getURL(url) {
       this.form.icon = url

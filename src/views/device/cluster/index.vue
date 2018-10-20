@@ -92,7 +92,6 @@ export default {
         ? this.clusterList.splice(index, 1, data)
         : (this.clusterList = [data, ...this.clusterList])
 
-      console.log(index)
       this.visible = false
       this.handleClosed()
     },
@@ -112,7 +111,6 @@ export default {
               })
             })
             .catch(err => {
-              console.log(err)
             })
         })
         .catch(() => {

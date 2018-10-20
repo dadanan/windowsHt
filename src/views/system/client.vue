@@ -97,7 +97,12 @@
 
 <script>
 import DTitle from '@/components/Title'
-import { select, deleteCustomerById, selectById ,selectAllCustomers} from '@/api/customer'
+import {
+  select,
+  deleteCustomerById,
+  selectById,
+  selectAllCustomers
+} from '@/api/customer'
 import ImageUploader from '@/components/Upload/image'
 import CreateModelDialog from './client/createDialog'
 import EditModelDialog from './client/editDialog'
@@ -151,13 +156,9 @@ export default {
       this.getDetail(data.id)
     },
     getDetail(id) {
-      selectById(id)
-        .then(res => {
-          this.editingData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      selectById(id).then(res => {
+        this.editingData = res.data
+      })
     },
     updateData(data) {
       this.clientList.map(item => {
@@ -167,22 +168,14 @@ export default {
       })
     },
     getCustomer() {
-      select(this.listQuery)
-        .then(res => {
-          this.clientList = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      select(this.listQuery).then(res => {
+        this.clientList = res.data
+      })
     },
     selectAllCustomers() {
-      selectAllCustomers()
-        .then(res => {
-          this.total= res.data.length
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      selectAllCustomers().then(res => {
+        this.total = res.data.length
+      })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
@@ -217,25 +210,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteCustomerById(id)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-                // 从表格中移除此条数据
-                this.clientList = this.clientList.filter(item => item.id !== id)
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log('err', err)
-            })
+          deleteCustomerById(id).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              // 从表格中移除此条数据
+              this.clientList = this.clientList.filter(item => item.id !== id)
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+          })
         })
         .catch(() => {
           this.$message({

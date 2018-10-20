@@ -294,25 +294,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteModelById(id)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-                // 从表格中移除此条数据
-                this.list = this.list.filter(item => item.id !== id)
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log('err', err)
-            })
+          deleteModelById(id).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              // 从表格中移除此条数据
+              this.list = this.list.filter(item => item.id !== id)
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+          })
         })
         .catch(() => {
           this.$message({
@@ -324,7 +320,6 @@ export default {
     getList() {
       select(this.listQuery).then(res => {
         this.list = res.data
-        console.log(this.list)
       })
     },
     selectCount() {

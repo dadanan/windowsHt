@@ -574,7 +574,6 @@ export default {
   methods: {
     // 每月新增用户统计
     selectCustomerUserCount() {
-      console.log(222)
       selectCustomerUserCount().then(res => {
         for (let i = 0; i < res.data.length; i++) {
           this.addCount.push(res.data[i].addCount)
