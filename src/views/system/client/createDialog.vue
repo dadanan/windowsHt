@@ -214,7 +214,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import FileUploader from '@/components/Upload/file'
-import { fetchList } from '@/api/device/type'
+import { selectTypesBySLD } from '@/api/device/type'
 import { saveDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
 
@@ -382,7 +382,7 @@ export default {
       })
     },
     getList() {
-      fetchList(this.listQuery).then(response => {
+      selectTypesBySLD(this.listQuery).then(response => {
         this.deviceList = response.data
       })
     },
