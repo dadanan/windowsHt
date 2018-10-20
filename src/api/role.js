@@ -18,7 +18,10 @@ export function createRole(data) {
 export function getRoleList() {
   return request({
     url: '/server/role/getRoleList',
-    method: 'get'
+    method: 'get',
+    headers: {
+      Origin: "http://dev.hcocloud.com"
+    }
   })
 }
 

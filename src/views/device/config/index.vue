@@ -57,6 +57,9 @@
     <edit-config-dialog :data='editingData' @update-data='updateData' :deviceModelData="list" :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
+        <!-- <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.id">设备ID</el-checkbox>
+        </el-form-item> -->
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
         </el-form-item>
@@ -321,6 +324,7 @@ export default {
     getList() {
       select(this.listQuery).then(res => {
         this.list = res.data
+        console.log(this.list)
       })
     },
     selectCount() {

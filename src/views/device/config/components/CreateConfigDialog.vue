@@ -19,10 +19,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- 客服 -->
-      <el-form-item label="联系客服">
-        <el-input v-model="form.customer"></el-input>
-      </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>

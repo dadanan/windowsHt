@@ -128,3 +128,19 @@ export function queryCount(data) {
     data
   })
 }
+// 操作日志
+export function queryOperLog(data) {
+  return request({
+    url: '/temp/api/deviceData/queryOperLog',
+    method: 'post',
+    data
+  })
+}
+// 设备数据
+export function queryDeviceSensorStat(data) {
+  return request({
+    url: '/temp/api/deviceData/queryDeviceSensorStat',
+    method: 'post',
+    data
+  })
+}

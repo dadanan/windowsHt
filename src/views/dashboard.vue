@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="mb20">
-      <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true">编辑看板</el-button>
+      <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true" >编辑看板</el-button>
     </div>
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanData.数据展示.设备分析" :key="item.id" v-if="item.isVisible">
@@ -85,6 +85,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
+import {selectCustomerUserCount,selectTypePercent,selectDeviceCount ,newDeviceCountOfToday} from '@/api/big-picture-mode/bigPictureMode'
 
 export default {
   components: {
@@ -553,7 +554,71 @@ export default {
           ]
         }
       },
-      dialogEditKanbanVisible: false
+      dialogEditKanbanVisible: false,
+      addPercent: [],
+      userCount: [],
+      addCount: [],
+      devAddCount: [],
+      devAddPercent: [],
+      deviceCount: [],
+      devedata: [],
+      newDeviceCount: ''
+    }
+  },
+  created () {
+    this.selectCustomerUserCount()
+    this.selectDeviceCount()
+    this.selectTypePercent()
+    this.newDeviceCountOfToday()
+  },
+  methods: {
+    // 每月新增用户统计
+    selectCustomerUserCount() {
+      console.log(222)
+      selectCustomerUserCount().then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.addCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.addPercent.push(0)
+          } else {
+            this.addPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.userCount.push(res.data[i].userCount)
+        }
+        this.kanbanData.图表展示.用户分析[0].options.series[0].data = this.userCount
+        this.kanbanData.图表展示.用户分析[0].options.series[1].data = this.userCount
+      })
+    },
+    // 每月新增设备统计
+    selectDeviceCount() {
+      selectDeviceCount().then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.devAddCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.devAddPercent.push(0)
+          } else {
+            this.devAddPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.deviceCount.push(res.data[i].deviceCount)
+        }
+        this.kanbanData.图表展示.设备分析[0].options.series[0].data = this.deviceCount
+        this.kanbanData.图表展示.设备分析[0].options.series[1].data = this.deviceCount
+      })
+    },
+    // 设备类型统计
+    selectTypePercent() {
+      selectTypePercent().then(res => {
+        for(var i = 0; i<res.data.length;i++){
+          this.devedata.push({value:((res.data[i].typePercent).substring(0, 2)),name:res.data[i].typeName})
+        }
+        this.kanbanData.图表展示.设备分析[3].options.series[0].data = this.devedata
+      })
+    },
+    // 今日新增设备统计
+    newDeviceCountOfToday() {
+      newDeviceCountOfToday().then(res => {
+       this.kanbanData.数据展示.设备分析[1].value = res.data
+      })
     }
   }
 }

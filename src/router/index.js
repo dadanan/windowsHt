@@ -480,7 +480,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'setting',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/system/setting'),
         name: 'systemSetting',
         meta: {
           title: 'systemSetting'

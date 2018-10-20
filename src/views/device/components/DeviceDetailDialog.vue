@@ -69,21 +69,25 @@
         <operation></operation>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
-        <el-table style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="deviceId" label="设备ID" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="hum" label="湿度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="pm" label="PM2.5" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="tem" label="温度" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
+          </el-table-column>
+           <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
+          </el-table-column>
+           <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -109,19 +113,19 @@
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
+           <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="funcName" label="函数名" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="funcRemark" label="函数备注" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="funcValue" label="函数值" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
+          <el-table-column prop="operName" label="修改人" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
+          <el-table-column prop="operateTime" label="操作时间" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="responseTime" label="响应时间" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -144,38 +148,13 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="设备订单" name="6">
-        <el-table style="width: 100%" border :data="deviceList">
-          <el-table-column type="index"></el-table-column>
-          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="设备设置" name="7">
-        <el-button-group>
-          <el-button type="primary">绑定</el-button>
-          <el-button type="primary">解绑</el-button>
-          <el-button type="primary">禁用/启用</el-button>
-        </el-button-group>
-      </el-tab-pane>
     </el-tabs>
   </el-dialog>
 </template>
 
 <script>
 import Operation from './deviceDetail/Operation'
+import { queryOperLog , queryDeviceSensorStat } from '@/api/device/list'
 
 export default {
   props: {
@@ -192,12 +171,41 @@ export default {
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
-      form: {}
+      form: {},
+      limit: 10,
+      page: 1,
+      deviceId: 1,
+      deviceList1: []
     }
   },
   watch: {
     detailData(val) {
+      this.queryOperLog(val.id)
+      this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
+    }
+  },
+  methods: {
+    queryOperLog(id) {
+      queryOperLog({"limit":this.limit,"page":this.page,"deviceId":id})
+        .then(res => {
+          this.deviceList = res.data
+          // console.log(this.deviceList)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+    },
+    queryDeviceSensorStat(id) {
+      queryDeviceSensorStat({"limit":this.limit,"page":this.page,"deviceId":id})
+        .then(res => {
+          console.log(res.data)
+          this.deviceList1 = res.data
+          // console.log(this.deviceList1)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
     }
   },
   components: {

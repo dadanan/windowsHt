@@ -328,6 +328,7 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.userList = res.data
+            console.log(this.userList)
           }
         })
         .catch(err => {
