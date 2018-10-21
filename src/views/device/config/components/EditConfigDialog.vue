@@ -343,8 +343,8 @@ export default {
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
-      const newArray = this.deviceModelAbilitys
-      newArray.map(item => {
+      let newArray = this.deviceModelAbilitys
+      newArray = newArray.map(item => {
         return {
           id: item.id,
           abilityId: item.abilityId,
