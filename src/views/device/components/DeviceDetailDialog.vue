@@ -59,8 +59,8 @@
         </el-card>
       </div>
       <div class="flex-item">
-        <el-card class="el-card--solid">
-          <iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://f.amap.com/rRZS_0F85dWA'></iframe>
+        <el-card class="el-card--solid map-container">
+          <a-map></a-map>
         </el-card>
       </div>
     </div>
@@ -154,6 +154,7 @@
 
 <script>
 import Operation from './deviceDetail/Operation'
+import AMap from './deviceDetail/AMap'
 import { queryOperLog, queryDeviceSensorStat } from '@/api/device/list'
 
 export default {
@@ -204,7 +205,8 @@ export default {
     }
   },
   components: {
-    Operation
+    Operation,
+    AMap
   }
 }
 </script>
@@ -214,6 +216,11 @@ export default {
   display: flex;
   margin-left: -10px;
   margin-right: -10px;
+}
+
+.map-container {
+  width: 560px;
+  height: 440px;
 }
 
 .flex-item {

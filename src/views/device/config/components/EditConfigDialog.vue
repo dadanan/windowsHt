@@ -79,8 +79,13 @@
         </el-table-column>
         <el-table-column label="是否使用">
           <template slot-scope="scope">
-            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
+            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用" :disabled="scope.row.updateStatus === 3 || scope.row.updateStatus === -1 ">
             </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            {{updateStatus[scope.row.updateStatus]}}
           </template>
         </el-table-column>
       </el-table>
@@ -159,7 +164,9 @@
             <div class="input-group">
               <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
-              <el-button type="danger" @click="deleteConfigOption(option,i)">禁用</el-button>
+              <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
+              <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">禁用</el-button>
+              <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">启用</el-button>
             </div>
           </el-form-item>
         </template>
@@ -168,7 +175,9 @@
           <div class="input-group">
             <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
-            <el-button type="danger" @click="deleteConfigOption(option,i)">禁用</el-button>
+            <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
+            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">禁用</el-button>
+            <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">启用</el-button>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
@@ -177,7 +186,9 @@
             <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
             <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
             <el-input v-model="option.minVal" placeholder="最大值"></el-input>
-            <el-button type="danger" @click="deleteConfigOption(option,i)">禁用</el-button>
+            <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
+            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">禁用</el-button>
+            <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">启用</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -305,6 +316,11 @@ export default {
         4: '阈值类',
         5: '阈值选择类'
       },
+      updateStatus: {
+        0: '',
+        1: '新增',
+        '-1': '禁用'
+      },
       software: ''
     }
   },
@@ -335,6 +351,7 @@ export default {
           definedName: item.definedName,
           maxVal: item.maxVal,
           minVal: item.minVal,
+          status: item.isUsed ? 1 : 3,
           deviceModelAbilityOptions:
             item.deviceModelAbilityOptions &&
             item.deviceModelAbilityOptions.map(iItem => {
@@ -535,11 +552,18 @@ export default {
         this.typeList = res.data
       })
     },
-    deleteConfigOption(data, i) {
+    disableConfigOption(data, i) {
       this.modifyData.deviceModelAbilityOptions.splice(
         i,
         1,
-        Object.assign({}, data, { status: 2 })
+        Object.assign({}, data, { status: 3 })
+      )
+    },
+    ableConfigOption(data, i) {
+      this.modifyData.deviceModelAbilityOptions.splice(
+        i,
+        1,
+        Object.assign({}, data, { status: 1 })
       )
     }
   },
@@ -554,7 +578,24 @@ export default {
       newData.deviceModelAbilitys &&
         newData.deviceModelAbilitys.forEach(item => {
           item['abilityName'] = item.definedName
-          this.$set(item, 'isUsed', true)
+          if (item.updateStatus === 1) {
+            // 新添加的功能项，默认禁用。可手动启用
+            item.status = 3
+          }
+          if (item.status === 1) {
+            this.$set(item, 'isUsed', true)
+          } else if (item.status === 3) {
+            this.$set(item, 'isUsed', false)
+          }
+
+          // 新增的选项默认设置为禁用状态
+          item.deviceModelAbilityOptions &&
+            item.deviceModelAbilityOptions.forEach(option => {
+              // 如果是新增的，或者设备功能那边禁用了的选项
+              if (option.updateStatus === 1 || option.updateStatus === 3) {
+                option.status = 3
+              }
+            })
         })
 
       // 如果存在功能项列表数据，覆盖一下
@@ -609,5 +650,9 @@ export default {
 }
 .format-page-img {
   width: 300px;
+}
+.input-group {
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -5,10 +5,10 @@
         <div class='inside'>
           <el-form label-position="left" label-width="150px" :rules="rules" :model="form" ref='form'>
             <el-form-item label="logo">
-              <image-uploader @get-url='setURL(arguments,form,"logo")'></image-uploader>
+              <image-uploader :url='form.logo' @get-url='setURL(arguments,form,"logo")'></image-uploader>
             </el-form-item>
-            <el-form-item label="网站名称" prop="title">
-              <el-input v-model='form.title' class="ipt"></el-input>
+            <el-form-item label="网站名称" prop="name">
+              <el-input v-model='form.name' class="ipt"></el-input>
             </el-form-item>
             <div class="table-opts">
               <el-button type="primary" @click='submitForm("form")'>确定</el-button>
@@ -29,10 +29,10 @@ export default {
     return {
       form: {
         logo: this.$store.getters.logo,
-        title: ''
+        name: this.$store.getters.siteName
       },
       rules: {
-        title: [{ required: true, message: '请输入网站名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入网站名称', trigger: 'blur' }]
       }
     }
   },
@@ -51,7 +51,7 @@ export default {
       updateWebsiteInfo(this.form).then(res => {
         this.$message({
           type: 'success',
-          msg: '更换成功！'
+          message: '更换成功！'
         })
       })
     },
