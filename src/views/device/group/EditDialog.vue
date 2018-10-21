@@ -15,7 +15,7 @@
           <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+          <image-uploader :urls='imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
           <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
@@ -87,10 +87,10 @@ export default {
   data() {
     return {
       form: {
-        imagesList: [],
         videosList: [],
         createUserOpenId: ''
       },
+      imagesList: [],
       teamDeviceCreateRequestList: [],
       query: {
         limit: 100,
@@ -119,11 +119,11 @@ export default {
       data[name] = image
     },
     setImg(file) {
-      this.form.imagesList = [...this.form.imagesList, { image: file.url }]
+      this.imagesList = [...this.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
-      this.form.imagesList.splice(index, 1)
+      const index = this.imagesList.findIndex(v => v.imgVideo === file.url)
+      this.imagesList.splice(index, 1)
     },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
@@ -135,16 +135,13 @@ export default {
       }
     },
     handleVideoSuccess(file, fileList) {
-      this.form.imgOrVideoList = [
-        ...this.form.imgOrVideoList,
-        { imgVideo: file.videoUrl }
-      ]
+      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
     },
     handleVideoRemove(file) {
-      const index = this.form.imgOrVideoList.findIndex(
-        v => v.imgVideo === file.videoUrl
+      const index = this.form.videosList.findIndex(
+        v => v.video === file.videoUrl
       )
-      this.form.imgOrVideoList.splice(index, 1)
+      this.form.videosList.splice(index, 1)
     },
     newRow() {
       this.teamDeviceCreateRequestList.push({})
@@ -186,6 +183,7 @@ export default {
           data.teamDeviceCreateRequestList || []
       }
       this.form = data
+      this.imagesList = data.imagesList
     }
   }
 }

@@ -58,3 +58,11 @@ export function selectBackendConfigBySLD() {
     method: 'get'
   })
 }
+
+export function updateWebsiteInfo(data) {
+  return request({
+    url: `/temp/api/customer/updateWebsiteInfo`,
+    method: 'post',
+    data
+  })
+}
