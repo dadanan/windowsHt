@@ -390,7 +390,7 @@ export default {
     getList() {
       getList(this.query)
         .then(res => {
-          this.deviceList = res.data
+          this.deviceList = (res.data).reverse()
         })
         .catch(err => {
           console.log('err', err)
