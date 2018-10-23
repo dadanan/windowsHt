@@ -126,7 +126,6 @@ export default {
           this.$emit('add-data', form)
         })
         .catch(err => {
-          console.log(err)
         })
     },
     submitForm(formName) {  //判断表单数据是否为空

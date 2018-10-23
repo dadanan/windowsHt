@@ -34,6 +34,19 @@ export default {
       fileList: []
     }
   },
+  computed: {
+    imageList: {
+      get() {
+        return this.fileList
+      },
+      set(newValue) {
+        this.fileList = newValue
+      }
+    },
+    getName() {
+      return this.name || this.imageName
+    }
+  },
   props: {
     imageName: {
       // 图片名称？
@@ -55,11 +68,6 @@ export default {
       // 是否支持多图？
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    getName() {
-      return this.name || this.imageName
     }
   },
   methods: {
@@ -124,6 +132,7 @@ export default {
   },
   watch: {
     urls(val) {
+      console.log('图册', val, this.urls)
       this.fileList = val.map(data => {
         return {
           url: data.image,

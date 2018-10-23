@@ -51,7 +51,8 @@ export default {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || ''))
+          window.tinymce.get(this.tinymceId).setContent(val || '')
+        )
       }
     }
   },
@@ -96,7 +97,7 @@ export default {
           })
         },
         setup(editor) {
-          editor.on('FullscreenStateChanged', (e) => {
+          editor.on('FullscreenStateChanged', e => {
             _this.fullscreen = e.state
           })
         }
@@ -130,7 +131,6 @@ export default {
         //     })
         //   }).catch(err => {
         //     failure('出现未知问题，刷新页面，或者联系程序员')
-        //     console.log(err);
         //   });
         // },
       })
@@ -149,7 +149,9 @@ export default {
     imageSuccessCBK(arr) {
       const _this = this
       arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
+        window.tinymce
+          .get(_this.tinymceId)
+          .insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
     }
   },
@@ -163,7 +165,7 @@ export default {
 .tinymce-container {
   position: relative;
 }
-.tinymce-container>>>.mce-fullscreen {
+.tinymce-container >>> .mce-fullscreen {
   z-index: 10000;
 }
 .tinymce-textarea {

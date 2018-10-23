@@ -212,7 +212,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import { fetchList } from '@/api/device/type'
+import { selectTypesBySLD } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
 
@@ -306,7 +306,7 @@ export default {
       }
     },
     getList() {
-      fetchList(this.listQuery).then(response => {
+      selectTypesBySLD(this.listQuery).then(response => {
         this.typeList = response.data
       })
     },
@@ -368,21 +368,17 @@ export default {
         backendConfig: backendConfig,
         id: this.id
       }
-      updateDetail(form)
-        .then(res => {
-          if (res.code !== 200) {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          } else {
-            this.$emit('update-data', form)
-            this.$emit('update:visible', false)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      updateDetail(form).then(res => {
+        if (res.code !== 200) {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        } else {
+          this.$emit('update-data', form)
+          this.$emit('update:visible', false)
+        }
+      })
     },
     handleUp(data, index) {
       data.androidSceneImgList[index] = data.androidSceneImgList.splice(

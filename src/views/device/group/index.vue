@@ -120,7 +120,12 @@
 import CreateDialog from './CreateDialog'
 import EditDialog from './EditDialog'
 import TrusteeshipDialog from './TrusteeshipDialog'
-import { queryTeamList,queryTeamCount, deleteOneTeam, queryTeamById } from '@/api/device/team'
+import {
+  queryTeamList,
+  queryTeamCount,
+  deleteOneTeam,
+  queryTeamById
+} from '@/api/device/team'
 import axios from 'axios'
 
 export default {
@@ -145,7 +150,7 @@ export default {
         teamType: true
       },
       query: {
-        limit:10,
+        limit: 10,
         page: 1,
         status: 1
       },
@@ -211,17 +216,13 @@ export default {
         .then(() => {
           deleteOneTeam({
             teamId: id
+          }).then(res => {
+            this.list = this.list.filter(item => item.id !== id)
+            this.$message({
+              type: 'success',
+              message: `删除成功！`
+            })
           })
-            .then(res => {
-              this.list = this.list.filter(item => item.id !== id)
-              this.$message({
-                type: 'success',
-                message: `删除成功！`
-              })
-            })
-            .catch(err => {
-              console.log(err)
-            })
         })
         .catch(() => {
           this.$message({

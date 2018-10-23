@@ -363,12 +363,10 @@
       },
       watch: {
         option() {
-          // console.log('provice updated')
           this.$refs.map.mergeOptions(this.option)
         }
       },
       onProvienceClick(param) {
-        console.log('provicence click + ' + param.name)
         if (this.option.geo.map === 'china') { this.option.geo.map = this.lookupProvienceTable(param.name) } else { this.option.geo.map = 'china' }
       },
       lookupProvienceTable(provienceName) {

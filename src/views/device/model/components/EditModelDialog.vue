@@ -113,29 +113,25 @@ export default {
         deviceTypeAbilitys: newDeviceTypeAbilitys
       }
 
-      updateDeviceType(form)
-        .then(res => {
-          if (res.code === 200) {
-            this.$emit('update:visible', false)
-            this.$emit('update-data', {
-              ...form,
-              deviceTypeAbilitys: userDeviceTypeAbilitys
-            })
+      updateDeviceType(form).then(res => {
+        if (res.code === 200) {
+          this.$emit('update:visible', false)
+          this.$emit('update-data', {
+            ...form,
+            deviceTypeAbilitys: userDeviceTypeAbilitys
+          })
 
-            this.$message({
-              type: 'success',
-              message: '更新成功!'
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+          this.$message({
+            type: 'success',
+            message: '更新成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
     },
     getURL(url) {
       this.form.icon = url

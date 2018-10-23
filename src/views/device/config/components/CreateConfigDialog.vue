@@ -23,7 +23,7 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号">
+        <el-form-item label="型号主键">
           <el-input v-model="form.modelNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
@@ -153,12 +153,16 @@
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="success" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.abilityType === 4'>
           <div class="input-group">
             <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
+            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="success" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
@@ -167,6 +171,8 @@
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
             <el-input v-model="option.minVal" placeholder="最小值"></el-input>
             <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="success" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -270,6 +276,20 @@ export default {
     }
   },
   methods: {
+    disableConfigOption(data, i) {
+      this.modifyData.deviceModelAbilityOptions.splice(
+        i,
+        1,
+        Object.assign({}, data, { status: 3 })
+      )
+    },
+    ableConfigOption(data, i) {
+      this.modifyData.deviceModelAbilityOptions.splice(
+        i,
+        1,
+        Object.assign({}, data, { status: 1 })
+      )
+    },
     useableAbility(key) {
       return this.deviceModelAbilitys.filter(item => item.abilityType === key)
     },
@@ -283,6 +303,7 @@ export default {
             definedName: item.definedName,
             maxVal: item.maxVal,
             minVal: item.minVal,
+            status: item.isUsed ? 1 : 3,
             deviceModelAbilityOptions:
               item.deviceModelAbilityOptions &&
               item.deviceModelAbilityOptions.map(iItem => {
@@ -290,7 +311,8 @@ export default {
                   abilityOptionId: iItem.id,
                   definedName: iItem.optionName,
                   maxVal: iItem.maxVal,
-                  minVal: iItem.minVal
+                  minVal: iItem.minVal,
+                  status: iItem.status
                 }
               })
           }
@@ -379,7 +401,6 @@ export default {
     modifyAbilityItem(data) {
       this.dialogFormVisible = true
       this.modifyData = data
-      console.log('modifyData', this.modifyData)
     },
     handleCustomerChange(id) {
       const temp = this.customterList.filter(item => item.id === id)
@@ -400,7 +421,6 @@ export default {
       }
     },
     nextStep() {
-      console.log(this.step)
       if (this.step == 1) {
         this.submitForm('form')
       } else if (this.step === 2) {

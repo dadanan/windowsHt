@@ -60,8 +60,8 @@
         </el-card>
       </div>
       <div class="flex-item">
-        <el-card class="el-card--solid">
-          <iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://f.amap.com/rRZS_0F85dWA'></iframe>
+        <el-card class="el-card--solid map-container">
+          <a-map></a-map>
         </el-card>
       </div>
     </div>
@@ -86,9 +86,9 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
           </el-table-column>
-           <el-table-column label="开始时间" prop="startTime" :formatter="formatDate"  show-overflow-tooltip sortable>
+          <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
           </el-table-column>
-           <el-table-column prop="endTime" label="结束时间"  :formatter="formatDate1" show-overflow-tooltip sortable>
+          <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -114,7 +114,7 @@
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-           <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
+          <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="funcName" label="操作指令" show-overflow-tooltip sortable>
           </el-table-column>
@@ -155,7 +155,8 @@
 
 <script>
 import Operation from './deviceDetail/Operation'
-import { queryOperLog , queryDeviceSensorStat } from '@/api/device/list'
+import AMap from './deviceDetail/AMap'
+import { queryOperLog, queryDeviceSensorStat } from '@/api/device/list'
 
 export default {
   props: {
@@ -188,8 +189,8 @@ export default {
   },
   methods: {
     queryOperLog(id) {
-      queryOperLog({"limit":this.limit,"page":this.page,"deviceId":id})
-        .then(res => {
+      queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
+        res => {
           this.deviceList = res.data
           console.log(res.data)
         })
@@ -254,7 +255,8 @@ export default {
     }
   },
   components: {
-    Operation
+    Operation,
+    AMap
   }
 }
 </script>
@@ -264,6 +266,11 @@ export default {
   display: flex;
   margin-left: -10px;
   margin-right: -10px;
+}
+
+.map-container {
+  width: 560px;
+  height: 440px;
 }
 
 .flex-item {

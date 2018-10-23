@@ -14,7 +14,7 @@
         </el-table>
       </el-col>
       <el-col :span="12">
-        <el-form label-width="100px" class="mb-22" label-position="left" :model="allocateForm" :rules="rules" ref="allocateForm" >
+        <el-form label-width="100px" class="mb-22" label-position="left" :model="allocateForm" :rules="rules" ref="allocateForm">
           <el-form-item label="客户" prop="customerId">
             <el-select v-model="allocateForm.customerId" @change='customerChanged' style="width: 100%">
               <el-option v-for='item in clientList' :label="item.name" :value="item.id" :key="item.id"></el-option>
@@ -96,27 +96,28 @@ export default {
       this.allocateForm.appid = customer.appid
       this.selectModelsByTypeIds(customer.typeIds)
     },
-    submitForm(formName,id) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName, id) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          if(id == 1){
+          if (id == 1) {
             this.allocatePart()
-          }else{
+          } else {
             this.allocateAll()
           }
         } else {
           return false
         }
-      });
+      })
     },
-    resetForm(formName) { //清空表单里面的数据
+    resetForm(formName) {
+      //清空表单里面的数据
       this.$emit('update:visible', false)
       this.$refs[formName].resetFields()
     },
     selectModelsByTypeIds(typeIds) {
       selectModelsByTypeIds(typeIds).then(res => {
         this.modelList = res.data
-        console.log('re', res)
       })
     },
     allocatePart() {
@@ -151,13 +152,9 @@ export default {
       this.selectedDeviceList = selection
     },
     getCustomer() {
-      select(this.listQuery)
-        .then(res => {
-          this.clientList = res.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      select(this.listQuery).then(res => {
+        this.clientList = res.data
+      })
     }
   },
   created() {

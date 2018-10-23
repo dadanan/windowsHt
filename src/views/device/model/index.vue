@@ -8,15 +8,14 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="id" label='主键' show-overflow-tooltip sortable></el-table-column>
+        <el-table-column prop="typeNo" label="类型主键" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
             <img class='table-inside-image block' :src="scope.row.icon" :alt="scope.row.name">
           </template>
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="typeNo" label="typeNo" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="source" label="来源" show-overflow-tooltip sortable>
         </el-table-column>
@@ -141,25 +140,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteDeviceType(id)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-                // 从表格中移除此条数据
-                this.list = this.list.filter(item => item.id !== id)
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log('err', err)
-            })
+          deleteDeviceType(id).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              // 从表格中移除此条数据
+              this.list = this.list.filter(item => item.id !== id)
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+          })
         })
         .catch(() => {
           this.$message({

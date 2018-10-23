@@ -67,7 +67,7 @@ export default {
       const findTheAbility = (data, id) => {
         return data.filter(item => item.id === id)[0]
       }
-
+      return
       newQueryDetailByDeviceId({
         deviceId: this.deviceId,
         abilityIds: list.formatItemsList
@@ -109,12 +109,10 @@ export default {
     }
   },
   created() {
-    // console.log(abilitysList, formatItemsList)
-    this.selectById(107)
+    // this.selectById(107)
   },
   destroyed() {
-    clearInterval(this.setInter)
+    // clearInterval(this.setInter)
   }
-
 }
 </script>

@@ -11,7 +11,7 @@
       <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="id" label="设备ID" show-overflow-tooltip sortable>
+        <el-table-column prop="modelNo" label="型号主键" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
@@ -19,8 +19,6 @@
           <template slot-scope="scope">
             <img :src="scope.row.icon" :alt="scope.row.name" class="table-img">
           </template>
-        </el-table-column>
-        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="typeName" label="类型" show-overflow-tooltip sortable>
         </el-table-column>
@@ -295,25 +293,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          deleteModelById(id)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-                })
-                // 从表格中移除此条数据
-                this.list = this.list.filter(item => item.id !== id)
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.msg
-                })
-              }
-            })
-            .catch(err => {
-              console.log('err', err)
-            })
+          deleteModelById(id).then(res => {
+            if (res.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              // 从表格中移除此条数据
+              this.list = this.list.filter(item => item.id !== id)
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+          })
         })
         .catch(() => {
           this.$message({
@@ -325,7 +319,6 @@ export default {
     getList() {
       select(this.listQuery).then(res => {
         this.list = res.data
-        console.log(this.list)
       })
     },
     selectCount() {

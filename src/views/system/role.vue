@@ -21,7 +21,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[5,10,15,20]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="roleList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加角色" :visible.sync="isCreateRoleDialogVisible">
@@ -108,8 +108,9 @@ export default {
         name: '管理员'
       },
       listQuery: {
-        limit: 5,
-        page: 1
+        limit: 20,
+        page: 1,
+        pageSizes: []
       },
       userID: undefined,
       addForm: {
@@ -149,24 +150,20 @@ export default {
           roleDesc: this.editingData.roleDesc,
           roleName: this.editingData.roleName
         }
+      }).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '更新成功!'
+          })
+          this.isEditRoleDialogVisible = false
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       })
-        .then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '更新成功!'
-            })
-            this.isEditRoleDialogVisible = false
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     getRoleDetail(id) {
       getRoleDetail(id).then(res => {
@@ -203,7 +200,6 @@ export default {
                 type: 'error',
                 message: '删除失败!'
               })
-              console.log(err)
             })
         })
         .catch(() => {
@@ -214,18 +210,14 @@ export default {
         })
     },
     getPermissions() {
-      getPermissions()
-        .then(res => {
-          const data = res.data
-          if (res.code === 200) {
-            if (data && data.length > 0) {
-              this.computePermissionList(data)
-            }
+      getPermissions().then(res => {
+        const data = res.data
+        if (res.code === 200) {
+          if (data && data.length > 0) {
+            this.computePermissionList(data)
           }
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+        }
+      })
     },
     validate(form, cb) {
       /**
@@ -282,7 +274,6 @@ export default {
           }
         })
         .catch(err => {
-          console.log('err', err)
           this.$message({
             type: 'error',
             message: '添加失败'
@@ -322,23 +313,14 @@ export default {
       this.permissionList = list
     },
     getRoleList() {
-      getRoleList()
-        .then(res => {
-          if (res.code === 200) {
-            this.roleList = res.data
-          }
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getRoleList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getRoleList()
+      getRoleList().then(res => {
+        if (res.code === 200) {
+          this.roleList = res.data
+          const length = res.data.length
+          this.listQuery.limit = length
+          this.listQuery.pageSizes = [length, length * 2, length * 3]
+        }
+      })
     }
   },
   created() {

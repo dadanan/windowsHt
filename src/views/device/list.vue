@@ -124,7 +124,7 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
-         <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+        <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
           <template slot-scope="scope">
             {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
           </template>
@@ -268,7 +268,12 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import { getList, deleteOneDevice, queryChildDevice ,queryCount } from '@/api/device/list'
+import {
+  getList,
+  deleteOneDevice,
+  queryChildDevice,
+  queryCount
+} from '@/api/device/list'
 
 export default {
   components: {
@@ -359,7 +364,6 @@ export default {
       ) {
         return
       }
-      console.log(data.id)
       this.queryChildDevice(data.id, data)
     },
     queryChildDevice(id, data) {
@@ -388,13 +392,9 @@ export default {
       }
     },
     getList() {
-      getList(this.query)
-        .then(res => {
-          this.deviceList = (res.data).reverse()
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+      getList(this.query).then(res => {
+        this.deviceList = res.data
+      })
     },
     queryCount() {
       queryCount(this.query.status).then(res => {
@@ -434,25 +434,19 @@ export default {
             deleteOneDevice({
               deviceId: form[0].id,
               mac: form[0].mac
+            }).then(res => {
+              this.deviceList.forEach(item => {
+                // 如果在用户选择的删除列表中
+                if (this.selectedDeviceList.some(obj => obj.mac === item.mac)) {
+                  item.status = 2
+                }
+              })
+              this.selectedDeviceList = []
+              this.$message({
+                type: 'success',
+                message: `设备删除成功: ${form[0].name}`
+              })
             })
-              .then(res => {
-                this.deviceList.forEach(item => {
-                  // 如果在用户选择的删除列表中
-                  if (
-                    this.selectedDeviceList.some(obj => obj.mac === item.mac)
-                  ) {
-                    item.status = 2
-                  }
-                })
-                this.selectedDeviceList = []
-                this.$message({
-                  type: 'success',
-                  message: `设备删除成功: ${form[0].name}`
-                })
-              })
-              .catch(err => {
-                console.log(err)
-              })
           })
           .catch(() => {
             this.$message({
