@@ -23,7 +23,7 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号">
+        <el-form-item label="型号主键">
           <el-input v-model="form.modelNo"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
@@ -580,6 +580,7 @@ export default {
           item['abilityName'] = item.definedName
           if (item.updateStatus === 1) {
             // 新添加的功能项，默认禁用。可手动启用
+            this.$set()
             item.status = 3
           }
           if (item.status === 1) {

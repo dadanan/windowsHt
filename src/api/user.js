@@ -39,9 +39,6 @@ export function getUserList() {
   return request({
     url: '/server/user/getUserList',
     method: 'get',
-    headers: {
-      Origin: "http://dev.hcocloud.com"
-    }
   })
 }
 

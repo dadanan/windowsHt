@@ -19,9 +19,6 @@ export function getRoleList() {
   return request({
     url: '/server/role/getRoleList',
     method: 'get',
-    headers: {
-      Origin: "http://dev.hcocloud.com"
-    }
   })
 }
 

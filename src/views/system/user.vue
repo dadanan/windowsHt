@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[50, 100, 150, 200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="userList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
@@ -126,8 +126,9 @@ export default {
   data() {
     return {
       listQuery: {
-        limit: 1000,
-        page: 1
+        limit: 20,
+        page: 1,
+        pageSizes: []
       },
       userList: [],
       isCreateUserDialogVisible: false,
@@ -236,21 +237,20 @@ export default {
       this.editingData = data
     },
     editUser() {
-      updateUser(this.editingData)
-        .then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '更新成功!'
-            })
-            this.isEditUserDialogVisible = false
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          }
-        })
+      updateUser(this.editingData).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '更新成功!'
+          })
+          this.isEditUserDialogVisible = false
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
     },
     createUser() {
       const time = new Date().toISOString()
@@ -259,25 +259,24 @@ export default {
         createTime: time,
         lastUpdateTime: time
       }
-      createUser(user)
-        .then(res => {
-          if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: '添加成功!'
-            })
-            this.isCreateUserDialogVisible = false
-            this.userList.push({
-              ...user,
-              id: res.data
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.msg
-            })
-          }
-        })
+      createUser(user).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+          this.isCreateUserDialogVisible = false
+          this.userList.push({
+            ...user,
+            id: res.data
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
     },
     deleteUser(id) {
       this.$confirm('此操作将永久删除该系统用户, 是否继续?', '提示', {
@@ -317,12 +316,14 @@ export default {
         })
     },
     getUserList() {
-      getUserList(this.listQuery)
-        .then(res => {
-          if (res.code === 200) {
-            this.userList = res.data
-          }
-        })
+      getUserList(this.listQuery).then(res => {
+        if (res.code === 200) {
+          this.userList = res.data
+          const length = res.data.length
+          this.listQuery.limit = length
+          this.listQuery.pageSizes = [length, length * 2, length * 3]
+        }
+      })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
@@ -333,12 +334,11 @@ export default {
       this.getUserList()
     },
     getRoleList() {
-      getRoleList()
-        .then(res => {
-          if (res.code === 200) {
-            this.roleList = res.data
-          }
-        })
+      getRoleList().then(res => {
+        if (res.code === 200) {
+          this.roleList = res.data
+        }
+      })
     }
   },
   created() {
