@@ -1,14 +1,14 @@
 <template>
   <div class="dashboard-container">
     <el-card>
-      <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
+      <el-scrollbar class="main-scroll" tag="div">
         <div v-if="step == 1">
           <el-form label-position="left" label-width="150px">
-            <el-form-item label="logo">
+            <el-form-item label="用户LOGO">
               <image-uploader @get-url='setURL(arguments,addForm,"previewImg")'></image-uploader>
             </el-form-item>
-             <el-form-item label="客户名称">
-              <el-input v-model='addForm.name' class="ipt"></el-input>
+             <el-form-item label="用户名称">
+              <el-input v-model='addForm.name' class="ipt" ></el-input>
             </el-form-item>
             <el-button type="primary" @click='submitForm'>确定</el-button>
           </el-form>
@@ -20,10 +20,6 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import DTitle from '@/components/Title'
-import { createWxFormat } from '@/api/format'
-import { select } from '@/api/customer'
-import { selectAllTypes } from '@/api/device/type'
-
 export default {
   props: {
     visible: {
@@ -36,53 +32,10 @@ export default {
       step: 1,
       addForm: {
         typeIds: []
-      },
-      level: [
-        {
-          label: '私有',
-          value: 1
-        },
-        {
-          label: '公用',
-          value: 2
-        },
-        {
-          label: '专用',
-          value: 3
-        }
-      ],
-      pages: [{ wxFormatItemVos: [{}] }],
-      customers: [],
-      abilityList: [], // 设备类型的功能项交集
-      typeList: [
-        {
-          label: '文本类',
-          value: 1
-        },
-        {
-          label: '单选类',
-          value: 2
-        },
-        {
-          label: '多选类',
-          value: 3
-        },
-        {
-          label: '阈值类',
-          value: 4
-        },
-        {
-          label: '阈值选择类',
-          value: 5
-        }
-      ],
-      types: [] // 所有设备类型数据
+      }
     }
   },
   methods: {
-    deleteOption(data, scope) {
-      data.splice(scope.$index, 1)
-    },
     submitForm() {
     }
   },
@@ -93,8 +46,7 @@ export default {
  
  },
   components: {
-    ImageUploader,
-    DTitle
+    ImageUploader
   }
 }
 </script>

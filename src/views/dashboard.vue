@@ -1,9 +1,10 @@
 <template>
   <div class="dashboard-container">
     <div class="mb20">
-      <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true" >编辑看板</el-button>
+      <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true">编辑看板</el-button>
+      
     </div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" >
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanData.数据展示.设备分析" :key="item.id" v-if="item.isVisible">
         <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#58D68D' }"></data-card>
       </el-col>
@@ -75,6 +76,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="ttt1">测试</el-button>
         <el-button @click="dialogEditKanbanVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogEditKanbanVisible = false">确定</el-button>
       </div>
@@ -101,35 +103,35 @@ export default {
               id: 0,
               icon: 'hdd',
               name: '当前设备总数',
-              value: 10,
+              value: 852,
               isVisible: true
             },
             {
               id: 1,
               icon: 'hdd',
               name: '今日设备新增数',
-              value: 0,
+              value: 10,
               isVisible: true
             },
             {
               id: 2,
               icon: 'hdd',
-              name: '今日设备订单率',
-              value: 0,
+              name: '今日设备订单',
+              value: 10,
               isVisible: true
             },
             {
               id: 3,
               icon: 'hdd',
               name: '当前设备故障数',
-              value: 0,
+              value: 11,
               isVisible: true
             },
             {
               id: 4,
               icon: 'hdd',
               name: '当前设备在线率',
-              value: 0,
+              value: 80,
               isVisible: false
             }
           ],
@@ -138,35 +140,35 @@ export default {
               id: 5,
               icon: 'hdd',
               name: '当前用户总人数',
-              value: 0,
+              value: 760,
               isVisible: true
             },
             {
               id: 6,
               icon: 'hdd',
-              name: '昨日用户增长率',
-              value: 0,
+              name: '昨日用户增长数',
+              value:23,
               isVisible: true
             },
             {
               id: 7,
               icon: 'hdd',
               name: '今日活跃用户数',
-              value: 0,
+              value: 671,
               isVisible: true
             },
             {
               id: 8,
               icon: 'hdd',
-              name: '昨日用户活跃率',
-              value: 0,
+              name: '昨日用户活跃数',
+              value: 604,
               isVisible: false
             },
             {
               id: 9,
               icon: 'hdd',
-              name: '当前用户活跃率',
-              value: 0,
+              name: '当前用户活跃数',
+              value: 759,
               isVisible: false
             }
           ],
@@ -175,21 +177,21 @@ export default {
               id: 10,
               icon: 'hdd',
               name: 'PM 2.5 传感器总数',
-              value: 0,
+              value: 843,
               isVisible: true
             },
             {
               id: 11,
               icon: 'hdd',
               name: '甲醛传感器总数',
-              value: 0,
+              value: 770,
               isVisible: false
             },
             {
               id: 12,
               icon: 'hdd',
               name: 'CO2 传感器总数',
-              value: 0,
+              value: 770,
               isVisible: false
             },
             {
@@ -203,14 +205,14 @@ export default {
               id: 14,
               icon: 'hdd',
               name: '优良环境数',
-              value: 0,
+              value: 718,
               isVisible: false
             },
             {
               id: 15,
               icon: 'hdd',
               name: '优良环境比率',
-              value: 0,
+              value: 80,
               unit: '',
               isVisible: true
             }
@@ -220,28 +222,28 @@ export default {
               id: 16,
               icon: 'hdd',
               name: '今日订单数',
-              value: 0,
+              value: 10,
               isVisible: true
             },
             {
               id: 17,
               icon: 'hdd',
               name: '昨日订单数',
-              value: 0,
+              value: 40,
               isVisible: false
             },
             {
               id: 18,
               icon: 'hdd',
               name: '昨日订单增长率',
-              value: 0,
+              value: 4,
               isVisible: false
             },
             {
               id: 19,
               icon: 'hdd',
               name: '本月订单数',
-              value: 0,
+              value: 80,
               isVisible: false
             }
           ],
@@ -250,7 +252,7 @@ export default {
               id: 20,
               icon: 'hdd',
               name: '当前设备告警数',
-              value: 0,
+              value: 43,
               isVisible: true
             },
             {
@@ -264,7 +266,7 @@ export default {
               id: 22,
               icon: 'hdd',
               name: '当前设备故障率',
-              value: 0,
+              value: 1,
               isVisible: false
             }
           ],
@@ -273,7 +275,7 @@ export default {
               id: 23,
               icon: 'hdd',
               name: '今日分润账单数',
-              value: 0,
+              value: 28,
               isVisible: true
             },
             {
@@ -344,20 +346,19 @@ export default {
                   type: 'category',
                   data: [
                     '其他',
-                    '江苏省',
-                    '广东省',
-                    '福建省',
-                    '湖南省',
-                    '河南省',
-                    '河北省',
-                    '江西省'
+                    '上海',
+                    '江苏',
+                    '北京',
+                    '浙江',
+                    '广东',
+                    '湖南'
                   ]
                 },
                 series: [
                   {
                     name: '设备数量',
                     type: 'bar',
-                    data: [10, 9, 20, 25, 6, 4, 1, 8]
+                    data: [70, 137, 218, 102, 90, 90, 170]
                   }
                 ]
               },
@@ -379,8 +380,8 @@ export default {
                     type: 'pie',
                     radius: ['50%', '70%'],
                     data: [
-                      { value: 335, name: '在线设备' },
-                      { value: 310, name: '离线设备' }
+                      { value: 671, name: '在线设备' },
+                      { value: 181, name: '离线设备' }
                     ]
                   }
                 ]
@@ -403,10 +404,12 @@ export default {
                     type: 'pie',
                     radius: ['50%', '70%'],
                     data: [
-                      { value: 60, name: '设备类型1' },
-                      { value: 10, name: '设备类型2' },
-                      { value: 5, name: '设备类型3' },
-                      { value: 98, name: '设备类型4' }
+                      { value: 10.23, name: 'A型控制器' },
+                      { value: 2.73, name: '慧洋环保科技' },
+                      { value: 16.15, name: '智慧新风' },
+                      { value: 46.69, name: 'B型控制器' },
+                      { value: 22.26, name: '检测探头' },
+                      { value: 1.94, name: '德杯电子净化' },
                     ]
                   }
                 ]
@@ -423,14 +426,14 @@ export default {
                 tooltip: {},
                 legend: {},
                 xAxis: {
-                  data: ['公众号1', '公众号2', '公众号3', '公众号4', '公众号5']
+                  data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
                 },
                 yAxis: {},
                 series: [
                   {
                     name: '设备总数',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10]
+                    data: [442, 104, 138, 142, 26]
                   }
                 ]
               },
@@ -446,23 +449,13 @@ export default {
                 tooltip: {},
                 legend: {},
                 xAxis: {
-                  data: [
-                    '公众号1',
-                    '公众号2',
-                    '公众号3',
-                    '公众号4',
-                    '公众号5',
-                    '公众号6',
-                    '公众号7',
-                    '公众号8',
-                    '公众号9'
-                  ]
+                  data:['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
                 },
                 yAxis: {},
                 series: [
                   {
                     name: '增长趋势',
-                    data: [5, 21, 25, 31, 34, 40, 55, 60, 62],
+                    data: [54,32,18,20,2],
                     type: 'line'
                   }
                 ]
@@ -501,11 +494,11 @@ export default {
                   {
                     name: '用户总数',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                    data: [80, 70, 90, 70, 50, 90, 70, 70, 90, 80]
                   },
                   {
                     name: '增长趋势',
-                    data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                    data: [80, 70, 90, 70, 50, 90, 70, 70, 90, 80],
                     type: 'line',
                     smooth: true
                   }
@@ -524,26 +517,26 @@ export default {
                 legend: {},
                 xAxis: {
                   data: [
-                    '00:00 AM',
-                    '01:00 AM',
-                    '02:00 AM',
-                    '03:00 AM',
-                    '04:00 AM',
-                    '05:00 AM',
-                    '06:00 AM',
-                    '07:00 AM',
-                    '08:00 AM',
-                    '09:00 AM',
-                    '10:00 AM',
-                    '11:00 AM',
-                    '12:00 AM'
+                    '00:00',
+                    '01:00',
+                    '02:00',
+                    '03:00',
+                    '04:00',
+                    '05:00',
+                    '06:00',
+                    '07:00',
+                    '08:00',
+                    '09:00',
+                    '10:00',
+                    '11:00',
+                    '12:00'
                   ]
                 },
                 yAxis: {},
                 series: [
                   {
                     name: '每小时用户数',
-                    data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                    data: [2,0,0,1,214,673,349,291,416,544,410,593],
                     type: 'line',
                     smooth: true
                   }
@@ -562,7 +555,8 @@ export default {
       devAddPercent: [],
       deviceCount: [],
       devedata: [],
-      newDeviceCount: ''
+      newDeviceCount: '',
+      ttt:true
     }
   },
   created () {
@@ -572,9 +566,471 @@ export default {
     this.newDeviceCountOfToday()
   },
   methods: {
+    ttt1(){  
+      this.ttt =! this.ttt
+      if(this.ttt){
+        console.log(11)
+        this.selectCustomerUserCount()
+        this.selectDeviceCount()
+        this.selectTypePercent()
+        this.newDeviceCountOfToday()
+      }else{
+        console.log(333)
+        this.kanbanData={
+        数据展示: {
+          设备分析: [
+            {
+              id: 0,
+              icon: 'hdd',
+              name: '当前设备总数',
+              value: 852,
+              isVisible: true
+            },
+            {
+              id: 1,
+              icon: 'hdd',
+              name: '今日设备新增数',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 2,
+              icon: 'hdd',
+              name: '今日设备订单',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 3,
+              icon: 'hdd',
+              name: '当前设备故障数',
+              value: 11,
+              isVisible: true
+            },
+            {
+              id: 4,
+              icon: 'hdd',
+              name: '当前设备在线率',
+              value: 80,
+              isVisible: false
+            }
+          ],
+          用户分析: [
+            {
+              id: 5,
+              icon: 'hdd',
+              name: '当前用户总人数',
+              value: 760,
+              isVisible: true
+            },
+            {
+              id: 6,
+              icon: 'hdd',
+              name: '昨日用户增长数',
+              value:23,
+              isVisible: true
+            },
+            {
+              id: 7,
+              icon: 'hdd',
+              name: '今日活跃用户数',
+              value: 671,
+              isVisible: true
+            },
+            {
+              id: 8,
+              icon: 'hdd',
+              name: '昨日用户活跃数',
+              value: 604,
+              isVisible: false
+            },
+            {
+              id: 9,
+              icon: 'hdd',
+              name: '当前用户活跃数',
+              value: 759,
+              isVisible: false
+            }
+          ],
+          环境分析: [
+            {
+              id: 10,
+              icon: 'hdd',
+              name: 'PM 2.5 传感器总数',
+              value: 843,
+              isVisible: true
+            },
+            {
+              id: 11,
+              icon: 'hdd',
+              name: '甲醛传感器总数',
+              value: 770,
+              isVisible: false
+            },
+            {
+              id: 12,
+              icon: 'hdd',
+              name: 'CO2 传感器总数',
+              value: 770,
+              isVisible: false
+            },
+            {
+              id: 13,
+              icon: 'hdd',
+              name: 'TVOC 传感器数据总数',
+              value: 0,
+              isVisible: false
+            },
+            {
+              id: 14,
+              icon: 'hdd',
+              name: '优良环境数',
+              value: 718,
+              isVisible: false
+            },
+            {
+              id: 15,
+              icon: 'hdd',
+              name: '优良环境比率',
+              value: 80,
+              unit: '',
+              isVisible: true
+            }
+          ],
+          订单分析: [
+            {
+              id: 16,
+              icon: 'hdd',
+              name: '今日订单数',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 17,
+              icon: 'hdd',
+              name: '昨日订单数',
+              value: 40,
+              isVisible: false
+            },
+            {
+              id: 18,
+              icon: 'hdd',
+              name: '昨日订单增长率',
+              value: 4,
+              isVisible: false
+            },
+            {
+              id: 19,
+              icon: 'hdd',
+              name: '本月订单数',
+              value: 80,
+              isVisible: false
+            }
+          ],
+          告警分析: [
+            {
+              id: 20,
+              icon: 'hdd',
+              name: '当前设备告警数',
+              value: 43,
+              isVisible: true
+            },
+            {
+              id: 21,
+              icon: 'hdd',
+              name: '今日新增告警记录',
+              value: 0,
+              isVisible: false
+            },
+            {
+              id: 22,
+              icon: 'hdd',
+              name: '当前设备故障率',
+              value: 1,
+              isVisible: false
+            }
+          ],
+          分润分析: [
+            {
+              id: 23,
+              icon: 'hdd',
+              name: '今日分润账单数',
+              value: 28,
+              isVisible: true
+            },
+            {
+              id: 24,
+              icon: 'hdd',
+              name: '今日分润金额',
+              value: 0,
+              isVisible: false
+            }
+          ]
+        },
+        图表展示: {
+          设备分析: [
+            {
+              id: 0,
+              name: '设备增加趋势表',
+              options: {
+                title: {
+                  text: '设备增加趋势表'
+                },
+                tooltip: {},
+                legend: {},
+                xAxis: {
+                  data: [
+                    '一月',
+                    '二月',
+                    '三月',
+                    '四月',
+                    '五月',
+                    '六月',
+                    '七月',
+                    '八月',
+                    '九月',
+                    '十月',
+                    '十一月',
+                    '十二月'
+                  ]
+                },
+                yAxis: {},
+                series: [
+                  {
+                    name: '设备总数',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                  },
+                  {
+                    name: '增长趋势',
+                    data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                    type: 'line',
+                    smooth: true
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 1,
+              name: '设备地区分布图',
+              options: {
+                title: {
+                  text: '设备地区分布图'
+                },
+                tooltip: {},
+                xAxis: {
+                  type: 'value'
+                },
+                yAxis: {
+                  type: 'category',
+                  data: [
+                    '其他',
+                    '上海',
+                    '江苏',
+                    '北京',
+                    '浙江',
+                    '广东',
+                    '湖南'
+                  ]
+                },
+                series: [
+                  {
+                    name: '设备数量',
+                    type: 'bar',
+                    data: [70, 137, 218, 102, 90, 90, 170]
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 2,
+              name: '在线设备占比图',
+              options: {
+                title: {
+                  text: '在线设备占比图'
+                },
+                tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {},
+                series: [
+                  {
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    data: [
+                      { value: 671, name: '在线设备' },
+                      { value: 181, name: '离线设备' }
+                    ]
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 3,
+              name: '设备类型比重图',
+              options: {
+                title: {
+                  text: '设备类型比重图'
+                },
+                tooltip: {
+                  formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {},
+                series: [
+                  {
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    data: [
+                      { value: 10.23, name: 'A型控制器' },
+                      { value: 2.73, name: '慧洋环保科技' },
+                      { value: 16.15, name: '智慧新风' },
+                      { value: 46.69, name: 'B型控制器' },
+                      { value: 22.26, name: '检测探头' },
+                      { value: 1.94, name: '德杯电子净化' },
+                    ]
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 4,
+              name: '公众号设备数量分布',
+              options: {
+                title: {
+                  text: '公众号设备数量分布'
+                },
+                tooltip: {},
+                legend: {},
+                xAxis: {
+                  data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+                },
+                yAxis: {},
+                series: [
+                  {
+                    name: '设备总数',
+                    type: 'bar',
+                    data: [442, 104, 138, 142, 26]
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 5,
+              name: '设备增速排名',
+              options: {
+                title: {
+                  text: '设备增速排名'
+                },
+                tooltip: {},
+                legend: {},
+                xAxis: {
+                  data:['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+                },
+                yAxis: {},
+                series: [
+                  {
+                    name: '增长趋势',
+                    data: [54,32,18,20,2],
+                    type: 'line'
+                  }
+                ]
+              },
+              isVisible: true
+            }
+          ],
+          用户分析: [
+            {
+              id: 6,
+              name: '用户增加趋势表',
+              options: {
+                title: {
+                  text: '用户增加趋势表'
+                },
+                tooltip: {},
+                legend: {},
+                xAxis: {
+                  data: [
+                    '一月',
+                    '二月',
+                    '三月',
+                    '四月',
+                    '五月',
+                    '六月',
+                    '七月',
+                    '八月',
+                    '九月',
+                    '十月',
+                    '十一月',
+                    '十二月'
+                  ]
+                },
+                yAxis: {},
+                series: [
+                  {
+                    name: '用户总数',
+                    type: 'bar',
+                    data: [80, 70, 90, 70, 50, 90, 70, 70, 90, 80]
+                  },
+                  {
+                    name: '增长趋势',
+                    data: [80, 70, 90, 70, 50, 90, 70, 70, 90, 80],
+                    type: 'line',
+                    smooth: true
+                  }
+                ]
+              },
+              isVisible: true
+            },
+            {
+              id: 7,
+              name: '本日用户活跃曲线',
+              options: {
+                title: {
+                  text: '本日用户活跃曲线'
+                },
+                tooltip: {},
+                legend: {},
+                xAxis: {
+                  data: [
+                    '00:00',
+                    '01:00',
+                    '02:00',
+                    '03:00',
+                    '04:00',
+                    '05:00',
+                    '06:00',
+                    '07:00',
+                    '08:00',
+                    '09:00',
+                    '10:00',
+                    '11:00',
+                    '12:00'
+                  ]
+                },
+                yAxis: {},
+                series: [
+                  {
+                    name: '每小时用户数',
+                    data: [2,0,0,1,214,673,349,291,416,544,410,593],
+                    type: 'line',
+                    smooth: true
+                  }
+                ]
+              },
+              isVisible: true
+            }
+          ]
+        }
+      }
+    }
+    },
     // 每月新增用户统计
     selectCustomerUserCount() {
-      console.log(222)
       selectCustomerUserCount().then(res => {
         for (let i = 0; i < res.data.length; i++) {
           this.addCount.push(res.data[i].addCount)

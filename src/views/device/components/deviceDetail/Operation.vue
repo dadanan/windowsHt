@@ -109,7 +109,7 @@ export default {
     }
   },
   created() {
-    console.log(abilitysList, formatItemsList)
+    // console.log(abilitysList, formatItemsList)
     this.selectById(107)
   },
   destroyed() {

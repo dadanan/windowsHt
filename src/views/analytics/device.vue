@@ -60,8 +60,8 @@
         </el-table-column>
       </el-table>
       <div class="excel-container">
-        <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
-        </el-pagination>
+        <!-- <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+        </el-pagination> -->
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
@@ -87,6 +87,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
+import {selectTypePercent,selectDeviceCount ,newDeviceCountOfToday} from '@/api/big-picture-mode/bigPictureMode'
 
 export default {
   components: {
@@ -95,18 +96,330 @@ export default {
   },
   data() {
     const mockData = []
-    for (let i = 0; i < 15; i++) {
-      mockData.push({
-        type: '测试类型',
-        name: '测试设备',
-        user: '测试用户',
-        onlineState: '离线',
-        powerState: '关机',
-        alarmState: '无'
-      })
-    }
+    // for (let i = 0; i < 15; i++) {
+    //   mockData.push({
+    //     type: '测试类型',
+    //     name: '测试设备',
+    //     user: '测试用户',
+    //     onlineState: '离线',
+    //     powerState: '关机',
+    //     alarmState: '无'
+    //   })
+    // }
     return {
       kanbanData: {
+        数据展示: [
+            {
+              id: 0,
+              icon: 'hdd',
+              name: '当前设备总数',
+              value: 852,
+              isVisible: true
+            },
+            {
+              id: 1,
+              icon: 'hdd',
+              name: '今日设备新增数',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 2,
+              icon: 'hdd',
+              name: '今日设备订单',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 3,
+              icon: 'hdd',
+              name: '当前设备故障数',
+              value: 11,
+              isVisible: true
+            },
+            {
+              id: 4,
+              icon: 'hdd',
+              name: '当前设备在线率',
+              value: 80,
+              isVisible: false
+            }
+          ],
+        图表展示: [
+          {
+            id: 0,
+            name: '新增设备趋势图',
+            options: {
+              title: {
+                text: '新增设备趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '设备增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 1,
+            name: '设备区域排行图',
+            options: {
+              title: {
+                text: '设备区域排行图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                  '其他',
+                  '江苏省',
+                  '广东省',
+                  '福建省',
+                  '湖南省',
+                  '河南省',
+                  '河北省',
+                  '江西省',
+                  '青海省',
+                  '海南省'
+                ]
+              },
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 2,
+            name: '故障设备区域分布',
+            options: {
+              title: {
+                text: '故障设备区域分布'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                  '其他',
+                  '江苏省',
+                  '广东省',
+                  '福建省',
+                  '湖南省',
+                  '河南省',
+                  '河北省',
+                  '江西省',
+                  '青海省',
+                  '海南省'
+                ]
+              },
+              series: [
+                {
+                  name: '故障设备数量',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 3,
+            name: '设备类型分布',
+            options: {
+              title: {
+                text: '设备类型分布'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '设备类型1' },
+                    { value: 10, name: '设备类型2' },
+                    { value: 5, name: '设备类型3' },
+                    { value: 98, name: '设备类型4' }
+                  ]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 4,
+            name: '设备告警曲线图',
+            options: {
+              title: {
+                text: '设备告警曲线图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '告警数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '告警增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: false
+          },
+          {
+            id: 5,
+            name: '告警类型占比图',
+            options: {
+              title: {
+                text: '告警类型占比图'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '告警类型1' },
+                    { value: 10, name: '告警类型2' },
+                    { value: 5, name: '告警类型3' },
+                    { value: 98, name: '告警类型4' }
+                  ]
+                }
+              ]
+            },
+            isVisible: false
+          },
+          {
+            id: 6,
+            name: '告警设备类型占比图',
+            options: {
+              title: {
+                text: '告警类型占比图'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '设备类型1' },
+                    { value: 10, name: '设备类型2' },
+                    { value: 5, name: '设备类型3' },
+                    { value: 98, name: '设备类型4' }
+                  ]
+                }
+              ]
+            },
+            isVisible: false
+          }
+        ]
+      },
+      dialogEditKanbanVisible: false,
+      form: {
+        type: '',
+        keywords: '',
+        date: ''
+      },
+      tableData: mockData,
+      addPercent: [],
+      userCount: [],
+      addCount: [],
+      devAddCount: [],
+      devAddPercent: [],
+      deviceCount: [],
+      devedata: [],
+      newDeviceCount: '',
+      ttt:false
+    }
+  },
+  created () {
+    this.selectDeviceCount()
+    this.selectTypePercent()
+    this.newDeviceCountOfToday()
+  },
+  methods: {
+    search() {},
+    resetForm() {
+      this.$refs.form.resetFields()
+    },
+       ttt1(){  
+      this.ttt =! this.ttt
+      if(this.ttt){
+        console.log(11)
+        this.selectDeviceCount()
+        this.selectTypePercent()
+        this.newDeviceCountOfToday()
+      }else{
+        console.log(333)
+        this.kanbanData={
         数据展示: [
           {
             id: 0,
@@ -401,20 +714,39 @@ export default {
             isVisible: false
           }
         ]
-      },
-      dialogEditKanbanVisible: false,
-      form: {
-        type: '',
-        keywords: '',
-        date: ''
-      },
-      tableData: mockData
+      }
     }
-  },
-  methods: {
-    search() {},
-    resetForm() {
-      this.$refs.form.resetFields()
+    },
+    // 每月新增设备统计
+    selectDeviceCount() {
+      selectDeviceCount().then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.devAddCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.devAddPercent.push(0)
+          } else {
+            this.devAddPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.deviceCount.push(res.data[i].deviceCount)
+        }
+        this.kanbanData.图表展示[0].options.series[0].data = this.deviceCount
+        this.kanbanData.图表展示[0].options.series[1].data = this.deviceCount
+      })
+    },
+    // 设备类型统计
+    selectTypePercent() {
+      selectTypePercent().then(res => {
+        for(var i = 0; i<res.data.length;i++){
+          this.devedata.push({value:((res.data[i].typePercent).substring(0, 2)),name:res.data[i].typeName})
+        }
+        this.kanbanData.图表展示[3].options.series[0].data = this.devedata
+      })
+    },
+    // 今日新增设备统计
+    newDeviceCountOfToday() {
+      newDeviceCountOfToday().then(res => {
+       this.kanbanData.数据展示[1].value = res.data
+      })
     }
   }
 }

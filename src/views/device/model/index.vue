@@ -8,6 +8,7 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
+        <el-table-column prop="id" label='主键' show-overflow-tooltip sortable></el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
             <img class='table-inside-image block' :src="scope.row.icon" :alt="scope.row.name">
@@ -39,14 +40,20 @@
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="createModelDialogVisible"></create-model-dialog>
-    <edit-model-dialog @update-data='updateData' :visible.sync="editModelDialogVisible" :data='editingData'></edit-model-dialog>
+    <edit-model-dialog @update-data='updateData' :visible.sync="editModelDialogVisible" :abilityList='abilityList' :data='editingData'></edit-model-dialog>
   </div>
 </template>
 
 <script>
 import CreateModelDialog from './components/CreateModelDialog'
 import EditModelDialog from './components/EditModelDialog'
-import { fetchList, selectCount, deleteDeviceType, selectById } from '@/api/device/type'
+import {
+  fetchList,
+  selectCount,
+  deleteDeviceType,
+  selectById
+} from '@/api/device/type'
+import { fetchList as fetchAbilityList } from '@/api/device/function'
 
 export default {
   components: {
@@ -65,19 +72,32 @@ export default {
       },
       createModelDialogVisible: false,
       editModelDialogVisible: false,
-      editingData: {}
+      editingData: {},
+      abilityList: []
     }
   },
   created() {
     this.getList()
     this.selectCount()
+    this.fetchAbilityList()
   },
   methods: {
+    fetchAbilityList() {
+      fetchAbilityList({
+        page: 1,
+        limit: 1000
+      }).then(res => {
+        res.data.forEach(item => {
+          item.isChecked = false
+        })
+        this.abilityList = res.data
+      })
+    },
     showEditRoleDialog(data) {
       this.selectById(data.id)
     },
     addData(data) {
-      this.list.unshift(data)
+      this.list.push(data)
     },
     selectById(id) {
       selectById(id).then(res => {

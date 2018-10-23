@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     addData(data) {
-      this.softwareList.unshift(data)
+      this.softwareList.push(data)
     },
     showEditDialog(data) {
       this.selectById(data.id)

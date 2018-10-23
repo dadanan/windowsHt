@@ -391,7 +391,6 @@ export default {
       getList(this.query)
         .then(res => {
           this.deviceList = res.data
-          console.log(this.deviceList)
         })
         .catch(err => {
           console.log('err', err)
@@ -421,7 +420,7 @@ export default {
         item.groupName = '无集群'
         item.onlineStatus = 0
       })
-      this.deviceList.unshift(...list)
+      this.deviceList.push(...list)
     },
     deleteOneDeviceHandler() {
       this.isOperable().then(_ => {

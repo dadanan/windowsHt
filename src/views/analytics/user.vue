@@ -58,8 +58,8 @@
         </el-table-column>
       </el-table>
       <div class="excel-container">
-        <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
-        </el-pagination>
+        <!-- <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+        </el-pagination> -->
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
@@ -75,6 +75,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="ttt1">测试</el-button>
         <el-button @click="isEditKanbanDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="isEditKanbanDialogVisible = false">确定</el-button>
       </div>
@@ -85,6 +86,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
+import {selectCustomerUserCount} from '@/api/big-picture-mode/bigPictureMode'
 
 export default {
   components: {
@@ -93,68 +95,54 @@ export default {
   },
   data() {
     const mockData = []
-    for (let i = 0; i < 15; i++) {
-      mockData.push({
-        name: '测试用户',
-        pos: '测试区域',
-        deviceType: '测试类型',
-        deviceSN: '0TRQCFGA',
-        updateDatetime: '2018-06-01'
-      })
-    }
+    // for (let i = 0; i < 15; i++) {
+    //   mockData.push({
+    //     name: '测试用户',
+    //     pos: '测试区域',
+    //     deviceType: '测试类型',
+    //     deviceSN: '0TRQCFGA',
+    //     updateDatetime: '2018-06-01'
+    //   })
+    // }
     return {
       kanbanData: {
         数据展示: [
-          {
-            id: 0,
-            icon: 'hdd',
-            name: '当前用户总数',
-            value: 998,
-            isVisible: true
-          },
-          {
-            id: 1,
-            icon: 'hdd',
-            name: '昨日新增用户',
-            value: 20,
-            isVisible: true
-          },
-          {
-            id: 2,
-            icon: 'hdd',
-            name: '今日活跃用户',
-            value: 84,
-            isVisible: true
-          },
-          {
-            id: 3,
-            icon: 'hdd',
-            name: '昨日用户活跃率',
-            value: 84,
-            isVisible: true
-          },
-          {
-            id: 4,
-            icon: 'hdd',
-            name: '总用户活跃率',
-            value: 84,
-            isVisible: false
-          },
-          {
-            id: 5,
-            icon: 'hdd',
-            name: '当月新增用户',
-            value: 84,
-            isVisible: false
-          },
-          {
-            id: 6,
-            icon: 'hdd',
-            name: '本月用户增长率',
-            value: 84,
-            isVisible: false
-          }
-        ],
+            {
+              id: 5,
+              icon: 'hdd',
+              name: '当前用户总人数',
+              value: 760,
+              isVisible: true
+            },
+            {
+              id: 6,
+              icon: 'hdd',
+              name: '昨日用户增长数',
+              value:23,
+              isVisible: true
+            },
+            {
+              id: 7,
+              icon: 'hdd',
+              name: '今日活跃用户数',
+              value: 671,
+              isVisible: true
+            },
+            {
+              id: 8,
+              icon: 'hdd',
+              name: '昨日用户活跃数',
+              value: 604,
+              isVisible: false
+            },
+            {
+              id: 9,
+              icon: 'hdd',
+              name: '当前用户活跃数',
+              value: 759,
+              isVisible: false
+            }
+          ],
         图表展示: [
           {
             id: 0,
@@ -326,14 +314,253 @@ export default {
         keywords: '',
         date: ''
       },
-      tableData: mockData
+      tableData: mockData,
+      addPercent: [],
+      userCount: [],
+      addCount: [],
+      devAddCount: [],
+      devAddPercent: [],
+      deviceCount: [],
+      devedata: [],
+      newDeviceCount: '',
+      ttt:true
     }
   },
   methods: {
     search() {},
     resetForm() {
       this.$refs.form.resetFields()
+    },
+    ttt1(){  
+      this.ttt =! this.ttt
+      if(this.ttt){
+        this.selectCustomerUserCount()
+      }else{
+        this.kanbanData={
+        数据展示: [
+            {
+              id: 5,
+              icon: 'hdd',
+              name: '当前用户总人数',
+              value: 760,
+              isVisible: true
+            },
+            {
+              id: 6,
+              icon: 'hdd',
+              name: '昨日用户增长数',
+              value:23,
+              isVisible: true
+            },
+            {
+              id: 7,
+              icon: 'hdd',
+              name: '今日活跃用户数',
+              value: 671,
+              isVisible: true
+            },
+            {
+              id: 8,
+              icon: 'hdd',
+              name: '昨日用户活跃数',
+              value: 604,
+              isVisible: false
+            },
+            {
+              id: 9,
+              icon: 'hdd',
+              name: '当前用户活跃数',
+              value: 759,
+              isVisible: false
+            }
+          ],
+        图表展示: [
+          {
+            id: 0,
+            name: '新增用户趋势图',
+            options: {
+              title: {
+                text: '新增用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '增长趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 1,
+            name: '活跃用户趋势图',
+            options: {
+              title: {
+                text: '活跃用户趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '活跃用户数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '活跃趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 2,
+            name: '用户总数趋势图',
+            options: {
+              title: {
+                text: '用户总数趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '用户总数',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '总数趋势',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 3,
+            name: '用户区域分布图',
+            options: {
+              title: {
+                text: '用户区域分布图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                  '其他',
+                  '江苏省',
+                  '广东省',
+                  '福建省',
+                  '湖南省',
+                  '河南省',
+                  '河北省',
+                  '江西省',
+                  '青海省',
+                  '海南省'
+                ]
+              },
+              series: [
+                {
+                  name: '用户数',
+                  type: 'bar',
+                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
+                }
+              ]
+            },
+            isVisible: true
+          }
+        ]
+      }
     }
+    },
+    // 每月新增用户统计
+    selectCustomerUserCount() {
+      selectCustomerUserCount().then(res => {
+        console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          this.addCount.push(res.data[i].addCount)
+          if (res.data[i].addPercent === '--') {
+            this.addPercent.push(0)
+          } else {
+            this.addPercent.push(res.data[i].addPercent.substring(0, 3))
+          }
+          this.userCount.push(res.data[i].userCount)
+        }
+        this.kanbanData.图表展示[0].options.series[0].data = this.userCount
+        this.kanbanData.图表展示[0].options.series[1].data = this.userCount
+      })
+    }
+  },
+  created () {
+    this.selectCustomerUserCount()
   }
 }
 </script>

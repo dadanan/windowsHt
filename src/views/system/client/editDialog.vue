@@ -80,6 +80,9 @@
             <el-form-item label="高级设置密码">
               <el-input type="text" v-model="h5Config.password"></el-input>
             </el-form-item>
+            <el-form-item label="客服" prop='serviceUser'>
+              <el-input type="text" v-model="h5Config.serviceUser"></el-input>
+            </el-form-item>
             <el-form-item label="背景图片">
               <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
@@ -241,6 +244,7 @@ export default {
         logo: '',
         password: '',
         themeName: '',
+        serviceUser: '',
         version: ''
       },
       androidConfig: {

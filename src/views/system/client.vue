@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     addData(data) {
-      this.clientList.unshift(data)
+      this.clientList.push(data)
     },
     showEditRoleDialog(data) {
       this.isEditClientDialogVisible = true
@@ -153,6 +153,7 @@ export default {
     getDetail(id) {
       selectById(id)
         .then(res => {
+          console.log(res.data)
           this.editingData = res.data
         })
         .catch(err => {
@@ -169,6 +170,7 @@ export default {
     getCustomer() {
       select(this.listQuery)
         .then(res => {
+          console.log(res.data)
           this.clientList = res.data
         })
         .catch(err => {

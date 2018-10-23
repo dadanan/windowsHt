@@ -90,7 +90,7 @@ export default {
         var res = []
         var len = 10
         while (len--) {
-          res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''))
+          res.push(now.toLocaleTimeString().replace(/^\D*/, ''))
           now = new Date(now - 2000)
         }
         this.time.push(res[0])

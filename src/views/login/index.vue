@@ -127,16 +127,10 @@ export default {
         }
       })
     },
-    getSld() {
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
-      if (sld) {
-        return sld[1]
-      }
-      return ''
-    },
     selectBackendConfigBySLD() {
       selectBackendConfigBySLD()
         .then(res => {
+          console.log(res)
           const data = res.data
           if (data.logo) {
             this.$store.commit('SET_LOGO', data.logo)
