@@ -336,7 +336,7 @@ export default {
     isPro() {
       // 是正式环境或者开发环境？
       const sld = this.getSld()
-      return sld === 'pro' || sld === ''
+      return sld === 'pro' || sld === '' || sld === 'dev'
     },
     useableAbility(key) {
       return this.deviceModelAbilitys.filter(item => item.abilityType === key)
