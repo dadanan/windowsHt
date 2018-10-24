@@ -9,7 +9,19 @@
       </div>
       <el-table :data="clusterList" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column v-for="value in columnData" :label="value.label" :prop="value.prop" :key="value.prop" :formatter="value.formatter" :width="value.width" show-overflow-tooltip>
+        <el-table-column prop="name" label="名称" show-overflow-tooltip >
+        </el-table-column>
+        <el-table-column prop="devicecount" label="群内设备"   show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="introduction" label="介绍" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="location" label="地点" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip >
+        </el-table-column>
+        <el-table-column prop="customerName" label="创建人" show-overflow-tooltip >
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" show-overflow-tooltip s>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width='200'>
           <template slot-scope="scope">
@@ -67,6 +79,16 @@ export default {
     this.queryGroupCount()
   },
   methods: {
+    formatDate(row) {
+        let date = new Date(parseInt(row.createTime));
+        let Y = date.getFullYear() + '-';
+        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return Y + M + D + h + m + s;
+    },
     queryGroupByPage() {
       queryGroupByPage({
         page: this.page,
@@ -74,6 +96,7 @@ export default {
         status: 1
       }).then(res => {
         if (res.code === 200) {
+          console.log(res.data)
           this.clusterList = res.data // status:1.正常；2.已删除
         }
       })

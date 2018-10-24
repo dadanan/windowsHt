@@ -7,7 +7,8 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name"></el-input>
+                  <el-input v-model="form.name" style="width:80%"></el-input>
+                  <el-button type="">确认</el-button>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -71,9 +72,9 @@
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
-          </el-table-column>
           <el-table-column prop="deviceId" label="设备ID" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
           </el-table-column>
@@ -115,17 +116,17 @@
           <el-table-column type="index"></el-table-column>
           <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcName" label="函数名" show-overflow-tooltip sortable>
+          <el-table-column prop="funcName" label="操作指令" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcRemark" label="函数备注" show-overflow-tooltip sortable>
+          <el-table-column prop="funcRemark" label="操作来源" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcValue" label="函数值" show-overflow-tooltip sortable>
+          <el-table-column prop="funcValue" label="操作值" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="operName" label="修改人" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="operateTime" label="操作时间" show-overflow-tooltip sortable>
+          <el-table-column prop="operateTime" label="操作时间" :formatter="formatDate2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="responseTime" label="响应时间" show-overflow-tooltip sortable>
+          <el-table-column prop="responseTime" label="响应时间" :formatter="formatDate3" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -191,17 +192,66 @@ export default {
       queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
         res => {
           this.deviceList = res.data
-        }
-      )
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
     },
     queryDeviceSensorStat(id) {
-      queryDeviceSensorStat({
-        limit: this.limit,
-        page: this.page,
-        deviceId: id
-      }).then(res => {
-        this.deviceList1 = res.data
-      })
+      queryDeviceSensorStat({"limit":this.limit,"page":this.page,"deviceId":id})
+        .then(res => {
+          // console.log(res.data)
+          this.deviceList1 = res.data
+          // console.log(this.deviceList1)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+    },
+    formatDate(row) {
+        let date = new Date(parseInt(row.startTime));
+        let Y = date.getFullYear() + '-';
+        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return Y + M + D + h + m + s;
+    },
+    formatDate1(row) {
+        let date = new Date(parseInt(row.endTime));
+        let Y = date.getFullYear() + '-';
+        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return Y + M + D + h + m + s;
+    },
+     formatDate2(row) {
+        let date = new Date(parseInt(row.operateTime));
+        let Y = date.getFullYear() + '-';
+        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return Y + M + D + h + m + s;
+    },
+     formatDate3(row) {
+       if(row.responseTime){
+         let date = new Date(parseInt(row.responseTime));
+         let Y = date.getFullYear() + '-';
+         let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+         let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+         let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+         let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+         let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+         return Y + M + D + h + m + s;
+       }else{
+         return ''
+       }
     }
   },
   components: {
