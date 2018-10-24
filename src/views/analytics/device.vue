@@ -89,7 +89,7 @@
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
 import {selectTypePercent,selectDeviceCount ,newDeviceCountOfToday} from '@/api/big-picture-mode/bigPictureMode'
-
+import { queryCount } from '@/api/device/list'
 export default {
   components: {
     DataCard,
@@ -129,14 +129,14 @@ export default {
               icon: 'hdd',
               name: '今日设备订单',
               value: 10,
-              isVisible: true
+              isVisible: false
             },
             {
               id: 3,
               icon: 'hdd',
               name: '当前设备故障数',
               value: 11,
-              isVisible: true
+              isVisible: false
             },
             {
               id: 4,
@@ -223,7 +223,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 2,
@@ -259,7 +259,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 3,
@@ -398,13 +398,15 @@ export default {
       deviceCount: [],
       devedata: [],
       newDeviceCount: '',
-      ttt:true
+      ttt:false,
+      status: 1
     }
   },
   created () {
     this.selectDeviceCount()
     this.selectTypePercent()
     this.newDeviceCountOfToday()
+    this.queryCount()
   },
   methods: {
     search() {},
@@ -414,12 +416,250 @@ export default {
        ttt1(){  
       this.ttt =! this.ttt
       if(this.ttt){
-        console.log(11)
-        this.selectDeviceCount()
-        this.selectTypePercent()
-        this.newDeviceCountOfToday()
+          this.kanbanData={
+        数据展示: [
+            {
+              id: 0,
+              icon: 'hdd',
+              name: '当前设备总数',
+              value: 852,
+              isVisible: true
+            },
+            {
+              id: 1,
+              icon: 'hdd',
+              name: '今日设备新增数',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 2,
+              icon: 'hdd',
+              name: '今日设备订单',
+              value: 10,
+              isVisible: true
+            },
+            {
+              id: 3,
+              icon: 'hdd',
+              name: '当前设备故障数',
+              value: 11,
+              isVisible: true
+            },
+            {
+              id: 4,
+              icon: 'hdd',
+              name: '当前设备在线率',
+              value: 80,
+              isVisible: true
+            }
+          ],
+        图表展示: [
+          {
+            id: 0,
+            name: '新增设备趋势图',
+            options: {
+              title: {
+                text: '新增设备趋势图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '设备增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 1,
+            name: '设备区域排行图',
+            options: {
+              title: {
+                text: '设备区域排行图'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                    '其他',
+                    '上海',
+                    '江苏',
+                    '北京',
+                    '浙江',
+                    '广东',
+                    '湖南'
+                  ]
+              },
+              series: [
+                {
+                  name: '设备数量',
+                  type: 'bar',
+                  data: [70, 137, 218, 102, 90, 90, 170]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 2,
+            name: '故障设备区域分布',
+            options: {
+              title: {
+                text: '故障设备区域分布'
+              },
+              tooltip: {},
+              xAxis: {
+                type: 'value'
+              },
+              yAxis: {
+                type: 'category',
+                data: [
+                    '其他',
+                    '上海',
+                    '江苏',
+                    '北京',
+                    '浙江',
+                    '广东',
+                    '湖南'
+                  ]
+              },
+              series: [
+                {
+                  name: '故障设备数量',
+                  type: 'bar',
+                  data: [23, 10, 50, 22, 34, 12, 45]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 3,
+            name: '设备类型分布',
+            options: {
+              title: {
+                text: '设备类型分布'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '英德罗曼' },
+                    { value: 10, name: '惠阳' },
+                    { value: 5, name: '智慧新风' },
+                    { value: 98, name: '宝智' }
+                  ]
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 4,
+            name: '设备告警曲线图',
+            options: {
+              title: {
+                text: '设备告警曲线图'
+              },
+              tooltip: {},
+              legend: {},
+              xAxis: {
+                data: [
+                  '一月',
+                  '二月',
+                  '三月',
+                  '四月',
+                  '五月',
+                  '六月',
+                  '七月',
+                  '八月',
+                  '九月',
+                  '十月',
+                  '十一月',
+                  '十二月'
+                ]
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: '告警数量',
+                  type: 'bar',
+                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
+                },
+                {
+                  name: '告警增长率',
+                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            },
+            isVisible: true
+          },
+          {
+            id: 5,
+            name: '告警类型占比图',
+            options: {
+              title: {
+                text: '告警类型占比图'
+              },
+              tooltip: {
+                formatter: '{b}: {c} ({d}%)'
+              },
+              legend: {},
+              series: [
+                {
+                  type: 'pie',
+                  radius: ['50%', '70%'],
+                  data: [
+                    { value: 60, name: '设备告警' },
+                    { value: 35, name: '程序告警' },
+                    { value: 5, name: '网管告警' },
+                  ]
+                }
+              ]
+            },
+            isVisible: true
+          }
+        ]
+      }
+
       }else{
-        console.log(333)
         this.kanbanData={
         数据展示: [
           {
@@ -441,14 +681,14 @@ export default {
             icon: 'hdd',
             name: '当前设备故障数',
             value: 84,
-            isVisible: true
+            isVisible: false
           },
           {
             id: 3,
             icon: 'hdd',
             name: '当前设备故障率',
             value: 84,
-            isVisible: true
+            isVisible: false
           },
           {
             id: 4,
@@ -556,7 +796,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 2,
@@ -592,7 +832,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 3,
@@ -716,6 +956,10 @@ export default {
           }
         ]
       }
+      this.selectDeviceCount()
+      this.selectTypePercent()
+      this.newDeviceCountOfToday()
+      this.queryCount()
     }
     },
     // 每月新增设备统计
@@ -748,7 +992,13 @@ export default {
       newDeviceCountOfToday().then(res => {
        this.kanbanData.数据展示[1].value = res.data
       })
-    }
+    },
+    // 设备总数
+    queryCount() {
+      queryCount(this.status).then(res => {
+        this.kanbanData.数据展示[0].value= res.data
+      })
+    },
   }
 }
 </script>
