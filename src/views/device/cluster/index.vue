@@ -9,23 +9,23 @@
       </div>
       <el-table :data="clusterList" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="名称" show-overflow-tooltip>
+        <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="devicecount" label="群内设备" show-overflow-tooltip>
+        <el-table-column prop="devicecount" label="群内设备" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             ...
           </template>
         </el-table-column>
-        <el-table-column prop="introduction" label="介绍" show-overflow-tooltip>
+        <el-table-column prop="introduction" label="介绍" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createLocation" label="地点" show-overflow-tooltip>
+        <el-table-column prop="createLocation" label="地点" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="创建时间" :formatter="formatDate" show-overflow-tooltip>
+        <el-table-column label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="customerName" label="创建人" show-overflow-tooltip>
+        <el-table-column prop="customerName" label="创建人" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip s>
         </el-table-column>

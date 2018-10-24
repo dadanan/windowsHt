@@ -574,8 +574,7 @@ export default {
           item['abilityName'] = item.definedName
           if (item.updateStatus === 1) {
             // 新添加的功能项，默认禁用。可手动启用
-            this.$set()
-            item.status = 3
+            this.$set(item, 'status', 3)
           }
           if (item.status === 1) {
             this.$set(item, 'isUsed', true)
