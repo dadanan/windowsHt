@@ -25,7 +25,7 @@
           </el-form-item>
           <el-form-item label="产品型号" prop="modelId">
             <el-select @change='modelChanged' v-model="allocateForm.modelId" style="width: 100%">
-              <el-option v-for='item in modelList' :label="item.name" :value="item.id" :key="item.id"></el-option>
+              <el-option v-if='item.status != 2' v-for='item in modelList' :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="产品 ID">
