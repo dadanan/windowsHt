@@ -77,6 +77,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
+        <el-button @click="ttt1">测试</el-button>
         <el-button @click="dialogEditKanbanVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogEditKanbanVisible = false">确定</el-button>
       </div>
@@ -397,7 +398,7 @@ export default {
       deviceCount: [],
       devedata: [],
       newDeviceCount: '',
-      ttt:false
+      ttt:true
     }
   },
   created () {

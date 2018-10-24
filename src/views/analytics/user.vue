@@ -139,7 +139,7 @@ export default {
               id: 9,
               icon: 'hdd',
               name: '当前用户活跃数',
-              value: 759,
+              value: 600,
               isVisible: false
             }
           ],
@@ -370,7 +370,7 @@ export default {
               id: 9,
               icon: 'hdd',
               name: '当前用户活跃数',
-              value: 759,
+              value:  600,
               isVisible: false
             }
           ],

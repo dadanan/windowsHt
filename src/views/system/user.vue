@@ -12,19 +12,19 @@
         </el-table-column>
         <el-table-column prop="nickName" label="昵称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="telephone" label="手机号" show-overflow-tooltip>
+        <el-table-column prop="telephone" label="手机号" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="所属角色" show-overflow-tooltip>
+        <el-table-column label="所属角色" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ getRoleName(scope.row.roleId) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态" show-overflow-tooltip>
+        <el-table-column label="状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ getStatusName(scope.row.status) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="修改时间" show-overflow-tooltip>
+        <el-table-column prop="lastUpdateTime" label="修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
           </template>
@@ -234,6 +234,7 @@ export default {
     },
     showEditRoleDialog(data) {
       this.isEditUserDialogVisible = true
+      console.log(data)
       this.editingData = data
     },
     editUser() {

@@ -407,9 +407,8 @@ export default {
                       { value: 10.23, name: 'A型控制器' },
                       { value: 2.73, name: '慧洋环保科技' },
                       { value: 16.15, name: '智慧新风' },
-                      { value: 46.69, name: 'B型控制器' },
                       { value: 22.26, name: '检测探头' },
-                      { value: 1.94, name: '德杯电子净化' },
+                      { value: 1.94, name: '德杯电子净化' }
                     ]
                   }
                 ]
@@ -455,7 +454,7 @@ export default {
                 series: [
                   {
                     name: '增长趋势',
-                    data: [54,32,18,20,2],
+                    data: [2,54,32,18,20],
                     type: 'line'
                   }
                 ]
@@ -887,9 +886,8 @@ export default {
                       { value: 10.23, name: 'A型控制器' },
                       { value: 2.73, name: '慧洋环保科技' },
                       { value: 16.15, name: '智慧新风' },
-                      { value: 46.69, name: 'B型控制器' },
                       { value: 22.26, name: '检测探头' },
-                      { value: 1.94, name: '德杯电子净化' },
+                      { value: 1.94, name: '德杯电子净化' }
                     ]
                   }
                 ]
@@ -906,14 +904,14 @@ export default {
                 tooltip: {},
                 legend: {},
                 xAxis: {
-                  data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+                  data: ['环可','英德罗曼', '惠阳','智慧新风', '宝智']
                 },
                 yAxis: {},
                 series: [
                   {
                     name: '设备总数',
                     type: 'bar',
-                    data: [442, 104, 138, 142, 26]
+                    data: [26,442, 104, 138,142]
                   }
                 ]
               },
@@ -935,7 +933,7 @@ export default {
                 series: [
                   {
                     name: '增长趋势',
-                    data: [54,32,18,20,2],
+                    data: [2,54,32,18,20],
                     type: 'line'
                   }
                 ]

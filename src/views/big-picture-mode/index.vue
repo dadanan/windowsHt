@@ -431,8 +431,8 @@ export default {
             type: 'value',
             name: '增长率',
             min: 0,
-            max: 600,
-            interval: 50,
+            max: 1000,
+            interval: 100,
             axisLabel: {
               formatter: '{value}%'
             },
