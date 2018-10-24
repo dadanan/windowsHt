@@ -66,7 +66,7 @@
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
 import { updateTeam, queryDeviceInfo } from '@/api/device/team'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import DTitle from '@/components/Title'
 
 export default {

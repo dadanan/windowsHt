@@ -97,7 +97,7 @@
 import ImageUploader from '@/components/Upload/image'
 import DTitle from '@/components/Title'
 import { createWxFormat } from '@/api/format'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { selectAllTypes } from '@/api/device/type'
 
 export default {

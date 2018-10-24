@@ -47,7 +47,7 @@
 
 <script>
 import { assignDeviceToCustomer } from '@/api/device/list'
-import { select, selectModelsByTypeIds } from '@/api/customer'
+import { selectAllCustomers, selectModelsByTypeIds } from '@/api/customer'
 
 export default {
   props: {
@@ -152,7 +152,7 @@ export default {
       this.selectedDeviceList = selection
     },
     getCustomer() {
-      select(this.listQuery).then(res => {
+      selectAllCustomers(this.listQuery).then(res => {
         this.clientList = res.data
       })
     }

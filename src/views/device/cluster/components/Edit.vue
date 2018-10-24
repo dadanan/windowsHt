@@ -53,7 +53,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
@@ -119,10 +119,6 @@ export default {
       ]
     }
   },
-  created() {
-    this.select()
-    this.queryGroupById()
-  },
   methods: {
     handleVideoSuccess(file, fileList) {
       this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
@@ -142,12 +138,9 @@ export default {
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
-        if (res.code === 200) {
-          this.form = {
-            ...res.data,
-            imageVideoList: res.data.imageVideoList || []
-          }
-        }
+        const data = res.data
+        this.form = data
+        this.deviceList = data.deviceList
       })
     },
     addDevice() {
@@ -198,9 +191,10 @@ export default {
         }
       })
     }
-    // handleCancel() {
-    //   this.$emit('close')
-    // }
+  },
+  created() {
+    this.select()
+    this.queryGroupById()
   }
 }
 </script>

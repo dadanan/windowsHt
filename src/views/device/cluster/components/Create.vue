@@ -53,7 +53,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
@@ -174,11 +174,13 @@ export default {
         ...this.form,
         deviceQueryRequest: {
           deviceList: this.deviceList
-        }
+        },
+        createTime: new Date().valueOf()
       }
       addOrUpdateGroupAndDevice(data).then(res => {
         if (res.code === 200 && res.data) {
-          data.id = res.data.id
+          data.id = res.data
+
           this.$emit('update', data)
           this.$message.success('添加成功')
         } else {

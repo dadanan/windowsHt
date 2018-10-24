@@ -24,7 +24,7 @@
             <span>{{ getStatusName(scope.row.status) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="修改时间" show-overflow-tooltip sortable>
+        <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
           </template>
@@ -94,7 +94,7 @@
         <el-form-item prop='openID' label="绑定微信 Open ID">
           <el-input v-model="editingData.openID"></el-input>
         </el-form-item>
-        <el-form-item prop='password' label="密码">
+        <el-form-item label="密码">
           <el-input v-model="editingData.password"></el-input>
         </el-form-item>
         <el-form-item prop='nickName' label="昵称">

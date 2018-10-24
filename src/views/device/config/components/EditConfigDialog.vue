@@ -102,12 +102,6 @@
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
-          <el-form-item :label=' "页序 - " + item.pageId '>
-            <el-radio-group v-model="item.showStatus">
-              <el-radio :label="true">显示</el-radio>
-              <el-radio :label="false">不显示</el-radio>
-            </el-radio-group>
-          </el-form-item>
           <el-form-item label='页面名称'>
             {{item.showName || item.name}}
           </el-form-item>
@@ -205,7 +199,7 @@ import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
 
 import { fetchList as getTypeList } from '@/api/device/type'
-import { select as getCustomer } from '@/api/customer'
+import { selectAllCustomers as getCustomer } from '@/api/customer'
 import { selectFormatsByCustomerId } from '@/api/format'
 import { updateDeviceModel } from '@/api/device/model'
 import { selectTypesBySLD } from '@/api/device/type'

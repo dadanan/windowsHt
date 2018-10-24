@@ -132,7 +132,9 @@ export default {
   },
   watch: {
     urls(val) {
-      console.log('图册', val, this.urls)
+      if (!val) {
+        return
+      }
       this.fileList = val.map(data => {
         return {
           url: data.image,
