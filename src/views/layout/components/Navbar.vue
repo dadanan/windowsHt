@@ -2,14 +2,20 @@
   <div>
     <el-menu class="navbar" mode="horizontal">
       <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
-      <!--<breadcrumb></breadcrumb>-->
       <div class="search">
         <div class="search__label">设备选择：</div>
-        <el-input placeholder="请输入关键词" v-model="keywords" class="cascader-with-input">
-          <el-cascader slot="prepend" :options="options" v-model="selectedOptions" placeholder="请选择条件" style="width: 202px">
-          </el-cascader>
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-select v-model='filterKey' @change='filterOptionChanged' placeholder="请选择查询条件">
+          <el-option v-for='item in filterData' :key='item.value' :label="item.label" :value="item.value"></el-option>
+        </el-select>
+        <el-input v-if='filterType !== 1' placeholder="请输入关键词" v-model="keyword" class="cascader-with-input">
+          <el-button slot="append" icon="el-icon-search" @click='searchDevice'></el-button>
         </el-input>
+        <template v-else>
+          <el-select v-model='keyword' placeholder="请选择状态">
+            <el-option v-for='item in filterOption' :key='item.value' :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-button slot="append" icon="el-icon-search" @click='searchDevice'></el-button>
+        </template>
       </div>
       <div style="flex: 1"></div>
       <el-dropdown>
@@ -80,276 +86,96 @@ export default {
   },
   data() {
     return {
-      options: [
+      filterData: [
         {
-          value: 'zhinan',
-          label: '指南',
-          children: [
+          label: '分配状态',
+          value: 'assignStatus',
+          type: 1, // 表示用户的查询关键词只能是 1或者 0
+          option: [
             {
-              value: 'shejiyuanze',
-              label: '设计原则',
-              children: [
-                {
-                  value: 'yizhi',
-                  label: '一致'
-                },
-                {
-                  value: 'fankui',
-                  label: '反馈'
-                },
-                {
-                  value: 'xiaolv',
-                  label: '效率'
-                },
-                {
-                  value: 'kekong',
-                  label: '可控'
-                }
-              ]
+              label: '已分配',
+              value: 1
             },
             {
-              value: 'daohang',
-              label: '导航',
-              children: [
-                {
-                  value: 'cexiangdaohang',
-                  label: '侧向导航'
-                },
-                {
-                  value: 'dingbudaohang',
-                  label: '顶部导航'
-                }
-              ]
+              label: '未分配',
+              value: 0
             }
           ]
         },
         {
-          value: 'zujian',
-          label: '组件',
-          children: [
+          label: '绑定状态',
+          value: 'bindStatus',
+          type: 1,
+          option: [
             {
-              value: 'basic',
-              label: 'Basic',
-              children: [
-                {
-                  value: 'layout',
-                  label: 'Layout 布局'
-                },
-                {
-                  value: 'color',
-                  label: 'Color 色彩'
-                },
-                {
-                  value: 'typography',
-                  label: 'Typography 字体'
-                },
-                {
-                  value: 'icon',
-                  label: 'Icon 图标'
-                },
-                {
-                  value: 'button',
-                  label: 'Button 按钮'
-                }
-              ]
+              label: '已绑定',
+              value: 1
             },
             {
-              value: 'form',
-              label: 'Form',
-              children: [
-                {
-                  value: 'radio',
-                  label: 'Radio 单选框'
-                },
-                {
-                  value: 'checkbox',
-                  label: 'Checkbox 多选框'
-                },
-                {
-                  value: 'input',
-                  label: 'Input 输入框'
-                },
-                {
-                  value: 'input-number',
-                  label: 'InputNumber 计数器'
-                },
-                {
-                  value: 'select',
-                  label: 'Select 选择器'
-                },
-                {
-                  value: 'cascader',
-                  label: 'Cascader 级联选择器'
-                },
-                {
-                  value: 'switch',
-                  label: 'Switch 开关'
-                },
-                {
-                  value: 'slider',
-                  label: 'Slider 滑块'
-                },
-                {
-                  value: 'time-picker',
-                  label: 'TimePicker 时间选择器'
-                },
-                {
-                  value: 'date-picker',
-                  label: 'DatePicker 日期选择器'
-                },
-                {
-                  value: 'datetime-picker',
-                  label: 'DateTimePicker 日期时间选择器'
-                },
-                {
-                  value: 'upload',
-                  label: 'Upload 上传'
-                },
-                {
-                  value: 'rate',
-                  label: 'Rate 评分'
-                },
-                {
-                  value: 'form',
-                  label: 'Form 表单'
-                }
-              ]
-            },
-            {
-              value: 'data',
-              label: 'Data',
-              children: [
-                {
-                  value: 'table',
-                  label: 'Table 表格'
-                },
-                {
-                  value: 'tag',
-                  label: 'Tag 标签'
-                },
-                {
-                  value: 'progress',
-                  label: 'Progress 进度条'
-                },
-                {
-                  value: 'tree',
-                  label: 'Tree 树形控件'
-                },
-                {
-                  value: 'pagination',
-                  label: 'Pagination 分页'
-                },
-                {
-                  value: 'badge',
-                  label: 'Badge 标记'
-                }
-              ]
-            },
-            {
-              value: 'notice',
-              label: 'Notice',
-              children: [
-                {
-                  value: 'alert',
-                  label: 'Alert 警告'
-                },
-                {
-                  value: 'loading',
-                  label: 'Loading 加载'
-                },
-                {
-                  value: 'message',
-                  label: 'Message 消息提示'
-                },
-                {
-                  value: 'message-box',
-                  label: 'MessageBox 弹框'
-                },
-                {
-                  value: 'notification',
-                  label: 'Notification 通知'
-                }
-              ]
-            },
-            {
-              value: 'navigation',
-              label: 'Navigation',
-              children: [
-                {
-                  value: 'menu',
-                  label: 'NavMenu 导航菜单'
-                },
-                {
-                  value: 'tabs',
-                  label: 'Tabs 标签页'
-                },
-                {
-                  value: 'breadcrumb',
-                  label: 'Breadcrumb 面包屑'
-                },
-                {
-                  value: 'dropdown',
-                  label: 'Dropdown 下拉菜单'
-                },
-                {
-                  value: 'steps',
-                  label: 'Steps 步骤条'
-                }
-              ]
-            },
-            {
-              value: 'others',
-              label: 'Others',
-              children: [
-                {
-                  value: 'dialog',
-                  label: 'Dialog 对话框'
-                },
-                {
-                  value: 'tooltip',
-                  label: 'Tooltip 文字提示'
-                },
-                {
-                  value: 'popover',
-                  label: 'Popover 弹出框'
-                },
-                {
-                  value: 'card',
-                  label: 'Card 卡片'
-                },
-                {
-                  value: 'carousel',
-                  label: 'Carousel 走马灯'
-                },
-                {
-                  value: 'collapse',
-                  label: 'Collapse 折叠面板'
-                }
-              ]
+              label: '未绑定',
+              value: 0
             }
           ]
         },
         {
-          value: 'ziyuan',
-          label: '资源',
-          children: [
+          label: '启用状态',
+          value: 'enableStatus',
+          type: 1,
+          option: [
             {
-              value: 'axure',
-              label: 'Axure Components'
+              label: '已启用',
+              value: 1
             },
             {
-              value: 'sketch',
-              label: 'Sketch Templates'
-            },
-            {
-              value: 'jiaohu',
-              label: '组件交互文档'
+              label: '已禁用',
+              value: 0
             }
           ]
+        },
+        {
+          label: '在线状态',
+          value: 'onlineStatus',
+          type: 1,
+          option: [
+            {
+              label: '在线',
+              value: 1
+            },
+            {
+              label: '离线',
+              value: 0
+            }
+          ]
+        },
+        {
+          label: '工作状态',
+          value: 'workStatus',
+          type: 1,
+          option: [
+            {
+              label: '空闲',
+              value: 1
+            },
+            {
+              label: '关机',
+              value: 0
+            }
+          ]
+        },
+        {
+          label: '设备名称',
+          value: 'name'
+        },
+        {
+          label: 'MAC',
+          value: 'mac'
         }
       ],
+      filterKey: '',
+      filterType: 0,
+      filterOption: [],
       selectedOptions: [],
-      keywords: '',
+      keyword: '',
       dialogEditProfileVisible: false,
       profileForm: {},
       rules: {
@@ -369,6 +195,26 @@ export default {
     }
   },
   methods: {
+    filterOptionChanged(value) {
+      const data = this.filterData.filter(item => item.value === value)[0]
+      const type = data.type
+      this.filterType = type === 1 ? 1 : 0
+      if (type) {
+        this.filterType = 1
+        this.filterOption = data.option
+      } else {
+        this.filterType = 0
+      }
+      this.keyword = ''
+    },
+    searchDevice() {
+      this.$router.push({
+        path: '/device/list',
+        query: {
+          [this.filterKey]: this.keyword
+        }
+      })
+    },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },

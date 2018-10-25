@@ -8,14 +8,6 @@ export function queryTeamList(data) {
   })
 }
 
-export function updateTeam(data) {
-  return request({
-    url: '/temp/api/team/updateTeam',
-    method: 'put',
-    data
-  })
-}
-
 export function createTrusteeQrCode(data) {
   return request({
     url: '/temp/api/team/createTrusteeQrCode',

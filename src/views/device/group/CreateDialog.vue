@@ -18,7 +18,7 @@
           <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
-          <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+          <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
         </el-form-item>
         <el-form-item label="介绍" prop="sceneDescription">
           <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
@@ -131,7 +131,7 @@ export default {
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      const index = this.form.imagesList.findIndex(v => v.image === file.url)
       this.form.imagesList.splice(index, 1)
     },
     switchChanged(data) {
@@ -144,12 +144,10 @@ export default {
       }
     },
     handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+      this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
     handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(
-        v => v.video === file.videoUrl
-      )
+      const index = this.form.videosList.findIndex(v => v.video === file.url)
       this.form.videosList.splice(index, 1)
     },
     newRow() {
@@ -172,12 +170,13 @@ export default {
 
       const form = {
         ...this.form,
-        teamDeviceCreateRequestList: this.teamDeviceCreateRequestList
+        teamDeviceCreateRequestList: this.teamDeviceCreateRequestList.filter(
+          item => item.mac
+        ),
+        createTime: new Date().valueOf()
       }
       createNewTeam(form).then(res => {
         this.$emit('update:visible', false)
-        form['icon'] = form.icon
-        form['cover'] = form.cover
         this.$emit('add-data', {
           ...form,
           id: res.data

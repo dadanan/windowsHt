@@ -391,8 +391,9 @@ export default {
         this.unassignStatus = this.selectedDeviceList[0].assignStatus
       }
     },
-    getList() {
-      getList(this.query).then(res => {
+    getList(query) {
+      // 可以根据参数查询某个 或者 根据分页参数查询多个
+      getList(query ? query : this.query).then(res => {
         this.deviceList = res.data
       })
     },
@@ -555,8 +556,14 @@ export default {
     }
   },
   created() {
-    this.getList()
-    this.queryCount()
+    const query = this.$route.query
+    console.log('query', query)
+    if (query) {
+      this.getList(query)
+    } else {
+      this.getList()
+      this.queryCount()
+    }
   }
 }
 </script>

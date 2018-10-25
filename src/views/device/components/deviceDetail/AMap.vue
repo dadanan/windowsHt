@@ -9,23 +9,18 @@
   </div>
 </template>
 
-<style>
-.amap-page-container {
-  height: 500px;
-}
-</style>
-
-
 <script>
 import VueAMap from 'vue-amap'
-const position = [116.404, 39.915]
+import { queryDevicePosition } from '@/api/device/list'
 export default {
+  props: ['id'],
   data() {
     return {
+      position: [116.404, 39.915],
       zoom: 15,
-      center: position,
+      center: this.position,
       marker: {
-        position: position,
+        position: this.position,
         events: {
           click: () => {
             if (this.mywindow.visible === true) {
@@ -42,7 +37,7 @@ export default {
         draggable: false
       },
       mywindow: {
-        position: position,
+        position: this.position,
         content:
           '<h4>该点数据信息</h4><div class="text item">Information A: ...</div><div class="text item">Information B: ...</div>',
         visible: true,
@@ -61,6 +56,25 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    queryDevicePosition(id) {
+      queryDevicePosition(id).then(res => {
+        const data = res.data
+        this.position[0] = data.pointX
+        this.position[1] = data.pointY
+      })
+    }
+  },
+  created() {
+    console.log('id: ', this.id)
+    this.queryDevicePosition(this.id)
   }
 }
 </script>
+
+<style scoped>
+.amap-page-container {
+  height: 500px;
+}
+</style>

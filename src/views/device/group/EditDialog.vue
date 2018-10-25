@@ -15,10 +15,10 @@
           <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
         </el-form-item>
         <el-form-item label="图册">
-          <image-uploader :urls='imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+          <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
-          <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+          <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
         </el-form-item>
         <el-form-item label="介绍" prop="sceneDescription">
           <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
@@ -33,10 +33,6 @@
           </el-table-column>
           <el-table-column label="mac" show-overflow-tooltip>
             <template slot-scope="scope">
-              <!-- <el-select v-model="scope.row.mac" placeholder="请选择">
-              <el-option v-for="item in deviceList" :key="item.mac" :label="item.name" :value="item.mac">
-              </el-option>
-            </el-select> -->
               <el-input v-model='scope.row.mac' placeholder="mac"></el-input>
             </template>
           </el-table-column>
@@ -57,7 +53,7 @@
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click='updateTeam'>确定</el-button>
+      <el-button type="primary" @click='createNewTeam'>确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -65,7 +61,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
-import { updateTeam, queryDeviceInfo } from '@/api/device/team'
+import { createNewTeam, queryDeviceInfo } from '@/api/device/team'
 import { selectAllCustomers as select } from '@/api/customer'
 import DTitle from '@/components/Title'
 
@@ -87,10 +83,11 @@ export default {
   data() {
     return {
       form: {
-        videosList: [],
-        createUserOpenId: ''
+        createUserOpenId: '',
+        imagesList: [],
+        videosList: []
       },
-      imagesList: [],
+
       teamDeviceCreateRequestList: [],
       query: {
         limit: 100,
@@ -101,12 +98,10 @@ export default {
   },
   methods: {
     handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+      this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
     handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(
-        v => v.video === file.videoUrl
-      )
+      const index = this.form.videosList.findIndex(v => v.video === file.url)
       this.form.videosList.splice(index, 1)
     },
     queryDeviceInfo(id) {
@@ -119,11 +114,11 @@ export default {
       data[name] = image
     },
     setImg(file) {
-      this.imagesList = [...this.imagesList, { image: file.url }]
+      this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.imagesList.findIndex(v => v.imgVideo === file.url)
-      this.imagesList.splice(index, 1)
+      const index = this.form.imagesList.findIndex(v => v.image === file.url)
+      this.form.imagesList.splice(index, 1)
     },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
@@ -134,19 +129,10 @@ export default {
         })
       }
     },
-    handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
-    },
-    handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(
-        v => v.video === file.videoUrl
-      )
-      this.form.videosList.splice(index, 1)
-    },
     newRow() {
       this.teamDeviceCreateRequestList.push({})
     },
-    updateTeam() {
+    createNewTeam() {
       this.teamDeviceCreateRequestList &&
         this.teamDeviceCreateRequestList.forEach(item => {
           item['linkAgeStatus'] = item.linkAgeStatus ? 1 : 0
@@ -154,9 +140,11 @@ export default {
 
       const form = {
         ...this.form,
-        teamDeviceCreateRequestList: this.teamDeviceCreateRequestList
+        teamDeviceCreateRequestList: this.teamDeviceCreateRequestList.filter(
+          item => item.mac
+        )
       }
-      updateTeam(form).then(res => {
+      createNewTeam(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('add-data', form)
       })
@@ -183,7 +171,6 @@ export default {
           data.teamDeviceCreateRequestList || []
       }
       this.form = data
-      this.imagesList = data.imagesList
     }
   }
 }

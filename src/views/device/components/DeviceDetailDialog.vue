@@ -61,7 +61,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map></a-map>
+          <a-map :id='id'></a-map>
         </el-card>
       </div>
     </div>

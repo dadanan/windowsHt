@@ -144,3 +144,11 @@ export function queryDeviceSensorStat(data) {
     data
   })
 }
+
+// 设备数据
+export function queryDevicePosition(id) {
+  return request({
+    url: `/temp/api/device/queryDevicePosition/${id}`,
+    method: 'post'
+  })
+}

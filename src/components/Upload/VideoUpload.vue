@@ -1,11 +1,9 @@
 <template>
   <div>
-    <el-upload class="upload-demo" :action="host" :data='attachedData' :on-success="handleSuccess" :on-remove="handleRemove" :on-progress="(event, file, fileList) => $emit('onProgress', event, file, fileList)" :on-change="(file, fileList) => $emit('onChange', file, fileList)" :file-list="fileList" :before-upload="beforeUpload" :before-remove="beforeRemove" list-type="picture" :limit="limit" :show-file-list="showFileList" :multiple="multiple">
-      <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传视频文件</div>
+    <el-upload :action='host' :data='attachedData' :on-remove='handleRemove' :on-success='handleSuccess' multiple :limit='limit' :on-change='(file, fileList) => $emit("onChange", file, fileList)' :on-exceed='handleExceed' :file-list='fileList' :before-upload='beforeUpload'>
+      <el-button size='small' type='primary'>点击上传</el-button>
+      <div slot='tip' class='el-upload__tip'>只能上传{{limit}}个 mp4/ogg/flv/avi/wmv/rmvb 文件，且单个不超过{{maxSize}}MB</div>
     </el-upload>
-    <video ref="video" class="video" :src="videoSrc"></video>
-    <canvas ref="imgCanves" class="imgCanves"></canvas>
   </div>
 </template>
 
@@ -31,26 +29,23 @@ export default {
     maxSize: {
       // 视频可接受的大小（MB）
       type: Number,
-      default: 100
+      default: 10
     },
-    limit: Number, //  最大允许上传视频的个数
+    limit: {
+      type: Number,
+      default: 5
+    },
     multiple: {
       type: Boolean,
       default: true
     },
-    showFileList: {
-      type: Boolean,
-      default: true
-    },
-    urls: {
+    list: {
       type: Array
     }
   },
   data() {
     return {
       fileList: [],
-      fileUrl: [],
-      videoSrc: '',
       host: host,
       attachedData: {
         key: '${filename}',
@@ -82,30 +77,15 @@ export default {
         return false
       }
     },
-    onloadeddata(file) {
-      const video = this.$refs.video
-      const canvas = this.$refs.imgCanves
-      canvas.width = video.videoWidth
-      canvas.height = video.videoHeight
-
-      canvas
-        .getContext('2d')
-        .drawImage(video, 0, 0, canvas.width, canvas.height)
-
+    handleSuccess(row, file) {
+      const url = `${this.host}/${file.name}`
       const item = {
         name: file.name,
-        url: canvas.toDataURL('image/png'),
-        videoUrl: `${this.host}/${file.name}`
+        url
       }
 
       this.fileList.push(item)
-
       this.$emit('onSuccess', item, this.fileList)
-    },
-    handleSuccess(row, file) {
-      const video = this.$refs.video
-      this.videoSrc = file.url
-      video.onloadeddata = () => this.onloadeddata(file)
     },
     handleRemove(file, fileList) {
       this.fileList = fileList
@@ -113,23 +93,39 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
-    }
-  },
-  watch: {
-    urls(val) {
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 ${this.limit} 个文件，目前选择了 ${files.length +
+          fileList.length} 个文件`
+      )
+    },
+    translateFormat(val) {
+      // 转换传入的数据格式为上传组件适用的格式
       this.fileList = val.map(data => {
         return {
-          videoUrl: data.video,
-          url: canvas.toDataURL('image/png'),
+          url: data.video,
           name: this.getName(data.video)
         }
       })
+    }
+  },
+  watch: {
+    list(val) {
+      if (val) {
+        this.translateFormat(val)
+      }
+    }
+  },
+  created() {
+    if (this.list) {
+      this.translateFormat(this.list)
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .imgCanves,
 .video {
   position: absolute;
