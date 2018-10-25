@@ -120,14 +120,6 @@ export function exportDeviceData(data) {
   })
 }
 
-// 获取设备总数
-export function queryCount(data) {
-  return request({
-    url: `/temp/api/device/queryCount/${data}`,
-    method: 'post',
-    data
-  })
-}
 // 操作日志
 export function queryOperLog(data) {
   return request({
