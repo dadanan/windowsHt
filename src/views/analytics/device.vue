@@ -285,7 +285,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 4,
@@ -587,7 +587,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 4,
@@ -858,7 +858,7 @@ export default {
                 }
               ]
             },
-            isVisible: true
+            isVisible: false
           },
           {
             id: 4,

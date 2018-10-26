@@ -413,7 +413,7 @@ export default {
                   }
                 ]
               },
-              isVisible: true
+              isVisible: false
             },
             {
               id: 4,
