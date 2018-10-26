@@ -2,7 +2,6 @@
   <div>
     <el-button-group>
       <el-button type="primary">集群</el-button>
-      <el-button type="primary">群控</el-button>
       <el-button type="primary">分享</el-button>
       <el-button type="primary">授权管理</el-button>
     </el-button-group>

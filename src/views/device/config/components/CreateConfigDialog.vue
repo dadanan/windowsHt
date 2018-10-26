@@ -87,6 +87,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="安卓版式选择">
+        <el-select v-model="form.androidFormatId">
+          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <template v-for='item in pageOfForamt'>
         <el-card class='box-card' :key='item.id'>
           <el-form-item label='页面预览'>
@@ -354,7 +360,10 @@ export default {
         let url = `${this.formatSelected[0].htmlUrl}?customerId=${
           this.form.customerId
         }`
-        const domain = window.origin.match('://(.*).hcocloud.com')[1]
+        let domain = window.origin.match('://(.*).hcocloud.com')
+        if (doman) {
+          domain = domain[0]
+        }
         url = url.replace('://pro', '://' + domain)
 
         this.$alert(

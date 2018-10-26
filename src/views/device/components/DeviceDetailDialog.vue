@@ -67,6 +67,7 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
+        <!-- <area-select v-model="selected"></area-select> -->
         <operation></operation>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
@@ -170,6 +171,7 @@ export default {
   },
   data() {
     return {
+      selected: '',
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
@@ -186,14 +188,14 @@ export default {
     }
   },
   methods: {
-    opertye(row){
+    opertye(row) {
       let opertye = row.operType
-      if(opertye == 1){
-        return "h5操作"
-      }else if(opertye == 2){
-        return "安卓操作"
-      }else if(opertye == 3){
-        return "管理端"
+      if (opertye == 1) {
+        return 'h5操作'
+      } else if (opertye == 2) {
+        return '安卓操作'
+      } else if (opertye == 3) {
+        return '管理端'
       }
     },
     init(val) {

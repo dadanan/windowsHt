@@ -97,6 +97,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="安卓版式选择">
+        <el-select v-model="form.androidFormatId">
+          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <template v-for='item in pageOfForamt'>
         <el-card class='box-card' :key='item.id'>
           <el-form-item label='页面预览'>
