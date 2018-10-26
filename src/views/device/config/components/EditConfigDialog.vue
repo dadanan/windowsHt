@@ -159,8 +159,8 @@
               <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
               <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
-              <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
-              <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
+              <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+              <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
             </div>
           </el-form-item>
         </template>
@@ -170,8 +170,8 @@
             <el-input v-model="modifyData.minVal" placeholder="最小值"></el-input>
             <el-input v-model="modifyData.maxVal" placeholder="最大值"></el-input>
             <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
-            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
-            <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
+            <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
         <el-form-item v-if='modifyData.abilityType === 5' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
@@ -181,8 +181,8 @@
             <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
             <el-input v-model="option.minVal" placeholder="最大值"></el-input>
             <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
-            <el-button type="danger" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
-            <el-button type="success" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
+            <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
       </el-form>
