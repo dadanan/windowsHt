@@ -3,16 +3,15 @@
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary" @click="deviceImportDialogVisible = true">导入</el-button>
-          <el-button type="primary" @click="deviceAddDialogVisible = true">添加</el-button>
-          <el-button type="primary" @click="deleteOneDeviceHandler">删除</el-button>
-          <el-button type="primary" @click='handleDeviceRecover'>恢复</el-button>
+          <el-button type="primary" v-if='isPro()' @click="deviceImportDialogVisible = true">导入</el-button>
+          <el-button type="primary" v-if='isPro()' @click="deviceAddDialogVisible = true">添加</el-button>
+          <el-button type="primary" v-if='isPro()' @click="deleteOneDeviceHandler">删除</el-button>
+          <el-button type="primary" v-if='isPro()' @click='handleDeviceRecover'>恢复</el-button>
           <el-button type="primary" @click="handleDeviceAllocate">分配</el-button>
           <el-button type="primary" @click="handleDeviceFree">召回</el-button>
           <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
           <el-button type="primary" @click="handleDeviceAble">启用</el-button>
           <el-button type="primary" @click="handleDeviceCluster">集群</el-button>
-          <!-- <el-button type="primary" @click="deviceClusterControlDialogVisible = true">群控</el-button> -->
           <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
           <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
           <el-button type="primary" @click="deviceExportDialogVisible = true">导出</el-button>
