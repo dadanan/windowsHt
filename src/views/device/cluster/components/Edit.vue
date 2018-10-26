@@ -21,11 +21,11 @@
               <el-input v-model='scope.row.mac'></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="TypeID" show-overflow-tooltip sortable>
+          <!-- <el-table-column label="型号" show-overflow-tooltip sortable>
             <template slot-scope="scope">
-              <el-input v-model='scope.row.typeID'></el-input>
+              <el-input v-model='scope.row.model'></el-input>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="text" @click="deleteDevice(scope.$index)">删除</el-button>

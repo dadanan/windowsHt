@@ -60,6 +60,9 @@ export default {
     queryDevicePosition(id) {
       queryDevicePosition(id).then(res => {
         const data = res.data
+        if (!data.pointX || !data.pointY) {
+          return
+        }
         const position = [data.pointX, data.pointY]
         this.center = position
         this.marker.position = position

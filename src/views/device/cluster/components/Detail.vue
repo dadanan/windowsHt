@@ -18,10 +18,10 @@
                   <el-input v-model="form.introduction" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="地点">
-                  <el-input v-model="form.location" disabled></el-input>
+                  <el-input v-model="form.createLocation" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间">
-                  <el-input v-model="form.createTime" disabled></el-input>
+                  {{new Date(form.createTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="创建人">
                   <el-input v-model="form.customerName" disabled></el-input>
@@ -36,8 +36,8 @@
         </el-card>
       </div>
       <div class="flex-item">
-        <el-card class="el-card--solid">
-          <iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://f.amap.com/rRZS_0F85dWA'></iframe>
+        <el-card class="el-card--solid map-container">
+          <a-map :id='datas.deviceList[0].id'></a-map>
         </el-card>
       </div>
     </div>
@@ -54,10 +54,10 @@
       </el-button-group>
     </div>
     <div class="photos">集群相册</div>
-    <el-card class="el-card--solid">
+    <el-card class="el-card--solid group-album">
       <div v-if="!form.imagesList.length">暂无集群相册</div>
-      <div v-else class="item" v-for="(img, i) in form.imagesList" :key="i" @dblclick="handlePreview(img.imgVideo)">
-        <img :src="img.imgVideo">
+      <div v-else class="item" v-for="(img, i) in form.imagesList" :key="i" @dblclick="handlePreview(img.image)">
+        <img :src="img.image">
       </div>
     </el-card>
     <el-dialog :visible="imgVisible" :before-close="() => imgVisible = false" append-to-body>
@@ -71,6 +71,7 @@ import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { deviceColumnData } from '../cluster.js'
 import { groupSendFunc } from '@/api/device/cluster'
+import AMap from '@/views/device/components/deviceDetail/AMap'
 
 const img = require('@/assets/404_images/404.png')
 
@@ -122,12 +123,11 @@ export default {
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
-        if (res.code === 200) {
-          this.form = {
-            ...res.data,
-            imagesList: res.data.imagesList || []
-          }
+        const data = res.data
+        if (!data.imagesList) {
+          data.imagesList = []
         }
+        this.form = data
       })
     },
     handlePreview(img) {
@@ -147,23 +147,22 @@ export default {
     this.select()
     this.queryGroupById()
   },
-  watch: {
-    datas(val) {
-      this.form = JSON.parse(JSON.stringify(val))
-    }
+  components: {
+    AMap
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-card--solid {
-  display: flex;
-  flex-wrap: wrap;
-}
 .flex {
   display: flex;
   margin-left: -10px;
   margin-right: -10px;
+}
+
+.map-container {
+  width: 560px;
+  height: 440px;
 }
 
 .flex-item {
@@ -193,7 +192,14 @@ export default {
   box-sizing: border-box;
 
   img {
-    width: 100%;
+    height: 100%;
   }
+}
+</style>
+
+<style lang='scss'>
+.group-album .el-card__body {
+  display: flex;
+  align-items: center;
 }
 </style>
