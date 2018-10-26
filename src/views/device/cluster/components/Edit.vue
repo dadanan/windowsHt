@@ -30,7 +30,7 @@
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
       <el-form-item label="视频">
-        <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+        <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
       </el-form-item>
       <el-form-item label="群介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
@@ -53,7 +53,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
@@ -119,35 +119,26 @@ export default {
       ]
     }
   },
-  created() {
-    this.select()
-    this.queryGroupById()
-  },
   methods: {
     handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+      this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
     handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(
-        v => v.video === file.videoUrl
-      )
+      const index = this.form.videosList.findIndex(v => v.video === file.url)
       this.form.videosList.splice(index, 1)
     },
     setImg(file) {
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      const index = this.form.imagesList.findIndex(v => v.image === file.url)
       this.form.imagesList.splice(index, 1)
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
-        if (res.code === 200) {
-          this.form = {
-            ...res.data,
-            imageVideoList: res.data.imageVideoList || []
-          }
-        }
+        const data = res.data
+        this.form = data
+        this.deviceList = data.deviceList
       })
     },
     addDevice() {
@@ -198,9 +189,10 @@ export default {
         }
       })
     }
-    // handleCancel() {
-    //   this.$emit('close')
-    // }
+  },
+  created() {
+    this.select()
+    this.queryGroupById()
   }
 }
 </script>

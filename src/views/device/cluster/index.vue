@@ -9,17 +9,23 @@
       </div>
       <el-table :data="clusterList" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="名称" show-overflow-tooltip >
+        <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="devicecount" label="群内设备"   show-overflow-tooltip>
+        <el-table-column prop="devicecount" label="群内设备" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            ...
+          </template>
         </el-table-column>
-        <el-table-column prop="introduction" label="介绍" show-overflow-tooltip>
+        <el-table-column prop="introduction" label="介绍" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="location" label="地点" show-overflow-tooltip>
+        <el-table-column prop="createLocation" label="地点" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip >
+        <el-table-column label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="customerName" label="创建人" show-overflow-tooltip >
+        <el-table-column prop="customerName" label="创建人" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip s>
         </el-table-column>
@@ -80,14 +86,25 @@ export default {
   },
   methods: {
     formatDate(row) {
-        let date = new Date(parseInt(row.createTime));
-        let Y = date.getFullYear() + '-';
-        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        return Y + M + D + h + m + s;
+      let date = new Date(parseInt(row.createTime))
+      let Y = date.getFullYear() + '-'
+      let M =
+        date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1) + '-'
+          : date.getMonth() + 1 + '-'
+      let D =
+        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+      let h =
+        date.getHours() < 10
+          ? '0' + date.getHours() + ':'
+          : date.getHours() + ':'
+      let m =
+        date.getMinutes() < 10
+          ? '0' + date.getMinutes() + ':'
+          : date.getMinutes() + ':'
+      let s =
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      return Y + M + D + h + m + s
     },
     queryGroupByPage() {
       queryGroupByPage({
@@ -96,7 +113,6 @@ export default {
         status: 1
       }).then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.clusterList = res.data // status:1.正常；2.已删除
         }
       })
@@ -133,8 +149,7 @@ export default {
                 message: `删除成功！`
               })
             })
-            .catch(err => {
-            })
+            .catch(err => {})
         })
         .catch(() => {
           this.$message({

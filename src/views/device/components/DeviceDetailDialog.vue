@@ -61,7 +61,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map></a-map>
+          <a-map :id='detailData.id'></a-map>
         </el-card>
       </div>
     </div>
@@ -182,9 +182,7 @@ export default {
   },
   watch: {
     detailData(val) {
-      this.queryOperLog(val.id)
-      this.queryDeviceSensorStat(val.id)
-      this.form = JSON.parse(JSON.stringify(val))
+      this.init(val)
     }
   },
   methods: {
@@ -198,67 +196,116 @@ export default {
         return "管理端"
       }
     },
+    init(val) {
+      this.queryOperLog(val.id)
+      this.queryDeviceSensorStat(val.id)
+      this.form = JSON.parse(JSON.stringify(val))
+    },
     queryOperLog(id) {
       queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
         res => {
           this.deviceList = res.data
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+        }
+      )
     },
     queryDeviceSensorStat(id) {
-      queryDeviceSensorStat({"limit":this.limit,"page":this.page,"deviceId":id})
-        .then(res => {
-          this.deviceList1 = res.data
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+      queryDeviceSensorStat({
+        limit: this.limit,
+        page: this.page,
+        deviceId: id
+      }).then(res => {
+        this.deviceList1 = res.data
+      })
     },
     formatDate(row) {
-        let date = new Date(parseInt(row.startTime));
-        let Y = date.getFullYear() + '-';
-        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        return Y + M + D + h + m + s;
+      let date = new Date(parseInt(row.startTime))
+      let Y = date.getFullYear() + '-'
+      let M =
+        date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1) + '-'
+          : date.getMonth() + 1 + '-'
+      let D =
+        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+      let h =
+        date.getHours() < 10
+          ? '0' + date.getHours() + ':'
+          : date.getHours() + ':'
+      let m =
+        date.getMinutes() < 10
+          ? '0' + date.getMinutes() + ':'
+          : date.getMinutes() + ':'
+      let s =
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      return Y + M + D + h + m + s
     },
     formatDate1(row) {
-        let date = new Date(parseInt(row.endTime));
-        let Y = date.getFullYear() + '-';
-        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        return Y + M + D + h + m + s;
+      let date = new Date(parseInt(row.endTime))
+      let Y = date.getFullYear() + '-'
+      let M =
+        date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1) + '-'
+          : date.getMonth() + 1 + '-'
+      let D =
+        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+      let h =
+        date.getHours() < 10
+          ? '0' + date.getHours() + ':'
+          : date.getHours() + ':'
+      let m =
+        date.getMinutes() < 10
+          ? '0' + date.getMinutes() + ':'
+          : date.getMinutes() + ':'
+      let s =
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      return Y + M + D + h + m + s
     },
-     formatDate2(row) {
-        let date = new Date(parseInt(row.operateTime));
-        let Y = date.getFullYear() + '-';
-        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        return Y + M + D + h + m + s;
+    formatDate2(row) {
+      let date = new Date(parseInt(row.operateTime))
+      let Y = date.getFullYear() + '-'
+      let M =
+        date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1) + '-'
+          : date.getMonth() + 1 + '-'
+      let D =
+        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+      let h =
+        date.getHours() < 10
+          ? '0' + date.getHours() + ':'
+          : date.getHours() + ':'
+      let m =
+        date.getMinutes() < 10
+          ? '0' + date.getMinutes() + ':'
+          : date.getMinutes() + ':'
+      let s =
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      return Y + M + D + h + m + s
     },
-     formatDate3(row) {
-       if(row.responseTime){
-         let date = new Date(parseInt(row.responseTime));
-         let Y = date.getFullYear() + '-';
-         let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-         let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-         let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-         let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-         let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-         return Y + M + D + h + m + s;
-       }else{
-         return ''
-       }
+    formatDate3(row) {
+      if (row.responseTime) {
+        let date = new Date(parseInt(row.responseTime))
+        let Y = date.getFullYear() + '-'
+        let M =
+          date.getMonth() + 1 < 10
+            ? '0' + (date.getMonth() + 1) + '-'
+            : date.getMonth() + 1 + '-'
+        let D =
+          date.getDate() < 10
+            ? '0' + date.getDate() + ' '
+            : date.getDate() + ' '
+        let h =
+          date.getHours() < 10
+            ? '0' + date.getHours() + ':'
+            : date.getHours() + ':'
+        let m =
+          date.getMinutes() < 10
+            ? '0' + date.getMinutes() + ':'
+            : date.getMinutes() + ':'
+        let s =
+          date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        return Y + M + D + h + m + s
+      } else {
+        return ''
+      }
     }
   },
   components: {

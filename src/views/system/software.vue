@@ -50,7 +50,7 @@
 import CreateModelDialog from './software/createDialog'
 import EditModelDialog from './software/editDialog'
 import { select, deleteById, selectById } from '@/api/format'
-import { select as getCustomer } from '@/api/customer'
+import { selectAllCustomers as getCustomer } from '@/api/customer'
 
 export default {
   data() {
@@ -138,7 +138,7 @@ export default {
         this.softwareList = res.data
       })
     },
-     handleSizeChange(val) {
+    handleSizeChange(val) {
       this.listQuery.limit = val
       this.getSoftwareList()
     },

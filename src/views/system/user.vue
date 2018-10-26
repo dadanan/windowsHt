@@ -24,7 +24,7 @@
             <span>{{ getStatusName(scope.row.status) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="修改时间" show-overflow-tooltip sortable>
+        <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
           </template>

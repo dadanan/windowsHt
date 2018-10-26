@@ -30,7 +30,7 @@
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
       <el-form-item label="视频">
-        <video-uploader :limit='2' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+        <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
       </el-form-item>
       <el-form-item label="群介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
@@ -53,7 +53,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
 
 export default {
@@ -123,19 +123,17 @@ export default {
   },
   methods: {
     handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.videoUrl }]
+      this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
     handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(
-        v => v.video === file.videoUrl
-      )
+      const index = this.form.videosList.findIndex(v => v.video === file.url)
       this.form.videosList.splice(index, 1)
     },
     setImg(file) {
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
-      const index = this.form.imagesList.findIndex(v => v.imgVideo === file.url)
+      const index = this.form.imagesList.findIndex(v => v.image === file.url)
       this.form.imagesList.splice(index, 1)
     },
     addDevice() {
@@ -174,11 +172,13 @@ export default {
         ...this.form,
         deviceQueryRequest: {
           deviceList: this.deviceList
-        }
+        },
+        createTime: new Date().valueOf()
       }
       addOrUpdateGroupAndDevice(data).then(res => {
         if (res.code === 200 && res.data) {
-          data.id = res.data.id
+          data.id = res.data
+
           this.$emit('update', data)
           this.$message.success('添加成功')
         } else {

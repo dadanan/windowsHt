@@ -39,6 +39,10 @@ export const deviceColumnData = [
     label: '型号'
   },
   {
+    prop: 'mac',
+    label: 'MAC'
+  },
+  {
     prop: 'introduce',
     label: '缩图'
   },

@@ -52,7 +52,7 @@
 
 <script>
 import { addOrUpdateGroupAndDevice } from '@/api/device/group'
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 
 export default {
   props: {
@@ -100,16 +100,18 @@ export default {
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
     },
-    submitForm(formName) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.addOrUpdateGroupAndDevice()
         } else {
           return false
         }
-      });
+      })
     },
-    resetForm(formName) { //清空表单里面的数据
+    resetForm(formName) {
+      //清空表单里面的数据
       this.$emit('update:visible', false)
       this.$refs[formName].resetFields()
     },

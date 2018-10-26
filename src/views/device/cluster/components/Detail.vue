@@ -47,9 +47,9 @@
     </el-table>
     <div>
       <el-button-group>
-        <el-button type="primary">群开
+        <el-button type="primary" @click='groupControl("on")'>群开
         </el-button>
-        <el-button type="primary">群关
+        <el-button type="primary" @click='groupControl("off")'>群关
         </el-button>
       </el-button-group>
     </div>
@@ -67,9 +67,10 @@
 </template>
 
 <script>
-import { select } from '@/api/customer'
+import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { deviceColumnData } from '../cluster.js'
+import { groupSendFunc } from '@/api/device/cluster'
 
 const img = require('@/assets/404_images/404.png')
 
@@ -103,11 +104,22 @@ export default {
       customerList: []
     }
   },
-  created() {
-    this.select()
-    this.queryGroupById()
-  },
   methods: {
+    groupControl(which) {
+      if (!this.form.deviceList || this.form.deviceList.length === 0) {
+        return
+      }
+      groupSendFunc({
+        deviceIdList: this.form.deviceList.map(item => item.id),
+        funcId: 210,
+        value: which === 'on' ? 1 : 0
+      }).then(() => {
+        this.$message({
+          message: `群${which === 'on' ? '开' : '关'}成功！`,
+          type: 'success'
+        })
+      })
+    },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
         if (res.code === 200) {
@@ -130,6 +142,10 @@ export default {
         this.customerList = res.data || []
       })
     }
+  },
+  created() {
+    this.select()
+    this.queryGroupById()
   },
   watch: {
     datas(val) {

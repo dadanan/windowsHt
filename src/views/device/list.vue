@@ -268,12 +268,7 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import {
-  getList,
-  deleteOneDevice,
-  queryChildDevice,
-  queryCount
-} from '@/api/device/list'
+import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
 
 export default {
   components: {
@@ -334,8 +329,7 @@ export default {
       deviceColumnControlDialogVisible: false,
       query: {
         limit: 10,
-        page: 1,
-        status: 1
+        page: 1
       },
       total: 1,
       detailData: {},
@@ -379,7 +373,6 @@ export default {
         this.query.status = 2
       }
       this.getList()
-      this.queryCount()
     },
     showDetail(data) {
       this.deviceDetailDialogVisible = true
@@ -391,14 +384,12 @@ export default {
         this.unassignStatus = this.selectedDeviceList[0].assignStatus
       }
     },
-    getList() {
-      getList(this.query).then(res => {
-        this.deviceList = res.data
-      })
-    },
-    queryCount() {
-      queryCount(this.query.status).then(res => {
-        this.total = res.data
+    getList(query) {
+      // 可以根据参数查询某个 或者 根据分页参数查询多个
+      getList(query ? query : this.query).then(res => {
+        const data = res.data
+        this.deviceList = data.dataList
+        this.total = data.totalCount
       })
     },
     handleSizeChange(val) {
@@ -503,12 +494,6 @@ export default {
         this.deviceClusterDialogVisible = true
       })
     },
-    // 绑定
-    // handleDeviceBind() {
-    //   this.isOperable().then(_ => {
-    //     this.deviceBindDialogVisible = true
-    //   })
-    // },
     handleDeviceBind() {
       this.isOperable().then(_ => {
         this.assignStatus().then(_ => {
@@ -555,8 +540,12 @@ export default {
     }
   },
   created() {
-    this.getList()
-    this.queryCount()
+    const query = this.$route.query
+    if (query) {
+      this.getList(query)
+    } else {
+      this.getList()
+    }
   }
 }
 </script>

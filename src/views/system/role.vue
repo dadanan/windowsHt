@@ -14,6 +14,13 @@
         </el-table-column>
         <el-table-column prop="userCount" label="系统用户数量" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="creater" label="创建人ID" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>

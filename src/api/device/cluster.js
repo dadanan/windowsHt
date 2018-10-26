@@ -40,3 +40,12 @@ export function addOrUpdateGroupAndDevice(data) {
     data
   })
 }
+
+// 群控
+export function groupSendFunc(data) {
+  return request({
+    url: '/temp/api/deviceGroup/groupSendFunc',
+    method: 'post',
+    data
+  })
+}
