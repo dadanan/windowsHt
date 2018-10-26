@@ -97,12 +97,7 @@
 
 <script>
 import DTitle from '@/components/Title'
-import {
-  select,
-  deleteCustomerById,
-  selectById,
-  selectAllCustomers
-} from '@/api/customer'
+import { select, deleteCustomerById, selectById } from '@/api/customer'
 import ImageUploader from '@/components/Upload/image'
 import CreateModelDialog from './client/createDialog'
 import EditModelDialog from './client/editDialog'
@@ -169,12 +164,9 @@ export default {
     },
     getCustomer() {
       select(this.listQuery).then(res => {
-        this.clientList = res.data
-      })
-    },
-    selectAllCustomers() {
-      selectAllCustomers().then(res => {
-        this.total = res.data.length
+        const data = res.data
+        this.clientList = data.customerVos
+        this.total = data.totalCount
       })
     },
     handleSizeChange(val) {
@@ -236,7 +228,6 @@ export default {
   },
   created() {
     this.getCustomer()
-    this.selectAllCustomers()
   },
   components: {
     DTitle,

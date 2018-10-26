@@ -48,7 +48,7 @@
               </el-table-column>
               <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
                 <template slot-scope="scope">
-                  {{scope.row.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
+                  {{scope.row.workStatus === 1 ? '工作' : '空闲'}}
                 </template>
               </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -116,7 +116,7 @@
         </el-table-column>
         <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
           <template slot-scope="scope">
-            {{scope.row.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
+            {{scope.row.workStatus === 1 ? '工作' : '空闲'}}
           </template>
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -219,34 +219,48 @@
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
         </el-form-item>
       </el-form>
-      <el-form label-width="100px" label-location="left">
-        <el-form-item label="已删除设备">
-          <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedChange">
-            <el-radio :label="true">显示</el-radio>
-            <el-radio :label="false">不显示</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="已召回设备">
-          <el-radio-group v-model='showDeviceCallBack'>
-            <el-radio :label="true">显示</el-radio>
-            <el-radio :label="false">不显示</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="已解绑设备">
-          <el-radio-group v-model='showDeviceBind'>
-            <el-radio :label="true">显示</el-radio>
-            <el-radio :label="false">不显示</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="未分配设备">
-          <el-radio-group v-model='showDeviceAllocate'>
-            <el-radio :label="true">显示</el-radio>
-            <el-radio :label="false">不显示</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
+      <div>
+        <h3>筛选设备</h3>
+        <el-form label-width="100px" label-location="left">
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceDeleted' @change="showDeviceDeletedChange">
+              <el-radio :label="true">已删除设备</el-radio>
+              <el-radio :label="false">正常设备</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceBind' @change="showDeviceBindedChange">
+              <el-radio :label="true">已绑定</el-radio>
+              <el-radio :label="false">未绑定</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceAllocate' @change="showDeviceAllocatedChange">
+              <el-radio :label="true">已分配</el-radio>
+              <el-radio :label="false">未分配</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceEnable' @change="showDeviceEnabledChange">
+              <el-radio :label="true">已启用</el-radio>
+              <el-radio :label="false">已禁用</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceOnline' @change="showDeviceOnlineChange">
+              <el-radio :label="true">在线</el-radio>
+              <el-radio :label="false">离线</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label-width='0'>
+            <el-radio-group v-model='showDeviceWork' @change="showDeviceWorkedChange">
+              <el-radio :label="true">工作</el-radio>
+              <el-radio :label="false">空闲</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </div>
       <div slot="footer">
-        <el-button @click="deviceColumnControlDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="deviceColumnControlDialogVisible = false">确定</el-button>
       </div>
     </el-dialog>
@@ -334,19 +348,21 @@ export default {
       total: 1,
       detailData: {},
       showDeviceDeleted: false,
-      showDeviceCallBack: false,
       showDeviceBind: false,
-      showDeviceAllocate: true,
+      showDeviceAllocate: false,
+      showDeviceEnable: false,
+      showDeviceOnline: false,
+      showDeviceWork: false,
       unassignStatus: ''
     }
   },
   computed: {
     computeDeviceList() {
       let list = this.deviceList
-      if (!this.showDeviceAllocate) {
-        // 如果不显示分配设备，返回状态不等于 1 的
-        list = list.filter(item => item.assignStatus == 1)
-      }
+      // if (!this.showDeviceAllocate) {
+      //   // 如果不显示分配设备，返回状态不等于 1 的
+      //   list = list.filter(item => item.assignStatus == 1)
+      // }
       return list
     }
   },
@@ -360,17 +376,57 @@ export default {
       }
       this.queryChildDevice(data.id, data)
     },
+    showDeviceEnabledChange() {
+      if (!this.showDeviceEnable) {
+        this.query.enableStatus = 0
+      } else {
+        this.query.enableStatus = 1
+      }
+      this.getList()
+    },
+    showDeviceOnlineChange() {
+      if (!this.showDeviceOnline) {
+        this.query.onlineStatus = 0
+      } else {
+        this.query.onlineStatus = 1
+      }
+      this.getList()
+    },
+    showDeviceWorkedChange() {
+      if (!this.showDeviceWork) {
+        this.query.workStatus = 0
+      } else {
+        this.query.workStatus = 1
+      }
+      this.getList()
+    },
     queryChildDevice(id, data) {
       queryChildDevice(id).then(res => {
         // 把获取到的从设备数据添加到主设备数据中
         data.childDeviceList = res.data
       })
     },
-    showDeviceDeletedChange(data) {
+    showDeviceDeletedChange() {
       if (!this.showDeviceDeleted) {
         this.query.status = 1
       } else {
         this.query.status = 2
+      }
+      this.getList()
+    },
+    showDeviceBindedChange() {
+      if (!this.showDeviceBind) {
+        this.query.bindStatus = 0
+      } else {
+        this.query.bindStatus = 1
+      }
+      this.getList()
+    },
+    showDeviceAllocatedChange() {
+      if (!this.showDeviceAllocate) {
+        this.query.allocateStatus = 0
+      } else {
+        this.query.allocateStatus = 1
       }
       this.getList()
     },
