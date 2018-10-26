@@ -128,6 +128,7 @@ export default {
         }
       }).then(() => {
         this.$emit('update:visible', false)
+        this.$emit('onAllocate', this.selectedDeviceList)
         this.$message({
           message: '分配成功！',
           type: 'success'
@@ -142,6 +143,7 @@ export default {
         }
       }).then(() => {
         this.$emit('update:visible', false)
+        this.$emit('onAllocate', this.deviceList)
         this.$message({
           message: '分配成功！',
           type: 'success'

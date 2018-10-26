@@ -157,7 +157,7 @@
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
     <device-add-dialog @add-data='addData' :visible.sync="deviceAddDialogVisible"></device-add-dialog>
-    <device-allocate-dialog :visible.sync="deviceAllocateDialogVisible" :device-list="selectedDeviceList"></device-allocate-dialog>
+    <device-allocate-dialog @onAllocate='onAllocate' :visible.sync="deviceAllocateDialogVisible" :device-list="selectedDeviceList"></device-allocate-dialog>
     <device-delete-dialog :visible.sync="deviceDeleteDialogVisible" :device-list="selectedDeviceList"></device-delete-dialog>
     <device-recover-dialog :visible.sync="deviceRecoverDialogVisible" :device-list="selectedDeviceList"></device-recover-dialog>
     <device-free-dialog :visible.sync="deviceFreeDialogVisible" :device-list="selectedDeviceList"></device-free-dialog>
@@ -373,6 +373,18 @@ export default {
     }
   },
   methods: {
+    onAllocate(list) {
+      const hasInclude = (device, data) => {
+        // 当前设备包含在data数据里
+        return data.filter(item => item.id === device.id).length !== 0
+      }
+      // 分配成功，修改列表设备分配状态
+      this.deviceList.forEach(device => {
+        if (hasInclude(device, list)) {
+          device.assignStatus = 1
+        }
+      })
+    },
     expandChanged(data) {
       if (
         data.childCount === 0 ||
