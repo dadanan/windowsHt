@@ -11,7 +11,7 @@ export function createDevice(data) {
 export function deleteDevice(data) {
   return request({
     url: '/temp/api/device/deleteDevice',
-    method: 'post',
+    method: 'delete',
     data
   })
 }

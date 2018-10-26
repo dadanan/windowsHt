@@ -48,7 +48,7 @@
               </el-table-column>
               <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
                 <template slot-scope="scope">
-                  {{scope.row.workStatus === 1 ? '工作' : '空闲'}}
+                  {{scope.row.workStatus === 1 ? '工作/租赁中' : '关机/空闲'}}
                 </template>
               </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -116,7 +116,7 @@
         </el-table-column>
         <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
           <template slot-scope="scope">
-            {{scope.row.workStatus === 1 ? '工作' : '空闲'}}
+            {{scope.row.workStatus === 1 ? '工作/租赁中' : '关机/空闲'}}
           </template>
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -148,6 +148,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
+            <el-button v-if='isPro()' type="danger" icon="el-icon-delete" @click="deleteCompletely(scope.row)" circle></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -254,8 +255,8 @@
           </el-form-item>
           <el-form-item label-width='0'>
             <el-radio-group v-model='showDeviceWork' @change="showDeviceWorkedChange">
-              <el-radio :label="true">工作</el-radio>
-              <el-radio :label="false">空闲</el-radio>
+              <el-radio :label="true">工作/租赁中</el-radio>
+              <el-radio :label="false">关机/空闲</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -282,7 +283,12 @@ import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
-import { getList, deleteOneDevice, queryChildDevice } from '@/api/device/list'
+import {
+  getList,
+  deleteOneDevice,
+  queryChildDevice,
+  deleteDevice
+} from '@/api/device/list'
 
 export default {
   components: {
@@ -434,6 +440,47 @@ export default {
       this.deviceDetailDialogVisible = true
       this.detailData = data
     },
+    getSld() {
+      // 获取二级域名
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      if (sld) {
+        return sld[1]
+      }
+      return ''
+    },
+    isPro() {
+      // 是正式环境或者开发环境？
+      const sld = this.getSld()
+      return sld === 'pro' || sld === '' || sld === 'dev'
+    },
+    deleteCompletely(data) {
+      // 彻底删除设备
+      this.$confirm('此操作将永久删除设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deleteDevice({
+            mac: data.mac,
+            deviceId: data.id
+          }).then(() => {
+            this.deviceList = this.deviceList.filter(
+              item => item.id !== data.id
+            )
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除！'
+          })
+        })
+    },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
       if (this.selectedDeviceList.length) {
@@ -481,7 +528,7 @@ export default {
             deleteOneDevice({
               deviceId: form[0].id,
               mac: form[0].mac
-            }).then(res => {
+            }).then(() => {
               this.deviceList.forEach(item => {
                 // 如果在用户选择的删除列表中
                 if (this.selectedDeviceList.some(obj => obj.mac === item.mac)) {
