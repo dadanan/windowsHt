@@ -94,8 +94,8 @@
         <el-form-item prop='openID' label="绑定微信 Open ID">
           <el-input v-model="editingData.openID"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="editingData.password"></el-input>
+        <el-form-item prop='password' label="密码">
+          <el-input v-model="editingData.password" placeholder="请输入新密码"></el-input>
         </el-form-item>
         <el-form-item prop='nickName' label="昵称">
           <el-input v-model="editingData.nickName"></el-input>

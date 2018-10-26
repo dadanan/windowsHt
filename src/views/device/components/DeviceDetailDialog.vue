@@ -86,9 +86,9 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
+          <el-table-column prop="startTime" label="开始时间" :formatter="formatDate" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
+          <el-table-column prop="endTime" label="结束时间" :formatter="formatDate1" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -118,7 +118,7 @@
           </el-table-column>
           <el-table-column prop="funcName" label="操作指令" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcRemark" label="操作来源" show-overflow-tooltip sortable>
+          <el-table-column prop="opertye" label="操作来源" :formatter="opertye" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="funcValue" label="操作值" show-overflow-tooltip sortable>
           </el-table-column>
@@ -186,6 +186,16 @@ export default {
     }
   },
   methods: {
+    opertye(row){
+      let opertye = row.operType
+      if(opertye == 1){
+        return "h5操作"
+      }else if(opertye == 2){
+        return "安卓操作"
+      }else if(opertye == 3){
+        return "管理端"
+      }
+    },
     init(val) {
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
