@@ -88,7 +88,7 @@
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
 import {selectCustomerUserCount,selectTypePercent,selectDeviceCount ,newDeviceCountOfToday} from '@/api/big-picture-mode/bigPictureMode'
-import { queryCount } from '@/api/device/list'
+// import { queryCount } from '@/api/device/list'
 export default {
   components: {
     DataCard,
@@ -565,7 +565,7 @@ export default {
     this.selectDeviceCount()
     this.selectTypePercent()
     this.newDeviceCountOfToday()
-    this.queryCount()
+    // this.queryCount()
   },
   methods: {
     ttt1(){  
@@ -1476,7 +1476,7 @@ export default {
       this.selectDeviceCount()
       this.selectTypePercent()
       this.newDeviceCountOfToday()
-      this.queryCount()
+      // this.queryCount()
     }
     },
 
