@@ -11,14 +11,11 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="devicecount" label="群内设备" show-overflow-tooltip sortable>
-          <template slot-scope="scope">
-            ...
-          </template>
+        <el-table-column prop="deviceCount" label="设备数量" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="introduction" label="介绍" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createLocation" label="地点" show-overflow-tooltip sortable>
+        <el-table-column prop="location" label="地点" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable>
           <template slot-scope="scope">

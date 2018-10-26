@@ -10,9 +10,21 @@
           <el-button type="primary" class="add" @click="addDevice">添加</el-button>
         </div>
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
-          <el-table-column type="selection"></el-table-column>
           <el-table-column type="index"></el-table-column>
-          <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
+          <el-table-column label="名称" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.name'></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="MAC" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.mac'></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="TypeID" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.typeID'></el-input>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -102,21 +114,7 @@ export default {
         ]
       },
       selectedDeviceList: [],
-      customerList: [],
-      deviceData: [
-        {
-          prop: 'name',
-          label: '名称'
-        },
-        {
-          prop: 'typeID',
-          label: 'typeID'
-        },
-        {
-          prop: 'mac',
-          label: 'MAC'
-        }
-      ]
+      customerList: []
     }
   },
   methods: {
@@ -128,6 +126,9 @@ export default {
       this.form.videosList.splice(index, 1)
     },
     setImg(file) {
+      if (!this.form.imagesList) {
+        this.form.imagesList = []
+      }
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
@@ -138,7 +139,9 @@ export default {
       queryGroupById(this.datas.id).then(res => {
         const data = res.data
         this.form = data
-        this.deviceList = data.deviceList
+        if (data.deviceList) {
+          this.deviceList = data.deviceList
+        }
       })
     },
     addDevice() {
@@ -173,20 +176,17 @@ export default {
       this.$emit('close')
     },
     createCluster() {
-      const data = {
+      const form = {
         ...this.form,
         deviceQueryRequest: {
           deviceList: this.deviceList
         }
       }
-      addOrUpdateGroupAndDevice(data).then(res => {
-        if (res.code === 200 && res.data) {
-          data.id = res.data.id
-          this.$emit('update', data)
-          this.$message.success('更新成功')
-        } else {
-          res.msg && this.$message.error(res.msg)
-        }
+      addOrUpdateGroupAndDevice(form).then(res => {
+        const data = res.data
+        form.id = data.id
+        this.$emit('update', form)
+        this.$message.success('更新成功')
       })
     }
   },

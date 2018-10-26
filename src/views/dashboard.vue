@@ -2,7 +2,6 @@
   <div class="dashboard-container">
     <div class="mb20">
       <el-button icon="el-icon-edit" type="primary" @click="dialogEditKanbanVisible = true">编辑看板</el-button>
-
     </div>
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanData.数据展示.设备分析" :key="item.id" v-if="item.isVisible">
@@ -95,7 +94,7 @@ import {
   newDeviceCountOfToday,
   queryHomePageStatistic
 } from '@/api/big-picture-mode/bigPictureMode'
-import { dashboardData, realData } from './dashboard'
+import { dashboardData, realData } from './dashboardData'
 
 export default {
   components: {

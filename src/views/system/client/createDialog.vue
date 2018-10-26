@@ -63,11 +63,6 @@
             </el-table-column>
             <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
             </el-table-column>
-            <el-table-column label="操作" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <el-button type="text" @click="deleteModel(scope.row.id)">删除</el-button>
-              </template>
-            </el-table-column>
           </el-table>
           <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
           </el-pagination>

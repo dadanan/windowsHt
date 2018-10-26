@@ -12,7 +12,20 @@
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
           <el-table-column type="selection"></el-table-column>
           <el-table-column type="index"></el-table-column>
-          <el-table-column v-for="data in deviceData" :key="data.prop" :prop="data.prop" :label="data.label" show-overflow-tooltip sortable>
+          <el-table-column label="名称" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.name'></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="MAC" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.mac'></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="TypeID" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <el-input v-model='scope.row.typeID'></el-input>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -130,6 +143,9 @@ export default {
       this.form.videosList.splice(index, 1)
     },
     setImg(file) {
+      if (!this.form.imagesList) {
+        this.form.imagesList = []
+      }
       this.form.imagesList = [...this.form.imagesList, { image: file.url }]
     },
     removeImg(file) {
