@@ -144,3 +144,12 @@ export function queryDevicePosition(id) {
     method: 'post'
   })
 }
+
+// 修改设备详情
+export function updateDevice(data) {
+  return request({
+    url: `/temp/api/device/updateDevice`,
+    method: 'put',
+    data
+  })
+}

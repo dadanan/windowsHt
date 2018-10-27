@@ -67,7 +67,6 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
-        <!-- <area-select v-model="selected"></area-select> -->
         <operation></operation>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
@@ -150,6 +149,18 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
+      <el-tab-pane label='设备设置' name='6'>
+        <div class='inside-pane'>
+          <div>
+            <div class='label'>
+              更改设备地址
+            </div>
+            <div class='content'>
+              <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </el-dialog>
 </template>
@@ -157,7 +168,11 @@
 <script>
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
-import { queryOperLog, queryDeviceSensorStat } from '@/api/device/list'
+import {
+  queryOperLog,
+  queryDeviceSensorStat,
+  updateDevice
+} from '@/api/device/list'
 
 export default {
   props: {
@@ -171,7 +186,7 @@ export default {
   },
   data() {
     return {
-      selected: '',
+      selected: [],
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
@@ -202,6 +217,34 @@ export default {
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
+
+      const location = this.form.location
+      if (location) {
+        this.selected = location.split(',')
+      } else {
+        this.selected = []
+        // 通过手动干预地区选择组件的内部属性，来解决v-model数据刷新后，组件没有实时更新的问题
+        if (!this.$refs.areaCascader) {
+          return
+        }
+        const areaCascader = this.$refs.areaCascader.$children[0]
+        areaCascader.label = ''
+      }
+    },
+    districtChanged(district) {
+      // 如果地点没有变化，无操作
+      if (district.join(',') === this.form.location) {
+        return
+      }
+      updateDevice({
+        id: this.form.id,
+        location: district.join(',')
+      }).then(() => {
+        this.$message({
+          message: '设置设备位置成功！',
+          type: 'success'
+        })
+      })
     },
     queryOperLog(id) {
       queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
@@ -333,6 +376,21 @@ export default {
   margin: 0 10px;
   &--full {
     flex: 1;
+  }
+}
+
+.inside-pane {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  > div {
+    display: flex;
+    align-items: center;
+  }
+  .label {
+    min-width: 120px;
+    text-align: right;
+    margin-right: 20px;
   }
 }
 </style>

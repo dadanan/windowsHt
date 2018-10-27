@@ -46,7 +46,10 @@ VueAMap.initAMapApiLoader({
   v: '1.4.4'
 })
 import VueAreaLinkage from 'vue-area-linkage'
+import { pca, pcaa } from 'area-data' // v5 or higher
 import 'vue-area-linkage/dist/index.css'
+Vue.prototype.$pca = pca
+Vue.prototype.$pcaa = pcaa
 Vue.use(VueAreaLinkage)
 
 import ECharts from 'vue-echarts'

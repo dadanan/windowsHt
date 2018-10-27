@@ -72,7 +72,7 @@ export default {
   },
   watch: {
     id(val) {
-      this.queryDevicePosition(id)
+      this.queryDevicePosition(val)
     }
   },
   created() {
