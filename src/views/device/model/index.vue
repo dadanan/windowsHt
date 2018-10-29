@@ -8,7 +8,7 @@
       </div>
       <el-table :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="typeNo" label="类型主键" show-overflow-tooltip sortable>
+        <el-table-column prop="typeNo" label="类型" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
@@ -35,7 +35,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30,40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50,100,200,300]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="createModelDialogVisible"></create-model-dialog>

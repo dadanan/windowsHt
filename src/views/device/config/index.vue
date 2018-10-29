@@ -11,7 +11,7 @@
       <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="modelNo" label="型号主键" show-overflow-tooltip sortable>
+        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
@@ -49,7 +49,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10 ,20 ,30 ,40]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50,100,200,300]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible" :deviceModelData="list" @add-data='addData'></create-config-dialog>
@@ -318,6 +318,7 @@ export default {
     },
     getList() {
       select(this.listQuery).then(res => {
+        console.log(res.data)
         this.list = res.data
       })
     },

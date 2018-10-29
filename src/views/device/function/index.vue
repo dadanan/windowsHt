@@ -41,7 +41,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[10, 20, 30,40]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="1" :page-sizes="[50,100,200,300]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-function-dialog :visible.sync="createFunctionDialogVisible" @add-data='addData'></create-function-dialog>

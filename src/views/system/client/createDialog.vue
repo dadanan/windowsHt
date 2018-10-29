@@ -442,6 +442,7 @@ export default {
         androidConfig: this.androidConfig,
         backendConfig: this.backendConfig
       }
+      console.log(form)
       saveDetail(form).then(res => {
         if (res.code !== 200) {
           this.$message({

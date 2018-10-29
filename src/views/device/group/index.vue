@@ -58,7 +58,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[50,100,200,300]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
       <create-dialog :visible.sync="createDialogVisible" @add-data='addData'></create-dialog>
       <edit-dialog :visible.sync="editDialogVisible" @update-data='updateData' :data='editingData'></edit-dialog>

@@ -21,7 +21,6 @@
       <el-table @expand-change="expandChanged" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
         <el-table-column type="expand">
           <template slot-scope="scope">
-
             <el-table v-if='scope.row.childCount!==0' :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
               <el-table-column type="index"></el-table-column>
               <el-table-column prop="name" label="从设备名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
@@ -47,7 +46,7 @@
               </el-table-column>
               <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
                 <template slot-scope="scope">
-                  {{scope.row.workStatus === 1 ? '工作/租赁中' : '关机/空闲'}}
+                  {{scope.row.workStatus === 1 ? '开机' : '关机'}}
                 </template>
               </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -55,14 +54,11 @@
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
-                <template slot-scope="scope">
-                  {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
-                </template>
-              </el-table-column> -->
               <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
               </el-table-column>
               <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+              </el-table-column>
+              <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
               </el-table-column>
               <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
                 <template slot-scope="scope">
@@ -115,7 +111,7 @@
         </el-table-column>
         <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
           <template slot-scope="scope">
-            {{scope.row.workStatus === 1 ? '工作/租赁中' : '关机/空闲'}}
+            {{scope.row.workStatus === 1 ? '开机' : '关机'}}
           </template>
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -123,11 +119,6 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
-        <!-- <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
-          <template slot-scope="scope">
-            {{scope.row.assignStatus === 1 ? '分配' : '非分配'}}
-          </template>
-        </el-table-column> -->
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
         </el-table-column>
         <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
@@ -151,7 +142,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[10,20,30,40]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[50,100,200,300]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -205,6 +196,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.deviceNo">设备ID</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelName">设备型号名称</el-checkbox>
@@ -334,6 +328,7 @@ export default {
         enableStatus: true,
         groupId: true,
         id: true,
+        modelId:true,
         groupName: true,
         workStatus: true,
         onlineStatus: true,
@@ -501,6 +496,7 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
+        console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount

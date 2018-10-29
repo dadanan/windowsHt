@@ -38,7 +38,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[50, 100, 150, 200]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="softwareList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50,100,200,300]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="softwareList.length" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateDialogVisible"></create-model-dialog>
