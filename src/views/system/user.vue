@@ -227,7 +227,6 @@ export default {
     },
     showEditRoleDialog(data) {
       this.isEditUserDialogVisible = true
-      console.log(data)
       this.editingData = data
     },
     editUser() {
