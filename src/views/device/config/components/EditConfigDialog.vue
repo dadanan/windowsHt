@@ -432,34 +432,25 @@ export default {
       selectFormatsByCustomerId(this.form.customerId, this.form.typeId).then(
         res => {
           this.formatSelectedList = res.data
-          // 如果是编辑状态，且上次选择了版式
-          if (this.data.formatId && this.data.formatId + '') {
-            // 手动将特定版式的一些数据塞到用户当前版式数据中（因为查询型号详情的版式数据中缺少一些参数）
-            const formatSelected = this.formatSelectedList.filter(
-              item => item.id === this.form.formatId
-            )
-            const pageOfForamt =
-              formatSelected && formatSelected[0].wxFormatPageVos
-            if (this.pageOfForamt) {
-              // 如果用户上次选择了版式，并配置了版式数据，修正一些参数
-              this.pageOfForamt.forEach((page, pIndex) => {
-                page.modelFormatItems &&
-                  page.modelFormatItems.forEach((item, index) => {
-                    item.abilityType =
-                      pageOfForamt[pIndex].wxFormatItemVos[index].abilityType
-                  })
-              })
-            } else {
-              // 上次用户没有配置版式数据，仅仅选择了版式
-              this.pageOfForamt = pageOfForamt
-              this.pageOfForamt.forEach(page => {
-                page.pageId = page.pageId || page.id
-                page.modelFormatItems = page.wxFormatItemVos
-                delete page.pageNo
-                delete page.wxFormatItemVos
-              })
-            }
-          }
+          // // 如果是编辑状态，详情中没有版式配置项数据的话，从原版式数据copy过来一份数据。
+          // if (Number.isInteger(this.data.formatId)) {
+          //   // 手动将特定版式的一些数据塞到用户当前版式数据中（因为查询型号详情的版式数据中缺少一些参数）
+          //   const formatSelected = this.formatSelectedList.filter(
+          //     item => item.id === this.form.formatId
+          //   )
+          //   const pageOfForamt =
+          //     formatSelected && formatSelected[0].wxFormatPageVos
+          //   if (!this.pageOfForamt) {
+          //     // 上次用户没有配置版式数据，仅仅选择了版式
+          //     this.pageOfForamt = pageOfForamt
+          //     this.pageOfForamt.forEach(page => {
+          //       page.pageId = page.pageId || page.id
+          //       page.modelFormatItems = page.wxFormatItemVos
+          //       delete page.pageNo
+          //       delete page.wxFormatItemVos
+          //     })
+          //   }
+          // }
         }
       )
     },
@@ -540,11 +531,15 @@ export default {
         this.formatSelected && this.formatSelected[0].wxFormatPageVos
 
       this.pageOfForamt.forEach(page => {
-        page.wxFormatItemVos &&
-          page.wxFormatItemVos.forEach(item => {
-            item.showName = item.name
-            this.$set(item, 'showStatus', true)
-          })
+        if (!page.wxFormatItemVos) {
+          return
+        }
+        // 修改原版式数据的参数名称
+        page.wxFormatItemVos.forEach(item => {
+          item.showName = item.name
+          this.$set(item, 'showStatus', true)
+        })
+        page.modelFormatItems = page.wxFormatItemVos
       })
     },
     getTypeById() {
@@ -601,7 +596,9 @@ export default {
       // 如果存在功能项列表数据，覆盖一下
       this.deviceModelAbilitys = newData.deviceModelAbilitys
 
-      this.pageOfForamt = newData.deviceModelFormat.modelFormatPages
+      if (newData.deviceModelFormat) {
+        this.pageOfForamt = newData.deviceModelFormat.modelFormatPages
+      }
 
       // 如果用户上次配置了版式数据，那么转换一些参数
       if (this.pageOfForamt) {

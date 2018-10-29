@@ -361,7 +361,7 @@ export default {
           this.form.customerId
         }`
         let domain = window.origin.match('://(.*).hcocloud.com')
-        if (doman) {
+        if (domain) {
           domain = domain[0]
         }
         url = url.replace('://pro', '://' + domain)

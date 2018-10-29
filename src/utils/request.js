@@ -1,17 +1,17 @@
 import axios from 'axios'
-import { Message , Loading} from 'element-ui'
+import { Message, Loading } from 'element-ui'
 import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
 let loading
-const startLoading = () =>{
+const startLoading = () => {
   loading = Loading.service({
     lock: true,
     text: '加载中……',
     background: 'rgba(0, 0, 0, 0.7)'
   })
 }
-const endLoading = ()=>{
+const endLoading = () => {
   loading.close()
 }
 
@@ -30,9 +30,6 @@ service.interceptors.request.use(
     //   config.headers['X-Token'] = getToken()
     // }
     startLoading()
-    setTimeout(function() {
-      endLoading()
-    }, 3000)
     return config
   },
   error => {
@@ -54,7 +51,7 @@ service.interceptors.response.use(
    */
   response => {
     // 如果当前请求是为了获取logo和name，则报错时不显示出来
-      endLoading()
+    endLoading()
     const res = response.data
     if (res.code !== 200) {
       if (
@@ -82,6 +79,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
+    endLoading()
     Message({
       message: error.message,
       type: 'error',
