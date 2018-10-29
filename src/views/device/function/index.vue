@@ -25,11 +25,6 @@
             {{ scope.row.readStatus === 1 ? '可读' : '不可读'}} {{ scope.row.writeStatus === 1 ? '、可写' : '、不可写'}}
           </template>
         </el-table-column>
-        <el-table-column label="配置方式" show-overflow-tooltip sortable>
-          <template slot-scope="scope">
-            {{ scope.row.config === undefined ? '不可配置' : configTypeMap[scope.row.config.type] }}
-          </template>
-        </el-table-column>
         <el-table-column label="备注" prop="remark" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="指令" prop="dirValue" show-overflow-tooltip>
@@ -66,7 +61,6 @@ export default {
       total: 1,
       listQuery: { limit: 10, page: 1, status: 1 },
       permissionListMap: { r: '可读', w: '可写' },
-      configTypeMap: { 1: '文本', 2: '多选', 3: '单选' },
       createFunctionDialogVisible: false,
       editFunctionDialogVisible: false,
       editingData: {},

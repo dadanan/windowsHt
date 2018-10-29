@@ -283,7 +283,6 @@ export default {
       })
     },
     showEditDialog(data) {
-      this.editConfigDialogVisible = true
       this.selectById(data.id)
     },
     deleteRow(id) {
@@ -329,6 +328,7 @@ export default {
     },
     selectById(id) {
       selectById(id).then(res => {
+        this.editConfigDialogVisible = true
         this.editingData = res.data
       })
     },

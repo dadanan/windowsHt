@@ -112,6 +112,9 @@
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
+            <el-form-item label="APP安装包">
+              <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
+            </el-form-item>
             <el-form-item label="客户公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
@@ -207,6 +210,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import FileUploader from '@/components/Upload/file'
 import { selectTypesBySLD } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
@@ -262,7 +266,8 @@ export default {
         deviceChangePassword: '',
         logo: '',
         name: '',
-        version: ''
+        version: '',
+        appUrl: ''
       },
       backendConfig: {
         enableStatus: true,
@@ -459,7 +464,8 @@ export default {
     this.getForamtList()
   },
   components: {
-    ImageUploader
+    ImageUploader,
+    FileUploader
   }
 }
 </script>

@@ -68,9 +68,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="绑定模板 ID" prop='templateId'>
-          <el-input type='number' v-model="creatingData.templateId"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="isCreateUserDialogVisible = false">取消</el-button>
@@ -105,9 +102,6 @@
             <el-option v-for="item in status" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item prop='templateId' label="绑定模板 ID">
-          <el-input v-model="editingData.templateId"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -194,9 +188,6 @@ export default {
             message: '请选择状态',
             trigger: 'change'
           }
-        ],
-        templateId: [
-          { min: 1, max: 50, message: '最长为50个字符', trigger: 'blur' }
         ]
       }
     }
