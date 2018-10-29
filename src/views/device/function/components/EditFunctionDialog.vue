@@ -24,7 +24,7 @@
       </el-form-item>
       <template v-if="form.writeStatus">
         <el-form-item label="功能类型(标签)">
-          <el-select v-model='form.abilityType' placeholder="请选择" @change="handleConfigTypeChange">
+          <el-select v-model='form.abilityType' placeholder="请选择" @change="handleAbilityTypeChange">
             <el-option v-for='item in typeList' :key='item.value' :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
@@ -161,7 +161,7 @@ export default {
         this.$set(this.form, 'readStatus', 0)
       }
     },
-    handleConfigTypeChange(type) {
+    handleAbilityTypeChange(type) {
       this.$set(this.form, 'abilityType', type)
       if (type === 1) {
         return
