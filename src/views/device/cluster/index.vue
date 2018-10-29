@@ -34,7 +34,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="page" :page-sizes="[10,20,30,40]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible" :title="title" :fullscreen="fullscreen" @closed="handleClosed">
       <div :is="dialogComp" :datas="rowData" @close="visible = false" @update="handleUpdate"></div>

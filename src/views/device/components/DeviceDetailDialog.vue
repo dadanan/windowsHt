@@ -32,7 +32,7 @@
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
                 <el-form-item label="工作状态">
-                  {{form.workStatus === 1 ? '开机/租赁中' : '关机/空闲'}}
+                  {{form.workStatus === 1 ? '开机' : '关机'}}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -110,6 +110,8 @@
           <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
@@ -129,6 +131,8 @@
           <el-table-column prop="responseTime" label="响应时间" :formatter="formatDate3" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
         <el-table style="width: 100%" border :data="deviceList">
@@ -148,6 +152,8 @@
           <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label='设备设置' name='6'>
         <div class='inside-pane'>
@@ -191,7 +197,7 @@ export default {
       activeTab: '1',
       deviceList: [],
       form: {},
-      limit: 10,
+      limit: 50,
       page: 1,
       deviceId: 1,
       deviceList1: []

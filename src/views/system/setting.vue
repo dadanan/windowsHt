@@ -48,6 +48,7 @@ export default {
       })
     },
     update() {
+      console.log(this.form)
       updateWebsiteInfo(this.form).then(res => {
         this.$message({
           type: 'success',
@@ -62,6 +63,9 @@ export default {
   },
   components: {
     ImageUploader
+  },
+  created () {
+    console.log(this.form)
   }
 }
 </script>

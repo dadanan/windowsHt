@@ -16,6 +16,10 @@
         </el-table-column>
         <el-table-column prop="creater" label="创建人ID" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="createUserId" label="创建用户ID" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="updateUserId" label="更新用户ID" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.lastUpdateTime).toLocaleString() }}</span>
@@ -114,7 +118,7 @@ export default {
       listQuery: {
         limit: 20,
         page: 1,
-        pageSizes: []
+        pageSizes:[50,100,200,300]
       },
       userID: undefined,
       addForm: {
@@ -349,7 +353,7 @@ export default {
           this.roleList = res.data
           const length = res.data.length
           this.listQuery.limit = length
-          this.listQuery.pageSizes = [length, length * 2, length * 3]
+          // this.listQuery.pageSizes = [length, length * 2, length * 3]
         }
       })
     }

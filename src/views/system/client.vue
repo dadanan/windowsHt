@@ -13,7 +13,7 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip v-if="clientColumnVisible.name" sortable>
         </el-table-column>
-        <el-table-column prop="type" label="类别" show-overflow-tooltip v-if="clientColumnVisible.type" sortable>
+        <el-table-column prop="userType" label="类别" show-overflow-tooltip v-if="clientColumnVisible.type" sortable>
         </el-table-column>
         <el-table-column prop="publicName" label="公众号" show-overflow-tooltip v-if="clientColumnVisible.publicName" sortable>
         </el-table-column>
@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="groupList" label="组信息" show-overflow-tooltip v-if="clientColumnVisible.groupList" sortable>
         </el-table-column>
-        <el-table-column prop="administrator" label="管理员" show-overflow-tooltip v-if="clientColumnVisible.administrator" sortable>
+        <el-table-column prop="loginName" label="管理员" show-overflow-tooltip v-if="clientColumnVisible.administrator" sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注说明" show-overflow-tooltip v-if="clientColumnVisible.remark" sortable>
         </el-table-column>
@@ -43,7 +43,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[5,10,15,20]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[50,100,200,300]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-model-dialog @add-data='addData' :visible.sync="isCreateClientDialogVisible"></create-model-dialog>
