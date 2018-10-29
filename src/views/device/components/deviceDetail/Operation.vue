@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-button-group>
-      <el-popover placement="right" width="400" trigger="click">
-        <img src=''>
+      <el-popover placement="right" trigger="click">
+        <vue-qrcode value="Hello, World!" :options="{ width: 200 }"></vue-qrcode>
         <el-button type="primary" slot="reference">分享</el-button>
       </el-popover>
       <el-button type="primary">授权管理</el-button>
@@ -26,6 +26,7 @@
 <script>
 import { abilitysList, formatItemsList } from './test.js'
 import { selectById } from '@/api/device/model'
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   data() {
@@ -109,11 +110,8 @@ export default {
       })
     }
   },
-  created() {
-    // this.selectById(107)
-  },
-  destroyed() {
-    // clearInterval(this.setInter)
+  components: {
+    VueQrcode
   }
 }
 </script>
