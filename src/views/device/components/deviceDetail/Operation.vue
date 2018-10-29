@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-button-group>
-      <el-button type="primary">分享</el-button>
+      <el-popover placement="right" width="400" trigger="click">
+        <img src=''>
+        <el-button type="primary" slot="reference">分享</el-button>
+      </el-popover>
       <el-button type="primary">授权管理</el-button>
     </el-button-group>
     <!-- <el-table :data="abilitysList" style="width: 100%" class="mb20" border>
@@ -30,7 +33,7 @@ export default {
       abilitysList: [],
       formatItemsList: [],
       pageName: '',
-      setInter: undefined,
+      setInter: undefined
     }
   },
   methods: {

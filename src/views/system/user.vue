@@ -19,6 +19,8 @@
             <span>{{ getRoleName(scope.row.roleId) }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="customerName" label="所属客户" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ getStatusName(scope.row.status) }}</span>
