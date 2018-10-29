@@ -156,16 +156,17 @@
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label='设备设置' name='6'>
-        <div class='inside-pane'>
-          <div>
-            <div class='label'>
-              更改设备地址
-            </div>
-            <div class='content'>
-              <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
-            </div>
-          </div>
-        </div>
+        <el-button-group>
+          <el-popover placement="right" trigger="click">
+            <vue-qrcode value="Hello, World!" :options="{ width: 200 }"></vue-qrcode>
+            <el-button type="primary" slot="reference">分享</el-button>
+          </el-popover>
+          <el-button type="primary">授权管理</el-button>
+          <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
+            <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
+            <el-button type="primary" slot="reference">更改设备地址</el-button>
+          </el-popover>
+        </el-button-group>
       </el-tab-pane>
     </el-tabs>
   </el-dialog>
@@ -179,6 +180,7 @@ import {
   queryDeviceSensorStat,
   updateDevice
 } from '@/api/device/list'
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
   props: {
@@ -223,29 +225,35 @@ export default {
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
-
+    },
+    showDistrict() {
+      // 显示地区卡片
       const location = this.form.location
+      // 通过手动干预地区选择组件的内部属性，来解决v-model数据刷新后，组件没有实时更新的问题
+      if (!this.$refs.areaCascader) {
+        return
+      }
+      const areaCascader = this.$refs.areaCascader.$children[0]
+
       if (location) {
         this.selected = location.split(',')
+        areaCascader.label = location.replace(/,/g, '/')
       } else {
         this.selected = []
-        // 通过手动干预地区选择组件的内部属性，来解决v-model数据刷新后，组件没有实时更新的问题
-        if (!this.$refs.areaCascader) {
-          return
-        }
-        const areaCascader = this.$refs.areaCascader.$children[0]
         areaCascader.label = ''
       }
     },
     districtChanged(district) {
       // 如果地点没有变化，无操作
-      if (district.join(',') === this.form.location) {
+      const location = district.join(',')
+      if (location === this.form.location) {
         return
       }
       updateDevice({
         id: this.form.id,
-        location: district.join(',')
+        location: location
       }).then(() => {
+        this.form.location = location
         this.$message({
           message: '设置设备位置成功！',
           type: 'success'
@@ -361,7 +369,8 @@ export default {
   },
   components: {
     Operation,
-    AMap
+    AMap,
+    VueQrcode
   }
 }
 </script>
@@ -382,21 +391,6 @@ export default {
   margin: 0 10px;
   &--full {
     flex: 1;
-  }
-}
-
-.inside-pane {
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  > div {
-    display: flex;
-    align-items: center;
-  }
-  .label {
-    min-width: 120px;
-    text-align: right;
-    margin-right: 20px;
   }
 }
 </style>
