@@ -116,7 +116,7 @@
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
             <el-form-item label="APP安装包">
-              <file-uploader format='apk'></file-uploader>
+              <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
             </el-form-item>
             <el-form-item label="设备切换密码" prop="deviceChangePassword">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
@@ -311,7 +311,8 @@ export default {
         logo: '',
         qrcode: '',
         name: '',
-        version: ''
+        version: '',
+        appUrl: ''
       },
       backendConfig: {
         enableStatus: true,

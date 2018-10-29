@@ -111,9 +111,6 @@ export default {
         children: 'children',
         label: 'label'
       },
-      demoForm: {
-        name: '管理员'
-      },
       listQuery: {
         limit: 20,
         page: 1,
@@ -138,7 +135,8 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      originPermissionData: []
     }
   },
   methods: {
@@ -146,9 +144,23 @@ export default {
       this.isEditRoleDialogVisible = true
       this.getRoleDetail(data.id)
     },
+    getThePermission(id) {
+      return this.originPermissionData.filter(item => item.id === id)[0]
+    },
     editRole() {
+      // 首先获取当前用户选择的权限id，然后筛选一遍：如果用户仅仅选择了部分子节点，那么手动把父节点id也添加进来。
+      // 为了客户那边添加角色时，树组件正常的显示
+      const permissions = this.$refs.editTree.getCheckedKeys()
+      permissions.forEach(id => {
+        const temp = this.getThePermission(id)
+        if (temp.parent && !permissions.includes(temp.parent)) {
+          // 如果权限id数组中没有该权限父权限的id，那么手动加进去
+          permissions.push(temp.parent)
+        }
+      })
+
       updateRole({
-        permissions: this.$refs.editTree.getCheckedKeys(),
+        permissions,
         role: {
           createTime: this.editingData.createTime,
           creater: this.userID,
@@ -176,6 +188,8 @@ export default {
       getRoleDetail(id).then(res => {
         const data = res.data
         this.editingData = data.role
+        // 初始化前，手动去除所有的父节点
+        data.permissions = data.permissions.filter(item => item.parent)
         this.$refs.editTree.setCheckedNodes(data.permissions)
       })
     },
@@ -219,10 +233,9 @@ export default {
     getPermissions() {
       getPermissions().then(res => {
         const data = res.data
-        if (res.code === 200) {
-          if (data && data.length > 0) {
-            this.computePermissionList(data)
-          }
+        if (data && data.length > 0) {
+          this.originPermissionData = data
+          this.computePermissionList(data)
         }
       })
     },
@@ -245,7 +258,17 @@ export default {
       })
     },
     createRole() {
+      // 首先获取当前用户选择的权限id，然后筛选一遍：如果用户仅仅选择了部分子节点，那么手动把父节点id也添加进来。
+      // 为了客户那边添加角色时，树组件正常的显示
       const permissions = this.$refs.tree.getCheckedKeys()
+      permissions.forEach(id => {
+        const temp = this.getThePermission(id)
+        if (temp.parent && !permissions.includes(temp.parent)) {
+          // 如果权限id数组中没有该权限父权限的id，那么手动加进去
+          permissions.push(temp.parent)
+        }
+      })
+
       const time = new Date().toISOString()
       const role = {
         creater: this.userID,
@@ -291,6 +314,7 @@ export default {
      * 解析出合法的权限列表数据
      */
     computePermissionList(data) {
+      data = JSON.parse(JSON.stringify(data))
       const list = [
         {
           id: data[0].id,
