@@ -7,7 +7,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name" style="width:80%"></el-input>
+                  <el-input v-model="form.name" style="width:74%"></el-input>
                   <el-button @click='updateDeviceName'>修改名称</el-button>
                 </el-form-item>
                 <el-form-item label="MAC">
@@ -81,7 +81,7 @@
           </el-table-column>
           <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛"  show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="hum" label="湿度" show-overflow-tooltip sortable>
           </el-table-column>
@@ -104,21 +104,14 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="工作日志" name="3">
-        <el-table style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceWorkLog">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
+          <el-table-column prop="createTime" label="时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.createTime).toLocaleString()}}
+            </template>
           </el-table-column>
-          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
+          <el-table-column prop="deviceStatus" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
         <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
@@ -144,8 +137,14 @@
           </el-table-column>
           <el-table-column prop="responseTime" label="响应时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
-              {{new Date(scope.row.responseTime).toLocaleString()}}
+              <template v-if='scope.row.responseTime'>
+                {{new Date(scope.row.responseTime).toLocaleString()}}
+              </template>
+              <template v-else>
+                - -
+              </template>
             </template>
+            
           </el-table-column>
         </el-table>
         <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
@@ -193,10 +192,11 @@
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
 import {
-  queryOperLog,
-  queryDeviceSensorStat,
-  updateDevice,
-  shareDeviceToken
+  queryOperLog, //操作日志
+  queryDeviceSensorStat, //查看设备数据
+  updateDevice, //地理位置
+  // shareDeviceToken, //分享设备的token
+  queryDeviceWorkLog // 工作日志
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -221,6 +221,7 @@ export default {
       page: 1,
       deviceId: 1,
       deviceList1: [],
+      deviceWorkLog: [],
       shareURL: '...'
     }
   },
@@ -244,7 +245,8 @@ export default {
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
-      this.getShareToken()
+      // this.getShareToken()
+      this.queryDeviceWorkLog(val.id)
     },
     showDistrict() {
       // 显示地区卡片
@@ -291,6 +293,17 @@ export default {
         })
       })
     },
+    //工作日志
+   queryDeviceWorkLog(id) {
+      queryDeviceWorkLog({
+        limit: this.limit,
+        page: this.page,
+        deviceId: id
+      }).then(res => {
+        console.log(res.data)
+        this.deviceWorkLog = res.data
+      })
+    },
     queryOperLog(id) {
       queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
         res => {
@@ -298,24 +311,26 @@ export default {
         }
       )
     },
+    // 设备数据
     queryDeviceSensorStat(id) {
       queryDeviceSensorStat({
         limit: this.limit,
         page: this.page,
         deviceId: id
       }).then(res => {
+        // console.log(res.data)
         this.deviceList1 = res.data
       })
     },
-    getShareToken() {
-      shareDeviceToken(this.form.id).then(res => {
-        const form = this.form
-        const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
-          'Ticket'
-        )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
-        this.shareURL = url
-      })
-    }
+  //   getShareToken() {
+  //     shareDeviceToken(this.form.id).then(res => {
+  //       const form = this.form
+  //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
+  //         'Ticket'
+  //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
+  //       this.shareURL = url
+  //     })
+  //   }
   },
   components: {
     Operation,

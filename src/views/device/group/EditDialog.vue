@@ -6,7 +6,7 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="创建人" prop="createUserOpenId">
-          <el-input placeholder="OpenID..." v-model='form.createUserOpenId'></el-input>
+          <el-input placeholder="OpenID..." v-model='form.createUserOpenId' disabled="disabled"></el-input>
         </el-form-item>
         <el-form-item label="组标">
           <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>

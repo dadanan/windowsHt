@@ -136,7 +136,7 @@ export default {
       inputVisible: false,
       inputValue: '',
       listQuery: {
-        limit: 5,
+        limit: 50,
         page: 1
       },
       editingData: {}

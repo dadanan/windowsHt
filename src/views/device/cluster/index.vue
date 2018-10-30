@@ -74,7 +74,7 @@ export default {
       title: '',
       rowData: {},
       page: 1,
-      limit: 10,
+      limit: 50,
       total: 0,
       status: 1
     }
