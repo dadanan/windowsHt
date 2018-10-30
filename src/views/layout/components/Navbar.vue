@@ -149,7 +149,7 @@ export default {
         },
         {
           label: '工作状态',
-          value: 'workStatus',
+          value: 'powerStatus',
           type: 1,
           option: [
             {

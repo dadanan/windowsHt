@@ -37,7 +37,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='datas.deviceList[0].id'></a-map>
+          <a-map :id='datas.deviceList && datas.deviceList[0] &&  datas.deviceList[0].id'></a-map>
         </el-card>
       </div>
     </div>
