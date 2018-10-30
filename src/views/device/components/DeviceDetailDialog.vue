@@ -102,6 +102,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="queryDevice.page" :page-sizes="[50,100,200,300]" :page-size="queryDevice.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryDeviceSensorStatCound" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="工作日志" name="3">
         <el-table style="width: 100%" border :data="deviceWorkLog">
@@ -114,7 +116,7 @@
           <el-table-column prop="deviceStatus" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100" @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="操作日志" name="4">
@@ -144,10 +146,9 @@
                 - -
               </template>
             </template>
-            
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="queryOperLog.page" :page-sizes="[20,30,40,50]" :page-size="queryOperLog.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryOperLogCound" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
@@ -220,14 +221,27 @@ export default {
       limit: 50,
       page: 1,
       deviceId: 1,
+      queryOperLogc:{
+        limit: 20,
+        page: 1,
+      },
+      queryDevice:{
+        limit: 50,
+        page: 1,
+      },
       deviceList1: [],
       deviceWorkLog: [],
-      shareURL: '...'
+      shareURL: '...',
+      valId:'',
+      queryOperLogCound:0,
+      queryDeviceSensorStatCound:0
+
     }
   },
   watch: {
     detailData(val) {
       this.init(val)
+      this.valId = val.id
     }
   },
   methods: {
@@ -246,7 +260,7 @@ export default {
       this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
       // this.getShareToken()
-      this.queryDeviceWorkLog(val.id)
+      // this.queryDeviceWorkLog(val.id)
     },
     showDistrict() {
       // 显示地区卡片
@@ -294,32 +308,34 @@ export default {
       })
     },
     //工作日志
-   queryDeviceWorkLog(id) {
-      queryDeviceWorkLog({
-        limit: this.limit,
-        page: this.page,
-        deviceId: id
-      }).then(res => {
-        console.log(res.data)
-        this.deviceWorkLog = res.data
-      })
-    },
+  //  queryDeviceWorkLog(id) {
+  //     queryDeviceWorkLog({
+  //       limit: this.limit,
+  //       page: this.page,
+  //       deviceId: id
+  //     }).then(res => {
+  //       console.log(res)
+  //       this.deviceWorkLog = res.data.dataList
+  //     })
+  //   },
     queryOperLog(id) {
-      queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
+      queryOperLog({ limit: this.queryOperLogc.limit, page: this.queryOperLogc.page, deviceId: id }).then(
         res => {
-          this.deviceList = res.data
+          this.deviceList = res.data.dataList
+          this.queryOperLogCound = res.data.totalCount
         }
       )
     },
     // 设备数据
     queryDeviceSensorStat(id) {
       queryDeviceSensorStat({
-        limit: this.limit,
-        page: this.page,
+        limit: this.queryDevice.limit,
+        page: this.queryDevice.page,
         deviceId: id
       }).then(res => {
         // console.log(res.data)
-        this.deviceList1 = res.data
+        this.deviceList1 = res.data.dataList
+        this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },
   //   getShareToken() {
@@ -331,6 +347,22 @@ export default {
   //       this.shareURL = url
   //     })
   //   }
+  handleSizeChange(val) {
+    this.queryDevice.limit = val
+    this.queryDeviceSensorStat(this.valId)
+  },
+  handleCurrentChange(val) {
+    this.queryDevice.page = val
+    this.queryDeviceSensorStat(this.valId)
+  },
+  handleSizeChange1(val) {
+    this.queryOperLogc.limit = val
+    this.queryOperLog(this.valId)
+  },
+  handleCurrentChange1(val) {
+    this.queryOperLogc.page = val
+    this.queryOperLog(this.valId)
+  }
   },
   components: {
     Operation,
