@@ -44,10 +44,13 @@
                 <el-form-item label="型号ID">
                   <el-input v-model="form.modelId" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="设备型号名称">
+                <el-form-item label="型号名称">
                   <el-input v-model="form.modelName" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="设备类型ID">
+                <el-form-item label="类型名称">
+                  <el-input v-model="form.deviceType" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="类型ID">
                   <el-input v-model="form.typeId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="项目ID">
@@ -121,7 +124,7 @@
           <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="操作日志" name="4">
@@ -148,7 +151,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
@@ -169,7 +172,7 @@
           <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label='设备设置' name='6'>
@@ -217,7 +220,7 @@ export default {
       activeTab: '1',
       deviceList: [],
       form: {},
-      limit: 50,
+      limit: 100,
       page: 1,
       deviceId: 1,
       deviceList1: [],

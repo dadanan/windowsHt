@@ -53,7 +53,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="[50,100,200,300]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="listQuery.page" :page-sizes="[100,200,300,400]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-config-dialog :visible.sync="createConfigDialogVisible" :deviceModelData="list" @add-data='addData'></create-config-dialog>
@@ -126,7 +126,7 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 100,
         status: 1
       },
       createConfigDialogVisible: false,

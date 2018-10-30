@@ -23,9 +23,6 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号主键">
-          <el-input v-model="form.modelNo"></el-input>
-        </el-form-item>
         <el-form-item label="缩图">
           <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
         </el-form-item>
@@ -216,7 +213,6 @@ export default {
         productId: '',
         customer: '',
         name: '',
-        modelNo: '',
         remark: '',
         icon: ''
       },
@@ -387,7 +383,6 @@ export default {
 
       const form = this.form
       form.name = theType.name
-      form.modelNo = theType.typeMo
       form.icon = theType.icon
       form.remark = theType.remark
 

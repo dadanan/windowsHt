@@ -85,7 +85,9 @@ export default {
       form: {
         createUserOpenId: '',
         imagesList: [],
-        videosList: []
+        videosList: [],
+        cover: '',
+        icon: ''
       },
 
       teamDeviceCreateRequestList: [],

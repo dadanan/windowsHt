@@ -156,7 +156,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[50,100,200,300]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[100,200,300,400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -360,7 +360,7 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 10,
+        limit: 100,
         page: 1
       },
       total: 1,
