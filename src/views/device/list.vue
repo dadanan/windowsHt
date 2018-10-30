@@ -59,9 +59,9 @@
                   </template>
                 </template>
               </el-table-column>
-              <el-table-column prop="typeId" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+              <el-table-column prop="modelName" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
               </el-table-column>
-              <el-table-column prop="modelName" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+              <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
               </el-table-column>
               <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
               </el-table-column>
@@ -131,9 +131,9 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+        <el-table-column prop="modelName" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
         </el-table-column>
-        <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
         </el-table-column>
         <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
           <template slot-scope="scope">
@@ -156,7 +156,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="query.page" :page-sizes="[50,100,200,300]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="query.page" :page-sizes="[100,200,300,400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <device-import-dialog :visible.sync="deviceImportDialogVisible" @add-data='addData'></device-import-dialog>
@@ -185,7 +185,7 @@
           <el-checkbox v-model="deviceColumnVisible.customerName">归属</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.typeId">类型</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
@@ -215,7 +215,7 @@
           <el-checkbox v-model="deviceColumnVisible.deviceNo">设备ID</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelName">设备型号名称</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.modelNo">型号</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.birthTime">注册时间</el-checkbox>
@@ -350,8 +350,8 @@ export default {
         groupName: true,
         powerStatus: true,
         onlineStatus: true,
-        typeId: false,
         modelName: false,
+        modelNo: false,
         birthTime: false,
         lastUpdateTime: false,
         bindCustomer: false,
@@ -360,7 +360,7 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 50,
+        limit: 100,
         page: 1
       },
       total: 1,

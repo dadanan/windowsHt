@@ -21,6 +21,8 @@
         </el-table-column>
         <el-table-column prop="customerName" label="所属客户" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="createrName" label="创建者" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="状态" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ getStatusName(scope.row.status) }}</span>
@@ -38,7 +40,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
+      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加系统用户" :visible.sync="isCreateUserDialogVisible">
@@ -122,9 +124,9 @@ export default {
   data() {
     return {
       listQuery: {
-        limit: 20,
+        limit: 100,
         page: 1,
-        pageSizes: []
+        pageSizes: [50, 100, 200, 300]
       },
       userList: [],
       isCreateUserDialogVisible: false,
@@ -314,7 +316,6 @@ export default {
           this.userList = res.data
           const length = res.data.length
           this.listQuery.limit = length
-          this.listQuery.pageSizes = [length, length * 2, length * 3]
         }
       })
     },

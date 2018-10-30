@@ -31,6 +31,10 @@
         </el-table-column>
         <el-table-column prop="version" label="版本" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showEditDialog(scope.row)">编辑</el-button>

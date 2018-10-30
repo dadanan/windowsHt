@@ -27,8 +27,17 @@
               <el-select v-model="baseInfo.userType">
                 <el-option label="厂家" value="1"></el-option>
                 <el-option label="品牌商" value="2"></el-option>
-                <el-option label=" 工程商" value="3"></el-option>
+                <el-option label="工程商" value="3"></el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item label="是否开放安卓">
+              <el-radio-group v-model="baseInfo.isDashboardEnabled">
+                <el-radio :label="1">是</el-radio>
+                <el-radio :label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="业务方向">
+              <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="baseInfo.use"></el-input>
             </el-form-item>
             <el-form-item label="备注">
               <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="baseInfo.remark"></el-input>
@@ -273,7 +282,9 @@ export default {
         appsecret: '',
         userType: '',
         loginName: '',
-        sld: ''
+        sld: '',
+        isDashboardEnabled: false,
+        use: ''
       },
       h5Config: {
         backgroundImg: '',
@@ -320,7 +331,6 @@ export default {
       },
       createStep: 1,
       // 动态功能
-      dynamicTags: ['功能1', '功能2', '功能3'],
       selectedDeviceList: [],
       deviceList: [],
       listQuery: {

@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="备注" prop="remark" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="指令" prop="dirValue" show-overflow-tooltip>
+        <el-table-column label="指令" prop="dirValue" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[50,100,200,300]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+      <el-pagination :current-page="1" :page-sizes="[100,200,300,400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
     <create-function-dialog :visible.sync="createFunctionDialogVisible" @add-data='addData'></create-function-dialog>
@@ -59,7 +59,7 @@ export default {
       loading: true,
       list: [],
       total: 1,
-      listQuery: { limit: 50, page: 1, status: 1 },
+      listQuery: { limit: 100, page: 1, status: 1 },
       permissionListMap: { r: '可读', w: '可写' },
       createFunctionDialogVisible: false,
       editFunctionDialogVisible: false,

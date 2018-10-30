@@ -13,13 +13,14 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip v-if="clientColumnVisible.name" sortable>
         </el-table-column>
-        <el-table-column prop="userType" label="类别" show-overflow-tooltip v-if="clientColumnVisible.type" sortable>
+        <el-table-column label="类别" show-overflow-tooltip v-if="clientColumnVisible.type" sortable>
+          <template slot-scope="scope">
+            {{userType[scope.row.userType]}}
+          </template>
         </el-table-column>
         <el-table-column prop="publicName" label="公众号" show-overflow-tooltip v-if="clientColumnVisible.publicName" sortable>
         </el-table-column>
-        <el-table-column prop="deviceTypeList" label="产品类别" show-overflow-tooltip v-if="clientColumnVisible.deviceTypeList" sortable>
-        </el-table-column>
-        <el-table-column prop="groupList" label="组信息" show-overflow-tooltip v-if="clientColumnVisible.groupList" sortable>
+        <el-table-column prop="typeIds" label="产品类别" show-overflow-tooltip v-if="clientColumnVisible.typeIds" sortable>
         </el-table-column>
         <el-table-column prop="loginName" label="管理员" show-overflow-tooltip v-if="clientColumnVisible.administrator" sortable>
         </el-table-column>
@@ -37,7 +38,6 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <!-- <el-button type="text" @click="showEditRoleDialog(scope.row)">详情</el-button> -->
             <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
             <el-button type="text" @click="deleteClient(scope.row.id)">删除</el-button>
           </template>
@@ -60,10 +60,7 @@
           <el-checkbox v-model="clientColumnVisible.publicName">公众号</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.deviceTypeList">产品类型</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.groupList">组信息</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.typeIds">产品类型</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.administrator">管理员</el-checkbox>
@@ -111,8 +108,7 @@ export default {
         name: true,
         type: true,
         publicName: true,
-        deviceTypeList: true,
-        groupList: true,
+        typeIds: true,
         administrator: true,
         remark: true,
         deviceTotal: false,
@@ -131,8 +127,11 @@ export default {
         productID: ''
       },
       isClientColumnVisibleDialogVisible: false,
-      // 动态功能
-      dynamicTags: ['功能1', '功能2', '功能3'],
+      userType: {
+        1: '厂家',
+        2: '品牌商',
+        3: '工程商'
+      },
       inputVisible: false,
       inputValue: '',
       listQuery: {
@@ -177,24 +176,12 @@ export default {
       this.listQuery.page = val
       this.getCustomer()
     },
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-    },
     showInput() {
       this.inputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
-    handleInputConfirm() {
-      const inputValue = this.inputValue
-      if (inputValue) {
-        this.dynamicTags.push(inputValue)
-      }
-      this.inputVisible = false
-      this.inputValue = ''
-    },
-
     deleteClient(id) {
       this.$confirm('此操作将永久解除客户管理权限, 是否继续?', '提示', {
         confirmButtonText: '确定',

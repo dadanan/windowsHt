@@ -32,7 +32,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
+      <el-pagination :current-page="listQuery.page" :page-sizes="listQuery.pageSizes" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="listQuery.limit">
       </el-pagination>
     </el-card>
     <el-dialog top='4vh' :close-on-click-modal=false title="添加角色" :visible.sync="isCreateRoleDialogVisible">

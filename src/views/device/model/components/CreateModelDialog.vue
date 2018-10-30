@@ -2,9 +2,6 @@
   <el-dialog top='4vh' :close-on-click-modal=false title="添加设备类型" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
-        <el-form-item label="typeNo" prop="typeNo">
-          <el-input v-model="form.typeNo"></el-input>
-        </el-form-item>
         <el-form-item label="缩图">
           <image-uploader @get-url='getURL'></image-uploader>
         </el-form-item>
@@ -67,7 +64,6 @@ export default {
   data() {
     return {
       form: {
-        typeNo: '',
         name: '',
         icon: '',
         source: '',
@@ -84,10 +80,6 @@ export default {
         5: '阈值选择类'
       },
       rules: {
-        typeNo: [
-          { required: true, message: '请输入typeNo', trigger: 'blur' },
-          { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
-        ],
         name: [
           { required: true, message: '请输入项目名称', trigger: 'blur' },
           { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }

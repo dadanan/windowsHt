@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange"></el-pagination>
     </el-card>
     <default-dialog :visible.sync="visible" :title="title" :fullscreen="fullscreen" @closed="handleClosed">
       <div :is="dialogComp" :datas="rowData" @close="visible = false" @update="handleUpdate"></div>
@@ -74,7 +74,7 @@ export default {
       title: '',
       rowData: {},
       page: 1,
-      limit: 50,
+      limit: 100,
       total: 0,
       status: 1
     }

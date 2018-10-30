@@ -460,7 +460,6 @@ export default {
 
       const form = this.form
       form.name = theType.name
-      form.modelNo = theType.typeMo
       form.icon = theType.icon
       form.remark = theType.remark
 
