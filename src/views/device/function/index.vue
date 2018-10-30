@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="备注" prop="remark" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="指令" prop="dirValue" show-overflow-tooltip>
+        <el-table-column label="指令" prop="dirValue" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">

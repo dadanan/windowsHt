@@ -45,6 +45,8 @@
       <el-table-column v-for="value in columnData" :label="value.label" :prop="value.prop" :key="value.prop" :formatter="value.formatter" :width="value.width" show-overflow-tooltip>
       </el-table-column>
     </el-table>
+    <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="form.deviceList.length">
+    </el-pagination>
     <div>
       <el-button-group>
         <el-button type="primary" @click='groupControl("on")'>群开

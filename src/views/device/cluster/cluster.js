@@ -35,16 +35,16 @@ export const deviceColumnData = [
     label: '名称'
   },
   {
+    prop: 'manageName',
+    label: '管理名称'
+  },
+  {
     prop: 'modelId',
     label: '型号'
   },
   {
     prop: 'mac',
     label: 'MAC'
-  },
-  {
-    prop: 'introduce',
-    label: '缩图'
   },
   {
     prop: 'onlineStatus',
@@ -54,10 +54,10 @@ export const deviceColumnData = [
     }
   },
   {
-    prop: 'workStatus',
+    prop: 'powerStatus',
     label: '工作状态',
     formatter: (row, column) => {
-      return row[column.property] ? '开机/租赁中' : '关机/空闲'
+      return row[column.property] ? '开机' : '关机'
     }
   },
   {

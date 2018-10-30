@@ -3,7 +3,7 @@
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <el-form label-width="100px" class="mb-22">
         <el-form-item label="typeNo">
-          <el-input v-model="form.typeNo"></el-input>
+          <el-input v-model="form.typeNo" disabled></el-input>
         </el-form-item>
         <el-form-item label="缩图">
           <image-uploader :url='form.icon' @get-url='getURL' :imageName='getImageName(form.icon)'></image-uploader>

@@ -10,7 +10,10 @@
       </div>
       <el-table :data="computeList" v-loading.body="loading" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="id" label="组ID" show-overflow-tooltip sortable v-if='clientColumnVisible.id'>
+        <el-table-column label="组ID" show-overflow-tooltip sortable v-if='clientColumnVisible.id'>
+          <template slot-scope="scope">
+            {{`${scope.row.createUserOpenId} ${scope.row.id}`}}
+          </template>
         </el-table-column>
         <el-table-column prop="name" label="组名" show-overflow-tooltip sortable v-if='clientColumnVisible.name'>
         </el-table-column>
@@ -23,21 +26,18 @@
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable v-if='clientColumnVisible.createTime'>
         </el-table-column>
-        <el-table-column prop="ownerNickName" label="归属" show-overflow-tooltip sortable v-if='clientColumnVisible.ownerNickName'>
+        <el-table-column prop="cuasdas" label="客户/公众号" show-overflow-tooltip sortable v-if='clientColumnVisible.masterNickName'>
         </el-table-column>
-        <el-table-column prop="ownerOpenId" label="归属者OpenID" show-overflow-tooltip sortable v-if='clientColumnVisible.ownerOpenId'>
+        <el-table-column prop="masterNickName" label="归属" show-overflow-tooltip sortable v-if='clientColumnVisible.masterNickName'>
+        </el-table-column>
+        <el-table-column prop="masterOpenId" label="归属者OpenID" show-overflow-tooltip sortable v-if='clientColumnVisible.masterOpenId'>
         </el-table-column>
         <el-table-column label="封面" show-overflow-tooltip sortable v-if='clientColumnVisible.cover'>
           <template slot-scope="scope">
             <img class='table-img' :src='scope.row.cover'>
           </template>
         </el-table-column>
-        <el-table-column prop="imgVideosList" label="图册/视频列表" show-overflow-tooltip sortable v-if='clientColumnVisible.imgVideosList'>
-          ...
-        </el-table-column>
-        <el-table-column prop="remark" label="介绍" show-overflow-tooltip sortable v-if='clientColumnVisible.remark'>
-        </el-table-column>
-        <el-table-column prop="sceneDescription" label="场景描述" show-overflow-tooltip sortable v-if='clientColumnVisible.sceneDescription'>
+        <el-table-column prop="sceneDescription" label="介绍" show-overflow-tooltip sortable v-if='clientColumnVisible.sceneDescription'>
         </el-table-column>
         <el-table-column label="组状态" show-overflow-tooltip sortable v-if='clientColumnVisible.teamStatus'>
           <template slot-scope="scope">
@@ -82,22 +82,16 @@
           <el-checkbox v-model="clientColumnVisible.createTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.ownerNickName">设备名/公共号</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.masterNickName">设备名/公共号</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.ownerOpenId">归属者OpenID</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.masterOpenId">归属者OpenID</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.cover">封面</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.imgVideosList">图册/视频列表</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.remark">介绍</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.sceneDescription">场景描述</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.sceneDescription">介绍</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.teamStatus">组状态</el-checkbox>
@@ -144,7 +138,7 @@ export default {
         icon: true,
         createUserNickName: true,
         createTime: true,
-        ownerNickName: true,
+        masterNickName: true,
         cover: true,
         teamStatus: true,
         teamType: true

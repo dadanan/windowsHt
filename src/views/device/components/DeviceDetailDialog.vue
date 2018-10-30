@@ -80,11 +80,11 @@
       <el-tab-pane label="设备管理名" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" show-overflow-tooltip sortable>
+          <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛"  show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="hum" label="湿度" show-overflow-tooltip sortable>
           </el-table-column>
@@ -147,7 +147,7 @@
                 - -
               </template>
             </template>
-            
+
           </el-table-column>
         </el-table>
         <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
@@ -297,7 +297,7 @@ export default {
       })
     },
     //工作日志
-   queryDeviceWorkLog(id) {
+    queryDeviceWorkLog(id) {
       queryDeviceWorkLog({
         limit: this.limit,
         page: this.page,
@@ -324,16 +324,16 @@ export default {
         // console.log(res.data)
         this.deviceList1 = res.data
       })
-    },
-  //   getShareToken() {
-  //     shareDeviceToken(this.form.id).then(res => {
-  //       const form = this.form
-  //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
-  //         'Ticket'
-  //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
-  //       this.shareURL = url
-  //     })
-  //   }
+    }
+    //   getShareToken() {
+    //     shareDeviceToken(this.form.id).then(res => {
+    //       const form = this.form
+    //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
+    //         'Ticket'
+    //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
+    //       this.shareURL = url
+    //     })
+    //   }
   },
   components: {
     Operation,

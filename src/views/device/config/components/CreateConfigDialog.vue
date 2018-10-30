@@ -435,14 +435,6 @@ export default {
         }
       })
     },
-    getModelList() {
-      getTypeList({
-        page: 1,
-        limit: 100
-      }).then(response => {
-        this.typeList = response.data
-      })
-    },
     setURL(argu, data, name) {
       if (!data) {
         this[name] = argu[0]
@@ -484,7 +476,6 @@ export default {
     }
   },
   created() {
-    this.getModelList()
     this.getCustomer()
     this.getAndroidFrmatList()
   },

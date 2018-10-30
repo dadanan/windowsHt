@@ -37,9 +37,9 @@
         </el-table-column>
         <el-table-column prop="devicePoolCount" label="配额" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="" label="修改人" show-overflow-tooltip sortable>
+        <el-table-column prop="createUser" label="修改人" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="修改时间" show-overflow-tooltip sortable>
+        <el-table-column prop="createTime" label="修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             {{scope.row.lastUpdateTime}}
             <!-- {{new Date(scope.row.lastUpdateTime).toLocaleString()}} -->
