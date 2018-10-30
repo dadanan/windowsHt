@@ -7,7 +7,7 @@
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </template>
     </el-upload>
-    <div v-if='!isList'>{{getName}}</div>
+    <el-button v-if='!isList' type="text" @click='deleteImage'>删除图片</el-button>
   </div>
 </template>
 
@@ -42,9 +42,6 @@ export default {
       set(newValue) {
         this.fileList = newValue
       }
-    },
-    getName() {
-      return this.name || this.imageName
     }
   },
   props: {
@@ -71,6 +68,19 @@ export default {
     }
   },
   methods: {
+    deleteImage() {
+      if (!this.imageUrl) {
+        return
+      }
+      // 删除图片，单图模式时出现
+      this.$confirm('确定移除移除图片？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.imageUrl = ''
+        this.$emit('get-url', '')
+      })
+    },
     getImageName(url) {
       if (!url) {
         return ''

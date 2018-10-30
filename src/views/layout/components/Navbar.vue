@@ -149,11 +149,11 @@ export default {
         },
         {
           label: '工作状态',
-          value: 'workStatus',
+          value: 'powerStatus',
           type: 1,
           option: [
             {
-              label: '空闲',
+              label: '开机',
               value: 1
             },
             {

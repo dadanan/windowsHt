@@ -145,11 +145,44 @@ export function queryDevicePosition(id) {
   })
 }
 
-// 修改设备详情
+// 查询地理位置
 export function updateDevice(data) {
   return request({
     url: `/temp/api/device/updateDevice`,
     method: 'put',
+    data
+  })
+}
+
+// 修改设备详情
+export function shareDeviceToken(wxDeviceId) {
+  return request({
+    url: `/temp/api/device/shareDeviceToken/${wxDeviceId}`,
+    method: 'get'
+  })
+}
+
+// 查询设备详情
+export function queryDeviceById(id) {
+  return request({
+    url: `/temp/api/device/queryDeviceById/${id}`,
+    method: 'get'
+  })
+}
+
+// 查询设备详情
+export function newQueryDetailByDeviceId(data) {
+  return request({
+    url: `/temp/api/device/newQueryDetailByDeviceId/`,
+    method: 'get',
+    data
+  })
+}
+//工作日志
+export function queryDeviceWorkLog(data) {
+  return request({
+    url: '/temp/api/deviceData/queryDeviceWorkLog',
+    method: 'post',
     data
   })
 }

@@ -6,7 +6,7 @@
           <el-form label-width="100px" style="min-height: 440px" label-position="left">
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-form-item label="集群名">
+                <el-form-item label="项目名">
                   <el-input v-model="form.name" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="客户">
@@ -37,7 +37,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='datas.deviceList[0].id'></a-map>
+          <a-map :id='datas.deviceList && datas.deviceList[0] &&  datas.deviceList[0].id'></a-map>
         </el-card>
       </div>
     </div>
@@ -53,9 +53,9 @@
         </el-button>
       </el-button-group>
     </div>
-    <div class="photos">集群相册</div>
+    <div class="photos">项目相册</div>
     <el-card class="el-card--solid group-album">
-      <div v-if="!form.imagesList.length">暂无集群相册</div>
+      <div v-if="!form.imagesList.length">暂无项目相册</div>
       <div v-else class="item" v-for="(img, i) in form.imagesList" :key="i" @dblclick="handlePreview(img.image)">
         <img :src="img.image">
       </div>

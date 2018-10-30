@@ -24,6 +24,10 @@
             {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
           </template>
         </el-table-column>
+        <el-table-column prop='' label="创建者" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop='' label="创建时间" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column prop='stopWatch' label="码表" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>

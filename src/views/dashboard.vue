@@ -178,8 +178,9 @@ export default {
           }
           this.userCount.push(res.data[i].userCount)
         }
-        this.kanbanData.图表展示.用户分析[0].options.series[0].data = this.userCount
-        this.kanbanData.图表展示.用户分析[0].options.series[1].data = this.userCount
+        const userC = this.kanbanData.图表展示.用户分析[0].options.series
+        userC[0].data = this.userCount
+        userC[1].data = this.userCount
       })
     },
     // 每月新增设备统计
@@ -194,8 +195,9 @@ export default {
           }
           this.deviceCount.push(res.data[i].deviceCount)
         }
-        this.kanbanData.图表展示.设备分析[0].options.series[0].data = this.deviceCount
-        this.kanbanData.图表展示.设备分析[0].options.series[1].data = this.deviceCount
+        const deviceC = this.kanbanData.图表展示.设备分析[0].options.series
+        deviceC[0].data = this.deviceCount
+        deviceC[1].data = this.deviceCount
       })
     },
     // 设备类型统计

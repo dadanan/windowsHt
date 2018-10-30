@@ -23,8 +23,8 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号主键">
-          <el-input v-model="form.modelNo"></el-input>
+        <el-form-item label="型号">
+          <el-input v-model="form.modelNo" disabled></el-input>
         </el-form-item>
         <el-form-item label="缩图">
           <image-uploader :key='form.icon' :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
@@ -99,7 +99,7 @@
       </el-form-item>
       <el-form-item label="安卓版式选择">
         <el-select v-model="form.androidFormatId">
-          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+          <el-option v-for="format in androidForamtList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -206,7 +206,7 @@ import File from '@/components/Upload/file'
 
 import { fetchList as getTypeList } from '@/api/device/type'
 import { selectAllCustomers as getCustomer } from '@/api/customer'
-import { selectFormatsByCustomerId } from '@/api/format'
+import { selectFormatsByCustomerId, select } from '@/api/format'
 import { updateDeviceModel } from '@/api/device/model'
 import { selectTypesBySLD } from '@/api/device/type'
 import DTitle from '@/components/Title'
@@ -239,6 +239,7 @@ export default {
       formatId: '',
       formatSelectedList: [], // 用户可选择的总版式列表
       formatSelected: [], // 用户选择的某个版式列表
+      androidForamtList: [], // 安卓版式列表
       pageOfForamt: [], // 用户选择的某个版式列表的页面配置
       dialogFormVisible: false,
       typeList: [],
@@ -560,7 +561,17 @@ export default {
         1,
         Object.assign({}, data, { status: 1 })
       )
+    },
+    getAndroidFrmatList() {
+      select({ limit: 100, page: 1, type: 3 }).then(res => {
+        this.androidForamtList = res.data
+      })
     }
+  },
+  created() {
+    this.getModelList()
+    this.getCustomer()
+    this.getAndroidFrmatList()
   },
   watch: {
     data(val) {
@@ -620,10 +631,6 @@ export default {
         this.step = 1
       }
     }
-  },
-  created() {
-    this.getModelList()
-    this.getCustomer()
   },
   components: {
     ImageUploader,

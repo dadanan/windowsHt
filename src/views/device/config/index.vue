@@ -11,6 +11,8 @@
       <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
+        <el-table-column prop="id" label="型号ID" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
@@ -27,12 +29,6 @@
             <img :src="scope.row.productQrCode" :alt="scope.row.name" class="table-img">
           </template>
         </el-table-column>
-        <el-table-column label="功能项" show-overflow-tooltip sortable>
-          <template slot-scope="scope">
-            ...
-            <!-- {{ scope.row.functionList.map(el => el.name).join(', ') }} -->
-          </template>
-        </el-table-column>
         <el-table-column prop="customerName" label="归属(客户)" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="productId" label="productID" show-overflow-tooltip>
@@ -40,6 +36,14 @@
         <el-table-column prop="remark" label="备注" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="devicePoolCount" label="配额" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="" label="修改人" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column label="修改时间" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            {{scope.row.lastUpdateTime}}
+            <!-- {{new Date(scope.row.lastUpdateTime).toLocaleString()}} -->
+          </template>
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width='180'>
           <template slot-scope="scope">
@@ -56,9 +60,6 @@
     <edit-config-dialog :data='editingData' @update-data='updateData' :deviceModelData="list" :visible.sync="editConfigDialogVisible"></edit-config-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="isClientColumnVisibleDialogVisible">
       <el-form inline>
-        <!-- <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.id">设备ID</el-checkbox>
-        </el-form-item> -->
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.name">名称</el-checkbox>
         </el-form-item>

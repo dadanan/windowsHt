@@ -5,7 +5,7 @@ export const columnData = [
   },
   {
     prop: 'devicecount',
-    label: '群内设备'
+    label: '项目内设备'
   },
   {
     prop: 'introduction',
@@ -68,12 +68,12 @@ export const deviceColumnData = [
 
 export const dialogDatas = {
   create: {
-    title: '添加设备集群'
+    title: '添加设备项目'
   },
   detail: {
-    title: '查看设备集群详情'
+    title: '查看设备项目详情'
   },
   edit: {
-    title: '编辑设备集群'
+    title: '编辑设备项目'
   }
 }

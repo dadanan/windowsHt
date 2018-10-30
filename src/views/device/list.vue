@@ -11,7 +11,7 @@
           <el-button type="primary" @click="handleDeviceFree">召回</el-button>
           <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
           <el-button type="primary" @click="handleDeviceAble">启用</el-button>
-          <el-button type="primary" @click="handleDeviceCluster">集群</el-button>
+          <el-button type="primary" @click="handleDeviceCluster">项目</el-button>
           <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
           <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
           <el-button type="primary" @click="deviceExportDialogVisible = true">导出</el-button>
@@ -44,19 +44,24 @@
                   {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
                 </template>
               </el-table-column>
-              <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
-                <template slot-scope="scope">
-                  {{scope.row.workStatus === 1 ? '开机' : '关机'}}
-                </template>
-              </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
                 <template slot-scope="scope">
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
                 </template>
               </el-table-column>
-              <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+              <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.powerStatus">
+                <template slot-scope="scope">
+                  <template v-if='scope.row.onlineStatus'>
+                    {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
+                </template>
               </el-table-column>
-              <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+              <el-table-column prop="typeId" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+              </el-table-column>
+              <el-table-column prop="modelName" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
               </el-table-column>
               <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
               </el-table-column>
@@ -71,6 +76,8 @@
                 </template>
               </el-table-column>
               <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+              </el-table-column>
+              <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
               </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -107,16 +114,21 @@
             {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
           </template>
         </el-table-column>
-        <el-table-column prop="groupName" label="集群名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
-        </el-table-column>
-        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
-          <template slot-scope="scope">
-            {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
-          </template>
+        <el-table-column prop="groupName" label="项目名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
           <template slot-scope="scope">
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+          </template>
+        </el-table-column>
+        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.powerStatus">
+          <template slot-scope="scope">
+            <template v-if='scope.row.onlineStatus'>
+              {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
+            </template>
+            <template v-else>
+              - -
+            </template>
           </template>
         </el-table-column>
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
@@ -134,6 +146,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+        </el-table-column>
+        <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -180,10 +194,10 @@
           <el-checkbox v-model="deviceColumnVisible.enableStatus">启用状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.clusterName">集群名</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.clusterName">项目名</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.workStatus">工作状态</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.powerStatus">工作状态</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
@@ -211,6 +225,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.manageName">管理名称</el-checkbox>
         </el-form-item>
       </el-form>
       <div>
@@ -280,7 +297,8 @@ import {
   getList,
   deleteOneDevice,
   queryChildDevice,
-  deleteDevice
+  deleteDevice,
+  queryDeviceById
 } from '@/api/device/list'
 
 export default {
@@ -328,9 +346,9 @@ export default {
         enableStatus: true,
         groupId: true,
         id: true,
-        modelId:true,
+        modelId: true,
         groupName: true,
-        workStatus: true,
+        powerStatus: true,
         onlineStatus: true,
         typeId: false,
         modelName: false,
@@ -338,7 +356,7 @@ export default {
         lastUpdateTime: false,
         bindCustomer: false,
         location: false,
-        assignStatus: true
+        manageName: true
       },
       deviceColumnControlDialogVisible: false,
       query: {
@@ -406,9 +424,9 @@ export default {
     },
     showDeviceWorkedChange() {
       if (!this.showDeviceWork) {
-        this.query.workStatus = 0
+        this.query.powerStatus = 0
       } else {
-        this.query.workStatus = 1
+        this.query.powerStatus = 1
       }
       this.getList()
     },
@@ -443,8 +461,10 @@ export default {
       this.getList()
     },
     showDetail(data) {
-      this.deviceDetailDialogVisible = true
-      this.detailData = data
+      queryDeviceById(data.id).then(res => {
+        this.deviceDetailDialogVisible = true
+        this.detailData = res.data
+      })
     },
     getSld() {
       // 获取二级域名
@@ -496,7 +516,6 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
-        console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount
@@ -517,8 +536,8 @@ export default {
         item.bindStatus = 0
         item.enableStatus = 0
         item.groupId = -1
-        item.workStatus = 0
-        item.groupName = '无集群'
+        item.powerStatus = 0
+        item.groupName = '无项目'
         item.onlineStatus = 0
       })
       this.deviceList.push(...list)
@@ -587,17 +606,17 @@ export default {
         this.deviceAbleDialogVisible = true
       })
     },
-    // 集群
+    // 项目
     handleDeviceCluster() {
       this.isOperable().then(_ => {
-        // 判断集群id是否一致，不一致不可集群
+        // 判断项目id是否一致，不一致不可项目
         const groupids = this.selectedDeviceList.filter(v => v.groupId !== -1)
         if (
           groupids.length &&
           groupids.some(v => v.groupId !== groupids[0].groupId)
         ) {
           this.$message.warning(
-            '请确保所有选中设备的集群名称一致（无集群除外）'
+            '请确保所有选中设备的项目名称一致（无项目除外）'
           )
           return
         }
@@ -627,21 +646,12 @@ export default {
       })
     },
     assignStatusList() {
-      if (this.selectedDeviceList.length) {
-        const ass = []
-        for (let i = 0; i < this.selectedDeviceList.length; i++) {
-          ass.push(this.selectedDeviceList[i].assignStatus)
-        }
-        if (ass.indexOf('0')) {
-          return true
-        } else {
-          return false
-        }
-      }
+      // 如果不包含0，即不包含未分配设备
+      return !this.selectedDeviceList.map(item => item.assignStatus).includes(0)
     },
     assignStatus() {
       return new Promise(resolve => {
-        if (!this.assignStatusList()) {
+        if (this.assignStatusList()) {
           resolve()
         } else {
           this.$message.warning('选中的设备中有未分配设备，请重新操作')

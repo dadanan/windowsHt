@@ -17,6 +17,8 @@
         </el-table-column>
         <el-table-column prop="location" label="地点" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="introduction" label="项目介绍" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>

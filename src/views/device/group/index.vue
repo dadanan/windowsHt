@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="createUserNickName" label="创建者" show-overflow-tooltip sortable v-if='clientColumnVisible.createUserNickName'>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" :formatter="formatDate"  show-overflow-tooltip sortable v-if='clientColumnVisible.createTime'>
+        <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable v-if='clientColumnVisible.createTime'>
         </el-table-column>
         <el-table-column prop="ownerNickName" label="归属" show-overflow-tooltip sortable v-if='clientColumnVisible.ownerNickName'>
         </el-table-column>
@@ -82,7 +82,7 @@
           <el-checkbox v-model="clientColumnVisible.createTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.ownerNickName">归属</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.ownerNickName">设备名/公共号</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.ownerOpenId">归属者OpenID</el-checkbox>
@@ -165,14 +165,25 @@ export default {
   },
   methods: {
     formatDate(row) {
-        let date = new Date(parseInt(row.createTime));
-        let Y = date.getFullYear() + '-';
-        let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-        let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-        let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-        let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        return Y + M + D + h + m + s;
+      let date = new Date(parseInt(row.createTime))
+      let Y = date.getFullYear() + '-'
+      let M =
+        date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1) + '-'
+          : date.getMonth() + 1 + '-'
+      let D =
+        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
+      let h =
+        date.getHours() < 10
+          ? '0' + date.getHours() + ':'
+          : date.getHours() + ':'
+      let m =
+        date.getMinutes() < 10
+          ? '0' + date.getMinutes() + ':'
+          : date.getMinutes() + ':'
+      let s =
+        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      return Y + M + D + h + m + s
     },
     handleSelectionChange(selection) {
       this.selectionTable = selection
@@ -206,7 +217,13 @@ export default {
     addData(data) {
       this.list.push(data)
     },
-    updateData() {},
+    updateData(data) {
+      this.list.map(item => {
+        if (item.id === data.id) {
+          Object.assign(item, data)
+        }
+      })
+    },
     deleteRow(id) {
       this.$confirm('将执行删除操作, 是否继续?', '提示', {
         confirmButtonText: '确定',
