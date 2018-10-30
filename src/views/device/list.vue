@@ -290,7 +290,8 @@ import {
   getList,
   deleteOneDevice,
   queryChildDevice,
-  deleteDevice
+  deleteDevice,
+  queryDeviceById
 } from '@/api/device/list'
 
 export default {
@@ -453,8 +454,10 @@ export default {
       this.getList()
     },
     showDetail(data) {
-      this.deviceDetailDialogVisible = true
-      this.detailData = data
+      queryDeviceById(data.id).then(res => {
+        this.deviceDetailDialogVisible = true
+        this.detailData = res.data
+      })
     },
     getSld() {
       // 获取二级域名
@@ -506,7 +509,6 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
-        console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount
@@ -637,21 +639,12 @@ export default {
       })
     },
     assignStatusList() {
-      if (this.selectedDeviceList.length) {
-        const ass = []
-        for (let i = 0; i < this.selectedDeviceList.length; i++) {
-          ass.push(this.selectedDeviceList[i].assignStatus)
-        }
-        if (ass.indexOf('0')) {
-          return true
-        } else {
-          return false
-        }
-      }
+      // 如果不包含0，即不包含未分配设备
+      return !this.selectedDeviceList.map(item => item.assignStatus).includes(0)
     },
     assignStatus() {
       return new Promise(resolve => {
-        if (!this.assignStatusList()) {
+        if (this.assignStatusList()) {
           resolve()
         } else {
           this.$message.warning('选中的设备中有未分配设备，请重新操作')

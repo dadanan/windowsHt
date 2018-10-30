@@ -161,3 +161,20 @@ export function shareDeviceToken(wxDeviceId) {
     method: 'get'
   })
 }
+
+// 查询设备详情
+export function queryDeviceById(id) {
+  return request({
+    url: `/temp/api/device/queryDeviceById/${id}`,
+    method: 'get'
+  })
+}
+
+// 查询设备详情
+export function newQueryDetailByDeviceId(data) {
+  return request({
+    url: `/temp/api/device/newQueryDetailByDeviceId/`,
+    method: 'get',
+    data
+  })
+}

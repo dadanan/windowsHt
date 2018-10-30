@@ -14,11 +14,11 @@
         </el-table-column>
         <el-table-column prop="userCount" label="系统用户数量" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="creater" label="创建人ID" show-overflow-tooltip sortable>
+        <el-table-column prop="creater" label="创建人" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createUserId" label="创建用户ID" show-overflow-tooltip sortable>
+        <el-table-column prop="createUserId" label="创建用户" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="updateUserId" label="更新用户ID" show-overflow-tooltip sortable>
+        <el-table-column prop="updateUserId" label="更新用户" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
@@ -118,7 +118,7 @@ export default {
       listQuery: {
         limit: 20,
         page: 1,
-        pageSizes:[50,100,200,300]
+        pageSizes: [50, 100, 200, 300]
       },
       userID: undefined,
       addForm: {

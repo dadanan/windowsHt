@@ -17,10 +17,11 @@
   </div>
 </template>
 <script>
-import { abilitysList, formatItemsList } from './test.js'
 import { selectById } from '@/api/device/model'
+import { newQueryDetailByDeviceId } from '@/api/device/list'
 
 export default {
+  props: ['modelId'],
   data() {
     return {
       abilitysList: [],
@@ -49,10 +50,15 @@ export default {
             })
         })
         this.abilitysList = data.abilitysList
-        // 定时请求接口数据，更新页面数据
-        this.setInter = setInterval(() => {
-          // this.getIndexFormatData(res.data)
-        }, 1000)
+
+        let list = data.deviceModelFormat.modelFormatPages
+        if (list[0]) {
+          list = list[0].modelFormatItems
+          // 定时请求接口数据，更新页面数据
+          this.setInter = setInterval(() => {
+            this.getIndexFormatData(list)
+          }, 1000)
+        }
       })
     },
     getIndexFormatData(list) {
@@ -61,7 +67,6 @@ export default {
       const findTheAbility = (data, id) => {
         return data.filter(item => item.id === id)[0]
       }
-      return
       newQueryDetailByDeviceId({
         deviceId: this.deviceId,
         abilityIds: list.formatItemsList
@@ -102,5 +107,19 @@ export default {
       })
     }
   },
+  created() {
+    // this.selectById(this.modelId)
+  },
+  watch: {
+    modelId(id) {
+      if (!id) {
+        return
+      }
+      // this.selectById(id)
+    }
+  },
+  destroyed() {
+    clearInterval(this.setInter)
+  }
 }
 </script>

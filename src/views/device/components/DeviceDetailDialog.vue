@@ -8,7 +8,7 @@
               <el-col :span="12">
                 <el-form-item label="名称">
                   <el-input v-model="form.name" style="width:80%"></el-input>
-                  <el-button type="">确认</el-button>
+                  <el-button @click='updateDeviceName'>修改名称</el-button>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -32,7 +32,12 @@
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
                 <el-form-item label="工作状态">
-                  {{form.workStatus === 1 ? '开机' : '关机'}}
+                  <template v-if='form.onlineStatus'>
+                    {{form.powerStatus === 1 ? '开机' : '关机'}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -67,7 +72,7 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
-        <operation></operation>
+        <operation :modelId='detailData.modelId'></operation>
       </el-tab-pane>
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
@@ -216,7 +221,7 @@ export default {
       page: 1,
       deviceId: 1,
       deviceList1: [],
-      shareURL: ''
+      shareURL: '...'
     }
   },
   watch: {
@@ -275,6 +280,17 @@ export default {
         })
       })
     },
+    updateDeviceName() {
+      updateDevice({
+        id: this.form.id,
+        name: this.form.name
+      }).then(() => {
+        this.$message({
+          message: '名称修改成功！',
+          type: 'success'
+        })
+      })
+    },
     queryOperLog(id) {
       queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
         res => {
@@ -297,6 +313,7 @@ export default {
         const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
           'Ticket'
         )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
+        this.shareURL = url
       })
     }
   },
