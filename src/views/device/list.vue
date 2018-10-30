@@ -44,14 +44,19 @@
                   {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
                 </template>
               </el-table-column>
-              <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
-                <template slot-scope="scope">
-                  {{scope.row.workStatus === 1 ? '开机' : '关机'}}
-                </template>
-              </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
                 <template slot-scope="scope">
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+                </template>
+              </el-table-column>
+              <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.powerStatus">
+                <template slot-scope="scope">
+                  <template v-if='scope.row.onlineStatus'>
+                    {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
                 </template>
               </el-table-column>
               <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
@@ -109,14 +114,19 @@
         </el-table-column>
         <el-table-column prop="groupName" label="集群名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
-        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
-          <template slot-scope="scope">
-            {{scope.row.workStatus === 1 ? '开机' : '关机'}}
-          </template>
-        </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
           <template slot-scope="scope">
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+          </template>
+        </el-table-column>
+        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.powerStatus">
+          <template slot-scope="scope">
+            <template v-if='scope.row.onlineStatus'>
+              {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
+            </template>
+            <template v-else>
+              - -
+            </template>
           </template>
         </el-table-column>
         <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
@@ -183,7 +193,7 @@
           <el-checkbox v-model="deviceColumnVisible.clusterName">集群名</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.workStatus">工作状态</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.powerStatus">工作状态</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.onlineStatus">在线状态</el-checkbox>
@@ -328,9 +338,9 @@ export default {
         enableStatus: true,
         groupId: true,
         id: true,
-        modelId:true,
+        modelId: true,
         groupName: true,
-        workStatus: true,
+        powerStatus: true,
         onlineStatus: true,
         typeId: false,
         modelName: false,
@@ -406,9 +416,9 @@ export default {
     },
     showDeviceWorkedChange() {
       if (!this.showDeviceWork) {
-        this.query.workStatus = 0
+        this.query.powerStatus = 0
       } else {
-        this.query.workStatus = 1
+        this.query.powerStatus = 1
       }
       this.getList()
     },
@@ -517,7 +527,7 @@ export default {
         item.bindStatus = 0
         item.enableStatus = 0
         item.groupId = -1
-        item.workStatus = 0
+        item.powerStatus = 0
         item.groupName = '无集群'
         item.onlineStatus = 0
       })

@@ -86,9 +86,15 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间" :formatter="formatDate" show-overflow-tooltip sortable>
+          <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.startTime).toLocaleString()}}
+            </template>
           </el-table-column>
-          <el-table-column prop="endTime" label="结束时间" :formatter="formatDate1" show-overflow-tooltip sortable>
+          <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.endTime).toLocaleString()}}
+            </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -126,9 +132,15 @@
           </el-table-column>
           <el-table-column prop="operName" label="修改人" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="operateTime" label="操作时间" :formatter="formatDate2" show-overflow-tooltip sortable>
+          <el-table-column prop="operateTime" label="操作时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.operateTime).toLocaleString()}}
+            </template>
           </el-table-column>
-          <el-table-column prop="responseTime" label="响应时间" :formatter="formatDate3" show-overflow-tooltip sortable>
+          <el-table-column prop="responseTime" label="响应时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.responseTime).toLocaleString()}}
+            </template>
           </el-table-column>
         </el-table>
         <el-pagination :current-page="page" :page-sizes="[50,100,200,300]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
@@ -158,7 +170,7 @@
       <el-tab-pane label='设备设置' name='6'>
         <el-button-group>
           <el-popover placement="right" trigger="click">
-            <vue-qrcode value="Hello, World!" :options="{ width: 200 }"></vue-qrcode>
+            <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
           <el-button type="primary">授权管理</el-button>
@@ -178,7 +190,8 @@ import AMap from './deviceDetail/AMap'
 import {
   queryOperLog,
   queryDeviceSensorStat,
-  updateDevice
+  updateDevice,
+  shareDeviceToken
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -202,7 +215,8 @@ export default {
       limit: 50,
       page: 1,
       deviceId: 1,
-      deviceList1: []
+      deviceList1: [],
+      shareURL: ''
     }
   },
   watch: {
@@ -225,6 +239,7 @@ export default {
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.form = JSON.parse(JSON.stringify(val))
+      this.getShareToken()
     },
     showDistrict() {
       // 显示地区卡片
@@ -276,95 +291,13 @@ export default {
         this.deviceList1 = res.data
       })
     },
-    formatDate(row) {
-      let date = new Date(parseInt(row.startTime))
-      let Y = date.getFullYear() + '-'
-      let M =
-        date.getMonth() + 1 < 10
-          ? '0' + (date.getMonth() + 1) + '-'
-          : date.getMonth() + 1 + '-'
-      let D =
-        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
-      let h =
-        date.getHours() < 10
-          ? '0' + date.getHours() + ':'
-          : date.getHours() + ':'
-      let m =
-        date.getMinutes() < 10
-          ? '0' + date.getMinutes() + ':'
-          : date.getMinutes() + ':'
-      let s =
-        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-      return Y + M + D + h + m + s
-    },
-    formatDate1(row) {
-      let date = new Date(parseInt(row.endTime))
-      let Y = date.getFullYear() + '-'
-      let M =
-        date.getMonth() + 1 < 10
-          ? '0' + (date.getMonth() + 1) + '-'
-          : date.getMonth() + 1 + '-'
-      let D =
-        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
-      let h =
-        date.getHours() < 10
-          ? '0' + date.getHours() + ':'
-          : date.getHours() + ':'
-      let m =
-        date.getMinutes() < 10
-          ? '0' + date.getMinutes() + ':'
-          : date.getMinutes() + ':'
-      let s =
-        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-      return Y + M + D + h + m + s
-    },
-    formatDate2(row) {
-      let date = new Date(parseInt(row.operateTime))
-      let Y = date.getFullYear() + '-'
-      let M =
-        date.getMonth() + 1 < 10
-          ? '0' + (date.getMonth() + 1) + '-'
-          : date.getMonth() + 1 + '-'
-      let D =
-        date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' '
-      let h =
-        date.getHours() < 10
-          ? '0' + date.getHours() + ':'
-          : date.getHours() + ':'
-      let m =
-        date.getMinutes() < 10
-          ? '0' + date.getMinutes() + ':'
-          : date.getMinutes() + ':'
-      let s =
-        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-      return Y + M + D + h + m + s
-    },
-    formatDate3(row) {
-      if (row.responseTime) {
-        let date = new Date(parseInt(row.responseTime))
-        let Y = date.getFullYear() + '-'
-        let M =
-          date.getMonth() + 1 < 10
-            ? '0' + (date.getMonth() + 1) + '-'
-            : date.getMonth() + 1 + '-'
-        let D =
-          date.getDate() < 10
-            ? '0' + date.getDate() + ' '
-            : date.getDate() + ' '
-        let h =
-          date.getHours() < 10
-            ? '0' + date.getHours() + ':'
-            : date.getHours() + ':'
-        let m =
-          date.getMinutes() < 10
-            ? '0' + date.getMinutes() + ':'
-            : date.getMinutes() + ':'
-        let s =
-          date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-        return Y + M + D + h + m + s
-      } else {
-        return ''
-      }
+    getShareToken() {
+      shareDeviceToken(this.form.id).then(res => {
+        const form = this.form
+        const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
+          'Ticket'
+        )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
+      })
     }
   },
   components: {

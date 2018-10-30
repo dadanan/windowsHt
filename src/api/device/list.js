@@ -153,3 +153,11 @@ export function updateDevice(data) {
     data
   })
 }
+
+// 修改设备详情
+export function shareDeviceToken(wxDeviceId) {
+  return request({
+    url: `/temp/api/device/shareDeviceToken/${wxDeviceId}`,
+    method: 'get'
+  })
+}

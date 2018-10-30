@@ -89,7 +89,7 @@
       </el-form-item>
       <el-form-item label="安卓版式选择">
         <el-select v-model="form.androidFormatId">
-          <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
+          <el-option v-for="format in androidForamtList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -189,7 +189,7 @@ import ImageUploader from '@/components/Upload/image'
 import File from '@/components/Upload/file'
 import { fetchList as getTypeList } from '@/api/device/type'
 import { selectAllCustomers as getCustomer } from '@/api/customer'
-import { selectFormatsByCustomerId } from '@/api/format'
+import { selectFormatsByCustomerId, select } from '@/api/format'
 import { createDeviceModel } from '@/api/device/model'
 import { selectTypesBySLD } from '@/api/device/type'
 import DTitle from '@/components/Title'
@@ -481,11 +481,17 @@ export default {
       selectTypesBySLD().then(res => {
         this.typeList = res.data
       })
+    },
+    getAndroidFrmatList() {
+      select({ limit: 100, page: 1, type: 3 }).then(res => {
+        this.androidForamtList = res.data
+      })
     }
   },
   created() {
     this.getModelList()
     this.getCustomer()
+    this.getAndroidFrmatList()
   },
   watch: {
     visible(val) {
