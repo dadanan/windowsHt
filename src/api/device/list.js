@@ -145,7 +145,7 @@ export function queryDevicePosition(id) {
   })
 }
 
-// 修改设备详情
+// 查询地理位置
 export function updateDevice(data) {
   return request({
     url: `/temp/api/device/updateDevice`,
@@ -175,6 +175,14 @@ export function newQueryDetailByDeviceId(data) {
   return request({
     url: `/temp/api/device/newQueryDetailByDeviceId/`,
     method: 'get',
+    data
+  })
+}
+//工作日志
+export function queryDeviceWorkLog(data) {
+  return request({
+    url: '/temp/api/deviceData/queryDeviceWorkLog',
+    method: 'post',
     data
   })
 }

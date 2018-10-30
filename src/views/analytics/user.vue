@@ -75,7 +75,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="ttt1">测试</el-button>
+        <el-button v-if='!fakeData' @click="test">切换测试数据</el-button>
+        <el-button v-else @click="test">切换真实数据</el-button>
         <el-button @click="isEditKanbanDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="isEditKanbanDialogVisible = false">确定</el-button>
       </div>
@@ -86,8 +87,8 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
-import {selectCustomerUserCount} from '@/api/big-picture-mode/bigPictureMode'
-
+import {selectCustomerUserCount,queryHomePageStatistic} from '@/api/big-picture-mode/bigPictureMode'
+import { userData, userDataT } from '../dashboardData'
 export default {
   components: {
     DataCard,
@@ -105,209 +106,8 @@ export default {
     //   })
     // }
     return {
-      kanbanData: {
-        数据展示: [
-            {
-              id: 5,
-              icon: 'hdd',
-              name: '当前用户总人数',
-              value: 760,
-              isVisible: false
-            },
-            {
-              id: 6,
-              icon: 'hdd',
-              name: '昨日用户增长数',
-              value:23,
-              isVisible: false
-            },
-            {
-              id: 7,
-              icon: 'hdd',
-              name: '今日活跃用户数',
-              value: 671,
-              isVisible: false
-            },
-            {
-              id: 8,
-              icon: 'hdd',
-              name: '昨日用户活跃数',
-              value: 604,
-              isVisible: false
-            },
-            {
-              id: 9,
-              icon: 'hdd',
-              name: '当前用户活跃数',
-              value: 600,
-              isVisible: false
-            }
-          ],
-        图表展示: [
-          {
-            id: 0,
-            name: '新增用户趋势图',
-            options: {
-              title: {
-                text: '新增用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '增长趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: true
-          },
-          {
-            id: 1,
-            name: '活跃用户趋势图',
-            options: {
-              title: {
-                text: '活跃用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '活跃用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '活跃趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: false
-          },
-          {
-            id: 2,
-            name: '用户总数趋势图',
-            options: {
-              title: {
-                text: '用户总数趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户总数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '总数趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: false
-          },
-          {
-            id: 3,
-            name: '用户区域分布图',
-            options: {
-              title: {
-                text: '用户区域分布图'
-              },
-              tooltip: {},
-              xAxis: {
-                type: 'value'
-              },
-              yAxis: {
-                type: 'category',
-                data: [
-                  '其他',
-                  '江苏省',
-                  '广东省',
-                  '福建省',
-                  '湖南省',
-                  '河南省',
-                  '河北省',
-                  '江西省',
-                  '青海省',
-                  '海南省'
-                ]
-              },
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
-                }
-              ]
-            },
-            isVisible: false
-          }
-        ]
-      },
+      fakeData: false, // 是否切换为虚假数据
+      kanbanData:userDataT,
       isEditKanbanDialogVisible: false,
       form: {
         type: '',
@@ -322,8 +122,7 @@ export default {
       devAddPercent: [],
       deviceCount: [],
       devedata: [],
-      newDeviceCount: '',
-      ttt:false
+      newDeviceCount: ''
     }
   },
   methods: {
@@ -331,419 +130,27 @@ export default {
     resetForm() {
       this.$refs.form.resetFields()
     },
-    ttt1(){  
-      this.ttt =! this.ttt
-      if(this.ttt){
-                this.kanbanData={
-        数据展示: [
-            {
-              id: 5,
-              icon: 'hdd',
-              name: '当前用户总人数',
-              value: 760,
-              isVisible: true
-            },
-            {
-              id: 6,
-              icon: 'hdd',
-              name: '昨日用户增长数',
-              value:23,
-              isVisible: true
-            },
-            {
-              id: 7,
-              icon: 'hdd',
-              name: '今日活跃用户数',
-              value: 671,
-              isVisible: true
-            },
-            {
-              id: 8,
-              icon: 'hdd',
-              name: '昨日用户活跃数',
-              value: 604,
-              isVisible: false
-            },
-            {
-              id: 9,
-              icon: 'hdd',
-              name: '当前用户活跃数',
-              value:  600,
-              isVisible: false
-            }
-          ],
-        图表展示: [
-          {
-            id: 0,
-            name: '新增用户趋势图',
-            options: {
-              title: {
-                text: '新增用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '增长趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: true
-          },
-          {
-            id: 1,
-            name: '活跃用户趋势图',
-            options: {
-              title: {
-                text: '活跃用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '活跃用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '活跃趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: true
-          },
-          {
-            id: 2,
-            name: '用户总数趋势图',
-            options: {
-              title: {
-                text: '用户总数趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户总数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '总数趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: true
-          },
-          {
-            id: 3,
-            name: '用户区域分布图',
-            options: {
-              title: {
-                text: '用户区域分布图'
-              },
-              tooltip: {},
-              xAxis: {
-                type: 'value'
-              },
-              yAxis: {
-                type: 'category',
-                data: [
-                  '其他',
-                  '江苏省',
-                  '广东省',
-                  '福建省',
-                  '湖南省',
-                  '河南省',
-                  '河北省',
-                  '江西省',
-                  '青海省',
-                  '海南省'
-                ]
-              },
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
-                }
-              ]
-            },
-            isVisible: true
-          }
-        ]
-      }
-      }else{
-        this.kanbanData={
-        数据展示: [
-            {
-              id: 5,
-              icon: 'hdd',
-              name: '当前用户总人数',
-              value: 760,
-              isVisible: false
-            },
-            {
-              id: 6,
-              icon: 'hdd',
-              name: '昨日用户增长数',
-              value:23,
-              isVisible: false
-            },
-            {
-              id: 7,
-              icon: 'hdd',
-              name: '今日活跃用户数',
-              value: 671,
-              isVisible: false
-            },
-            {
-              id: 8,
-              icon: 'hdd',
-              name: '昨日用户活跃数',
-              value: 604,
-              isVisible: false
-            },
-            {
-              id: 9,
-              icon: 'hdd',
-              name: '当前用户活跃数',
-              value:  600,
-              isVisible: false
-            }
-          ],
-        图表展示: [
-          {
-            id: 0,
-            name: '新增用户趋势图',
-            options: {
-              title: {
-                text: '新增用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '增长趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: true
-          },
-          {
-            id: 1,
-            name: '活跃用户趋势图',
-            options: {
-              title: {
-                text: '活跃用户趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '活跃用户数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '活跃趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: false
-          },
-          {
-            id: 2,
-            name: '用户总数趋势图',
-            options: {
-              title: {
-                text: '用户总数趋势图'
-              },
-              tooltip: {},
-              legend: {},
-              xAxis: {
-                data: [
-                  '一月',
-                  '二月',
-                  '三月',
-                  '四月',
-                  '五月',
-                  '六月',
-                  '七月',
-                  '八月',
-                  '九月',
-                  '十月',
-                  '十一月',
-                  '十二月'
-                ]
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: '用户总数',
-                  type: 'bar',
-                  data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20]
-                },
-                {
-                  name: '总数趋势',
-                  data: [5, 21, 10, 34, 5, 20, 11, 22, 50, 34, 5, 20],
-                  type: 'line',
-                  smooth: true
-                }
-              ]
-            },
-            isVisible: false
-          },
-          {
-            id: 3,
-            name: '用户区域分布图',
-            options: {
-              title: {
-                text: '用户区域分布图'
-              },
-              tooltip: {},
-              xAxis: {
-                type: 'value'
-              },
-              yAxis: {
-                type: 'category',
-                data: [
-                  '其他',
-                  '江苏省',
-                  '广东省',
-                  '福建省',
-                  '湖南省',
-                  '河南省',
-                  '河北省',
-                  '江西省',
-                  '青海省',
-                  '海南省'
-                ]
-              },
-              series: [
-                {
-                  name: '用户数',
-                  type: 'bar',
-                  data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
-                }
-              ]
-            },
-            isVisible: false
-          }
-        ]
-      }
+    init() {
       this.selectCustomerUserCount()
-
-    }
+      this.queryHomePageStatistic()
+    },
+    test() {
+      this.fakeData = !this.fakeData
+      if (this.fakeData) {
+        this.kanbanData = userData
+      } else {
+        this.kanbanData = userDataT
+        this.init()
+      }
+    },
+    queryHomePageStatistic() {
+      // 查询首页数据
+      queryHomePageStatistic().then(res => {
+        const data = res.data
+        const userAnalysis = this.kanbanData.数据展示
+        userAnalysis[0].value = data.totalUserCount //用户总数
+        userAnalysis[2].value = data.todayUserLiveCount //活跃数
+      })
     },
     // 每月新增用户统计
     selectCustomerUserCount() {
@@ -758,13 +165,14 @@ export default {
           }
           this.userCount.push(res.data[i].userCount)
         }
-        this.kanbanData.图表展示[0].options.series[0].data = this.userCount
-        this.kanbanData.图表展示[0].options.series[1].data = this.userCount
+        const userC = this.kanbanData.图表展示[0].options.series
+        userC[0].data = this.userCount
+        userC[1].data = this.userCount
       })
     }
   },
   created () {
-    this.selectCustomerUserCount()
+    this.init()
   }
 }
 </script>

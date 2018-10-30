@@ -82,7 +82,7 @@
           <el-checkbox v-model="clientColumnVisible.createTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="clientColumnVisible.ownerNickName">归属</el-checkbox>
+          <el-checkbox v-model="clientColumnVisible.ownerNickName">设备名/公共号</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.ownerOpenId">归属者OpenID</el-checkbox>
@@ -150,7 +150,7 @@ export default {
         teamType: true
       },
       query: {
-        limit: 10,
+        limit: 50,
         page: 1,
         status: 1
       },

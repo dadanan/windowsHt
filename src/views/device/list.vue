@@ -59,9 +59,9 @@
                   </template>
                 </template>
               </el-table-column>
-              <el-table-column prop="typeId" label="设备类型" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
+              <el-table-column prop="typeId" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.typeId">
               </el-table-column>
-              <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
+              <el-table-column prop="modelName" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
               </el-table-column>
               <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
               </el-table-column>
