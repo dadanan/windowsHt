@@ -66,7 +66,7 @@ export default {
       softwareList: [],
       customers: [],
       listQuery: {
-        limit: 1000,
+        limit: 50,
         page: 1
       }
     }
@@ -132,7 +132,7 @@ export default {
     },
     getSoftwareList() {
       select({
-        limit: 100,
+        limit: 50,
         page: 1
       }).then(res => {
         this.softwareList = res.data
@@ -148,7 +148,7 @@ export default {
     },
     getCustomer() {
       getCustomer({
-        limit: 100,
+        limit: 50,
         page: 1
       }).then(res => {
         this.customers = res.data

@@ -111,7 +111,7 @@
         </el-table-column>
         <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.workStatus">
           <template slot-scope="scope">
-            {{scope.row.workStatus === 1 ? '开机' : '关机'}}
+            {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
           </template>
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -342,7 +342,7 @@ export default {
       },
       deviceColumnControlDialogVisible: false,
       query: {
-        limit: 10,
+        limit: 50,
         page: 1
       },
       total: 1,

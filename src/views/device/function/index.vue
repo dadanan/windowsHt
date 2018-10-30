@@ -59,7 +59,7 @@ export default {
       loading: true,
       list: [],
       total: 1,
-      listQuery: { limit: 10, page: 1, status: 1 },
+      listQuery: { limit: 50, page: 1, status: 1 },
       permissionListMap: { r: '可读', w: '可写' },
       createFunctionDialogVisible: false,
       editFunctionDialogVisible: false,

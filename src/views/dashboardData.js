@@ -471,14 +471,14 @@ export const realData = {
         icon: 'hdd',
         name: '今日设备订单',
         value: 10,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 3,
         icon: 'hdd',
         name: '今日设备故障数',
         value: 11,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 99,
@@ -508,7 +508,7 @@ export const realData = {
         icon: 'hdd',
         name: '昨日用户增长数',
         value: 23,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 7,
@@ -538,7 +538,7 @@ export const realData = {
         icon: 'hdd',
         name: 'PM 2.5 传感器总数',
         value: 843,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 11,
@@ -566,7 +566,7 @@ export const realData = {
         icon: 'hdd',
         name: '优良环境数',
         value: 718,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 15,
@@ -583,7 +583,7 @@ export const realData = {
         icon: 'hdd',
         name: '今日订单数',
         value: 10,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 17,
@@ -620,7 +620,7 @@ export const realData = {
         icon: 'hdd',
         name: '今日新增告警记录',
         value: 0,
-        isVisible: false
+        isVisible: true
       },
       {
         id: 22,
@@ -636,7 +636,7 @@ export const realData = {
         icon: 'hdd',
         name: '今日分润账单数',
         value: 28,
-        isVisible: true
+        isVisible: false
       },
       {
         id: 24,
@@ -714,7 +714,7 @@ export const realData = {
             }
           ]
         },
-        isVisible: false
+        isVisible: true
       },
       {
         id: 2,
@@ -738,7 +738,7 @@ export const realData = {
             }
           ]
         },
-        isVisible: false
+        isVisible: true
       },
       {
         id: 3,
@@ -855,7 +855,7 @@ export const realData = {
             }
           ]
         },
-        isVisible: false
+        isVisible: true
       },
       {
         id: 7,
@@ -893,7 +893,7 @@ export const realData = {
             }
           ]
         },
-        isVisible: false
+        isVisible: true
       }
     ]
   }

@@ -116,7 +116,7 @@ export default {
         label: 'label'
       },
       listQuery: {
-        limit: 20,
+        limit: 50,
         page: 1,
         pageSizes:[50,100,200,300]
       },

@@ -125,7 +125,7 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 50,
         status: 1
       },
       createConfigDialogVisible: false,

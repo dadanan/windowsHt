@@ -150,7 +150,7 @@ export default {
         teamType: true
       },
       query: {
-        limit: 10,
+        limit: 50,
         page: 1,
         status: 1
       },
