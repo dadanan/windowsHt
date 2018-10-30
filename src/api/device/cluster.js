@@ -8,7 +8,7 @@ export function queryGroupByPage(data) {
     data
   })
 }
-// 根据id查询集群详情
+// 根据id查询项目详情
 export function queryGroupById(id) {
   return request({
     url: `/temp/api/deviceGroup/queryGroupById/${id}`,
@@ -16,7 +16,7 @@ export function queryGroupById(id) {
   })
 }
 
-// 根据id删除集群
+// 根据id删除项目
 export function deleteGroupById(id) {
   return request({
     url: `/temp/api/deviceGroup/deleteGroupById/${id}`,
@@ -24,7 +24,7 @@ export function deleteGroupById(id) {
   })
 }
 
-// 查询集群总数
+// 查询项目总数
 export function queryGroupCount(id) {
   return request({
     url: `/temp/api/deviceGroup/queryGroupCount/${id}`,
@@ -32,7 +32,7 @@ export function queryGroupCount(id) {
   })
 }
 
-// 创建或更新集群
+// 创建或更新项目
 export function addOrUpdateGroupAndDevice(data) {
   return request({
     url: `/temp/api/deviceGroup/addOrUpdateGroupAndDevice`,

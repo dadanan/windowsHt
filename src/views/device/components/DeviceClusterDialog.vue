@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备集群" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备项目" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -31,7 +31,7 @@
         </el-col>
         <el-col :span="12">
           <el-form label-position="left" label-width="80px" :model="devList" :rules="rules" ref="devList">
-            <el-form-item label="集群名" prop="name">
+            <el-form-item label="项目名" prop="name">
               <el-input v-model='devList.name' placeholder='请输入'></el-input>
             </el-form-item>
             <el-form-item label="客户" prop="customerId">
@@ -45,7 +45,7 @@
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button @click="resetForm('devList')">取消</el-button>
-      <el-button type="primary" @click="submitForm('devList')">确认集群</el-button>
+      <el-button type="primary" @click="submitForm('devList')">确认项目</el-button>
     </div>
   </el-dialog>
 </template>
@@ -130,7 +130,7 @@ export default {
         }
       }).then(() => {
         this.$message({
-          message: '添加集群成功！',
+          message: '添加项目成功！',
           type: 'success'
         })
         this.$emit('update:visible', false)

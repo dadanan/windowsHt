@@ -169,7 +169,7 @@ export const asyncRouterMap = [
   // device: '设备管理',
   // deviceList: '设备列表',
   // deviceGroup: '设备组管理',
-  // deviceCluster: '设备集群管理',
+  // deviceCluster: '设备项目管理',
   // deviceConfig: '设备配置管理',
   // deviceModel: '设备备案管理',
   // deviceFunction: '设备功能管理',

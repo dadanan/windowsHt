@@ -11,7 +11,7 @@
           <el-button type="primary" @click="handleDeviceFree">召回</el-button>
           <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
           <el-button type="primary" @click="handleDeviceAble">启用</el-button>
-          <el-button type="primary" @click="handleDeviceCluster">集群</el-button>
+          <el-button type="primary" @click="handleDeviceCluster">项目</el-button>
           <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
           <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
           <el-button type="primary" @click="deviceExportDialogVisible = true">导出</el-button>
@@ -77,6 +77,8 @@
               </el-table-column>
               <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
               </el-table-column>
+              <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
+              </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
@@ -112,7 +114,7 @@
             {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
           </template>
         </el-table-column>
-        <el-table-column prop="groupName" label="集群名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
+        <el-table-column prop="groupName" label="项目名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
           <template slot-scope="scope">
@@ -144,6 +146,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+        </el-table-column>
+        <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -190,7 +194,7 @@
           <el-checkbox v-model="deviceColumnVisible.enableStatus">启用状态</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.clusterName">集群名</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.clusterName">项目名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.powerStatus">工作状态</el-checkbox>
@@ -221,6 +225,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.manageName">管理名称</el-checkbox>
         </el-form-item>
       </el-form>
       <div>
@@ -349,7 +356,7 @@ export default {
         lastUpdateTime: false,
         bindCustomer: false,
         location: false,
-        assignStatus: true
+        manageName: true
       },
       deviceColumnControlDialogVisible: false,
       query: {
@@ -530,7 +537,7 @@ export default {
         item.enableStatus = 0
         item.groupId = -1
         item.powerStatus = 0
-        item.groupName = '无集群'
+        item.groupName = '无项目'
         item.onlineStatus = 0
       })
       this.deviceList.push(...list)
@@ -599,17 +606,17 @@ export default {
         this.deviceAbleDialogVisible = true
       })
     },
-    // 集群
+    // 项目
     handleDeviceCluster() {
       this.isOperable().then(_ => {
-        // 判断集群id是否一致，不一致不可集群
+        // 判断项目id是否一致，不一致不可项目
         const groupids = this.selectedDeviceList.filter(v => v.groupId !== -1)
         if (
           groupids.length &&
           groupids.some(v => v.groupId !== groupids[0].groupId)
         ) {
           this.$message.warning(
-            '请确保所有选中设备的集群名称一致（无集群除外）'
+            '请确保所有选中设备的项目名称一致（无项目除外）'
           )
           return
         }

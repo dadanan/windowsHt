@@ -25,7 +25,7 @@
                 <el-form-item label="启用状态">
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
                 </el-form-item>
-                <el-form-item label="集群名">
+                <el-form-item label="项目名">
                   <el-input v-model="form.groupName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="在线状态">
@@ -50,7 +50,7 @@
                 <el-form-item label="设备类型ID">
                   <el-input v-model="form.typeId" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="集群ID">
+                <el-form-item label="项目ID">
                   <el-input v-model="form.groupId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="注册时间">
@@ -74,7 +74,7 @@
       <el-tab-pane label="设备操作" name="1">
         <operation :modelId='detailData.modelId'></operation>
       </el-tab-pane>
-      <el-tab-pane label="设备数据" name="2">
+      <el-tab-pane label="设备管理名" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
           <el-table-column prop="deviceId" label="设备ID" show-overflow-tooltip sortable>
@@ -127,7 +127,7 @@
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="funcId" label="id" show-overflow-tooltip sortable>
+          <el-table-column prop="funcId" label="指令ID" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="funcName" label="操作指令" show-overflow-tooltip sortable>
           </el-table-column>

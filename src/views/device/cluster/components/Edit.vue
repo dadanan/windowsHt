@@ -1,10 +1,10 @@
 <template>
   <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
     <el-form label-position="left" label-width="80px" :model="form" :rules="rules" ref="form">
-      <el-form-item label="集群名">
+      <el-form-item label="项目名">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="群内设备">
+      <el-form-item label="项目内设备">
         <div class="addForm">
           <el-input v-model="addForm.mac" placeholder="设备 MAC"></el-input>
           <el-button type="primary" class="add" @click="addDevice">添加</el-button>
@@ -33,7 +33,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="客户" prop="customerId">
+      <el-form-item label="归属" prop="customerId">
         <el-select v-model="form.customerId" placeholder='请选择'>
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
@@ -44,7 +44,7 @@
       <el-form-item label="视频">
         <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
       </el-form-item>
-      <el-form-item label="群介绍" prop="introduction">
+      <el-form-item label="项目介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
       </el-form-item>
       <el-form-item label="地点" prop="createLocation">
@@ -94,10 +94,10 @@ export default {
       },
       rules: {
         customerId: [
-          { required: true, message: '请选择客户', trigger: 'change' }
+          { required: true, message: '请选择归属', trigger: 'change' }
         ],
         introduction: [
-          { required: true, message: '请输入群介绍', trigger: 'blur' }
+          { required: true, message: '请输入项目介绍', trigger: 'blur' }
         ],
         createLocation: [
           { required: true, message: '请输入地点', trigger: 'blur' },

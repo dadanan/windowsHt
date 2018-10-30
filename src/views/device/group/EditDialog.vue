@@ -146,7 +146,7 @@ export default {
       }
       createNewTeam(form).then(res => {
         this.$emit('update:visible', false)
-        this.$emit('add-data', form)
+        this.$emit('update-data', form)
       })
     },
     getImageName(url) {
