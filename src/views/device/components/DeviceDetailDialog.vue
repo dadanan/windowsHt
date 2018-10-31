@@ -105,6 +105,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="queryDevice.page" :page-sizes="[50,100,200,300]" :page-size="queryDevice.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryDeviceSensorStatCound" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="工作日志" name="3">
         <el-table style="width: 100%" border :data="deviceWorkLog">
@@ -117,7 +119,7 @@
           <el-table-column prop="deviceStatus" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="queryDeviceW.page" :page-sizes="[50,100,200,300]" :page-size="queryDeviceW.limit" layout="total, sizes, prev, pager, next, jumper" :total="deviceWorkLogCound" @size-change="handleSizeChange3" @current-change="handleCurrentChange3">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="操作日志" name="4">
@@ -147,14 +149,13 @@
                 - -
               </template>
             </template>
-
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
+        <el-pagination :current-page="queryOperLog.page" :page-sizes="[50,100,200,300]" :page-size="queryOperLog.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryOperLogCound" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
-        <el-table style="width: 100%" border :data="deviceList">
+        <el-table style="width: 100%" border :data="deviceListJ">
           <el-table-column type="index"></el-table-column>
           <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
           </el-table-column>
@@ -171,8 +172,6 @@
           <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
-        <el-pagination :current-page="page" :page-sizes="[100,200,300,400]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="100">
-        </el-pagination>
       </el-tab-pane>
       <el-tab-pane label='设备设置' name='6'>
         <el-button-group>
@@ -219,18 +218,35 @@ export default {
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
+      deviceListJ:[],
       form: {},
-      limit: 100,
-      page: 1,
       deviceId: 1,
+      queryOperLogc:{
+        limit: 50,
+        page: 1
+      },
+      queryDevice:{
+        limit: 50,
+        page: 1
+      },
+      queryDeviceW:{
+        limit: 50,
+        page: 1
+      },
       deviceList1: [],
       deviceWorkLog: [],
-      shareURL: '...'
+      shareURL: '...',
+      valId:'',
+      queryOperLogCound:0,
+      queryDeviceSensorStatCound:0,
+      deviceWorkLogCound:0
+
     }
   },
   watch: {
     detailData(val) {
       this.init(val)
+      this.valId = val.id
     }
   },
   methods: {
@@ -296,44 +312,72 @@ export default {
         })
       })
     },
-    //工作日志
-    queryDeviceWorkLog(id) {
+    // 工作日志
+   queryDeviceWorkLog(id) {
       queryDeviceWorkLog({
-        limit: this.limit,
-        page: this.page,
+        limit: this.queryDeviceW.limit,
+        page: this.queryDeviceW.page,
         deviceId: id
       }).then(res => {
-        console.log(res.data)
-        this.deviceWorkLog = res.data
+        console.log(res)
+        this.deviceWorkLog = res.data.dataList
+        this.deviceWorkLogCound = res.data.totalCount
       })
     },
+    // 操作日志
     queryOperLog(id) {
-      queryOperLog({ limit: this.limit, page: this.page, deviceId: id }).then(
+      queryOperLog({ limit: this.queryOperLogc.limit, page: this.queryOperLogc.page, deviceId: id }).then(
         res => {
-          this.deviceList = res.data
+          // console.log()
+          this.deviceList = res.data.dataList
+          this.queryOperLogCound = res.data.totalCount
         }
       )
     },
     // 设备数据
     queryDeviceSensorStat(id) {
       queryDeviceSensorStat({
-        limit: this.limit,
-        page: this.page,
+        limit: this.queryDevice.limit,
+        page: this.queryDevice.page,
         deviceId: id
       }).then(res => {
-        // console.log(res.data)
-        this.deviceList1 = res.data
+        this.deviceList1 = res.data.dataList
+        this.queryDeviceSensorStatCound = res.data.totalCount
       })
-    }
-    //   getShareToken() {
-    //     shareDeviceToken(this.form.id).then(res => {
-    //       const form = this.form
-    //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
-    //         'Ticket'
-    //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
-    //       this.shareURL = url
-    //     })
-    //   }
+    },
+  //   getShareToken() {
+  //     shareDeviceToken(this.form.id).then(res => {
+  //       const form = this.form
+  //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
+  //         'Ticket'
+  //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
+  //       this.shareURL = url
+  //     })
+  //   }
+  handleSizeChange(val) {
+    this.queryDevice.limit = val
+    this.queryDeviceSensorStat(this.valId)
+  },
+  handleCurrentChange(val) {
+    this.queryDevice.page = val
+    this.queryDeviceSensorStat(this.valId)
+  },
+  handleSizeChange1(val) {
+    this.queryOperLogc.limit = val
+    this.queryOperLog(this.valId)
+  },
+  handleCurrentChange1(val) {
+    this.queryOperLogc.page = val
+    this.queryOperLog(this.valId)
+  },
+  handleSizeChange3(val) {
+    this.queryDeviceW.limit = val
+    this.queryDeviceWorkLog(this.valId)
+  },
+  handleCurrentChange3(val) {
+    this.queryDeviceW.page = val
+    this.queryDeviceWorkLog(this.valId)
+  }
   },
   components: {
     Operation,
