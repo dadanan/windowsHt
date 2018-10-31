@@ -194,3 +194,30 @@ export function deviceShareList(deviceId) {
     method: 'post'
   })
 }
+
+//删除某人权限
+export function clearRelation(data) {
+  return request({
+    url: `/temp/api/device/clearRelation`,
+    method: 'post',
+    data
+  })
+}
+
+//修改所有人的权限
+export function updateAllRelation(data) {
+  return request({
+    url: `/temp/api/device/updateAllRelation`,
+    method: 'post',
+    data
+  })
+}
+
+//修改人的权限
+export function updateRelation(data) {
+  return request({
+    url: `/temp/api/device/updateRelation`,
+    method: 'post',
+    data
+  })
+}

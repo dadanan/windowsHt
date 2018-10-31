@@ -186,7 +186,7 @@
         </el-button-group>
       </el-tab-pane>
     </el-tabs>
-    <share-list :visible.sync="shareListVisible" :shareData="shareList"></share-list>
+    <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list>
   </el-dialog>
 </template>
 
@@ -243,7 +243,7 @@ export default {
       queryDeviceSensorStatCound: 0,
       deviceWorkLogCound: 0,
       shareListVisible: false,
-      shareList: []
+      shareData: {} // 分享数据
     }
   },
   watch: {
@@ -272,7 +272,10 @@ export default {
     },
     getDeviceShareList() {
       deviceShareList(this.form.id).then(res => {
-        this.shareList = res.data
+        this.shareData = {
+          deviceId: this.form.id,
+          list: res.data
+        }
         this.shareListVisible = true
       })
     },
@@ -355,12 +358,30 @@ export default {
         this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },
+    getSld() {
+      // 获取二级域名
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      if (sld) {
+        return sld[1]
+      }
+      return ''
+    },
+    isDev() {
+      // 是开发环境？
+      const sld = this.getSld()
+      return sld === '' || sld === 'dev'
+    },
     getShareToken() {
       shareDeviceToken(this.form.wxDeviceId).then(res => {
         const form = this.form
-        const url = `?masterOpenId=${Store.fetch('Ticket')}&deviceId=${
+
+        const url = `http://${
+          this.isDev() ? 'dev' : form.sld
+        }.hcocloud.com/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
           form.id
         }&token=${res.data}&customerId=${form.customerId}`
+
+        console.log('分享URL: ', url)
         this.shareURL = url
       })
     },
