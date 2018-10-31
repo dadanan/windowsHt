@@ -21,7 +21,7 @@ import { selectById } from '@/api/device/model'
 import { newQueryDetailByDeviceId } from '@/api/device/list'
 
 export default {
-  props: ['modelId'],
+  props: ['detailData'],
   data() {
     return {
       abilitysList: [],
@@ -108,11 +108,11 @@ export default {
     }
   },
   created() {
-    // this.selectById(this.modelId)
+    // this.selectById(this.detailData)
   },
   watch: {
-    modelId(id) {
-      if (!id) {
+    detailData(val) {
+      if (!val) {
         return
       }
       // this.selectById(id)

@@ -1,29 +1,44 @@
 <template>
-  <el-dialog class='sharelist-container' :close-on-click-modal=false title="授权管理" :visible="visible" @update:visible="$emit('update:visible', $event)">
-    <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border>
+  <el-dialog class='sharelist-container' :close-on-click-modal=false title="授权管理" :visible="visible" @update:visible="$emit('update:visible', $event)" append-to-body>
+    <el-table :data="shareData" style="width: 100%" border>
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
+      <el-table-column prop="nickname" label="名称" show-overflow-tooltip sortable>
       </el-table-column>
-      <el-table-column prop="name" label="头像" show-overflow-tooltip sortable>
+      <el-table-column label="头像" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <img class='inside-image' :src='scope.row.img'>
+          <img class='inside-image' :src='scope.row.headImg'>
+        </template>
+      </el-table-column>
+      <el-table-column label="绑定时间" show-overflow-tooltip sortable>
+        <template slot-scope="scope">
+          {{new Date(scope.row.joinTime).toLocaleString()}}
         </template>
       </el-table-column>
       <el-table-column label="管理" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.useful" active-text="启用" inactive-text="禁用">
-          </el-switch>
+          <template v-if='scope.$index === 0'>
+            设备所属者
+          </template>
+          <template v-else>
+            <el-switch @change='statusChanged(arguments,scope.row)' v-model="scope.row.status" active-text="启用" inactive-text="禁用">
+            </el-switch>
+          </template>
         </template>
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <el-button type='danger' @click='deleteUser'>删除</el-button>
+          <template v-if='scope.$index === 0'>
+            设备所属者
+          </template>
+          <template v-else>
+            <el-button type='danger' @click='deleteUser'>删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
-    <el-button-group>
-      <el-button type="primary">全部许可</el-button>
-      <el-button type="primary">全部禁用</el-button>
+    <el-button-group class='button-group'>
+      <el-button type="primary" @click='allowAll'>全部许可</el-button>
+      <el-button type="danger" @click='banAll'>全部禁用</el-button>
     </el-button-group>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="$emit('update:visible',false)">关闭</el-button>
@@ -32,7 +47,11 @@
 </template>
 
 <script>
-import { updateDeivceEnable } from '@/api/device/list'
+import {
+  updateDeivceEnable,
+  untieDeviceToUser,
+  updateDeivceDisble
+} from '@/api/device/list'
 
 export default {
   props: {
@@ -40,7 +59,7 @@ export default {
       type: Boolean,
       default: false
     },
-    deviceList: {
+    shareData: {
       type: Array,
       default() {
         return []
@@ -53,40 +72,48 @@ export default {
     }
   },
   methods: {
-    handleSelectionChange(selection) {
-      this.selectedDeviceList = selection
-    },
-    updateDeivceEnablePart() {
-      updateDeivceEnable({
-        deviceVos: this.selectedDeviceList.map(item => {
+    allowAll() {
+      return
+      updateDeivceEnable(
+        this.shareData.map(item => {
           return {
             mac: item.mac,
             deviceId: item.id
           }
         })
-      }).then(() => {
-        this.$message({
-          message: '启用成功！',
-          type: 'success'
-        })
-        this.$emit('update:visible', false)
-      })
+      ).then(() => {})
     },
-    updateDeivceEnableAll() {
-      updateDeivceEnable({
-        deviceVos: this.deviceList.map(item => {
+    banAll() {
+      return
+      updateDeivceEnable(
+        this.shareData.map(item => {
           return {
             mac: item.mac,
             deviceId: item.id
           }
         })
-      }).then(() => {
-        this.$message({
-          message: '启用成功！',
-          type: 'success'
+      ).then(() => {})
+    },
+    deleteUser() {
+      return
+      updateDeivceEnable(
+        this.shareData.map(item => {
+          return {
+            mac: item.mac,
+            deviceId: item.id
+          }
         })
-        this.$emit('update:visible', false)
-      })
+      ).then(() => {})
+    },
+    statusChanged(status, data) {
+      return
+      if (status[0]) {
+        updateDeivceEnable({
+          mac: data.mac
+        }).then(() => {})
+      } else {
+        updateDeivceDisble().then(() => {})
+      }
     }
   }
 }
@@ -96,6 +123,9 @@ export default {
 .sharelist-container {
   .inside-image {
     width: 100%;
+  }
+  .button-group {
+    margin-top: 30px;
   }
 }
 </style>

@@ -8,7 +8,6 @@
               <el-col :span="12">
                 <el-form-item label="名称">
                   <el-input v-model="form.name" style="width:74%"></el-input>
-                  <el-button @click='updateDeviceName'>修改名称</el-button>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -75,9 +74,9 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
-        <operation :modelId='detailData.modelId'></operation>
+        <operation :detailData='detailData'></operation>
       </el-tab-pane>
-      <el-tab-pane label="设备管理名" name="2">
+      <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
           <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
@@ -179,7 +178,7 @@
             <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
-          <el-button type="primary" @click='showShareList'>授权管理</el-button>
+          <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
           <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
             <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
             <el-button type="primary" slot="reference">更改设备地址</el-button>
@@ -270,7 +269,6 @@ export default {
       this.queryDeviceSensorStat(val.id)
       this.getShareToken()
       this.queryDeviceWorkLog(val.id)
-      this.getDeviceShareList()
     },
     getDeviceShareList() {
       deviceShareList(this.form.id).then(res => {
@@ -278,7 +276,6 @@ export default {
         this.shareListVisible = true
       })
     },
-    showShareList() {},
     showDistrict() {
       // 显示地区卡片
       const location = this.form.location
