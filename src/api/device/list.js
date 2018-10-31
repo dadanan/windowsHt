@@ -180,10 +180,17 @@ export function newQueryDetailByDeviceId(data) {
 }
 //工作日志
 export function queryDeviceWorkLog(data) {
-  console.log(data)
   return request({
     url: '/temp/api/deviceData/queryDeviceWorkLog',
     method: 'post',
     data
+  })
+}
+
+//获取设备授权列表
+export function deviceShareList(deviceId) {
+  return request({
+    url: `/temp/api/device/deviceShareList/${deviceId}`,
+    method: 'post'
   })
 }

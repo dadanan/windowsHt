@@ -146,12 +146,12 @@ export default {
       this.clientList.push(data)
     },
     showEditRoleDialog(data) {
-      this.isEditClientDialogVisible = true
       this.getDetail(data.id)
     },
     getDetail(id) {
       selectById(id).then(res => {
         this.editingData = res.data
+        this.isEditClientDialogVisible = true
       })
     },
     updateData(data) {
