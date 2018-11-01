@@ -66,6 +66,20 @@
             <el-button type="primary" @click="addConfigOption">新增选项</el-button>
           </el-form-item>
         </template>
+        <template v-else-if="form.abilityType === 6">
+          <el-form-item v-for="(option, i) in form.deviceAbilityOptions" :key="i" :label="'选项 ' + i">
+            <div class="input-group">
+              <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+              <el-input v-model="option.defaultVal" placeholder="默认值"></el-input>
+              <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+              <el-input v-model="option.minVal" placeholder="最小值"></el-input>
+              <el-button type="danger" @click="deleteConfigOption(i)">删除</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="addConfigOption">新增选项</el-button>
+          </el-form-item>
+        </template>
       </template>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -119,6 +133,10 @@ export default {
         {
           label: '阈值选择类',
           value: 5
+        },
+        {
+          label: '设备传参类',
+          value: 6
         }
       ],
       rules: {
@@ -205,6 +223,17 @@ export default {
           }
         ])
       }
+      if (type === 6) {
+        this.$set(this.form, 'deviceAbilityOptions', [
+          {
+            optionName: '',
+            defaultVal: '',
+            minVal: '',
+            maxVal: ''
+          }
+        ])
+      }
+      
     },
     deleteConfigOption(i) {
       this.form.deviceAbilityOptions.splice(i, 1)
@@ -222,6 +251,14 @@ export default {
         this.form.deviceAbilityOptions.push({
           optionName: '',
           optionValue: '',
+          minVal: '',
+          maxVal: ''
+        })
+      }
+      if (type === 6) {
+        this.form.deviceAbilityOptions.push({
+          optionName: '',
+          defaultVal: '',
           minVal: '',
           maxVal: ''
         })
