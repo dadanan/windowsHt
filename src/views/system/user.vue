@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column prop="telephone" label="手机号" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="所属角色" show-overflow-tooltip sortable>
+        <el-table-column label="所属角色" show-overflow-tooltip>
           <template slot-scope="scope">
             <span>{{ getRoleName(scope.row.roleId) }}</span>
           </template>
@@ -23,7 +23,12 @@
         </el-table-column>
         <el-table-column prop="createrName" label="创建者" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" show-overflow-tooltip>
           <template slot-scope="scope">
             <span>{{ getStatusName(scope.row.status) }}</span>
           </template>

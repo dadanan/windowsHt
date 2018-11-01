@@ -180,7 +180,6 @@ export function newQueryDetailByDeviceId(data) {
 }
 //工作日志
 export function queryDeviceWorkLog(data) {
-  console.log(data)
   return request({
     url: '/temp/api/deviceData/queryDeviceWorkLog',
     method: 'post',

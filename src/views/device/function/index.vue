@@ -10,17 +10,17 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="abilityName" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="类型(标签)" show-overflow-tooltip sortable>
+        <el-table-column label="类型(标签)" show-overflow-tooltip>
           <template slot-scope="scope">
             {{typeModel[scope.row.abilityType]}}
           </template>
         </el-table-column>
-        <el-table-column label="运行状态" show-overflow-tooltip sortable>
+        <el-table-column label="运行状态" show-overflow-tooltip>
           <template slot-scope="scope">
             {{ scope.row.runStatus === 1 ? '可运行' : '不可运行' }}
           </template>
         </el-table-column>
-        <el-table-column label="读写权限" show-overflow-tooltip sortable>
+        <el-table-column label="读写权限" show-overflow-tooltip>
           <template slot-scope="scope">
             {{ scope.row.readStatus === 1 ? '可读' : '不可读'}} {{ scope.row.writeStatus === 1 ? '、可写' : '、不可写'}}
           </template>

@@ -41,12 +41,32 @@
         </el-card>
       </div>
     </div>
-    <el-table :data="form.deviceList" class="mb20" style="margin-top: 15px" border>
-      <el-table-column v-for="value in columnData" :label="value.label" :prop="value.prop" :key="value.prop" :formatter="value.formatter" :width="value.width" show-overflow-tooltip>
+    <el-table :data="form.deviceList" class="mb20" style="margin-top: 15px" border @selection-change="handleSelectionChange">
+      <!-- <el-table-column v-for="value in columnData" :label="value.label" :prop="value.prop" :key="value.prop" :formatter="value.formatter" :width="value.width" show-overflow-tooltip>
+      </el-table-column> -->
+      <el-table-column type="selection"></el-table-column>
+      <el-table-column type="index"></el-table-column>
+      <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
+      </el-table-column>
+      <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable>
+      </el-table-column>
+      <el-table-column prop="modelId" label="型号" show-overflow-tooltip sortable>
+      </el-table-column>
+      <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable>
+      </el-table-column>
+      <el-table-column prop="onlineStatus" label="在线状态" show-overflow-tooltip sortable>
+        <template slot-scope="scope">
+          {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="workStatus" label="工作状态" show-overflow-tooltip sortable>
+         <template slot-scope="scope">
+          {{scope.row.workStatus === 1 ? '开机' : '关机'}}
+        </template>
       </el-table-column>
     </el-table>
-    <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="form.deviceList.length">
-    </el-pagination>
+    <!-- <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="form.deviceList.length">
+    </el-pagination> -->
     <div>
       <el-button-group>
         <el-button type="primary" @click='groupControl("on")'>群开
@@ -104,16 +124,27 @@ export default {
       },
       deviceData: [],
       columnData: deviceColumnData,
-      customerList: []
+      customerList: [],
+      deviceIdList:[]
     }
   },
   methods: {
+     handleSelectionChange(selection) {
+       const selectedDeviceList = []
+      for(var i = 0; i<selection.length;i++){
+        selectedDeviceList.push(selection[i].id)
+      }
+      this.deviceIdList = selectedDeviceList
+    },
     groupControl(which) {
-      if (!this.form.deviceList || this.form.deviceList.length === 0) {
-        return
+      if (!this.deviceIdList || this.deviceIdList.length === 0) {
+        return this.$message({
+          message: `请选择设备`,
+          type: 'error'
+        })
       }
       groupSendFunc({
-        deviceIdList: this.form.deviceList.map(item => item.id),
+        deviceIdList: this.deviceIdList,
         funcId: 210,
         value: which === 'on' ? 1 : 0
       }).then(() => {

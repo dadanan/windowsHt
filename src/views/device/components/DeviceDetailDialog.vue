@@ -319,7 +319,6 @@ export default {
         page: this.queryDeviceW.page,
         deviceId: id
       }).then(res => {
-        console.log(res)
         this.deviceWorkLog = res.data.dataList
         this.deviceWorkLogCound = res.data.totalCount
       })
