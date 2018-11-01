@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" :formatter="formatDate" show-overflow-tooltip sortable v-if='clientColumnVisible.createTime'>
         </el-table-column>
-        <el-table-column prop="cuasdas" label="客户/公众号" show-overflow-tooltip sortable v-if='clientColumnVisible.masterNickName'>
+        <el-table-column prop="customerName" label="客户/公众号" show-overflow-tooltip sortable v-if='clientColumnVisible.masterNickName'>
         </el-table-column>
         <el-table-column prop="masterNickName" label="归属" show-overflow-tooltip sortable v-if='clientColumnVisible.masterNickName'>
         </el-table-column>

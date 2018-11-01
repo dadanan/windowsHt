@@ -6,7 +6,7 @@
       <el-step title="硬件功能项"></el-step>
       <el-step title="版式配置"></el-step>
     </el-steps>
-    <el-form v-if='step === 1' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
+    <el-form v-if='step === 0' label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
       <el-form-item label="客户" prop="customerId">
         <el-select v-model="form.customerId" @change="handleCustomerChange">
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
@@ -39,7 +39,7 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step === 2' label-width="100px" class="mb-22">
+    <el-form v-else-if='step === 1' label-width="100px" class="mb-22">
       <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
       </el-form-item>
@@ -47,7 +47,7 @@
         <image-uploader :url='form.productQrCode' @get-url='setURL(arguments,form,"productQrCode")'></image-uploader>
       </el-form-item>
     </el-form>
-    <el-form v-else-if='step===3' label-width="100px" class="mb-22">
+    <el-form v-else-if='step===2' label-width="100px" class="mb-22">
       <el-table :data="deviceModelAbilitys" style="width: 100%" class="mb20" border>
         <el-table-column label="功能项名称">
           <template slot-scope="scope">
@@ -77,7 +77,7 @@
         </el-table-column>
       </el-table>
     </el-form>
-    <el-form v-else-if='step===4' label-width="100px" class="mb-22">
+    <el-form v-else-if='step===3' label-width="100px" class="mb-22">
       <el-form-item label="版式选择">
         <el-select v-model="form.formatId" @change="handleFormatChange">
           <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
@@ -133,8 +133,8 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" v-if='step!==1 ' @click="backStep()">上一步</el-button>
-      <el-button type="primary" v-if='step!==4 ' @click="nextStep()">下一步</el-button>
+      <el-button type="primary" v-if='step!==0 ' @click="backStep()">上一步</el-button>
+      <el-button type="primary" v-if='step!==3 ' @click="nextStep()">下一步</el-button>
       <el-button type="primary" v-else @click="createDeviceModel">确定</el-button>
     </div>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义" :visible.sync="dialogFormVisible" append-to-body>
@@ -238,7 +238,7 @@ export default {
         }
       ],
       deviceModelAbilitys: [],
-      step: 1,
+      step: 0,
       options: [
         {
           name: 'asd',
@@ -414,17 +414,17 @@ export default {
       })
     },
     backStep() {
-      if (this.step > 1) {
+      if (this.step > 0) {
         this.step--
       }
     },
     nextStep() {
-      if (this.step == 1) {
+      if (this.step == 0) {
         this.submitForm('form')
-      } else if (this.step === 2) {
+      } else if (this.step === 1) {
         this.selectFormatsByCustomerId()
         this.step++
-      } else if (this.step++ > 3) this.step = 0
+      } else if (this.step++ > 2) this.step = 0
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -482,7 +482,7 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-        this.step = 1
+        this.step = 0
       }
     }
   }

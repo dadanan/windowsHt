@@ -5,7 +5,7 @@
         <el-step title="基本信息"></el-step>
         <el-step title="版式内容设置"></el-step>
       </el-steps>
-      <div v-if="step == 1">
+      <div v-if="step == 0">
         <el-form label-position="left" label-width="150px">
           <el-form-item label="名称">
             <el-input v-model='addForm.name'></el-input>
@@ -43,7 +43,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="step == 2">
+      <div v-if="step == 1">
         <el-card v-for='(item,index) in pages' :key="index" class='box-card'>
           <div class='tool'>
             <span class='close-icon' @click='deleteCard(index)'></span>
@@ -89,9 +89,9 @@
     </el-scrollbar>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="backStep" v-if="step === 2">上一步</el-button>
-      <el-button type="primary" @click="nextStep" v-if="step === 1">下一步</el-button>
-      <el-button type="primary" v-if='step===2' @click='submitForm'>确定</el-button>
+      <el-button type="primary" @click="backStep" v-if="step === 1">上一步</el-button>
+      <el-button type="primary" @click="nextStep" v-if="step === 0">下一步</el-button>
+      <el-button type="primary" v-if='step===1' @click='submitForm'>确定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -114,7 +114,7 @@ export default {
   },
   data() {
     return {
-      step: 1,
+      step: 0,
       addForm: {
         typeIds: []
       },
@@ -251,8 +251,8 @@ export default {
       this.step--
     },
     nextStep() {
-      if (this.step === 2) {
-        this.step = 1
+      if (this.step === 1) {
+        this.step = 0
         return
       }
       this.step++
@@ -325,7 +325,7 @@ export default {
     },
     visible(val) {
       if (val) {
-        this.step = 1
+        this.step = 0
       }
     }
   },

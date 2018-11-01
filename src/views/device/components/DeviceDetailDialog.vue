@@ -8,7 +8,6 @@
               <el-col :span="12">
                 <el-form-item label="名称">
                   <el-input v-model="form.name" style="width:74%"></el-input>
-                  <el-button @click='updateDeviceName'>修改名称</el-button>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -75,9 +74,9 @@
     </div>
     <el-tabs v-model="activeTab" type="card">
       <el-tab-pane label="设备操作" name="1">
-        <operation :modelId='detailData.modelId'></operation>
+        <operation :detailData='detailData'></operation>
       </el-tab-pane>
-      <el-tab-pane label="设备管理名" name="2">
+      <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
           <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
@@ -179,7 +178,7 @@
             <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
-          <el-button type="primary">授权管理</el-button>
+          <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
           <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
             <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
             <el-button type="primary" slot="reference">更改设备地址</el-button>
@@ -187,18 +186,21 @@
         </el-button-group>
       </el-tab-pane>
     </el-tabs>
+    <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list>
   </el-dialog>
 </template>
 
 <script>
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
+import ShareList from './deviceDetail/ShareList'
 import {
   queryOperLog, //操作日志
   queryDeviceSensorStat, //查看设备数据
   updateDevice, //地理位置
-  // shareDeviceToken, //分享设备的token
-  queryDeviceWorkLog // 工作日志
+  shareDeviceToken, //分享设备的token
+  queryDeviceWorkLog, // 工作日志
+  deviceShareList
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -218,29 +220,30 @@ export default {
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
-      deviceListJ:[],
+      deviceListJ: [],
       form: {},
       deviceId: 1,
-      queryOperLogc:{
+      queryOperLogc: {
         limit: 50,
         page: 1
       },
-      queryDevice:{
+      queryDevice: {
         limit: 50,
         page: 1
       },
-      queryDeviceW:{
+      queryDeviceW: {
         limit: 50,
         page: 1
       },
       deviceList1: [],
       deviceWorkLog: [],
       shareURL: '...',
-      valId:'',
-      queryOperLogCound:0,
-      queryDeviceSensorStatCound:0,
-      deviceWorkLogCound:0
-
+      valId: '',
+      queryOperLogCound: 0,
+      queryDeviceSensorStatCound: 0,
+      deviceWorkLogCound: 0,
+      shareListVisible: false,
+      shareData: {} // 分享数据
     }
   },
   watch: {
@@ -261,11 +264,20 @@ export default {
       }
     },
     init(val) {
+      this.form = JSON.parse(JSON.stringify(val))
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
-      this.form = JSON.parse(JSON.stringify(val))
-      // this.getShareToken()
+      this.getShareToken()
       this.queryDeviceWorkLog(val.id)
+    },
+    getDeviceShareList() {
+      deviceShareList(this.form.id).then(res => {
+        this.shareData = {
+          deviceId: this.form.id,
+          list: res.data
+        }
+        this.shareListVisible = true
+      })
     },
     showDistrict() {
       // 显示地区卡片
@@ -313,7 +325,7 @@ export default {
       })
     },
     // 工作日志
-   queryDeviceWorkLog(id) {
+    queryDeviceWorkLog(id) {
       queryDeviceWorkLog({
         limit: this.queryDeviceW.limit,
         page: this.queryDeviceW.page,
@@ -325,13 +337,14 @@ export default {
     },
     // 操作日志
     queryOperLog(id) {
-      queryOperLog({ limit: this.queryOperLogc.limit, page: this.queryOperLogc.page, deviceId: id }).then(
-        res => {
-          // console.log()
-          this.deviceList = res.data.dataList
-          this.queryOperLogCound = res.data.totalCount
-        }
-      )
+      queryOperLog({
+        limit: this.queryOperLogc.limit,
+        page: this.queryOperLogc.page,
+        deviceId: id
+      }).then(res => {
+        this.deviceList = res.data.dataList
+        this.queryOperLogCound = res.data.totalCount
+      })
     },
     // 设备数据
     queryDeviceSensorStat(id) {
@@ -344,44 +357,63 @@ export default {
         this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },
-  //   getShareToken() {
-  //     shareDeviceToken(this.form.id).then(res => {
-  //       const form = this.form
-  //       const url = `${this.shareBaseURL}?masterOpenId=${Store.fetch(
-  //         'Ticket'
-  //       )}&deviceId=${form.id}&token=${res.data}&customerId=${form.customerId}`
-  //       this.shareURL = url
-  //     })
-  //   }
-  handleSizeChange(val) {
-    this.queryDevice.limit = val
-    this.queryDeviceSensorStat(this.valId)
-  },
-  handleCurrentChange(val) {
-    this.queryDevice.page = val
-    this.queryDeviceSensorStat(this.valId)
-  },
-  handleSizeChange1(val) {
-    this.queryOperLogc.limit = val
-    this.queryOperLog(this.valId)
-  },
-  handleCurrentChange1(val) {
-    this.queryOperLogc.page = val
-    this.queryOperLog(this.valId)
-  },
-  handleSizeChange3(val) {
-    this.queryDeviceW.limit = val
-    this.queryDeviceWorkLog(this.valId)
-  },
-  handleCurrentChange3(val) {
-    this.queryDeviceW.page = val
-    this.queryDeviceWorkLog(this.valId)
-  }
+    getSld() {
+      // 获取二级域名
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      if (sld) {
+        return sld[1]
+      }
+      return ''
+    },
+    isDev() {
+      // 是开发环境？
+      const sld = this.getSld()
+      return sld === '' || sld === 'dev'
+    },
+    getShareToken() {
+      shareDeviceToken(this.form.wxDeviceId).then(res => {
+        const form = this.form
+
+        const url = `http://${
+          this.isDev() ? 'dev' : form.sld
+        }.hcocloud.com/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
+          form.id
+        }&token=${res.data}&customerId=${form.customerId}`
+
+        console.log('分享URL: ', url)
+        this.shareURL = url
+      })
+    },
+    handleSizeChange(val) {
+      this.queryDevice.limit = val
+      this.queryDeviceSensorStat(this.valId)
+    },
+    handleCurrentChange(val) {
+      this.queryDevice.page = val
+      this.queryDeviceSensorStat(this.valId)
+    },
+    handleSizeChange1(val) {
+      this.queryOperLogc.limit = val
+      this.queryOperLog(this.valId)
+    },
+    handleCurrentChange1(val) {
+      this.queryOperLogc.page = val
+      this.queryOperLog(this.valId)
+    },
+    handleSizeChange3(val) {
+      this.queryDeviceW.limit = val
+      this.queryDeviceWorkLog(this.valId)
+    },
+    handleCurrentChange3(val) {
+      this.queryDeviceW.page = val
+      this.queryDeviceWorkLog(this.valId)
+    }
   },
   components: {
     Operation,
     AMap,
-    VueQrcode
+    VueQrcode,
+    ShareList
   }
 }
 </script>

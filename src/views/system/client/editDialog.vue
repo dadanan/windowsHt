@@ -9,7 +9,7 @@
           <el-step title="安卓 APP 设置"></el-step>
           <el-step title="管理后台设置"></el-step>
         </el-steps>
-        <div v-if="createStep == 1">
+        <div v-if="createStep == 0">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="客户名称">
               <el-input v-model="baseInfo.name"></el-input>
@@ -44,7 +44,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 2">
+        <div v-if="createStep == 1">
           <el-table ref='typeTree' :data="typeList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
             <el-table-column type="selection">
             </el-table-column>
@@ -73,7 +73,7 @@
           <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="typeList.length">
           </el-pagination>
         </div>
-        <div v-if="createStep == 3">
+        <div v-if="createStep == 2">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="默认组名">
               <el-input v-model="h5Config.defaultTeamName"></el-input>
@@ -107,7 +107,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 4">
+        <div v-if="createStep == 3">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="APP 名称">
               <el-input v-model='androidConfig.name'></el-input>
@@ -171,7 +171,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-if="createStep == 5">
+        <div v-if="createStep == 4">
           <el-form label-position="left" label-width="150px">
             <el-form-item label="开放">
               <el-switch v-model='backendConfig.enableStatus'></el-switch>
@@ -207,8 +207,8 @@
     </el-scrollbar>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type=" primary " @click="backStep " v-if="createStep !==1">上一步</el-button>
-      <el-button type="primary " @click="nextStep " v-if="createStep !== 5">下一步</el-button>
+      <el-button type=" primary " @click="backStep " v-if="createStep !==0">上一步</el-button>
+      <el-button type="primary " @click="nextStep " v-if="createStep !== 4">下一步</el-button>
       <el-button type="primary " @click="updateDetail " v-else>确定</el-button>
     </div>
   </el-dialog>
@@ -284,7 +284,7 @@ export default {
         name: '',
         type: 0
       },
-      createStep: 1,
+      createStep: 0,
       // 动态功能
       dynamicTags: ['功能1', '功能2', '功能3'],
       selectedDeviceList: [],
@@ -308,7 +308,7 @@ export default {
     nextStep() {
       this.createStep++
 
-      if (this.createStep === 6) {
+      if (this.createStep === 5) {
         this.isCreateClientDialogVisible = false
         this.createStep = 0
       }
@@ -364,7 +364,7 @@ export default {
       backendConfig.enableStatus = backendConfig.enableStatus ? 1 : 2
 
       // 这样 htmlTypeIds 就不会影响到页面源数据了
-      const h5Config = Object.assign({}, this.h5Config)
+      const h5Config = JSON.parse(JSON.stringify(this.h5Config))
       // 拼接成一个字符串
       h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
 
@@ -448,11 +448,11 @@ export default {
     },
     visible(val) {
       if (val) {
-        this.createStep = 1
+        this.createStep = 0
       }
     },
     createStep(step) {
-      if (step === 2) {
+      if (step === 1) {
         let tempType = this.baseInfo.typeIds && this.baseInfo.typeIds.split(',')
         if (tempType) {
           const tempArray = this.typeList.filter(type =>

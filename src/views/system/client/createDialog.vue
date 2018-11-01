@@ -9,7 +9,7 @@
           <el-step title="安卓 APP 设置"></el-step>
           <el-step title="管理后台设置"></el-step>
         </el-steps>
-        <div v-if="createStep == 1">
+        <div v-if="createStep == 0">
           <el-form label-position="left" label-width="150px" :model='baseInfo' :rules='rules' ref='baseInfo'>
             <el-form-item label="客户名称" prop='name'>
               <el-input v-model="baseInfo.name"></el-input>
@@ -44,7 +44,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-else-if="createStep == 2">
+        <div v-else-if="createStep == 1">
           <el-table ref='typeTree' :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" class="mb20" border>
             <el-table-column type="selection">
             </el-table-column>
@@ -73,7 +73,7 @@
           <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="deviceList.length">
           </el-pagination>
         </div>
-        <div v-else-if="createStep == 3">
+        <div v-else-if="createStep == 2">
           <el-form label-position="left" label-width="150px" :model='h5Config' :rules='rules' ref='h5Config'>
             <el-form-item label="默认组名" prop='defaultTeamName'>
               <el-input v-model="h5Config.defaultTeamName"></el-input>
@@ -107,7 +107,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div v-else-if="createStep == 4">
+        <div v-else-if="createStep == 3">
           <el-form label-position="left" label-width="150px" :model='androidConfig' :rules='rules' ref='androidConfig'>
             <el-form-item label="APP 名称" prop="name">
               <el-input v-model='androidConfig.name'></el-input>
@@ -208,8 +208,8 @@
     </el-scrollbar>
     <div slot="footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
-      <el-button type="primary" @click="backStep" v-if="createStep !== 1">上一步</el-button>
-      <el-button type="primary" @click="nextStep" v-if="createStep < 5">下一步</el-button>
+      <el-button type="primary" @click="backStep" v-if="createStep !== 0">上一步</el-button>
+      <el-button type="primary" @click="nextStep" v-if="createStep < 4">下一步</el-button>
       <el-button type="primary" @click="saveDetail" v-else>确定</el-button>
     </div>
   </el-dialog>
@@ -329,7 +329,7 @@ export default {
         name: '',
         type: 0
       },
-      createStep: 1,
+      createStep: 0,
       // 动态功能
       selectedDeviceList: [],
       deviceList: [],
@@ -350,22 +350,22 @@ export default {
       this.createStep--
     },
     nextStep() {
-      if (this.createStep == 1) {
+      if (this.createStep == 0) {
         this.submitForm('baseInfo')
-      } else if (this.createStep == 2) {
+      } else if (this.createStep == 1) {
         if (this.selectedDeviceList.length > 0) {
           this.createStep++
         } else {
           this.$message.warning('请选择设备类型后再进行操作')
         }
-      } else if (this.createStep == 3) {
+      } else if (this.createStep == 2) {
         this.submitForm('h5Config')
-      } else if (this.createStep == 4) {
+      } else if (this.createStep == 3) {
         this.submitForm('androidConfig')
       }
-      if (this.createStep === 6) {
+      if (this.createStep === 5) {
         this.isCreateClientDialogVisible = false
-        this.createStep = 1
+        this.createStep = 0
       }
     },
     submitForm(formName) {
@@ -484,11 +484,11 @@ export default {
   watch: {
     visible(val) {
       if (val) {
-        this.createStep = 1
+        this.createStep = 0
       }
     },
     createStep(step) {
-      if (step === 2) {
+      if (step === 1) {
         this.$nextTick(() => {
           this.selectedDeviceList.forEach(item => {
             this.$refs.typeTree.toggleRowSelection(item)
