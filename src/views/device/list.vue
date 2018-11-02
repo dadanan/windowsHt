@@ -662,7 +662,7 @@ export default {
   },
   created() {
     const query = this.$route.query
-    if (query) {
+    if (Object.keys(query).length !== 0) {
       this.getList(query)
     } else {
       this.getList()
