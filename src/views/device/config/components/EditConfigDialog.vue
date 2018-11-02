@@ -23,7 +23,10 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号">
+        <!-- <el-form-item label="型号">
+          <el-input v-model="form.model"></el-input>
+        </el-form-item> -->
+        <el-form-item label="ModelNo">
           <el-input v-model="form.modelNo" disabled></el-input>
         </el-form-item>
         <el-form-item label="缩图">

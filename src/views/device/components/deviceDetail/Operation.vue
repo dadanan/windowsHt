@@ -68,8 +68,8 @@ export default {
         return data.filter(item => item.id === id)[0]
       }
       newQueryDetailByDeviceId({
-        deviceId: this.deviceId,
-        abilityIds: list.formatItemsList
+        deviceId: this.detailData.id,
+        abilityIds: list
           .filter(item => item.abilityId)
           .map(item => item.abilityId)
       }).then(res => {
@@ -108,14 +108,14 @@ export default {
     }
   },
   created() {
-    // this.selectById(this.detailData)
+    // this.selectById(this.detailData.modelId)
   },
   watch: {
     detailData(val) {
       if (!val) {
         return
       }
-      // this.selectById(id)
+      // this.selectById(val.modelId)
     }
   },
   destroyed() {

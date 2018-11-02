@@ -173,9 +173,10 @@ export function queryDeviceById(id) {
 // 查询设备详情
 export function newQueryDetailByDeviceId(data) {
   return request({
-    url: `/temp/api/device/newQueryDetailByDeviceId/`,
-    method: 'get',
-    data
+    url: `/temp/api/device/newQueryDetailByDeviceId`,
+    method: 'post',
+    data,
+    notLoading: true
   })
 }
 //工作日志
