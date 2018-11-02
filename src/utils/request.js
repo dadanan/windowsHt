@@ -1,7 +1,17 @@
 import axios from 'axios'
 import { Message, Loading } from 'element-ui'
 import store from '@/store'
-// import { getToken } from '@/utils/auth'
+
+// 里面的域名的response不显示错误
+const showNotError = [
+  'api/customer/selectBackendConfigBySLD',
+  'api/device/newQueryDetailByDeviceId'
+]
+
+// 如果url在白名单里
+const macthUrl = responseURL => {
+  return showNotError.filter(url => responseURL.match(url)).length !== 0
+}
 
 let loading
 const startLoading = () => {
@@ -29,7 +39,9 @@ service.interceptors.request.use(
     //   // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     //   config.headers['X-Token'] = getToken()
     // }
-    startLoading()
+    if (!config.notLoading) {
+      startLoading()
+    }
     return config
   },
   error => {
@@ -54,12 +66,9 @@ service.interceptors.response.use(
     endLoading()
     const res = response.data
     if (res.code !== 200) {
-      if (
-        response.request.responseURL.match(
-          'api/customer/selectBackendConfigBySLD'
-        )
-      ) {
-        return Promise.reject('该客户不存在！')
+      const responseURL = response.request.responseURL
+      if (macthUrl(responseURL)) {
+        return Promise.reject('code: 500')
       }
       Message({
         message: res.msg,

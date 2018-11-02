@@ -264,9 +264,9 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label-width='0'>
-            <el-radio-group v-model='showDeviceWork' @change="showDeviceWorkedChange">
-              <el-radio :label="true">工作/租赁中</el-radio>
-              <el-radio :label="false">关机/空闲</el-radio>
+            <el-radio-group v-model='showDevicePower' @change="showDevicePoweredChange">
+              <el-radio :label="true">开机</el-radio>
+              <el-radio :label="false">关机</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -361,7 +361,8 @@ export default {
       deviceColumnControlDialogVisible: false,
       query: {
         limit: 100,
-        page: 1
+        page: 1,
+        status: 1
       },
       total: 1,
       detailData: {},
@@ -370,7 +371,7 @@ export default {
       showDeviceAllocate: false,
       showDeviceEnable: false,
       showDeviceOnline: false,
-      showDeviceWork: false,
+      showDevicePower: false,
       unassignStatus: ''
     }
   },
@@ -422,8 +423,8 @@ export default {
       }
       this.getList()
     },
-    showDeviceWorkedChange() {
-      if (!this.showDeviceWork) {
+    showDevicePoweredChange() {
+      if (!this.showDevicePower) {
         this.query.powerStatus = 0
       } else {
         this.query.powerStatus = 1
@@ -661,7 +662,7 @@ export default {
   },
   created() {
     const query = this.$route.query
-    if (query) {
+    if (Object.keys(query).length !== 0) {
       this.getList(query)
     } else {
       this.getList()
