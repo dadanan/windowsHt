@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column prop="source" label="来源" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column label="功能项" show-overflow-tooltip sortable>
+        <el-table-column label="功能项" show-overflow-tooltip>
           <template slot-scope="scope">
             {{ scope.row.deviceTypeAbilitys.map(el => el.abilityName).join('、') }}
           </template>

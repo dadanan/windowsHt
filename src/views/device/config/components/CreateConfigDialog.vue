@@ -172,6 +172,16 @@
             <el-button type="danger" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
+        <el-form-item v-if='modifyData.abilityType === 6' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
+          <div class="input-group">
+            <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
+            <el-input v-model="option.defaultVal" placeholder="默认值"></el-input>
+            <el-input v-model="option.minVal" placeholder="最小值"></el-input>
+            <el-input v-model="option.maxVal" placeholder="最大值"></el-input>
+            <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="danger" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -258,7 +268,8 @@ export default {
         2: '单选类',
         3: '多选类',
         4: '阈值类',
-        5: '阈值选择类'
+        5: '阈值选择类',
+        6: '设备传参类'
       },
       software: '',
       rules: {
@@ -307,13 +318,14 @@ export default {
                   abilityOptionId: iItem.id,
                   definedName: iItem.optionName,
                   maxVal: iItem.maxVal,
+                  defaultVal:iItem.defaultVal,
                   minVal: iItem.minVal,
                   status: iItem.status
                 }
               })
           }
         })
-
+      console.log(newArray)
       // 调整第四步「版式配置」的数据结构
       const modelFormatPages =
         this.pageOfForamt &&

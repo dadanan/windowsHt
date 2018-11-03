@@ -194,6 +194,17 @@
             <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
         </el-form-item>
+        <el-form-item v-if='modifyData.abilityType === 6' v-for="(option, i) in modifyData.deviceModelAbilityOptions" :key="i" :label="'选项 ' + i">
+          <div class="input-group">
+            <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
+            <el-input v-model="option.defaultVal" placeholder="默认值"></el-input>
+            <el-input v-model="option.maxVal" placeholder="最小值"></el-input>
+            <el-input v-model="option.minVal" placeholder="最大值"></el-input>
+            <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
+            <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
+            <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
+          </div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -233,7 +244,7 @@ export default {
         showStatus: true,
         devicePoolCount: '',
         name: '',
-        modelNo: '',
+        modelCode: '',
         remark: '',
         icon: ''
       },
@@ -318,7 +329,8 @@ export default {
         2: '单选类',
         3: '多选类',
         4: '阈值类',
-        5: '阈值选择类'
+        5: '阈值选择类',
+        6: '设备传参类'
       },
       updateStatus: {
         0: '',
@@ -364,6 +376,7 @@ export default {
                 abilityOptionId: iItem.abilityOptionId,
                 definedName: iItem.definedName,
                 maxVal: iItem.maxVal,
+                defaultVal:iItem.defaultVal,
                 minVal: iItem.minVal,
                 status: iItem.status
               }
