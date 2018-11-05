@@ -222,3 +222,12 @@ export function updateRelation(data) {
     data
   })
 }
+
+//发送指令
+export function sendFunc(data) {
+  return request({
+    url: `/temp/api/device/sendFunc`,
+    method: 'post',
+    data
+  })
+}
