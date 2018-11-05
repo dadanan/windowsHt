@@ -28,6 +28,7 @@ const endLoading = () => {
 // create an axios instance
 const service = axios.create({
   baseURL: window.location.origin, // api的base_url,为了应对多个二级域名，因此baseUrl不写死
+  // baseURL: 'http://pro.hcocloud.com',
   timeout: 5000 // request timeout
 })
 

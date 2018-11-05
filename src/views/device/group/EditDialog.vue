@@ -18,7 +18,7 @@
           <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
         </el-form-item>
         <el-form-item label="视频">
-          <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+          <video-uploader :maxSize='50' :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
         </el-form-item>
         <el-form-item label="介绍" prop="sceneDescription">
           <el-input type='textarea' :rows='3' v-model="form.sceneDescription"></el-input>
@@ -158,7 +158,6 @@ export default {
       const match = url.match('aliyuncs.com/(.*)')
       return match ? match[1] : ''
     },
-
     handleCancel() {
       this.$emit('update:visible', false)
     }

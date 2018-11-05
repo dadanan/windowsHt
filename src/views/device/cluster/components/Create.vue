@@ -43,7 +43,7 @@
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
       <el-form-item label="视频">
-        <video-uploader :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+        <video-uploader :list='form.videosList' :multiple='true' :maxSize='50' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
       </el-form-item>
       <el-form-item label="项目介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>

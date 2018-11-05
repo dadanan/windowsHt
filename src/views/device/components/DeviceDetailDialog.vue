@@ -7,7 +7,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name" style="width:74%"></el-input>
+                  <el-input v-model="form.name" style="width:74%" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -179,10 +179,10 @@
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
           <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
-          <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
+          <!-- <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
             <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
             <el-button type="primary" slot="reference">更改设备地址</el-button>
-          </el-popover>
+          </el-popover> -->
         </el-button-group>
       </el-tab-pane>
     </el-tabs>
@@ -265,7 +265,7 @@ export default {
     },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
-      this.queryOperLog(val.id)
+      // this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.getShareToken()
       this.queryDeviceWorkLog(val.id)
@@ -309,17 +309,6 @@ export default {
         this.form.location = location
         this.$message({
           message: '设置设备位置成功！',
-          type: 'success'
-        })
-      })
-    },
-    updateDeviceName() {
-      updateDevice({
-        id: this.form.id,
-        name: this.form.name
-      }).then(() => {
-        this.$message({
-          message: '名称修改成功！',
           type: 'success'
         })
       })

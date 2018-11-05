@@ -151,6 +151,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
             <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
             <el-button v-if='isPro()' type="danger" icon="el-icon-delete" @click="deleteCompletely(scope.row)" circle></el-button>
           </template>
@@ -172,6 +173,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible" :detail-data='detailData'></device-detail-dialog>
+    <device-edit-dialog :visible.sync="deviceEditDialogVisible" :edit-data='editData' @update-data='updateData'></device-edit-dialog>
     <device-export-dialog :visible.sync="deviceExportDialogVisible" :total="total" :query="query" :deviceColumnVisible="deviceColumnVisible"></device-export-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
@@ -292,6 +294,7 @@ import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
+import DeviceEditDialog from './components/DeviceEditDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
 import {
   getList,
@@ -316,6 +319,7 @@ export default {
     DeviceBindDialog,
     DeviceUnbindDialog,
     DeviceDetailDialog,
+    DeviceEditDialog,
     DeviceExportDialog
   },
   data() {
@@ -334,6 +338,7 @@ export default {
       deviceBindDialogVisible: false,
       deviceUnbindDialogVisible: false,
       deviceDetailDialogVisible: false,
+      deviceEditDialogVisible: false,
       deviceExportDialogVisible: false,
       selectedDeviceList: [],
       deviceColumnVisible: {
@@ -366,6 +371,7 @@ export default {
       },
       total: 1,
       detailData: {},
+      editData: {},
       showDeviceDeleted: false,
       showDeviceBind: false,
       showDeviceAllocate: false,
@@ -467,6 +473,12 @@ export default {
         this.detailData = res.data
       })
     },
+    showEdit(data) {
+      queryDeviceById(data.id).then(res => {
+        this.deviceEditDialogVisible = true
+        this.editData = res.data
+      })
+    },
     getSld() {
       // 获取二级域名
       const sld = location.href.match(/:\/\/(.*?).hcocloud/)
@@ -542,6 +554,13 @@ export default {
         item.onlineStatus = 0
       })
       this.deviceList.push(...list)
+    },
+    updateData(data) {
+      this.deviceList.map(item => {
+        if (item.id === data.id) {
+          Object.assign(item, data)
+        }
+      })
     },
     deleteOneDeviceHandler() {
       this.isOperable().then(_ => {
