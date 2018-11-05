@@ -318,7 +318,6 @@ export default {
     },
     getList() {
       select(this.listQuery).then(res => {
-        console.log(res.data)
         this.list = res.data
       })
     },
