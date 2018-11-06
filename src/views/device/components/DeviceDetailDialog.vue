@@ -268,7 +268,7 @@ export default {
     },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
-      // this.queryOperLog(val.id)
+      this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       this.getShareToken()
       this.queryDeviceWorkLog(val.id)

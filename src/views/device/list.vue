@@ -27,8 +27,6 @@
               </el-table-column>
               <el-table-column prop="childId" label="从设备ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
               </el-table-column>
-              <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
-              </el-table-column>
               <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
                 <template slot-scope="scope">
                   {{scope.row.assignStatus === 1 ? '已分配' : '未分配'}}
@@ -63,8 +61,6 @@
               </el-table-column>
               <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
               </el-table-column>
-              <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
-              </el-table-column>
               <el-table-column label="创建时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
                 <template slot-scope="scope">
                   {{new Date(scope.row.birthTime).toLocaleString()}}
@@ -98,8 +94,6 @@
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
         </el-table-column>
         <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.customerName">
-        </el-table-column>
-        <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
         </el-table-column>
         <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
           <template slot-scope="scope">
@@ -191,9 +185,6 @@
           <el-checkbox v-model="deviceColumnVisible.customerName">归属</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
-        </el-form-item>
-        <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -214,11 +205,11 @@
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.id">设备ID</el-checkbox>
         </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
-        </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.deviceNo">设备ID</el-checkbox>
+        </el-form-item> -->
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelNo">型号</el-checkbox>
@@ -358,7 +349,6 @@ export default {
         enableStatus: true,
         groupId: true,
         id: true,
-        modelId: true,
         groupName: true,
         powerStatus: true,
         onlineStatus: true,
