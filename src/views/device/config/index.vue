@@ -11,9 +11,9 @@
       <el-table @selection-change="handleSelectionChange" :data="list" v-loading.body="loading" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="id" label="型号ID" show-overflow-tooltip sortable>
+        <el-table-column prop="modelNo" label="modelNo" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable>
+        <el-table-column prop="modelCode" label="型号" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable>
         </el-table-column>

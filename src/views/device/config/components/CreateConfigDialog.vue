@@ -19,6 +19,9 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="型号">
+        <el-input v-model="form.modelCode"></el-input>
+      </el-form-item>
       <template v-if="form.typeId">
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
@@ -223,6 +226,7 @@ export default {
         productId: '',
         customer: '',
         name: '',
+        modelCode: '',
         remark: '',
         icon: ''
       },
@@ -318,14 +322,13 @@ export default {
                   abilityOptionId: iItem.id,
                   definedName: iItem.optionName,
                   maxVal: iItem.maxVal,
-                  defaultVal:iItem.defaultVal,
+                  defaultVal: iItem.defaultVal,
                   minVal: iItem.minVal,
                   status: iItem.status
                 }
               })
           }
         })
-      console.log(newArray)
       // 调整第四步「版式配置」的数据结构
       const modelFormatPages =
         this.pageOfForamt &&
