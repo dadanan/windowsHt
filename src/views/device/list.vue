@@ -65,7 +65,7 @@
               </el-table-column>
               <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
               </el-table-column>
-              <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+              <el-table-column label="创建时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
                 <template slot-scope="scope">
                   {{new Date(scope.row.birthTime).toLocaleString()}}
                 </template>
@@ -74,6 +74,8 @@
                 <template slot-scope="scope">
                   {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
                 </template>
+              </el-table-column>
+              <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
               </el-table-column>
               <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
               </el-table-column>
@@ -135,7 +137,7 @@
         </el-table-column>
         <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
         </el-table-column>
-        <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+        <el-table-column label="创建时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
           <template slot-scope="scope">
             {{new Date(scope.row.birthTime).toLocaleString()}}
           </template>
@@ -144,6 +146,8 @@
           <template slot-scope="scope">
             {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
           </template>
+        </el-table-column>
+        <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
         </el-table-column>
@@ -220,10 +224,13 @@
           <el-checkbox v-model="deviceColumnVisible.modelNo">型号</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.birthTime">注册时间</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.birthTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.lastUpdateTime">最后上线时间</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.createUser">创建人</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
@@ -361,6 +368,7 @@ export default {
         lastUpdateTime: false,
         bindCustomer: false,
         location: false,
+        createUser: false,
         manageName: true
       },
       deviceColumnControlDialogVisible: false,

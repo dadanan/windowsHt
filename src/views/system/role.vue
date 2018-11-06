@@ -16,8 +16,6 @@
         </el-table-column>
         <el-table-column prop="creater" label="创建人" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createUserId" label="创建用户" show-overflow-tooltip sortable>
-        </el-table-column>
         <el-table-column prop="updateUserId" label="更新用户" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="lastUpdateTime" label="上次修改时间" show-overflow-tooltip sortable>

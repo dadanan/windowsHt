@@ -41,7 +41,7 @@ export default {
         manageName: '',
         location: ''
       },
-      select: { province: '广东省', city: '广州市', area: '海珠区' }
+      select: { province: '', city: '', area: '' }
     }
   },
   methods: {
@@ -71,10 +71,12 @@ export default {
   watch: {
     editData(val) {
       const data = JSON.parse(JSON.stringify(val))
-      const location = data.location.split(',')
-      this.select.province = location[0]
-      this.select.city = location[1]
-      this.select.area = location[2]
+      if (data.location) {
+        const location = data.location.split(',')
+        this.select.province = location[0]
+        this.select.city = location[1]
+        this.select.area = location[2]
+      }
 
       this.form = data
     }

@@ -27,6 +27,9 @@
                 <el-form-item label="项目名">
                   <el-input v-model="form.groupName" disabled></el-input>
                 </el-form-item>
+                <el-form-item label="管理名称">
+                  <el-input v-model="form.manageName" disabled></el-input>
+                </el-form-item>
                 <el-form-item label="在线状态">
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
