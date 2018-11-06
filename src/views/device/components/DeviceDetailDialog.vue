@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
+  <el-dialog class='device-detail-container' top='4vh' width='95%' :close-on-click-modal=false title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div class="flex mb20">
       <div class="flex-item flex-item--full">
         <el-card class="el-card--solid">
@@ -411,6 +411,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.device-detail-container {
+  margin-bottom: 2rem;
+}
 .flex {
   display: flex;
   margin-left: -10px;

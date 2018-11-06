@@ -365,7 +365,7 @@ export default {
         modelName: false,
         modelNo: false,
         birthTime: false,
-        lastUpdateTime: false,
+        lastUpdateTime: true,
         bindCustomer: false,
         location: false,
         createUser: false,

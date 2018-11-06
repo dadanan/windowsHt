@@ -1,13 +1,5 @@
 <template>
-  <el-dialog :visible="visible"
-             :title="title"
-             :width="fullscreen ? 'auto' : width"
-             :before-close="handleClose"
-             :close-on-click-modal=false
-             :fullscreen="fullscreen"
-             @closed="handleClosed"
-             show-close
-             top='4vh'>
+  <el-dialog :visible="visible" :title="title" :width="fullscreen ? 'auto' : width" :before-close="handleClose" :close-on-click-modal=false :fullscreen="fullscreen" @closed="handleClosed" show-close top='4vh'>
     <slot></slot>
   </el-dialog>
 </template>
