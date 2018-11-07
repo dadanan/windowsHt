@@ -199,7 +199,17 @@ export const dashboardData = {
           title: {
             text: '设备增加趋势表'
           },
-          tooltip: {},
+          tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                var htmlStr ='<div>';
+                htmlStr += params.name + '<br/>';//x轴的名称
+                htmlStr += '<span style="margin-right:5px;display:inline-block;width:10px;height:10px;border-radius:5px;"></span>';
+                htmlStr += params.name + '：'+params.data + '台';
+                htmlStr += '</div>';
+                return htmlStr; 
+            }
+          },
           legend: {},
           xAxis: {
             data: [
@@ -646,7 +656,17 @@ export const realData = {
           title: {
             text: '设备增加趋势表'
           },
-          tooltip: {},
+          tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+            var htmlStr ='<div>';
+            htmlStr += params.name + '<br/>';//x轴的名称
+            htmlStr += '<span style="margin-right:5px;display:inline-block;width:10px;height:10px;border-radius:5px;"></span>';
+            htmlStr += params.name + '：'+params.data + '台';
+            htmlStr += '</div>';
+            return htmlStr; 
+        }
+          },
           legend: {},
           xAxis: {
             data: [

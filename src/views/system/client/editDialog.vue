@@ -118,10 +118,10 @@
             <el-form-item label="APP 软件版本">
               <el-input v-model='androidConfig.version'></el-input>
             </el-form-item>
-            <el-form-item label="APP安装包">
+            <el-form-item label="上传安装包">
               <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
             </el-form-item>
-            <el-form-item label="客户公众号二维码">
+            <el-form-item label="公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
             </el-form-item>
             <el-form-item label="设备切换密码">

@@ -9,7 +9,7 @@
           <el-input v-model="addForm.mac" placeholder="设备 MAC"></el-input>
           <el-button type="primary" class="add" @click="addDevice">添加</el-button>
         </div>
-        <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
+        <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb24">
           <el-table-column type="selection"></el-table-column>
           <el-table-column type="index"></el-table-column>
           <el-table-column label="名称" show-overflow-tooltip sortable>
@@ -196,6 +196,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.main-scroll{
+  width: 1200px;
+}
 .addForm {
   display: flex;
   margin-bottom: 15px;

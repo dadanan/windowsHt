@@ -75,3 +75,39 @@ export function selectByUserId(data) {
     method: 'get'
  })
 }
+// 用户自己修改基本信息
+
+export function updateOwnerBaseInfo(data) {
+  return request({
+    url: '/dev/api/customer/updateOwnerBaseInfo',
+    method: 'post',
+    data
+ })
+}
+// 用户自己修改H5APP设置
+
+export function updateOwnerH5Info(data) {
+  return request({
+    url: '/dev/api/customer/updateOwnerH5Info',
+    method: 'post',
+    data
+ })
+}
+// 用户自己修改安卓设置
+
+export function updateOwnerAndroidInfo(data) {
+  return request({
+    url: '/dev/api/customer/updateOwnerAndroidInfo',
+    method: 'post',
+    data
+ })
+}
+// 用户自己修改后台设置
+
+export function updateOwnerBackendInfo(data) {
+  return request({
+    url: '/dev/api/customer/updateOwnerBackendInfo',
+    method: 'post',
+    data
+ })
+}

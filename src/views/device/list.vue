@@ -9,9 +9,9 @@
           <el-button type="primary" v-if='isPro()' @click='handleDeviceRecover'>恢复</el-button>
           <el-button type="primary" @click="handleDeviceAllocate">分配</el-button>
           <el-button type="primary" @click="handleDeviceFree">召回</el-button>
-          <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
-          <el-button type="primary" @click="handleDeviceAble">启用</el-button>
-          <el-button type="primary" @click="handleDeviceCluster">项目</el-button>
+          <!-- <el-button type="primary" @click="handleDeviceDisable">禁用</el-button>
+          <el-button type="primary" @click="handleDeviceAble">启用</el-button> -->
+          <el-button type="primary" @click="handleDeviceCluster">创建项目</el-button>
           <el-button type="primary" @click="handleDeviceBind">绑定</el-button>
           <el-button type="primary" @click="handleDeviceUnbind">解绑</el-button>
           <el-button type="primary" @click="deviceExportDialogVisible = true">导出</el-button>
@@ -39,11 +39,11 @@
                   {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </template>
               </el-table-column>
-              <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+              <!-- <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
                 <template slot-scope="scope">
                   {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
                 <template slot-scope="scope">
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
@@ -93,27 +93,27 @@
         </el-table-column>
         <el-table-column prop="name" label="名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
         </el-table-column>
-        <el-table-column prop="mac" label="MAC" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
+        <el-table-column prop="mac" label="MAC" show-overflow-tooltip v-if="deviceColumnVisible.mac">
         </el-table-column>
         <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.customerName">
         </el-table-column>
         <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
         </el-table-column>
-        <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
+        <el-table-column label="分配状态" show-overflow-tooltip v-if="deviceColumnVisible.assignStatus">
           <template slot-scope="scope">
             {{scope.row.assignStatus === 1 ? '已分配' : '未分配'}}
           </template>
         </el-table-column>
-        <el-table-column label="绑定状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.bindStatus">
+        <el-table-column label="绑定状态" show-overflow-tooltip v-if="deviceColumnVisible.bindStatus">
           <template slot-scope="scope">
             {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
           </template>
         </el-table-column>
-        <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+        <!-- <el-table-column label="启用状态" show-overflow-tooltip v-if="deviceColumnVisible.enableStatus">
           <template slot-scope="scope">
             {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="groupName" label="项目名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
@@ -121,7 +121,7 @@
             {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
           </template>
         </el-table-column>
-        <el-table-column label="工作状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.powerStatus">
+        <el-table-column label="工作状态" show-overflow-tooltip v-if="deviceColumnVisible.powerStatus">
           <template slot-scope="scope">
             <template v-if='scope.row.onlineStatus'>
               {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
@@ -133,21 +133,21 @@
         </el-table-column>
         <el-table-column prop="modelName" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
         </el-table-column>
-        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
+        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip v-if="deviceColumnVisible.modelNo">
         </el-table-column>
-        <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+        <el-table-column label="注册时间" show-overflow-tooltip v-if="deviceColumnVisible.birthTime">
           <template slot-scope="scope">
             {{new Date(scope.row.birthTime).toLocaleString()}}
           </template>
         </el-table-column>
-        <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+        <el-table-column label="最后上线时间" show-overflow-tooltip v-if="deviceColumnVisible.lastUpdateTime">
           <template slot-scope="scope">
             {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
           </template>
         </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
         </el-table-column>
-        <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
+        <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip v-if="deviceColumnVisible.manageName">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -251,12 +251,12 @@
               <el-radio :label="false">未分配</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label-width='0'>
+          <!-- <el-form-item label-width='0'>
             <el-radio-group v-model='showDeviceEnable' @change="showDeviceEnabledChange">
               <el-radio :label="true">已启用</el-radio>
               <el-radio :label="false">已禁用</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label-width='0'>
             <el-radio-group v-model='showDeviceOnline' @change="showDeviceOnlineChange">
               <el-radio :label="true">在线</el-radio>
@@ -339,10 +339,10 @@ export default {
       deviceColumnVisible: {
         name: true,
         mac: true,
-        customerName: true,
+        customerName: false,
         deviceType: true,
-        assignStatus: true,
-        bindStatus: true,
+        assignStatus: false,
+        bindStatus: false,
         enableStatus: true,
         groupId: true,
         id: true,
@@ -353,9 +353,9 @@ export default {
         modelName: false,
         modelNo: false,
         birthTime: false,
-        lastUpdateTime: false,
+        lastUpdateTime: true,
         bindCustomer: false,
-        location: false,
+        location: true,
         manageName: true
       },
       deviceColumnControlDialogVisible: false,
@@ -517,6 +517,7 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
+        console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount
