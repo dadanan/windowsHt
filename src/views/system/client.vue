@@ -111,7 +111,7 @@ export default {
         typeIds: true,
         administrator: true,
         remark: true,
-        deviceTotal: false,
+        deviceTotal: true,
         orderTotal: false,
         isDashboardEnabled: false,
         isAndroidEnabled: false,
@@ -163,6 +163,8 @@ export default {
     },
     getCustomer() {
       select(this.listQuery).then(res => {
+        console.log(res.data)
+        console.log(111)
         const data = res.data
         this.clientList = data.customerVos
         this.total = data.totalCount

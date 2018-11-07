@@ -7,7 +7,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name" style="width:74%" disabled></el-input>
+                  <el-input v-model="form.name" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -177,21 +177,17 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label='设备设置' name='6'>
+      <!-- <el-tab-pane label='设备设置' name='6'>
         <el-button-group>
           <el-popover placement="right" trigger="click">
             <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
           <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
-          <!-- <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
-            <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
-            <el-button type="primary" slot="reference">更改设备地址</el-button>
-          </el-popover> -->
         </el-button-group>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
-    <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list>
+    <!-- <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list> -->
   </el-dialog>
 </template>
 
@@ -205,7 +201,7 @@ import {
   updateDevice, //地理位置
   shareDeviceToken, //分享设备的token
   queryDeviceWorkLog, // 工作日志
-  deviceShareList
+  // deviceShareList
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -276,15 +272,15 @@ export default {
       this.getShareToken()
       this.queryDeviceWorkLog(val.id)
     },
-    getDeviceShareList() {
-      deviceShareList(this.form.id).then(res => {
-        this.shareData = {
-          deviceId: this.form.id,
-          list: res.data
-        }
-        this.shareListVisible = true
-      })
-    },
+    // getDeviceShareList() {
+    //   deviceShareList(this.form.id).then(res => {
+    //     this.shareData = {
+    //       deviceId: this.form.id,
+    //       list: res.data
+    //     }
+    //     this.shareListVisible = true
+    //   })
+    // },
     showDistrict() {
       // 显示地区卡片
       const location = this.form.location

@@ -68,7 +68,12 @@
               </el-table-column>
               <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
                 <template slot-scope="scope">
-                  {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+                  <template v-if='scope.row.lastUpdateTime'>
+                    {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
                 </template>
               </el-table-column>
               <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
@@ -138,7 +143,12 @@
         </el-table-column>
         <el-table-column label="最后上线时间" show-overflow-tooltip v-if="deviceColumnVisible.lastUpdateTime">
           <template slot-scope="scope">
-            {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+            <template v-if='scope.row.lastUpdateTime'>
+              {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+            </template>
+            <template v-else>
+              - -
+            </template>
           </template>
         </el-table-column>
         <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
@@ -473,6 +483,7 @@ export default {
     },
     showEdit(data) {
       queryDeviceById(data.id).then(res => {
+        console.log(res.data)
         this.deviceEditDialogVisible = true
         this.editData = res.data
       })
