@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)" fullscreen>
+  <el-dialog class='device-detail-container' top='4vh' width='95%' :close-on-click-modal=false title="设备详情" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <div class="flex mb20">
       <div class="flex-item flex-item--full">
         <el-card class="el-card--solid">
@@ -7,7 +7,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name" style="width:74%"></el-input>
+                  <el-input v-model="form.name" style="width:74%" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="MAC">
                   <el-input v-model="form.mac" disabled></el-input>
@@ -26,6 +26,9 @@
                 </el-form-item> -->
                 <el-form-item label="项目名">
                   <el-input v-model="form.groupName" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="管理名称">
+                  <el-input v-model="form.manageName" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="在线状态">
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
@@ -181,10 +184,10 @@
             <el-button type="primary" slot="reference">分享</el-button>
           </el-popover>
           <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
-          <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
+          <!-- <el-popover placement="top" trigger="click" @after-enter='showDistrict'>
             <area-cascader ref='areaCascader' @change='districtChanged' :level="1" type="text" placeholder="请选择地区" v-model="selected" :data="$pcaa"></area-cascader>
             <el-button type="primary" slot="reference">更改设备地址</el-button>
-          </el-popover>
+          </el-popover> -->
         </el-button-group>
       </el-tab-pane>
     </el-tabs>
@@ -316,17 +319,6 @@ export default {
         })
       })
     },
-    updateDeviceName() {
-      updateDevice({
-        id: this.form.id,
-        name: this.form.name
-      }).then(() => {
-        this.$message({
-          message: '名称修改成功！',
-          type: 'success'
-        })
-      })
-    },
     // 工作日志
     queryDeviceWorkLog(id) {
       queryDeviceWorkLog({
@@ -422,6 +414,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.device-detail-container {
+  margin-bottom: 2rem;
+}
 .flex {
   display: flex;
   margin-left: -10px;

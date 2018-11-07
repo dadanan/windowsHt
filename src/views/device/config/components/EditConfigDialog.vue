@@ -23,9 +23,9 @@
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="型号">
-          <el-input v-model="form.model"></el-input>
-        </el-form-item> -->
+        <el-form-item label="型号">
+          <el-input v-model="form.modelCode"></el-input>
+        </el-form-item>
         <el-form-item label="ModelNo">
           <el-input v-model="form.modelNo" disabled></el-input>
         </el-form-item>
@@ -245,6 +245,7 @@ export default {
         devicePoolCount: '',
         name: '',
         modelCode: '',
+        modelNo: '',
         remark: '',
         icon: ''
       },
@@ -376,7 +377,7 @@ export default {
                 abilityOptionId: iItem.abilityOptionId,
                 definedName: iItem.definedName,
                 maxVal: iItem.maxVal,
-                defaultVal:iItem.defaultVal,
+                defaultVal: iItem.defaultVal,
                 minVal: iItem.minVal,
                 status: iItem.status
               }

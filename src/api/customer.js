@@ -69,9 +69,8 @@ export function updateWebsiteInfo(data) {
 // 根据客户管理员主键查询客户详情
 
 export function selectByUserId(data) {
-  console.log(data)
   return request({
-    url: `/dev/api/customer/selectByUserId/${data}`,
+    url: `/temp/api/customer/selectByUserId/${data}`,
     method: 'get'
  })
 }

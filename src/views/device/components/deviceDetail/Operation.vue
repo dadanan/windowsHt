@@ -74,7 +74,12 @@ export default {
      * @param abilityId 版式配置项选择的功能项id
      */
     isDoubleMachine(abilityId) {
-      const option = this.getAbilityData(abilityId).deviceModelAbilityOptions
+      const data = this.getAbilityData(abilityId)
+      if (!data) {
+        return false
+      }
+
+      const option = data.deviceModelAbilityOptions
       return option[0].optionValue === '280' || option[1].optionValue === '280'
     },
     /**
@@ -201,12 +206,31 @@ export default {
 
         data.abilitysList.forEach(item => {
           item['currValue'] = ''
-          item.deviceModelAbilityOptions &&
-            item.deviceModelAbilityOptions.forEach(iItem => {
-              iItem.isChecked = false
-            })
+          if (!item.deviceModelAbilityOptions) {
+            return
+          }
+
+          item.deviceModelAbilityOptions = item.deviceModelAbilityOptions.filter(
+            item =>
+              item.updateStatus !== 3 ||
+              item.updateStatus !== -1 ||
+              item.status !== 2 ||
+              item.status !== 3
+          )
+
+          item.deviceModelAbilityOptions.forEach(iItem => {
+            iItem.isChecked = false
+          })
         })
-        this.abilitysList = data.abilitysList
+
+        // 筛选功能项数据，去掉updateStatus:3或者-1的还有status:3、2的
+        this.abilitysList = data.abilitysList.filter(
+          item =>
+            item.updateStatus !== 3 ||
+            item.updateStatus !== -1 ||
+            item.status !== 2 ||
+            item.status !== 3
+        )
 
         let list = data.deviceModelFormat.modelFormatPages
         if (list[0]) {

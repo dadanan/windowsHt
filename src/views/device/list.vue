@@ -27,8 +27,6 @@
               </el-table-column>
               <el-table-column prop="childId" label="从设备ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.mac">
               </el-table-column>
-              <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
-              </el-table-column>
               <el-table-column label="分配状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.assignStatus">
                 <template slot-scope="scope">
                   {{scope.row.assignStatus === 1 ? '已分配' : '未分配'}}
@@ -63,9 +61,7 @@
               </el-table-column>
               <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
               </el-table-column>
-              <el-table-column prop="modelId" label="设备型号ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelId">
-              </el-table-column>
-              <el-table-column label="注册时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
+              <el-table-column label="创建时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
                 <template slot-scope="scope">
                   {{new Date(scope.row.birthTime).toLocaleString()}}
                 </template>
@@ -74,6 +70,8 @@
                 <template slot-scope="scope">
                   {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
                 </template>
+              </el-table-column>
+              <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
               </el-table-column>
               <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
               </el-table-column>
@@ -96,8 +94,6 @@
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip v-if="deviceColumnVisible.mac">
         </el-table-column>
         <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable v-if="deviceColumnVisible.customerName">
-        </el-table-column>
-        <el-table-column prop="type" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.type">
         </el-table-column>
         <el-table-column label="分配状态" show-overflow-tooltip v-if="deviceColumnVisible.assignStatus">
           <template slot-scope="scope">
@@ -135,7 +131,7 @@
         </el-table-column>
         <el-table-column prop="modelNo" label="型号" show-overflow-tooltip v-if="deviceColumnVisible.modelNo">
         </el-table-column>
-        <el-table-column label="注册时间" show-overflow-tooltip v-if="deviceColumnVisible.birthTime">
+        <el-table-column label="创建时间" show-overflow-tooltip v-if="deviceColumnVisible.birthTime">
           <template slot-scope="scope">
             {{new Date(scope.row.birthTime).toLocaleString()}}
           </template>
@@ -145,12 +141,15 @@
             {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
           </template>
         </el-table-column>
+        <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
+        </el-table-column>
         <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
         </el-table-column>
         <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip v-if="deviceColumnVisible.manageName">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
             <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
             <el-button v-if='isPro()' type="danger" icon="el-icon-delete" @click="deleteCompletely(scope.row)" circle></el-button>
           </template>
@@ -172,6 +171,7 @@
     <device-bind-dialog :visible.sync="deviceBindDialogVisible" :device-list="selectedDeviceList"></device-bind-dialog>
     <device-unbind-dialog :visible.sync="deviceUnbindDialogVisible" :device-list="selectedDeviceList"></device-unbind-dialog>
     <device-detail-dialog :visible.sync="deviceDetailDialogVisible" :detail-data='detailData'></device-detail-dialog>
+    <device-edit-dialog :visible.sync="deviceEditDialogVisible" :edit-data='editData' @update-data='updateData'></device-edit-dialog>
     <device-export-dialog :visible.sync="deviceExportDialogVisible" :total="total" :query="query" :deviceColumnVisible="deviceColumnVisible"></device-export-dialog>
     <el-dialog top='4vh' :close-on-click-modal=false title="自定义显示列" :visible.sync="deviceColumnControlDialogVisible">
       <el-form inline>
@@ -183,9 +183,6 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.customerName">归属</el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.bindStatus">绑定状态</el-checkbox>
@@ -208,20 +205,23 @@
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.id">设备ID</el-checkbox>
         </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelId">设备型号ID</el-checkbox>
-        </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.deviceNo">设备ID</el-checkbox>
+        </el-form-item> -->
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.modelNo">型号</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.birthTime">注册时间</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.birthTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.lastUpdateTime">最后上线时间</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.createUser">创建人</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.location">地理位置</el-checkbox>
@@ -292,6 +292,7 @@ import DeviceClusterControlDialog from './components/DeviceClusterControlDialog'
 import DeviceBindDialog from './components/DeviceBindDialog'
 import DeviceUnbindDialog from './components/DeviceUnbindDialog'
 import DeviceDetailDialog from './components/DeviceDetailDialog'
+import DeviceEditDialog from './components/DeviceEditDialog'
 import DeviceExportDialog from './components/DeviceExportDialog'
 import {
   getList,
@@ -316,6 +317,7 @@ export default {
     DeviceBindDialog,
     DeviceUnbindDialog,
     DeviceDetailDialog,
+    DeviceEditDialog,
     DeviceExportDialog
   },
   data() {
@@ -334,6 +336,7 @@ export default {
       deviceBindDialogVisible: false,
       deviceUnbindDialogVisible: false,
       deviceDetailDialogVisible: false,
+      deviceEditDialogVisible: false,
       deviceExportDialogVisible: false,
       selectedDeviceList: [],
       deviceColumnVisible: {
@@ -346,7 +349,6 @@ export default {
         enableStatus: true,
         groupId: true,
         id: true,
-        modelId: true,
         groupName: true,
         powerStatus: true,
         onlineStatus: true,
@@ -355,7 +357,8 @@ export default {
         birthTime: false,
         lastUpdateTime: true,
         bindCustomer: false,
-        location: true,
+        location: false,
+        createUser: false,
         manageName: true
       },
       deviceColumnControlDialogVisible: false,
@@ -366,6 +369,7 @@ export default {
       },
       total: 1,
       detailData: {},
+      editData: {},
       showDeviceDeleted: false,
       showDeviceBind: false,
       showDeviceAllocate: false,
@@ -467,6 +471,12 @@ export default {
         this.detailData = res.data
       })
     },
+    showEdit(data) {
+      queryDeviceById(data.id).then(res => {
+        this.deviceEditDialogVisible = true
+        this.editData = res.data
+      })
+    },
     getSld() {
       // 获取二级域名
       const sld = location.href.match(/:\/\/(.*?).hcocloud/)
@@ -543,6 +553,13 @@ export default {
         item.onlineStatus = 0
       })
       this.deviceList.push(...list)
+    },
+    updateData(data) {
+      this.deviceList.map(item => {
+        if (item.id === data.id) {
+          Object.assign(item, data)
+        }
+      })
     },
     deleteOneDeviceHandler() {
       this.isOperable().then(_ => {

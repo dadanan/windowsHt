@@ -47,6 +47,7 @@
     "showdown": "1.8.5",
     "simplemde": "1.11.2",
     "sortablejs": "1.7.0",
+    "v-distpicker": "^1.0.20",
     "vanilla-tilt": "^1.4.1",
     "vue": "2.5.10",
     "vue-amap": "^0.5.8",

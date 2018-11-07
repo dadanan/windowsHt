@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column
         prop="typeID"
-        label="typeID" show-overflow-tooltip sortable>
+        label="类型ID" show-overflow-tooltip sortable>
       </el-table-column>
       <el-table-column
         prop="mac"
