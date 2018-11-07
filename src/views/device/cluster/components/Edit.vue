@@ -21,11 +21,6 @@
               <el-input v-model='scope.row.mac'></el-input>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="型号" show-overflow-tooltip sortable>
-            <template slot-scope="scope">
-              <el-input v-model='scope.row.model'></el-input>
-            </template>
-          </el-table-column> -->
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="text" @click="deleteDevice(scope.$index)">删除</el-button>
@@ -38,6 +33,9 @@
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="设置地区">
+        <v-distpicker @selected="onSelected" :province="selectArea.province" :city="selectArea.city" :area="selectArea.area"></v-distpicker>
+      </el-form-item>
       <el-form-item label="图册">
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
@@ -46,9 +44,6 @@
       </el-form-item>
       <el-form-item label="项目介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
-      </el-form-item>
-      <el-form-item label="地点" prop="createLocation">
-        <el-input v-model="form.createLocation"></el-input>
       </el-form-item>
       <el-form-item label="添加备注" prop="remark">
         <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
@@ -68,9 +63,10 @@ import VideoUploader from '@/components/Upload/VideoUpload'
 import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
+import VDistpicker from 'v-distpicker'
 
 export default {
-  components: { ImageUploader, VideoUploader },
+  components: { ImageUploader, VideoUploader, VDistpicker },
   props: {
     datas: {
       type: Object
@@ -82,7 +78,8 @@ export default {
         customerId: '',
         imagesList: [],
         videosList: [],
-        introduction: ''
+        introduction: '',
+        createLocation: ''
       },
       deviceList: [],
       addForm: {
@@ -114,10 +111,16 @@ export default {
         ]
       },
       selectedDeviceList: [],
-      customerList: []
+      customerList: [],
+      selectArea: { province: '', city: '', area: '' }
     }
   },
   methods: {
+    onSelected(data) {
+      this.form.createLocation = `${data.province.value},${data.city.value},${
+        data.area.value
+      }`
+    },
     handleVideoSuccess(file, fileList) {
       this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
@@ -141,6 +144,12 @@ export default {
         this.form = data
         if (data.deviceList) {
           this.deviceList = data.deviceList
+        }
+        if (data.createLocation) {
+          const location = data.createLocation.split(',')
+          this.selectArea.province = location[0]
+          this.selectArea.city = location[1]
+          this.selectArea.area = location[2]
         }
       })
     },

@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     onSelected(data) {
-      console.log(data)
       this.form.location = `${data.province.value},${data.city.value},${
         data.area.value
       }`
