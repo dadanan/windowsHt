@@ -11,14 +11,14 @@
               <el-input v-model="baseInfo.publicName"></el-input>
             </el-form-item>
             <el-form-item label="业务方向">
-              <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="baseInfo.use"></el-input>
+              <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="baseInfo.busDirection"></el-input>
             </el-form-item>
-            <el-button type="primary">确认修改</el-button>
+            <el-button type="primary" @click="basic">确认修改</el-button>
           </el-form>
         </div>
       </el-tab-pane>
       <el-tab-pane label="微信App设置" name="2">
-        <el-form label-position="left" label-width="150px" :model='h5Config'  ref='h5Config' style="width:600px">
+        <el-form label-position="left" label-width="150px" :model='h5Config' ref='h5Config' style="width:600px">
           <el-form-item label="默认组名">
             <el-input v-model="h5Config.defaultTeamName"></el-input>
           </el-form-item>
@@ -29,64 +29,106 @@
             <el-input type="text" v-model="h5Config.serviceUser"></el-input>
           </el-form-item>
           <el-form-item label="背景图片">
-            <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+            <image-uploader :key='20' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model="h5Config.themeName"></el-input>
           </el-form-item>
           <el-form-item label="Logo">
-            <image-uploader :key='2' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+            <image-uploader :key='21' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
           </el-form-item>
-          <el-button type="primary">确认修改</el-button>
+          <el-button type="primary" @click="updateOwnerH5Info">确认修改</el-button>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="安卓app设置" name="3">
-        <el-form label-position="left" label-width="150px" :model='androidConfig' ref='androidConfig' style="width:600px">
-            <el-form-item label="APP 名称" >
-              <el-input v-model='androidConfig.name'></el-input>
-            </el-form-item>
-            <el-form-item label="APP Logo">
-              <image-uploader :key='3' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
-            </el-form-item>
-            <el-form-item label="公众号二维码">
-              <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
-            </el-form-item>
-            <el-form-item label="APP 软件版本">
-              <el-input v-model='androidConfig.version'></el-input>
-            </el-form-item>
-            <el-form-item label="APP安装包">
-              <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
-            </el-form-item>
-            <el-form-item label="设备切换密码">
-              <el-input v-model='androidConfig.deviceChangePassword'></el-input>
-            </el-form-item>
-            <el-button type="primary">确认修改</el-button>
-          </el-form>
+        <el-form label-position="left" label-width="150px" :model='androidConfig' ref='androidConfig' style="width:900px">
+          <el-form-item label="APP 名称">
+            <el-input v-model='androidConfig.name'></el-input>
+          </el-form-item>
+          <el-form-item label="APP Logo">
+            <image-uploader :key='22' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+          </el-form-item>
+          <el-form-item label="公众号二维码">
+            <image-uploader :key='23' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
+          </el-form-item>
+          <el-form-item label="APP 软件版本">
+            <el-input v-model='androidConfig.version'></el-input>
+          </el-form-item>
+          <el-form-item label="上传安装包">
+            <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
+          </el-form-item>
+          <el-form-item label="设备切换密码">
+            <el-input v-model='androidConfig.deviceChangePassword'></el-input>
+          </el-form-item>
+          <el-form-item label="安卓场景">
+            <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList' :key="index">
+              <div class='tool'>
+                <span class='close' @click='deleteScene(index)'>x</span>
+                <span class='add' @click='addScene'>+</span>
+              </div>
+              <div>
+                <el-form-item label="场景名称">
+                  <el-input v-model='item.name'></el-input>
+                </el-form-item>
+                <el-form-item label="场景描述">
+                  <el-input v-model='item.description' type='textarea'></el-input>
+                </el-form-item>
+                <el-form-item label="场景封面">
+                  <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+                </el-form-item>
+                <el-form-item label="场景图册列表" class="pictureList">
+                  <transition-group name="fade">
+                    <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
+                      <div class='tool'>
+                        <!-- <i class="el-icon-back up" @click="handleUp(item, listIndex)" v-if="listIndex"></i>
+                        <i class="el-icon-back down" @click="handleDown(item, listIndex)" v-if="item.androidSceneImgList.length - listIndex !== 1"></i> -->
+                        <span class='close-icon' @click='deleteSceneImg(item, listIndex)'>x</span>
+                        <span class='add-icon' @click='addSceneImg(item)'>+</span>
+                      </div>
+                      <div>
+                        <el-form-item label="名称">
+                          <el-input v-model='list.name'></el-input>
+                        </el-form-item>
+                        <el-form-item label="描述">
+                          <el-input v-model='list.description' type='textarea'></el-input>
+                        </el-form-item>
+                        <el-form-item label="图片/视频">
+                          <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
+                        </el-form-item>
+                      </div>
+                    </el-card>
+                  </transition-group>
+                </el-form-item>
+              </div>
+            </el-card>
+          </el-form-item>
+          <el-button type="primary" @click="updateOwnerAndroidInfo">确认修改</el-button>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="后台设置" name="4">
-         <el-form label-position="left" label-width="150px" :model='backendConfig' ref='backendConfig'>
-            <el-form-item label="Logo">
-              <image-uploader :key='5' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
-            </el-form-item>
-            <el-form-item label="名称">
-              <el-input v-model='backendConfig.name'></el-input>
-            </el-form-item>
-            <!-- 用户名和二级域名传参数时 放在baseInfo里 -->
-            <el-form-item label="超级管理员用户名">
-              <el-input v-model='baseInfo.loginName'></el-input>
-            </el-form-item>
-            <el-form-item label="二级域名">
-              <div class='sld-inside'>
-                <div class='sld-input'>
-                  <el-input v-model='baseInfo.sld'></el-input>
-                </div>
-                <p>
-                  &nbsp;&nbsp;+&nbsp;&nbsp;/hcocloud.com/
-                </p>
+        <el-form label-position="left" label-width="150px" :model='backendConfig' ref='backendConfig' style="width:600px">
+          <el-form-item label="Logo">
+            <image-uploader :key='24' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input v-model='backendConfig.name'></el-input>
+          </el-form-item>
+          <!-- 用户名和二级域名传参数时 放在baseInfo里 -->
+          <el-form-item label="超级管理员用户名">
+            <el-input v-model='baseInfo.loginName' disabled></el-input>
+          </el-form-item>
+          <el-form-item label="二级域名">
+            <div class='sld-inside'>
+              <div class='sld-input'>
+                <el-input v-model='baseInfo.sld' disabled></el-input>
               </div>
-            </el-form-item>
-            <el-button type="primary">确认修改</el-button>
-          </el-form>
+              <p>
+                &nbsp;&nbsp;+&nbsp;&nbsp;/hcocloud.com/
+              </p>
+            </div>
+          </el-form-item>
+          <el-button type="primary" @click="updateOwnerBackendInfo">确认修改</el-button>
+        </el-form>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -94,10 +136,15 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import FileUploader from '@/components/Upload/file'
-import { updateWebsiteInfo } from '@/api/customer'
+import {
+  updateWebsiteInfo,
+  selectByUserId,
+  updateOwnerBaseInfo,
+  updateOwnerH5Info,
+  updateOwnerAndroidInfo,
+  updateOwnerBackendInfo
+} from '@/api/customer'
 import { getCurrentUser } from '@/api/user'
-import { selectByUserId } from '@/api/customer'
-
 
 export default {
   data() {
@@ -117,14 +164,10 @@ export default {
       h5Config: {
         backgroundImg: '',
         defaultTeamName: '',
-        htmlTypeIds: [],
-        logo: '',
-        qrcode: '',
         logo: '',
         password: '',
         themeName: '',
-        serviceUser: '',
-        version: ''
+        serviceUser: ''
       },
       androidConfig: {
         androidSceneList: [
@@ -151,20 +194,56 @@ export default {
         appUrl: ''
       },
       backendConfig: {
-        enableStatus: true,
+        enableStatus: 1,
         id: 0,
         logo: '',
         name: '',
         type: 0
       },
-      userId:0
+      userId: 0,
+      selectedDeviceList: []
     }
   },
   methods: {
+    addScene() {
+      this.androidConfig.androidSceneList.push({
+        androidSceneImgList: [
+          {
+            description: '',
+            id: 0,
+            imgVideo: '',
+            name: ''
+          }
+        ],
+        description: '',
+        id: 0,
+        imgsCover: '',
+        name: ''
+      })
+    },
+    deleteScene(index) {
+      console.log(index)
+      if (this.androidConfig.androidSceneList.length <= 1) return
+
+      this.androidConfig.androidSceneList.splice(index, 1)
+    },
+    deleteSceneImg(data, index) {
+      if (data.androidSceneImgList.length <= 1) return
+
+      data.androidSceneImgList.splice(index, 1)
+    },
+    addSceneImg(data) {
+      // transition-group动画必须提供唯一id且id不能为循环出来的index值
+      data.androidSceneImgList.push({
+        description: '',
+        id: this.$options.filters.GUID(),
+        imgVideo: '',
+        name: ''
+      })
+    },
     // 获取当前的用户
     getCurrentUser() {
       getCurrentUser().then(res => {
-        console.log(res)
         this.userId = res.data.id
         this.selectByUserId()
       })
@@ -172,22 +251,139 @@ export default {
     selectByUserId() {
       selectByUserId(this.userId).then(res => {
         console.log(res)
+        const tempForm = JSON.parse(JSON.stringify(res.data))
+        this.id = tempForm.id
+        this.baseInfo = tempForm
+        const h5Config = tempForm.h5Config
+        if (h5Config) {
+          if (h5Config.htmlTypeIds) {
+            h5Config.htmlTypeIds = h5Config.htmlTypeIds
+              .split(',')
+              .map(id => Number(id))
+          }
+          this.h5Config = h5Config
+        }
+        this.androidConfig = tempForm.androidConfig || {}
+      this.backendConfig = tempForm.backendConfig || {}
+
+      this.backendConfig.enableStatus =
+        Boolean(this.backendConfig.enableStatus) || false
+
+      if (
+        !this.androidConfig.androidSceneList ||
+        this.androidConfig.androidSceneList.length === 0
+      ) {
+        this.androidConfig.androidSceneList = [
+          {
+            androidSceneImgList: [
+              {
+                description: '',
+                id: 0,
+                imgVideo: '',
+                name: ''
+              }
+            ],
+            description: '',
+            id: 0,
+            imgsCover: '',
+            name: ''
+          }
+        ]
+      }
+      })
+    },
+    setURL(argu, data, name) {
+      data[name] = argu[0]
+    },
+    basic() {
+      const backendConfig = Object.assign({}, this.backendConfig)
+      backendConfig.enableStatus = backendConfig.enableStatus ? 1 : 2
+      const h5Config = JSON.parse(JSON.stringify(this.h5Config))
+      // 拼接成一个字符串
+      h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
+      const form = {
+        ...this.baseInfo,
+        typeIds: this.selectedDeviceList.map(item => item.id).join(','),
+        h5Config,
+        androidConfig: this.androidConfig,
+        backendConfig: backendConfig,
+        id: this.id
+      }
+      updateOwnerBaseInfo(form).then(res => {
+        this.$message({
+            type: 'success',
+            message: "修改成功"
+          })
+      })
+    },
+    updateOwnerH5Info() {
+      const h5Config = JSON.parse(JSON.stringify(this.h5Config))
+      // 拼接成一个字符串
+      h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
+
+      console.log(h5Config)
+      updateOwnerH5Info(h5Config).then(res => {
+        console.log(res.data)
+        this.$message({
+            type: 'success',
+            message: "修改成功"
+          })
+      })
+    },
+    updateOwnerAndroidInfo() {
+      updateOwnerAndroidInfo(this.androidConfig).then(res => {
+      console.log(this.androidConfig)
+        this.$message({
+            type: 'success',
+            message: "修改成功"
+          })
+      })
+    },
+    updateOwnerBackendInfo() {
+      const backendConfig = Object.assign({}, this.backendConfig)
+      backendConfig.enableStatus = backendConfig.enableStatus ? 1 : 2
+      updateOwnerBackendInfo(backendConfig).then(res => {
+        this.$message({
+          type: 'success',
+          message: "修改成功"
+        })
       })
     }
-   }, 
+  },
   components: {
     ImageUploader,
     FileUploader
   },
   created() {
     this.getCurrentUser()
+  },
+  watch: {
+    h5Config(val) {
+      this.h5Config.backgroundImg = val.backgroundImg
+    }
   }
 }
 </script>
 
 <style lang='scss'>
+.sld-inside {
+  display: flex;
+  align-items: center;
+  .sld-input {
+    width: 50%;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1;
+  }
+}
 .set {
   padding: 30px 30px 30px 50px;
   background: #fff;
+}
+.tool{
+  text-align: right;
+  font-size: 24px;
+  color: #646464
 }
 </style>

@@ -21,9 +21,9 @@
                 <el-form-item label="绑定状态">
                   {{form.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </el-form-item>
-                <el-form-item label="启用状态">
+                <!-- <el-form-item label="启用状态">
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="项目名">
                   <el-input v-model="form.groupName" disabled></el-input>
                 </el-form-item>
@@ -56,13 +56,24 @@
                   <el-input v-model="form.typeId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="项目ID">
-                  <el-input v-model="form.groupId" disabled></el-input>
+                  <!-- <el-input v-model="form.groupId" disabled></el-input> -->
+                  <template v-if='form.groupId > 0'>
+                    <el-input v-model="form.groupId" disabled></el-input>
+                  </template>
+                  <template v-else>
+                    <el-input v-model="group" disabled></el-input>
+                  </template>
                 </el-form-item>
                 <el-form-item label="注册时间">
                   {{new Date(form.birthTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="最后上线时间">
-                  {{new Date(form.lastUpdateTime).toLocaleString()}}
+                  <template v-if='form.lastUpdateTime'>
+                    {{new Date(form.lastUpdateTime).toLocaleString()}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -96,14 +107,9 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间" show-overflow-tooltip sortable>
+          <el-table-column prop="startTime" label="状态时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
               {{new Date(scope.row.startTime).toLocaleString()}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="endTime" label="结束时间" show-overflow-tooltip sortable>
-            <template slot-scope="scope">
-              {{new Date(scope.row.endTime).toLocaleString()}}
             </template>
           </el-table-column>
         </el-table>
@@ -158,20 +164,16 @@
       </el-tab-pane>
       <el-tab-pane label="设备告警" name="5">
         <el-table style="width: 100%" border :data="deviceListJ">
-          <el-table-column type="index"></el-table-column>
-          <el-table-column prop="name" label="时间" show-overflow-tooltip sortable>
+          <el-table-column type="index"></el-table-column>序号、告警时间、告警内容、告警等级、状态
+          <el-table-column prop="name" label="序号" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="name" label="告警时间" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="name" label="告警内容" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="name" label="告警等级" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="PM 2.5" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="温度" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="传感器" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="滤网时间" show-overflow-tooltip sortable>
-          </el-table-column>
-          <el-table-column prop="name" label="定时" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -246,7 +248,8 @@ export default {
       queryDeviceSensorStatCound: 0,
       deviceWorkLogCound: 0,
       shareListVisible: false,
-      shareData: {} // 分享数据
+      shareData: {}, // 分享数据
+      group:"--"
     }
   },
   watch: {
@@ -259,7 +262,7 @@ export default {
     opertye(row) {
       let opertye = row.operType
       if (opertye == 1) {
-        return 'h5操作'
+        return '微信操作'
       } else if (opertye == 2) {
         return '安卓操作'
       } else if (opertye == 3) {
