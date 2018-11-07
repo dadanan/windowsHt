@@ -22,11 +22,6 @@
               <el-input v-model='scope.row.mac'></el-input>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="型号" show-overflow-tooltip sortable>
-            <template slot-scope="scope">
-              <el-input v-model='scope.row.model'></el-input>
-            </template>
-          </el-table-column> -->
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="text" @click="deleteDevice(scope.$index)">删除</el-button>
@@ -34,10 +29,13 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="客户" prop="customerId">
+      <el-form-item label="归属" prop="customerId">
         <el-select v-model="form.customerId" placeholder='请选择'>
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="设置地区">
+        <v-distpicker @selected="onSelected" :province="selectArea.province" :city="selectArea.city" :area="selectArea.area"></v-distpicker>
       </el-form-item>
       <el-form-item label="图册">
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
@@ -47,9 +45,6 @@
       </el-form-item>
       <el-form-item label="项目介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
-      </el-form-item>
-      <el-form-item label="地点" prop="createLocation">
-        <el-input v-model="form.createLocation"></el-input>
       </el-form-item>
       <el-form-item label="添加备注" prop="remark">
         <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark">
@@ -68,9 +63,10 @@ import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
 import { selectAllCustomers as select } from '@/api/customer'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
+import VDistpicker from 'v-distpicker'
 
 export default {
-  components: { ImageUploader, VideoUploader },
+  components: { ImageUploader, VideoUploader, VDistpicker },
   props: {
     datas: {
       type: Object
@@ -82,7 +78,8 @@ export default {
         customerId: '',
         imagesList: [],
         videosList: [],
-        introduction: ''
+        introduction: '',
+        createLocation: ''
       },
       addForm: {
         mac: ''
@@ -114,13 +111,19 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      selectArea: { province: '', city: '', area: '' }
     }
   },
   created() {
     this.select()
   },
   methods: {
+    onSelected(data) {
+      this.form.createLocation = `${data.province.value},${data.city.value},${
+        data.area.value
+      }`
+    },
     handleVideoSuccess(file, fileList) {
       this.form.videosList = [...this.form.videosList, { video: file.url }]
     },
@@ -188,17 +191,11 @@ export default {
         }
       })
     }
-    // handleCancel() {
-    //   this.$emit('close')
-    // }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.main-scroll{
-  width: 1200px;
-}
 .addForm {
   display: flex;
   margin-bottom: 15px;
