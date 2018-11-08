@@ -21,7 +21,7 @@ export default {
     const self = this
     return {
       searchOption: {
-        city: '上海',
+        city: '',
         citylimit: true
       },
       zoom: 12,
@@ -42,15 +42,28 @@ export default {
           geocoder.getAddress([lng, lat], function(status, result) {
             if (status === 'complete' && result.info === 'OK') {
               if (result && result.regeocode) {
+                console.log('result', result)
                 self.address = result.regeocode.formattedAddress
+                // 将位置信息传出去
+
+                const addr = result.regeocode.addressComponent
+                self.$emit('getLocation', {
+                  gps: position,
+                  location: `${addr.province},${addr.city},${addr.district},${
+                    self.address
+                  }`
+                    .split(',')
+                    .filter(item => item)
+                    .join(',') // 去除可能存在的多个逗号
+                })
+
+                self.$message({
+                  message: '位置设置成功！',
+                  type: 'success'
+                })
                 self.$nextTick()
               }
             }
-          })
-
-          self.$message({
-            message: '位置设置成功！',
-            type: 'success'
           })
         }
       },

@@ -270,11 +270,21 @@ export default {
         const result = data.filter(item => item.id === id)
         return result && result[0]
       }
+
+      const tempIds = list
+        .filter(item => item.abilityIds)
+        .map(item => item.abilityIds)
+
+      const ids = []
+      // 将可能存在的多个ids拆分成单独的id
+      tempIds.forEach(item => {
+        const temp = item.split(',')
+        ids.push(...temp)
+      })
+
       newQueryDetailByDeviceId({
         deviceId: this.detailData.id,
-        abilityIds: list
-          .filter(item => item.abilityId)
-          .map(item => item.abilityId)
+        abilityIds: ids
       }).then(res => {
         const data = res.data
         // 将res.data中的isSelect和dirValue赋值过去

@@ -82,7 +82,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='detailData.id'></a-map>
+          <a-map :id='detailData.id' @getLocation='getLocation'></a-map>
         </el-card>
       </div>
     </div>
@@ -179,17 +179,7 @@
         <el-pagination :current-page="0" :page-sizes="[50,100,200,300]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="0" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
         </el-pagination>
       </el-tab-pane>
-      <!-- <el-tab-pane label='设备设置' name='6'>
-        <el-button-group>
-          <el-popover placement="right" trigger="click">
-            <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
-            <el-button type="primary" slot="reference">分享</el-button>
-          </el-popover>
-          <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
-        </el-button-group>
-      </el-tab-pane> -->
     </el-tabs>
-    <!-- <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list> -->
   </el-dialog>
 </template>
 
@@ -202,8 +192,7 @@ import {
   queryDeviceSensorStat, //查看设备数据
   updateDevice, //地理位置
   shareDeviceToken, //分享设备的token
-  queryDeviceWorkLog, // 工作日志
-  // deviceShareList
+  queryDeviceWorkLog // 工作日志
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -247,7 +236,7 @@ export default {
       deviceWorkLogCound: 0,
       shareListVisible: false,
       shareData: {}, // 分享数据
-      group:"--"
+      group: '--'
     }
   },
   watch: {
@@ -274,15 +263,18 @@ export default {
       this.getShareToken()
       this.queryDeviceWorkLog(val.id)
     },
-    // getDeviceShareList() {
-    //   deviceShareList(this.form.id).then(res => {
-    //     this.shareData = {
-    //       deviceId: this.form.id,
-    //       list: res.data
-    //     }
-    //     this.shareListVisible = true
-    //   })
-    // },
+    getLocation({ gps, location }) {
+      updateDevice({
+        id: this.form.id,
+        location,
+        mapGps: gps
+      }).then(() => {
+        this.$message({
+          message: '设备位置信息更新成功！',
+          type: 'success'
+        })
+      })
+    },
     showDistrict() {
       // 显示地区卡片
       const location = this.form.location
@@ -299,23 +291,6 @@ export default {
         this.selected = []
         areaCascader.label = ''
       }
-    },
-    districtChanged(district) {
-      // 如果地点没有变化，无操作
-      const location = district.join(',')
-      if (location === this.form.location) {
-        return
-      }
-      updateDevice({
-        id: this.form.id,
-        location: location
-      }).then(() => {
-        this.form.location = location
-        this.$message({
-          message: '设置设备位置成功！',
-          type: 'success'
-        })
-      })
     },
     // 工作日志
     queryDeviceWorkLog(id) {

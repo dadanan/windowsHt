@@ -34,9 +34,6 @@
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设置地区">
-        <v-distpicker @selected="onSelected" :province="selectArea.province" :city="selectArea.city" :area="selectArea.area"></v-distpicker>
-      </el-form-item>
       <el-form-item label="图册">
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
       </el-form-item>
@@ -63,10 +60,9 @@ import ImageUploader from '@/components/Upload/image'
 import VideoUploader from '@/components/Upload/VideoUpload'
 import { selectAllCustomers as select } from '@/api/customer'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
-import VDistpicker from 'v-distpicker'
 
 export default {
-  components: { ImageUploader, VideoUploader, VDistpicker },
+  components: { ImageUploader, VideoUploader },
   props: {
     datas: {
       type: Object
@@ -78,8 +74,7 @@ export default {
         customerId: '',
         imagesList: [],
         videosList: [],
-        introduction: '',
-        createLocation: ''
+        introduction: ''
       },
       addForm: {
         mac: ''
@@ -111,19 +106,13 @@ export default {
             trigger: 'blur'
           }
         ]
-      },
-      selectArea: { province: '', city: '', area: '' }
+      }
     }
   },
   created() {
     this.select()
   },
   methods: {
-    onSelected(data) {
-      this.form.createLocation = `${data.province.value},${data.city.value},${
-        data.area.value
-      }`
-    },
     handleVideoSuccess(file, fileList) {
       this.form.videosList = [...this.form.videosList, { video: file.url }]
     },

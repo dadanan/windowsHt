@@ -37,7 +37,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='datas.deviceList && datas.deviceList[0] &&  datas.deviceList[0].id'></a-map>
+          <a-map :id='datas.deviceList && datas.deviceList[0] &&  datas.deviceList[0].id' @getLocation='getLocation'></a-map>
         </el-card>
       </div>
     </div>
@@ -60,7 +60,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="workStatus" label="工作状态" show-overflow-tooltip sortable>
-         <template slot-scope="scope">
+        <template slot-scope="scope">
           {{scope.row.workStatus === 1 ? '开机' : '关机'}}
         </template>
       </el-table-column>
@@ -125,13 +125,14 @@ export default {
       deviceData: [],
       columnData: deviceColumnData,
       customerList: [],
-      deviceIdList:[]
+      deviceIdList: []
     }
   },
   methods: {
-     handleSelectionChange(selection) {
-       const selectedDeviceList = []
-      for(var i = 0; i<selection.length;i++){
+    getLocation({ gps, location }) {},
+    handleSelectionChange(selection) {
+      const selectedDeviceList = []
+      for (var i = 0; i < selection.length; i++) {
         selectedDeviceList.push(selection[i].id)
       }
       this.deviceIdList = selectedDeviceList
@@ -195,7 +196,7 @@ export default {
 
 .map-container {
   width: 560px;
-  height: 440px;
+  min-height: 440px;
 }
 
 .flex-item {
