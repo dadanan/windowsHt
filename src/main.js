@@ -31,7 +31,7 @@ import VueParticles from 'vue-particles'
 import VueAMap from 'vue-amap'
 Vue.use(VueAMap)
 VueAMap.initAMapApiLoader({
-  key: 'f4eeccf8a0743c91a80fd1d3046edab0',
+  key: 'f2454e29fd7b50f0190389a2f03f100a',
   plugin: [
     'AMap.Autocomplete',
     'AMap.PlaceSearch',
@@ -40,7 +40,8 @@ VueAMap.initAMapApiLoader({
     'AMap.ToolBar',
     'AMap.MapType',
     'AMap.PolyEditor',
-    'AMap.CircleEditor'
+    'AMap.CircleEditor',
+    'AMap.Geocoder'
   ],
   // 默认高德 sdk 版本为 1.4.4
   v: '1.4.4'

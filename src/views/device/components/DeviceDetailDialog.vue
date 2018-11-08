@@ -425,7 +425,7 @@ export default {
 
 .map-container {
   width: 560px;
-  height: 440px;
+  min-height: 440px;
 }
 
 .flex-item {

@@ -1,57 +1,69 @@
 <template>
   <div>
     <div class="amap-page-container">
-      <el-amap vid="amapDemo" :zoom="zoom" :center="center" class="amap-demo" :plugin="plugin">
-        <el-amap-marker :position="marker.position" :events="marker.events" :visible="marker.visible" :draggable="marker.draggable"></el-amap-marker>
+      <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <el-amap vid="amapDemo" :zoom="zoom" :center="center" :events="events" class="amap-demo" :plugin="plugin">
+        <el-amap-marker :position="marker.position" :events="events" :visible="marker.visible" :draggable="marker.draggable"></el-amap-marker>
       </el-amap>
+      <div class="toolbar">
+        经纬度: [{{ center[0] }}, {{ center[1] }}] 地址: {{ address }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import VueAMap from 'vue-amap'
 import { queryDevicePosition } from '@/api/device/list'
 
 export default {
   props: ['id'],
   data() {
+    const self = this
     return {
-      zoom: 15,
-      center: [116.404, 39.915],
-      marker: {
-        position: [116.404, 39.915],
-        events: {
-          click: () => {
-            if (this.mywindow.visible === true) {
-              this.mywindow.visible = false
-            } else {
-              this.mywindow.visible = true
+      searchOption: {
+        city: '上海',
+        citylimit: true
+      },
+      zoom: 12,
+      center: [121.59996, 31.197646],
+      address: '',
+      events: {
+        click(e) {
+          let { lng, lat } = e.lnglat
+          const position = [lng, lat]
+          self.center = position
+          self.marker.position = position
+
+          // // 这里通过高德 SDK 完成。
+          var geocoder = new AMap.Geocoder({
+            radius: 1000,
+            extensions: 'all'
+          })
+          geocoder.getAddress([lng, lat], function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              if (result && result.regeocode) {
+                self.address = result.regeocode.formattedAddress
+                self.$nextTick()
+              }
             }
-          },
-          dragend: e => {
-            this.markers.position = [e.lnglat.lng, e.lnglat.lat]
-          }
-        },
+          })
+
+          self.$message({
+            message: '位置设置成功！',
+            type: 'success'
+          })
+        }
+      },
+      marker: {
+        position: [121.59996, 31.197646],
         visible: true,
         draggable: false
       },
-      mywindow: {
-        position: [116.404, 39.915],
-        content:
-          '<h4>该点数据信息</h4><div class="text item">Information A: ...</div><div class="text item">Information B: ...</div>',
-        visible: true,
-        events: {
-          close() {
-            this.mywindow.visible = false
-          }
-        }
-      },
+      markers: [], // 多个标记
       plugin: {
         pName: 'Scale',
         events: {
-          init(instance) {
-            console.log(instance)
-          }
+          init(instance) {}
         }
       }
     }
@@ -66,8 +78,22 @@ export default {
         const position = [data.pointX, data.pointY]
         this.center = position
         this.marker.position = position
-        this.mywindow.position = position
       })
+    },
+    onSearchResult(pois) {
+      let latSum = 0
+      let lngSum = 0
+      if (pois.length > 0) {
+        pois.forEach(poi => {
+          let { lng, lat } = poi
+          lngSum += lng
+          latSum += lat
+          this.markers.push([poi.lng, poi.lat])
+        })
+        let center = [lngSum / pois.length, latSum / pois.length]
+        this.center = center
+        this.marker.position = center
+      }
     }
   },
   watch: {
@@ -81,8 +107,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 .amap-page-container {
   height: 500px;
+  position: relative;
+  .search-box {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+  }
+  .amap-demo {
+    height: calc(100% - 40px);
+  }
+  .toolbar {
+    height: 40px;
+  }
 }
 </style>
