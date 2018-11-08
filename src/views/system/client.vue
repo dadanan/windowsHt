@@ -38,6 +38,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <!-- <el-button type="text" @click="showEditRoleDialog1(scope.row.id)">详情</el-button> -->
             <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
             <el-button type="text" @click="deleteClient(scope.row.id)">删除</el-button>
           </template>
@@ -163,8 +164,7 @@ export default {
     },
     getCustomer() {
       select(this.listQuery).then(res => {
-        console.log(res.data)
-        console.log(111)
+        // console.log(res.data)
         const data = res.data
         this.clientList = data.customerVos
         this.total = data.totalCount

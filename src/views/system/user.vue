@@ -318,6 +318,7 @@ export default {
     getUserList() {
       getUserList(this.listQuery).then(res => {
         if (res.code === 200) {
+          // console.log(res.data)
           this.userList = res.data
           const length = res.data.length
           this.listQuery.limit = length

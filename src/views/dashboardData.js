@@ -455,7 +455,7 @@ export const dashboardData = {
     ]
   }
 }
-
+// 正式数据
 export const realData = {
   数据展示: {
     设备分析: [{
@@ -752,10 +752,10 @@ export const realData = {
       },
       {
         id: 3,
-        name: '设备类型比重图',
+        name: '设备型号占比图',
         options: {
           title: {
-            text: '设备类型比重图'
+            text: '设备型号占比图'
           },
           tooltip: {
             formatter: '{b}: {c} ({d}%)'
@@ -787,7 +787,7 @@ export const realData = {
             ]
           }]
         },
-        isVisible: false
+        isVisible: true
       },
       {
         id: 4,
@@ -1718,7 +1718,7 @@ export const developDataT = {
       name: '设备型号占比图',
       options: {
         title: {
-          text: '设备类型分布'
+          text: '设备型号占比图'
         },
         tooltip: {
           formatter: '{b}: {c} ({d}%)'

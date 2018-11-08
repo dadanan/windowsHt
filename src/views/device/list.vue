@@ -483,7 +483,7 @@ export default {
     },
     showEdit(data) {
       queryDeviceById(data.id).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.deviceEditDialogVisible = true
         this.editData = res.data
       })
@@ -538,7 +538,7 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount

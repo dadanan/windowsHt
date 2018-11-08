@@ -176,6 +176,8 @@
           <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
           </el-table-column>
         </el-table>
+        <el-pagination :current-page="0" :page-sizes="[50,100,200,300]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="0" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
+        </el-pagination>
       </el-tab-pane>
       <!-- <el-tab-pane label='设备设置' name='6'>
         <el-button-group>
