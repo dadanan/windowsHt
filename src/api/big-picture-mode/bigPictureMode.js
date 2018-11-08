@@ -15,9 +15,16 @@ export function selectDeviceCount() {
   })
 }
 // 设备类型统计
+export function modelPercent() {
+  return request({
+    url: '/temp/api/statistics/modelPercent',
+    method: 'get'
+  })
+}
+// 设备类型统计
 export function selectTypePercent() {
   return request({
-    url: '/temp/api/statistics/typePercent',
+    url: '/temp/api/statistics/deviceCountPerMonth',
     method: 'get'
   })
 }

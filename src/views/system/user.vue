@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="customerName" label="所属客户" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createrName" label="创建者" show-overflow-tooltip sortable>
+        <el-table-column prop="createUser" label="创建者" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { createUser, getUserList, updateUser, delUser } from '@/api/user'
+import { createUser, getUserList, updateUser, delUser ,getUserById} from '@/api/user'
 import { getRoleList } from '@/api/role'
 
 export default {
@@ -234,7 +234,10 @@ export default {
     },
     showEditRoleDialog(data) {
       this.isEditUserDialogVisible = true
-      this.editingData = data
+       getUserById(data.id).then(res => {
+         this.editingData = res.data
+       })
+      
     },
     editUser() {
       updateUser(this.editingData).then(res => {

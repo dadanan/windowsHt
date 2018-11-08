@@ -55,3 +55,9 @@ export function logout() {
     method: 'delete'
   })
 }
+export function getUserById(id) {
+  return request({
+    url: `/server/user/getUserById/${id}`,
+    method: 'get'
+  })
+}

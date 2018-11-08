@@ -102,7 +102,6 @@ export function updateOwnerAndroidInfo(data) {
  })
 }
 // 用户自己修改后台设置
-
 export function updateOwnerBackendInfo(data) {
   return request({
     url: '/dev/api/customer/updateOwnerBackendInfo',

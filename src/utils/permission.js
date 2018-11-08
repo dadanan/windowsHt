@@ -19,7 +19,7 @@ export default function checkPermission(value) {
     }
     return true
   } else {
-    console.error(`need permission! Like v-permission="['admin','editor']"`)
+    // console.error(`need permission! Like v-permission="['admin','editor']"`)
     return false
   }
 }

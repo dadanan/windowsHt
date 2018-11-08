@@ -89,7 +89,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
-import {selectTypePercent,selectDeviceCount ,newDeviceCountOfToday,queryHomePageStatistic} from '@/api/big-picture-mode/bigPictureMode'
+import {modelPercent,selectDeviceCount ,newDeviceCountOfToday,queryHomePageStatistic} from '@/api/big-picture-mode/bigPictureMode'
 import { developData, developDataT } from '../dashboardData'
 
 export default {
@@ -134,7 +134,7 @@ export default {
   created () {
     this.init()
     this.selectDeviceCount()
-    this.selectTypePercent()
+    this.modelPercent()
     this.newDeviceCountOfToday()
     // this.queryCount()
   },
@@ -145,7 +145,7 @@ export default {
     },
     init() {
       this.selectDeviceCount()
-      this.selectTypePercent()
+      this.modelPercent()
       this.newDeviceCountOfToday()
       this.queryHomePageStatistic()
     },
@@ -166,6 +166,7 @@ export default {
         dataAnalysis[0].value = data.deviceTotalCount //设备总数
         dataAnalysis[1].value = data.todayDeviceAddCount //今日设备新增数
         dataAnalysis[3].value = data.todayDeviceBugCount //今日设备故障数
+        dataAnalysis[4].value = Number(data.deviceOnlinePercent) //今日设备在线率
       })
     },
     // 每月新增设备统计
@@ -185,10 +186,10 @@ export default {
       })
     },
     // 设备类型统计
-    selectTypePercent() {
-      selectTypePercent().then(res => {
+    modelPercent() {
+      modelPercent().then(res => {
         for(var i = 0; i<res.data.length;i++){
-          this.devedata.push({value:((res.data[i].typePercent).substring(0, 2)),name:res.data[i].typeName})
+          this.devedata.push({value:((res.data[i].modelPercent).substring(0, 2)),name:res.data[i].modelName})
         }
         this.kanbanData.图表展示[3].options.series[0].data = this.devedata
       })

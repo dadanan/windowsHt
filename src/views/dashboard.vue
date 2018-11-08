@@ -89,7 +89,7 @@ import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
 import {
   selectCustomerUserCount,
-  selectTypePercent,
+  modelPercent,
   selectDeviceCount,
   newDeviceCountOfToday,
   queryHomePageStatistic
@@ -124,7 +124,7 @@ export default {
     init() {
       this.selectCustomerUserCount()
       this.selectDeviceCount()
-      this.selectTypePercent()
+      this.modelPercent()
       this.newDeviceCountOfToday()
       this.queryHomePageStatistic()
     },
@@ -140,6 +140,7 @@ export default {
     queryHomePageStatistic() {
       // 查询首页数据
       queryHomePageStatistic().then(res => {
+        // console.log(res.data)
         const data = res.data
         const dataAnalysis = this.kanbanData.数据展示.设备分析
         dataAnalysis[0].value = data.deviceTotalCount
@@ -164,6 +165,10 @@ export default {
 
         const profitAnalysis = this.kanbanData.数据展示.分润分析
         profitAnalysis[0].value = data.todayReceiveBillCount
+
+        const chart = this.kanbanData.图表展示.设备分析
+        chart[2].options.series[0].data[0].value = data.deviceOnlineCount
+        chart[2].options.series[0].data[1].value = data.deviceOfflineCount
       })
     },
     // 每月新增用户统计
@@ -201,12 +206,13 @@ export default {
       })
     },
     // 设备类型统计
-    selectTypePercent() {
-      selectTypePercent().then(res => {
+    modelPercent() {
+      modelPercent().then(res => {
+        // console.log(res.data)
         for (var i = 0; i < res.data.length; i++) {
           this.devedata.push({
-            value: res.data[i].typePercent.substring(0, 2),
-            name: res.data[i].typeName
+            value: res.data[i].modelPercent.substring(0, 2),
+            name: res.data[i].modelName
           })
         }
         this.kanbanData.图表展示.设备分析[3].options.series[0].data = this.devedata
