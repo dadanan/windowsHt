@@ -113,6 +113,7 @@ export function queryChildDevice(id) {
 
 // 导出
 export function exportDeviceData(data) {
+  console.log(data)
   return request({
     url: '/temp/api/device/exportDeviceData',
     method: 'get',

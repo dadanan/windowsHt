@@ -82,7 +82,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='detailData.id'></a-map>
+          <a-map :gps='detailData && detailData.mapGps' @getLocation='getLocation'></a-map>
         </el-card>
       </div>
     </div>
@@ -93,19 +93,19 @@
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="设备管理名"  show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
+          <el-table-column prop="co2" label="co2" v-if = "deviceModelAbility.co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛" v-if = "deviceModelAbility.hcho" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hum" label="湿度" show-overflow-tooltip sortable>
+          <el-table-column prop="hum" label="湿度" v-if = "deviceModelAbility.hum" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="pm" label="PM2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="pm" label="PM2.5" v-if = "deviceModelAbility.pm25" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tem" label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="tem" label="温度" v-if = "deviceModelAbility.temp" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
+          <el-table-column prop="tvoc" label="tvoc" v-if = "deviceModelAbility.tvoc" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="startTime" label="状态时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
@@ -179,17 +179,7 @@
         <el-pagination :current-page="0" :page-sizes="[50,100,200,300]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="0" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
         </el-pagination>
       </el-tab-pane>
-      <!-- <el-tab-pane label='设备设置' name='6'>
-        <el-button-group>
-          <el-popover placement="right" trigger="click">
-            <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
-            <el-button type="primary" slot="reference">分享</el-button>
-          </el-popover>
-          <el-button type="primary" @click='getDeviceShareList'>授权管理</el-button>
-        </el-button-group>
-      </el-tab-pane> -->
     </el-tabs>
-    <!-- <share-list :visible.sync="shareListVisible" :shareData="shareData"></share-list> -->
   </el-dialog>
 </template>
 
@@ -197,13 +187,13 @@
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
 import ShareList from './deviceDetail/ShareList'
+import { selectById } from '@/api/device/model'
 import {
   queryOperLog, //操作日志
   queryDeviceSensorStat, //查看设备数据
   updateDevice, //地理位置
   shareDeviceToken, //分享设备的token
-  queryDeviceWorkLog, // 工作日志
-  // deviceShareList
+  queryDeviceWorkLog // 工作日志
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -247,13 +237,24 @@ export default {
       deviceWorkLogCound: 0,
       shareListVisible: false,
       shareData: {}, // 分享数据
-      group:"--"
+      group: '--',
+      deviceModelAbilitys:[],
+      deviceModelAbility: {
+        co2:false,
+        tvoc:false,
+        temp:false,
+        hum:false,
+        pm25:false,
+        hcho:false
+      }
     }
   },
   watch: {
     detailData(val) {
       this.init(val)
+      console.log(val)
       this.valId = val.id
+      this.selectById(val.modelId)
     }
   },
   methods: {
@@ -267,22 +268,52 @@ export default {
         return '管理端'
       }
     },
+    selectById(id) {
+      selectById(id).then(res => {
+        console.log(res.data)
+        this.deviceModelAbilitys = res.data.deviceModelAbilitys
+        for(var i = 0;i<this.deviceModelAbilitys.length;i++){
+          if(this.deviceModelAbilitys[i].abilityId == 202){
+            this.deviceModelAbility.co2 = true 
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 203){
+            this.deviceModelAbility.tvoc = true 
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 206){
+            this.deviceModelAbility.temp = true 
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 207){
+            this.deviceModelAbility.hum = true 
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 211){
+            this.deviceModelAbility.pm25 = true 
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 219){
+            this.deviceModelAbility.hcho = true 
+          }
+        }
+      })
+    },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
+      console.log(this.form)
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
-      this.getShareToken()
+      // this.getShareToken()
       this.queryDeviceWorkLog(val.id)
     },
-    // getDeviceShareList() {
-    //   deviceShareList(this.form.id).then(res => {
-    //     this.shareData = {
-    //       deviceId: this.form.id,
-    //       list: res.data
-    //     }
-    //     this.shareListVisible = true
-    //   })
-    // },
+    getLocation({ gps, location }) {
+      updateDevice({
+        id: this.form.id,
+        location,
+        mapGps: gps.toString()
+      }).then(() => {
+        this.$message({
+          message: '设备位置信息更新成功！',
+          type: 'success'
+        })
+      })
+    },
     showDistrict() {
       // 显示地区卡片
       const location = this.form.location
@@ -299,23 +330,6 @@ export default {
         this.selected = []
         areaCascader.label = ''
       }
-    },
-    districtChanged(district) {
-      // 如果地点没有变化，无操作
-      const location = district.join(',')
-      if (location === this.form.location) {
-        return
-      }
-      updateDevice({
-        id: this.form.id,
-        location: location
-      }).then(() => {
-        this.form.location = location
-        this.$message({
-          message: '设置设备位置成功！',
-          type: 'success'
-        })
-      })
     },
     // 工作日志
     queryDeviceWorkLog(id) {
@@ -423,7 +437,7 @@ export default {
 
 .map-container {
   width: 560px;
-  height: 440px;
+  min-height: 440px;
 }
 
 .flex-item {

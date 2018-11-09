@@ -114,7 +114,6 @@ export default {
         status: 1
       }).then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.clusterList = res.data // status:1.正常；2.已删除
         }
       })

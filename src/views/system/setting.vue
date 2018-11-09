@@ -230,7 +230,6 @@ export default {
       })
     },
     deleteScene(index) {
-      console.log(index)
       if (this.androidConfig.androidSceneList.length <= 1) return
 
       this.androidConfig.androidSceneList.splice(index, 1)
@@ -258,7 +257,6 @@ export default {
     },
     selectByUserId() {
       selectByUserId(this.userId).then(res => {
-        console.log(res)
         const tempForm = JSON.parse(JSON.stringify(res.data))
         this.id = tempForm.id
         this.baseInfo = tempForm
@@ -329,9 +327,7 @@ export default {
       // 拼接成一个字符串
       h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
 
-      console.log(h5Config)
       updateOwnerH5Info(h5Config).then(res => {
-        console.log(res.data)
         this.$message({
             type: 'success',
             message: "修改成功"
@@ -340,7 +336,6 @@ export default {
     },
     updateOwnerAndroidInfo() {
       updateOwnerAndroidInfo(this.androidConfig).then(res => {
-      console.log(this.androidConfig)
         this.$message({
             type: 'success',
             message: "修改成功"

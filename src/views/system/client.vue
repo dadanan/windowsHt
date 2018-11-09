@@ -20,8 +20,6 @@
         </el-table-column>
         <el-table-column prop="publicName" label="公众号" show-overflow-tooltip v-if="clientColumnVisible.publicName" sortable>
         </el-table-column>
-        <el-table-column prop="typeIds" label="产品类别" show-overflow-tooltip v-if="clientColumnVisible.typeIds" sortable>
-        </el-table-column>
         <el-table-column prop="loginName" label="管理员" show-overflow-tooltip v-if="clientColumnVisible.administrator" sortable>
         </el-table-column>
         <el-table-column prop="remark" label="备注说明" show-overflow-tooltip v-if="clientColumnVisible.remark" sortable>
@@ -112,7 +110,7 @@ export default {
         typeIds: true,
         administrator: true,
         remark: true,
-        deviceTotal: true,
+        deviceTotal: false,
         orderTotal: false,
         isDashboardEnabled: false,
         isAndroidEnabled: false,

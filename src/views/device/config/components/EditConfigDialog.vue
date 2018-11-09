@@ -591,6 +591,7 @@ export default {
   },
   watch: {
     data(val) {
+      console.log(val)
       const newData = JSON.parse(JSON.stringify(val))
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
@@ -621,6 +622,9 @@ export default {
         })
 
       // 如果存在功能项列表数据，覆盖一下
+      // for(var i = 0; i<newData.deviceModelAbilitys.length;i++){
+      //   newData.deviceModelAbilitys[i].abilityId = Number(newData.deviceModelAbilitys[i].abilityId)
+      // }
       this.deviceModelAbilitys = newData.deviceModelAbilitys
 
       if (newData.deviceModelFormat) {
@@ -631,11 +635,19 @@ export default {
       if (this.pageOfForamt) {
         this.pageOfForamt.forEach(item => {
           item.showStatus = item.showStatus ? true : false
+          console.log(item.abilityId)
           Array.isArray(item.modelFormatItems) &&
             item.modelFormatItems.forEach(iItem => {
               iItem.showStatus = iItem.showStatus ? true : false
             })
         })
+        // for(var i = 0;i<this.pageOfForamt[0].modelFormatItems.length;i++){
+        //   if(this.pageOfForamt[0].modelFormatItems[i].abilityId == ''){
+        //     this.pageOfForamt[0].modelFormatItems[i].abilityId = ''
+        //   }else{
+        //     this.pageOfForamt[0].modelFormatItems[i].abilityId = Number(this.pageOfForamt[0].modelFormatItems[i].abilityId)
+        //   }
+        // }
       } else {
         // 如果用户上次没有配置版式数据的话
       }

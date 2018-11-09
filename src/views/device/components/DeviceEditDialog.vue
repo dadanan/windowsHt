@@ -8,9 +8,6 @@
         <el-form-item label="管理名称" prop="manageName">
           <el-input v-model="form.manageName"></el-input>
         </el-form-item>
-        <el-form-item label="设置地区">
-          <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
-        </el-form-item>
         <el-form-item label="二维码">
           <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
         </el-form-item>
@@ -98,9 +95,10 @@ export default {
         customerId: '',
         id: ''
       },
-      shareURL: '',
-      shareData: {},
-      select: { province: '', city: '', area: '' }
+      shareURL: '...',
+      shareData: {
+        list: []
+      }
     }
   },
   methods: {
@@ -122,7 +120,7 @@ export default {
         })
       })
     },
-     deleteUser(openId) {
+    deleteUser(openId) {
       this.$confirm('此操作将解除分享, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -157,11 +155,6 @@ export default {
         }
         this.shareListVisible = true
       })
-    },
-    onSelected(data) {
-      this.form.location = `${data.province.value},${data.city.value},${
-        data.area.value
-      }`
     },
     updateDevice() {
       const form = {
@@ -211,25 +204,21 @@ export default {
   watch: {
     editData(val) {
       const data = JSON.parse(JSON.stringify(val))
-      if (data.location) {
-        const location = data.location.split(',')
-        this.select.province = location[0]
-        this.select.city = location[1]
-        this.select.area = location[2]
-      }
       this.form = data
       this.getShareToken()
       this.getDeviceShareList()
     }
   },
   components: {
-    VDistpicker,
     VueQrcode
   }
 }
 </script>
 <style lang="scss" scoped>
-  .button-group {
-    padding-top: 30px;
-  }
+.button-group {
+  padding-top: 30px;
+}
+.inside-image {
+  width: 100%;
+}
 </style>

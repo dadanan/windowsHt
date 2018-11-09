@@ -21,8 +21,8 @@
         </el-table-column>
         <el-table-column prop="customerName" label="所属客户" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createUser" label="创建者" show-overflow-tooltip sortable>
-        </el-table-column>
+        <!-- <el-table-column prop="createUser" label="创建者" show-overflow-tooltip sortable>
+        </el-table-column> -->
         <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>

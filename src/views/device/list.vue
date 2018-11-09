@@ -367,7 +367,7 @@ export default {
         birthTime: false,
         lastUpdateTime: true,
         bindCustomer: false,
-        location: false,
+        location: true,
         createUser: false,
         manageName: true
       },
@@ -477,6 +477,7 @@ export default {
     },
     showDetail(data) {
       queryDeviceById(data.id).then(res => {
+        // console.log(res.data)
         this.deviceDetailDialogVisible = true
         this.detailData = res.data
       })
@@ -538,7 +539,6 @@ export default {
     getList(query) {
       // 可以根据参数查询某个 或者 根据分页参数查询多个
       getList(query ? query : this.query).then(res => {
-        // console.log(res.data)
         const data = res.data
         this.deviceList = data.dataList
         this.total = data.totalCount

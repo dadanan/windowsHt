@@ -37,14 +37,14 @@
         </el-table-column>
         <el-table-column prop="devicePoolCount" label="配额" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createUser" label="修改人" show-overflow-tooltip sortable>
+        <!-- <el-table-column prop="createUser" label="修改人" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="createTime" label="修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
-            {{scope.row.lastUpdateTime}}
+            {{scope.row.lastUpdateTime}} -->
             <!-- {{new Date(scope.row.lastUpdateTime).toLocaleString()}} -->
-          </template>
-        </el-table-column>
+          <!-- </template>
+        </el-table-column> -->
         <el-table-column label="操作" show-overflow-tooltip width='180'>
           <template slot-scope="scope">
             <el-button type="text" @click="createWxDeviceIds(scope.row)">增加配额</el-button>
