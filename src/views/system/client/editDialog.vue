@@ -85,7 +85,7 @@
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+              <image-list :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-list>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -216,6 +216,7 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
+import ImageList from '@/components/Upload/imageList'
 import FileUploader from '@/components/Upload/file'
 import { selectTypesBySLD } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
@@ -473,7 +474,8 @@ export default {
   },
   components: {
     ImageUploader,
-    FileUploader
+    FileUploader,
+    ImageList
   }
 }
 </script>

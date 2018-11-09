@@ -16,7 +16,7 @@
 import { queryDevicePosition } from '@/api/device/list'
 
 export default {
-  props: ['id'],
+  props: ['gps'],
   data() {
     const self = this
     return {
@@ -34,36 +34,17 @@ export default {
           self.center = position
           self.marker.position = position
 
-          // // 这里通过高德 SDK 完成。
-          var geocoder = new AMap.Geocoder({
-            radius: 1000,
-            extensions: 'all'
-          })
-          geocoder.getAddress([lng, lat], function(status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-              if (result && result.regeocode) {
-                console.log('result', result)
-                self.address = result.regeocode.formattedAddress
-                // 将位置信息传出去
-
-                const addr = result.regeocode.addressComponent
-                self.$emit('getLocation', {
-                  gps: position,
-                  location: `${addr.province},${addr.city},${addr.district},${
-                    self.address
-                  }`
-                    .split(',')
-                    .filter(item => item)
-                    .join(',') // 去除可能存在的多个逗号
-                })
-
-                self.$message({
-                  message: '位置设置成功！',
-                  type: 'success'
-                })
-                self.$nextTick()
-              }
-            }
+          self.getDetailLocation(lng, lat, addr => {
+            const component = addr.addressComponent
+            self.$emit('getLocation', {
+              gps: position,
+              location: `${component.province},${component.city},${
+                component.district
+              },${addr.formattedAddress}`
+                .split(',')
+                .filter(item => item)
+                .join(',') // 去除可能存在的多个逗号
+            })
           })
         }
       },
@@ -82,15 +63,25 @@ export default {
     }
   },
   methods: {
-    queryDevicePosition(id) {
-      queryDevicePosition(id).then(res => {
-        const data = res.data
-        if (!data.pointX || !data.pointY) {
-          return
+    /**
+     * @param cb 回调函数，将高德地图接口结果当成参数
+     */
+    getDetailLocation(lng, lat, cb) {
+      const self = this
+      // // 这里通过高德 SDK 完成。
+      const geocoder = new AMap.Geocoder({
+        radius: 1000,
+        extensions: 'all'
+      })
+      geocoder.getAddress([lng, lat], function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.regeocode) {
+            self.address = result.regeocode.formattedAddress
+            // 将位置信息传出去
+            cb(result.regeocode)
+            self.$nextTick()
+          }
         }
-        const position = [data.pointX, data.pointY]
-        this.center = position
-        this.marker.position = position
       })
     },
     onSearchResult(pois) {
@@ -107,15 +98,28 @@ export default {
         this.center = center
         this.marker.position = center
       }
+    },
+    setGps(gps) {
+      if (!gps) {
+        return
+      }
+      const self = this
+      const location = gps.split(',')
+      this.center = location
+      this.marker.position = location
+      this.getDetailLocation(location[0], location[1], addr => {
+        const address = addr.formattedAddress
+        self.address = address
+      })
     }
   },
   watch: {
-    id(val) {
-      this.queryDevicePosition(val)
+    gps(val) {
+      this.setGps(val)
     }
   },
   created() {
-    this.queryDevicePosition(this.id)
+    this.setGps(this.gps)
   }
 }
 </script>

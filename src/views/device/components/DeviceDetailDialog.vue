@@ -82,7 +82,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='detailData.id' @getLocation='getLocation'></a-map>
+          <a-map :gps='detailData && detailData.mapGps' @getLocation='getLocation'></a-map>
         </el-card>
       </div>
     </div>
@@ -267,7 +267,7 @@ export default {
       updateDevice({
         id: this.form.id,
         location,
-        mapGps: gps
+        mapGps: gps.toString()
       }).then(() => {
         this.$message({
           message: '设备位置信息更新成功！',
