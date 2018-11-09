@@ -84,7 +84,7 @@
             <el-form-item label="客服" prop='serviceUser'>
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
-            <el-form-item label="背景图片">
+            <el-form-item label="背景图册">
               <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
