@@ -85,7 +85,8 @@
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <image-list :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-list>
+              <!-- <image-list :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-list> -->
+              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
