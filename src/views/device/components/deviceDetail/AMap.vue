@@ -72,6 +72,7 @@ export default {
   },
   watch: {
     id(val) {
+      // console.log(val)
       this.queryDevicePosition(val)
     }
   },

@@ -24,7 +24,9 @@
             <span>{{ new Date(scope.row.createTime).toLocaleString() }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createUser" label="归属人" show-overflow-tooltip sortable>
+        <el-table-column prop="customerName" label="归属" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="createUser" label="创建人" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="remark" label="备注" show-overflow-tooltip s>
         </el-table-column>
@@ -112,6 +114,7 @@ export default {
         status: 1
       }).then(res => {
         if (res.code === 200) {
+          console.log(res.data)
           this.clusterList = res.data // status:1.正常；2.已删除
         }
       })

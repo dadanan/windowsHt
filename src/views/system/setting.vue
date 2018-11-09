@@ -37,6 +37,13 @@
           <el-form-item label="Logo">
             <image-uploader :key='21' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
           </el-form-item>
+          <el-form-item label="H5 版本" prop="version">
+              <el-select v-model="h5Config.version">
+                <el-option label="版本 1" value="1"></el-option>
+                <el-option label="版本 2" value="2"></el-option>
+                <el-option label="版本 3" value="3"></el-option>
+              </el-select>
+            </el-form-item>
           <el-button type="primary" @click="updateOwnerH5Info">确认修改</el-button>
         </el-form>
       </el-tab-pane>
@@ -167,7 +174,8 @@ export default {
         logo: '',
         password: '',
         themeName: '',
-        serviceUser: ''
+        serviceUser: '',
+        version:''
       },
       androidConfig: {
         androidSceneList: [
