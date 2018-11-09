@@ -93,8 +93,8 @@
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
-          </el-table-column>
+          <!-- <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
+          </el-table-column> -->
           <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
