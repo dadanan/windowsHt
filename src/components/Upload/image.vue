@@ -1,6 +1,6 @@
 <template>
   <div class="file-container">
-    <el-upload class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess" :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}'>
+    <el-upload class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess" :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :on-exceed='handleExceed' :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}' :limit='limit'>
       <el-button v-if='isList' size="small" type="primary">点击上传</el-button>
       <template v-else>
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -65,6 +65,10 @@ export default {
       // 是否支持多图？
       type: Boolean,
       default: false
+    },
+    limit: {
+      type: Number,
+      default: 1
     }
   },
   methods: {
@@ -135,22 +139,33 @@ export default {
         this.$message.error('上传文件大小不能超过 2MB!')
       }
       return isValid && isLt2M
-    }
-  },
-  created() {
-    this.imageUrl = this.url
-  },
-  watch: {
-    urls(val) {
-      if (!val) {
-        return
-      }
+    },
+    handleExceed() {
+      this.$message.warning(
+        `上传图片数量超出限制，最多可上传 ${this.limit} 张图片！`
+      )
+    },
+    initFileList(val) {
       this.fileList = val.map(data => {
         return {
           url: data.image,
           name: this.getImageName(data.image)
         }
       })
+    }
+  },
+  created() {
+    this.imageUrl = this.url
+    if (this.urls) {
+      this.initFileList(this.urls)
+    }
+  },
+  watch: {
+    urls(val) {
+      if (!val) {
+        return
+      }
+      this.initFileList(val)
     }
   }
 }

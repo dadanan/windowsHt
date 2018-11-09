@@ -85,8 +85,7 @@
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
             <el-form-item label="背景图片">
-              <!-- <image-list :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-list> -->
-              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+              <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -217,7 +216,6 @@
 
 <script>
 import ImageUploader from '@/components/Upload/image'
-import ImageList from '@/components/Upload/imageList'
 import FileUploader from '@/components/Upload/file'
 import { selectTypesBySLD } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
@@ -247,7 +245,7 @@ export default {
         use: ''
       },
       h5Config: {
-        backgroundImg: '',
+        h5BgImgList: [],
         defaultTeamName: '',
         htmlTypeIds: [],
         logo: '',
@@ -299,6 +297,21 @@ export default {
     }
   },
   methods: {
+    removeImg(file) {
+      const index = this.h5Config.h5BgImgList.findIndex(
+        v => v.image === file.url
+      )
+      this.h5Config.h5BgImgList.splice(index, 1)
+    },
+    setImg(file) {
+      this.h5Config.h5BgImgList = [
+        ...this.h5Config.h5BgImgList,
+        { image: file.url }
+      ]
+    },
+    setURL(argu, data, name) {
+      data[name] = argu[0]
+    },
     getForamtList() {
       getForamtList(this.listQuery).then(res => {
         this.pageFormatList = res.data
@@ -322,9 +335,6 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-    },
-    setURL(argu, data, name) {
-      data[name] = argu[0]
     },
     addScene() {
       this.androidConfig.androidSceneList.push({
@@ -369,6 +379,16 @@ export default {
       const h5Config = JSON.parse(JSON.stringify(this.h5Config))
       // 拼接成一个字符串
       h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
+
+      // 转换背景图册数据格式
+      if (h5Config.h5BgImgList) {
+        h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
+          return {
+            bgImg: item.image,
+            id: item.id ? item.id : ''
+          }
+        })
+      }
 
       const form = {
         ...this.baseInfo,
@@ -417,6 +437,19 @@ export default {
             .split(',')
             .map(id => Number(id))
         }
+
+        // 如果存在背景图册，修改数据格式
+        if (h5Config.h5BgImgList) {
+          h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
+            return {
+              image: item.bgImg,
+              id: item.id
+            }
+          })
+        } else {
+          h5Config.h5BgImgList = []
+        }
+
         this.h5Config = h5Config
       }
 
@@ -467,6 +500,14 @@ export default {
           })
         }
       }
+
+      if (step === 2) {
+        this.$notify.info({
+          title: '注意事项',
+          duration: 0,
+          message: `须上传五张背景图片，供H5端APP使用。“依次”为：关机，白天-晴天，白天-阴天，页面-晴天，夜晚-阴天`
+        })
+      }
     }
   },
   created() {
@@ -475,8 +516,7 @@ export default {
   },
   components: {
     ImageUploader,
-    FileUploader,
-    ImageList
+    FileUploader
   }
 }
 </script>
