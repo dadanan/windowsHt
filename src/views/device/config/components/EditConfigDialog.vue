@@ -639,6 +639,10 @@ export default {
           Array.isArray(item.modelFormatItems) &&
             item.modelFormatItems.forEach(iItem => {
               iItem.showStatus = iItem.showStatus ? true : false
+              if (iItem.abilityId) {
+                // 如果存在挑选的功能项数据，转化为数组元素
+                this.$set(iItem, 'abilityId', Number(iItem.abilityId))
+              } 
             })
         })
         // for(var i = 0;i<this.pageOfForamt[0].modelFormatItems.length;i++){

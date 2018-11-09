@@ -41,9 +41,6 @@ export default {
               location: `${component.province},${component.city},${
                 component.district
               },${addr.formattedAddress}`
-                .split(',')
-                .filter(item => item)
-                .join(',') // 去除可能存在的多个逗号
             })
           })
         }
@@ -75,10 +72,13 @@ export default {
       })
       geocoder.getAddress([lng, lat], function(status, result) {
         if (status === 'complete' && result.info === 'OK') {
-          if (result && result.regeocode) {
-            self.address = result.regeocode.formattedAddress
+          const regeocode = result.regeocode
+          if (result && regeocode) {
+            self.address = regeocode.formattedAddress
             // 将位置信息传出去
-            cb(result.regeocode)
+            if (cb) {
+              cb(regeocode)
+            }
             self.$nextTick()
           }
         }
@@ -107,10 +107,7 @@ export default {
       const location = gps.split(',')
       this.center = location
       this.marker.position = location
-      this.getDetailLocation(location[0], location[1], addr => {
-        const address = addr.formattedAddress
-        self.address = address
-      })
+      this.getDetailLocation(location[0], location[1])
     }
   },
   watch: {

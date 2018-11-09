@@ -84,8 +84,8 @@
             <el-form-item label="客服" prop='serviceUser'>
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
-            <el-form-item label="背景图片">
-              <image-uploader :key='1' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+            <el-form-item label="背景图册">
+              <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式" prop="htmlTypeIds">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -287,7 +287,7 @@ export default {
         use: ''
       },
       h5Config: {
-        backgroundImg: '',
+        h5BgImgList: [],
         defaultTeamName: '',
         htmlTypeIds: [],
         logo: '',
@@ -341,6 +341,18 @@ export default {
     }
   },
   methods: {
+    removeImg(file) {
+      const index = this.h5Config.h5BgImgList.findIndex(
+        v => v.image === file.url
+      )
+      this.h5Config.h5BgImgList.splice(index, 1)
+    },
+    setImg(file) {
+      this.h5Config.h5BgImgList = [
+        ...this.h5Config.h5BgImgList,
+        { image: file.url }
+      ]
+    },
     getForamtList() {
       getForamtList(this.listQuery).then(res => {
         this.pageFormatList = res.data
@@ -442,6 +454,14 @@ export default {
       const h5Config = Object.assign({}, this.h5Config)
       // 拼接成一个字符串
       h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
+      // 转换背景图册数据格式
+      if (h5Config.h5BgImgList) {
+        h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
+          return {
+            bgImg: item.image
+          }
+        })
+      }
 
       const form = {
         ...this.baseInfo,
@@ -450,7 +470,7 @@ export default {
         androidConfig: this.androidConfig,
         backendConfig: this.backendConfig
       }
-      console.log(form)
+
       saveDetail(form).then(res => {
         if (res.code !== 200) {
           this.$message({
