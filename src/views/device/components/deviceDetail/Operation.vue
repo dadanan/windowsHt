@@ -6,7 +6,7 @@
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <template v-if='scope.row.abilityType === 2'>
+          <template v-if='scope.row.abilityType == 2'>
             <template v-if='isDoubleMachine(scope.row.abilityId) && windOneData'>
               <!-- 双风机 -->
               <el-select v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windOneData.abilityId)'>
@@ -23,7 +23,7 @@
               </el-select>
             </template>
           </template>
-          <template v-else-if='scope.row.abilityType === 3'>
+          <template v-else-if='scope.row.abilityType == 3'>
             <el-select multiple collapse-tags v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
               <el-option v-for='item in getAbilityOption(scope.row.abilityId)' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
             </el-select>
@@ -66,8 +66,8 @@ export default {
     isCircleSwitchOff() {
       const circleSwitch = this.getAbilityOption(
         this.formatItemsList[3].abilityId
-      ).filter(item => item.dirValue === '290')[0]
-      return circleSwitch && circleSwitch.isSelect === 0
+      ).filter(item => item.dirValue == '290')[0]
+      return circleSwitch && circleSwitch.isSelect == 0
     },
     /**
      * 当前版式是双风机型
@@ -80,7 +80,7 @@ export default {
       }
 
       const option = data.deviceModelAbilityOptions
-      return option[0].optionValue === '280' || option[1].optionValue === '280'
+      return option[0].optionValue == '280' || option[1].optionValue == '280'
     },
     /**
      * 下拉选择框数据变化监听器，然后发送对应指令
@@ -90,14 +90,14 @@ export default {
     optionChangedHandler(argu, abilityId) {
       argu = argu[0]
       const ability = this.getAbilityData(abilityId)
-      if (ability.abilityType === 2) {
+      if (ability.abilityType == 2) {
         // 如果是单选型
-        if (ability.dirValue === '281') {
+        if (ability.dirValue == '281') {
           // 如果是送风风机，判断循环阀是否打开
           const circleSwitch = this.getAbilityOption(
             this.formatItemsList[3].abilityId
-          ).filter(item => item.dirValue === '290')[0]
-          if (circleSwitch.isSelect === 0) {
+          ).filter(item => item.dirValue == '290')[0]
+          if (circleSwitch.isSelect == 0) {
             this.$message({
               message: '循环阀未打开，禁止操作送风风机！',
               type: 'warning'
@@ -106,7 +106,7 @@ export default {
           }
         }
         const option = ability.deviceModelAbilityOptions.filter(
-          item => item.id === argu
+          item => item.id == argu
         )[0]
         this.sendFunc(ability.dirValue, option.dirValue)
       } else {
@@ -170,21 +170,19 @@ export default {
       }
       return this.formatItemsList.filter(
         item =>
-          item.showStatus === 1 &&
-          (item.abilityType === 2 || item.abilityType === 3)
+          item.showStatus == 1 &&
+          (item.abilityType == 2 || item.abilityType == 3)
       )
     },
     getAbilityData(id) {
-      const result = this.abilitysList.filter(item => item.abilityId === id)
+      const result = this.abilitysList.filter(item => item.abilityId == id)
       return result && result[0]
     },
     /**
      * 根据指令查询功能项数据
      */
     getAbilityByDirValue(dirValue) {
-      const result = this.abilitysList.filter(
-        item => item.dirValue === dirValue
-      )
+      const result = this.abilitysList.filter(item => item.dirValue == dirValue)
       return result && result[0]
     },
     getAbilityOption(id) {
@@ -249,9 +247,9 @@ export default {
 
           // 新增属性，表示用户选择的选项的id
           list.forEach(item => {
-            if (item.abilityType === 2) {
+            if (item.abilityType == 2) {
               item['selectedOptionId'] = undefined
-            } else if (item.abilityType === 3) {
+            } else if (item.abilityType == 3) {
               item['selectedOptionId'] = []
             }
           })
@@ -267,24 +265,27 @@ export default {
       // 获取H5控制页面功能项数据，带isSelect参数
       // 根据功能项id筛选功能项
       const findTheAbility = (data, id) => {
-        const result = data.filter(item => item.id === id)
+        const result = data.filter(item => item.id == id)
         return result && result[0]
       }
 
       const tempIds = list
-        .filter(item => item.abilityIds)
-        .map(item => item.abilityIds)
+        .filter(item => item.abilityId)
+        .map(item => item.abilityId)
 
-      const ids = []
-      // 将可能存在的多个ids拆分成单独的id
-      tempIds.forEach(item => {
-        const temp = item.split(',')
-        ids.push(...temp)
-      })
+      // const ids = []
+      // // 将可能存在的多个ids拆分成单独的id
+      // tempIds.forEach(item => {
+      //   if (!item) {
+      //     return
+      //   }
+      //   const temp = item.split(',')
+      //   ids.push(...temp)
+      // })
 
       newQueryDetailByDeviceId({
         deviceId: this.detailData.id,
-        abilityIds: ids
+        abilityIds: tempIds
       }).then(res => {
         const data = res.data
         // 将res.data中的isSelect和dirValue赋值过去
@@ -299,8 +300,8 @@ export default {
           }
           if (
             !item.deviceModelAbilityOptions ||
-            item.deviceModelAbilityOptions.length === 0 ||
-            item.abilityType === 1
+            item.deviceModelAbilityOptions.length == 0 ||
+            item.abilityType == 1
           ) {
             return
           }
@@ -332,34 +333,35 @@ export default {
           }
           // 找到用户选择的档位，初始化
           this.windOneData.deviceModelAbilityOptions.forEach(option => {
-            if (option.isSelect === 1) {
+            if (option.isSelect == 1) {
               this.windOneSelectedId = option.id
             }
           })
           this.windTwoData.deviceModelAbilityOptions.forEach(option => {
-            if (option.isSelect === 1) {
+            if (option.isSelect == 1) {
               this.windTwoSelectedId = option.id
             }
           })
           return
         }
 
-        if (item.abilityType === 2) {
+        if (item.abilityType == 2) {
           // 单选
           // 找到被选择的选项，将id赋值到初始化变量上
           optionList.forEach(option => {
-            if (option.isSelect === 1) {
+            if (option.isSelect == 1) {
+              console.log(123, option.id)
               this.$set(item, 'selectedOptionId', option.id)
             }
           })
           return
         }
 
-        if (item.abilityType === 3) {
+        if (item.abilityType == 3) {
           // 多选
           let selection = []
           optionList.forEach(option => {
-            if (option.isSelect === 1) {
+            if (option.isSelect == 1) {
               selection.push(option.id)
             }
           })

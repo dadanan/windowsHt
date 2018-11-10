@@ -252,7 +252,6 @@ export default {
   watch: {
     detailData(val) {
       this.init(val)
-      console.log(val)
       this.valId = val.id
       this.selectById(val.modelId)
     }
@@ -270,7 +269,6 @@ export default {
     },
     selectById(id) {
       selectById(id).then(res => {
-        console.log(res.data)
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
         for(var i = 0;i<this.deviceModelAbilitys.length;i++){
           if(this.deviceModelAbilitys[i].abilityId == 202){
@@ -308,7 +306,6 @@ export default {
     },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
-      console.log(this.form)
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       // this.getShareToken()
@@ -373,6 +370,11 @@ export default {
         deviceId: id
       }).then(res => {
         this.deviceList1 = res.data.dataList
+        console.log(this.deviceList1)
+        for(var i=0;i<this.deviceList1.length;i++){
+          this.deviceList1[i].hcho = (this.deviceList1[i].hcho)/100
+          this.deviceList1[i].tvoc = (this.deviceList1[i].tvoc)/100
+        }
         this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },
@@ -433,9 +435,6 @@ export default {
     AMap,
     VueQrcode,
     ShareList
-  },
-  watch(deviceList1){
-    console.log(deviceList1)
   }
 }
 </script>
