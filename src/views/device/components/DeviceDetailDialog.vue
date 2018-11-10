@@ -93,19 +93,19 @@
       <el-tab-pane label="设备数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
           <el-table-column type="index"></el-table-column>
-          <!-- <el-table-column prop="manageName" label="设备管理名" show-overflow-tooltip sortable>
-          </el-table-column> -->
-          <el-table-column prop="co2" label="co2" show-overflow-tooltip sortable>
+          <el-table-column prop="name" label="设备管理名"  show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛" show-overflow-tooltip sortable>
+          <el-table-column prop="co2" label="co2" v-if = "deviceModelAbility.co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hum" label="湿度" show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛" v-if = "deviceModelAbility.hcho" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="pm" label="PM2.5" show-overflow-tooltip sortable>
+          <el-table-column prop="hum" label="湿度" v-if = "deviceModelAbility.hum" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tem" label="温度" show-overflow-tooltip sortable>
+          <el-table-column prop="pm" label="PM2.5" v-if = "deviceModelAbility.pm25" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tvoc" label="tvoc" show-overflow-tooltip sortable>
+          <el-table-column prop="tem" label="温度" v-if = "deviceModelAbility.temp" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="tvoc" label="tvoc" v-if = "deviceModelAbility.tvoc" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="startTime" label="状态时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
@@ -187,6 +187,7 @@
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
 import ShareList from './deviceDetail/ShareList'
+import { selectById } from '@/api/device/model'
 import {
   queryOperLog, //操作日志
   queryDeviceSensorStat, //查看设备数据
@@ -236,13 +237,23 @@ export default {
       deviceWorkLogCound: 0,
       shareListVisible: false,
       shareData: {}, // 分享数据
-      group: '--'
+      group: '--',
+      deviceModelAbilitys:[],
+      deviceModelAbility: {
+        co2:false,
+        tvoc:false,
+        temp:false,
+        hum:false,
+        pm25:false,
+        hcho:false
+      }
     }
   },
   watch: {
     detailData(val) {
       this.init(val)
       this.valId = val.id
+      this.selectById(val.modelId)
     }
   },
   methods: {
@@ -256,11 +267,48 @@ export default {
         return '管理端'
       }
     },
+    selectById(id) {
+      selectById(id).then(res => {
+        this.deviceModelAbilitys = res.data.deviceModelAbilitys
+        for(var i = 0;i<this.deviceModelAbilitys.length;i++){
+          if(this.deviceModelAbilitys[i].abilityId == 202){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.co2 = true 
+            }
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 203){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.tvoc = true 
+            }
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 206){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.temp = true 
+            }
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 207){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hum = true 
+            }
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 211){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.pm25 = true 
+            }
+          }
+          if(this.deviceModelAbilitys[i].abilityId == 219){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hcho = true 
+            }
+          }
+        }
+      })
+    },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
-      this.getShareToken()
+      // this.getShareToken()
       this.queryDeviceWorkLog(val.id)
     },
     getLocation({ gps, location }) {
@@ -322,6 +370,11 @@ export default {
         deviceId: id
       }).then(res => {
         this.deviceList1 = res.data.dataList
+        console.log(this.deviceList1)
+        for(var i=0;i<this.deviceList1.length;i++){
+          this.deviceList1[i].hcho = (this.deviceList1[i].hcho)/100
+          this.deviceList1[i].tvoc = (this.deviceList1[i].tvoc)/100
+        }
         this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },

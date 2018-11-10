@@ -40,7 +40,9 @@ export default {
         ...query,
         fileName: '设备列表.xlsx',
         sheetTitle: 'Sheet1'
-      }).then(res => {})
+      }).then(res => {
+        console.log(res.data)
+      })
     },
     handleConfirm() {
       if (this.radio) {

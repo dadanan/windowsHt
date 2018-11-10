@@ -24,7 +24,7 @@
                   {{new Date(form.createTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="创建人">
-                  <el-input v-model="form.customerName" disabled></el-input>
+                  <el-input v-model="form.createUser" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
                   <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark" disabled>
@@ -157,6 +157,7 @@ export default {
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
+        console.log(res.data)
         const data = res.data
         if (!data.imagesList) {
           data.imagesList = []

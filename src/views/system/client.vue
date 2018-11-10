@@ -110,7 +110,7 @@ export default {
         typeIds: true,
         administrator: true,
         remark: true,
-        deviceTotal: true,
+        deviceTotal: false,
         orderTotal: false,
         isDashboardEnabled: false,
         isAndroidEnabled: false,

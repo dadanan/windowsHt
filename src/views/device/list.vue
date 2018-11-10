@@ -367,7 +367,7 @@ export default {
         birthTime: false,
         lastUpdateTime: true,
         bindCustomer: false,
-        location: false,
+        location: true,
         createUser: false,
         manageName: true
       },
@@ -477,6 +477,7 @@ export default {
     },
     showDetail(data) {
       queryDeviceById(data.id).then(res => {
+        // console.log(res.data)
         this.deviceDetailDialogVisible = true
         this.detailData = res.data
       })
