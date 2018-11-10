@@ -115,7 +115,7 @@ export function queryChildDevice(id) {
 export function exportDeviceData(data) {
   console.log(data)
   return request({
-    url: '/temp/api/device/exportDeviceData',
+    url: `/temp/api/device/exportDeviceData`,
     method: 'get',
     data
   })

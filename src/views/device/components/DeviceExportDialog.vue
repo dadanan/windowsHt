@@ -35,9 +35,14 @@ export default {
   },
   methods: {
     handleExport(query) {
+      console.log(this.deviceColumnVisible)
+      this.deviceColumnVisible.limit = query.deviceListQueryRequest.limit
+      this.deviceColumnVisible.page = query.deviceListQueryRequest.page
+      for(var i = 0; i<this.deviceColumnVisible.length;i++){
+      }
       exportDeviceData({
         ...this.deviceColumnVisible,
-        ...query,
+        // ...query,
         fileName: '设备列表.xlsx',
         sheetTitle: 'Sheet1'
       }).then(res => {
