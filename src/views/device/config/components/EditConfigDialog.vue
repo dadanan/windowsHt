@@ -635,7 +635,6 @@ export default {
       if (this.pageOfForamt) {
         this.pageOfForamt.forEach(item => {
           item.showStatus = item.showStatus ? true : false
-          console.log(item.abilityId)
           Array.isArray(item.modelFormatItems) &&
             item.modelFormatItems.forEach(iItem => {
               iItem.showStatus = iItem.showStatus ? true : false

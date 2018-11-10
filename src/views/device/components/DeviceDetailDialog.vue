@@ -274,22 +274,34 @@ export default {
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
         for(var i = 0;i<this.deviceModelAbilitys.length;i++){
           if(this.deviceModelAbilitys[i].abilityId == 202){
-            this.deviceModelAbility.co2 = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.co2 = true 
+            }
           }
           if(this.deviceModelAbilitys[i].abilityId == 203){
-            this.deviceModelAbility.tvoc = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.tvoc = true 
+            }
           }
           if(this.deviceModelAbilitys[i].abilityId == 206){
-            this.deviceModelAbility.temp = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.temp = true 
+            }
           }
           if(this.deviceModelAbilitys[i].abilityId == 207){
-            this.deviceModelAbility.hum = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hum = true 
+            }
           }
           if(this.deviceModelAbilitys[i].abilityId == 211){
-            this.deviceModelAbility.pm25 = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.pm25 = true 
+            }
           }
           if(this.deviceModelAbilitys[i].abilityId == 219){
-            this.deviceModelAbility.hcho = true 
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hcho = true 
+            }
           }
         }
       })
@@ -421,6 +433,9 @@ export default {
     AMap,
     VueQrcode,
     ShareList
+  },
+  watch(deviceList1){
+    console.log(deviceList1)
   }
 }
 </script>
