@@ -212,6 +212,7 @@ export default {
             item =>
               item.updateStatus !== 3 ||
               item.updateStatus !== -1 ||
+              item.updateStatus !== 1 ||
               item.status !== 2 ||
               item.status !== 3
           )
@@ -226,6 +227,7 @@ export default {
           item =>
             item.updateStatus !== 3 ||
             item.updateStatus !== -1 ||
+            item.updateStatus !== 1 ||
             item.status !== 2 ||
             item.status !== 3
         )
@@ -350,7 +352,6 @@ export default {
           // 找到被选择的选项，将id赋值到初始化变量上
           optionList.forEach(option => {
             if (option.isSelect == 1) {
-              console.log(123, option.id)
               this.$set(item, 'selectedOptionId', option.id)
             }
           })
