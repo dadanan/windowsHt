@@ -11,6 +11,9 @@
         <el-form-item label="二维码">
           <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
         </el-form-item>
+        <el-form-item label="绑定状态">
+           <el-input v-model="status" disabled></el-input>
+        </el-form-item>
         <el-form-item label="授权管理">
           <el-table :data="shareData.list" style="width: 100%" border>
             <el-table-column type="index"></el-table-column>
@@ -98,7 +101,8 @@ export default {
       shareURL: '...',
       shareData: {
         list: []
-      }
+      },
+      status:''
     }
   },
   methods: {
@@ -149,11 +153,14 @@ export default {
     },
     getDeviceShareList() {
       deviceShareList(this.form.id).then(res => {
-        this.shareData = {
-          deviceId: this.form.id,
-          list: res.data
-        }
-        this.shareListVisible = true
+          this.shareData = {
+            deviceId: this.form.id,
+            list: res.data
+          }
+        this.status ="设备已绑定"
+      })
+      .catch(res => {
+        this.status ="设备未绑定"
       })
     },
     updateDevice() {

@@ -5,7 +5,8 @@ import store from '@/store'
 // 里面的域名的response不显示错误
 const showNotError = [
   'api/customer/selectBackendConfigBySLD',
-  'api/device/newQueryDetailByDeviceId'
+  'api/device/newQueryDetailByDeviceId',
+  'api/device/deviceShareList'
 ]
 
 // 如果url在白名单里
