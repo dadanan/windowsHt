@@ -43,8 +43,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="型号ID">
-                  <el-input v-model="form.modelId" disabled></el-input>
+                <el-form-item label="modelNo">
+                  <el-input v-model="form.modelNo" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="型号名称">
                   <el-input v-model="form.modelName" disabled></el-input>
