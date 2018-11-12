@@ -26,6 +26,8 @@
         </el-table-column>
         <el-table-column prop="deviceTotal" label="设备总数" v-if="clientColumnVisible.deviceTotal" sortable>
         </el-table-column>
+        <el-table-column prop="sld" label="二级域名" v-if="clientColumnVisible.sld" sortable>
+        </el-table-column>
         <el-table-column prop="orderTotal" label="订单总数" v-if="clientColumnVisible.orderTotal" sortable>
         </el-table-column>
         <el-table-column prop="isDashboardEnabled" label="是否开放后台" v-if="clientColumnVisible.isDashboardEnabled" sortable>
@@ -66,6 +68,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.remark">备注说明</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="clientColumnVisible.sld">二级域名</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="clientColumnVisible.deviceTotal">客户设备数</el-checkbox>
@@ -114,7 +119,8 @@ export default {
         orderTotal: false,
         isDashboardEnabled: false,
         isAndroidEnabled: false,
-        use: false
+        use: false,
+        sld: true
       },
       isCreateClientDialogVisible: false,
       isEditClientDialogVisible: false,
