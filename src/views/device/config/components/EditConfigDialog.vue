@@ -106,8 +106,11 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <template v-for='item in pageOfForamt'>
+      <template v-for='(item,index) in filterPageOfForamt()'>
         <el-card class='box-card' :key='item.id'>
+          <div class='tool' v-if='index !== 0'>
+            <span class='close' @click='deleteFormatConfig(index)'></span>
+          </div>
           <el-form-item label='页面预览'>
             <img class='format-page-img' :src='item.showImg'>
           </el-form-item>
@@ -342,6 +345,15 @@ export default {
     }
   },
   methods: {
+    filterPageOfForamt() {
+      return this.pageOfForamt.filter(item => item.status === 1)
+    },
+    deleteFormatConfig(index) {
+      if (index === 0) {
+        return
+      }
+      this.pageOfForamt[index].status = 2
+    },
     getSld() {
       // 获取二级域名
       const sld = location.href.match(/:\/\/(.*?).hcocloud/)
@@ -394,6 +406,7 @@ export default {
             pageId: item.pageId || item.id,
             showName: item.showName || item.name,
             showStatus: item.showStatus ? 1 : 0,
+            status: item.status,
             modelFormatItems:
               item.modelFormatItems &&
               item.modelFormatItems.map(iItem => {
@@ -417,7 +430,6 @@ export default {
           modelFormatPages
         }
       }
-
       updateDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('update-data', {
@@ -621,10 +633,6 @@ export default {
             })
         })
 
-      // 如果存在功能项列表数据，覆盖一下
-      // for(var i = 0; i<newData.deviceModelAbilitys.length;i++){
-      //   newData.deviceModelAbilitys[i].abilityId = Number(newData.deviceModelAbilitys[i].abilityId)
-      // }
       this.deviceModelAbilitys = newData.deviceModelAbilitys
 
       if (newData.deviceModelFormat) {
@@ -641,7 +649,7 @@ export default {
               if (iItem.abilityId) {
                 // 如果存在挑选的功能项数据，转化为数组元素
                 this.$set(iItem, 'abilityId', Number(iItem.abilityId))
-              } 
+              }
             })
         })
         // for(var i = 0;i<this.pageOfForamt[0].modelFormatItems.length;i++){
@@ -674,6 +682,26 @@ export default {
 <style lang='scss'>
 .box-card {
   margin-top: 10px;
+  position: relative;
+  .el-card__body {
+    margin-top: 1rem;
+  }
+  .tool {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.7rem;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    .close {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-image: url('~@/assets/img/close.png');
+      background-size: cover;
+      margin-right: 5px;
+    }
+  }
 }
 .inline-input {
   display: flex;
