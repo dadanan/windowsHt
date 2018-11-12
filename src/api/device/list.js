@@ -115,9 +115,8 @@ export function queryChildDevice(id) {
 export function exportDeviceData(data) {
   console.log(data)
   return request({
-    url: `/temp/api/device/exportDeviceData`,
-    method: 'get',
-    data
+    url: `/temp/api/device/exportDeviceData?${encodeSearchParams(data)}`,
+    method: 'get'
   })
 }
 
@@ -231,4 +230,17 @@ export function sendFunc(data) {
     method: 'post',
     data
   })
+}
+export function encodeSearchParams(obj) {
+  const params = []
+
+  Object.keys(obj).forEach((key) => {
+    let value = obj[key]
+    if (typeof value === 'undefined') {
+      value = ''
+    }
+    params.push([key, encodeURIComponent(value)].join('='))
+  })
+
+  return params.join('&')
 }
