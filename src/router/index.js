@@ -263,7 +263,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'process',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/alarm/process'),
         name: 'alarmProcess',
         meta: {
           title: 'alarmProcess'
@@ -358,7 +358,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'wechat',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/rent/wechat'),
         name: 'rentWechat',
         meta: {
           title: 'rentWechat'
@@ -366,7 +366,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'blacklist',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/rent/blacklist'),
         name: 'rentBlacklist',
         meta: {
           title: 'rentBlacklist'
@@ -374,36 +374,36 @@ export const asyncRouterMap = [
       },
       {
         path: 'toll',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/rent/toll'),
         name: 'rentToll',
         meta: {
           title: 'rentToll'
         }
-      },
-      {
-        path: 'putin',
-        component: () => import('@/views/blank'),
-        name: 'rentPutin',
-        meta: {
-          title: 'rentPutin'
-        }
-      },
-      {
-        path: 'operator',
-        component: () => import('@/views/blank'),
-        name: 'rentOperator',
-        meta: {
-          title: 'rentOperator'
-        }
-      },
-      {
-        path: 'payment',
-        component: () => import('@/views/blank'),
-        name: 'rentPayment',
-        meta: {
-          title: 'rentPayment'
-        }
       }
+      // {
+      //   path: 'putin',
+      //   component: () => import('@/views/blank'),
+      //   name: 'rentPutin',
+      //   meta: {
+      //     title: 'rentPutin'
+      //   }
+      // },
+      // {
+      //   path: 'operator',
+      //   component: () => import('@/views/blank'),
+      //   name: 'rentOperator',
+      //   meta: {
+      //     title: 'rentOperator'
+      //   }
+      // },
+      // {
+      //   path: 'payment',
+      //   component: () => import('@/views/blank'),
+      //   name: 'rentPayment',
+      //   meta: {
+      //     title: 'rentPayment'
+      //   }
+      // }
     ]
   },
   {
@@ -509,7 +509,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'system',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/message/systemMessage'),
         name: 'systemMessage',
         meta: {
           title: 'systemMessage'

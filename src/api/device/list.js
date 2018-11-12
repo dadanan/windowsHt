@@ -114,10 +114,11 @@ export function queryChildDevice(id) {
 // 导出
 export function exportDeviceData(data) {
   console.log(data)
-  return request({
-    url: `/temp/api/device/exportDeviceData?${encodeSearchParams(data)}`,
-    method: 'get'
-  })
+  // return request({
+  //   url: `/temp/api/device/exportDeviceData?${encodeSearchParams(data)}`,
+  //   method: 'get'
+  // })
+  window.open(`/temp/api/device/exportDeviceData?${encodeSearchParams(data)}`)
 }
 
 // 操作日志

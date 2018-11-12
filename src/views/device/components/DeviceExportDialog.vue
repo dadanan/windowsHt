@@ -7,6 +7,9 @@
           <el-radio :label="1">导出全部</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="导出名字">
+        <el-input type="text" v-model="name"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">取消</el-button>
@@ -30,7 +33,8 @@ export default {
   },
   data() {
     return {
-      radio: 0
+      radio: 0,
+      name:''
     }
   },
   methods: {
@@ -99,7 +103,7 @@ export default {
       if (!this.deviceColumnVisible.powerStatus) {
         delete this.deviceColumnVisible.powerStatus
       }
-      this.deviceColumnVisible.fileName = 'maybe.xlsx'
+      this.deviceColumnVisible.fileName = (this.name+".xlsx")
       this.deviceColumnVisible.sheetTitle = '1'
       console.log(this.deviceColumnVisible)
       exportDeviceData(this.deviceColumnVisible).then(res => {

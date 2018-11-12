@@ -4,7 +4,7 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="任务名称" :value='value1'>
+            <el-select placeholder="规则名称" :value='value1'>
               <el-option label="设备 MAC" value="1"></el-option>
               <el-option label="设备序列号" value="2"></el-option>
               <el-option label="设备名称" value="3"></el-option>
@@ -12,24 +12,10 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="选择关联"></el-input>
+            <el-input placeholder="状态"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="告警级别" :value='value2'>
-              <el-option label="预留布尔值故障" value="1"></el-option>
-              <el-option label="滤网到期提醒" value="2"></el-option>
-              <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
-              <el-option label="设备移开 1000 米报警" value="4"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="状态" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="范围" :value='value3'>
+            <el-select placeholder="告警级别" :value='value3'>
               <el-option label="未修复" value="1"></el-option>
               <el-option label="已修复" value="2"></el-option>
             </el-select>
@@ -40,24 +26,27 @@
           </el-form-item>
         </el-form>
       </div>
+      <div class="table-opts">
+        <el-button-group>
+          <el-button type="primary">添加</el-button>
+          <el-button type="primary">禁用</el-button>
+          <el-button type="primary">启用</el-button>
+          <el-button type="primary">删除</el-button>
+          <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
+        </el-button-group>
+      </div>
       <el-table :data="levelList" style="width: 100%" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="任务名称" show-overflow-tooltip sortable>
+        <el-table-column prop="name" label="规则名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="nameText" label="任务描述" show-overflow-tooltip sortable>
+        <el-table-column prop="nameText" label="规则描述" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="type" label="选择关联" show-overflow-tooltip sortable>
+        <el-table-column prop="type" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="dataType" label="是否规则内" show-overflow-tooltip sortable>
+        <el-table-column prop="dataType" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="告警级别" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="description" label="告警来源" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="description" label="到期处理日" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="description" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="时间" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作">
            <template slot-scope="scope">
