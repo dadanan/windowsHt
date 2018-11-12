@@ -209,12 +209,7 @@ export default {
           }
 
           item.deviceModelAbilityOptions = item.deviceModelAbilityOptions.filter(
-            item =>
-              item.updateStatus !== 3 ||
-              item.updateStatus !== -1 ||
-              item.updateStatus !== 1 ||
-              item.status !== 2 ||
-              item.status !== 3
+            item => item.updateStatus == 0 || item.status == 1
           )
 
           item.deviceModelAbilityOptions.forEach(iItem => {
@@ -222,14 +217,9 @@ export default {
           })
         })
 
-        // 筛选功能项数据，去掉updateStatus:3或者-1的还有status:3、2的
+        // 筛选功能项数据
         this.abilitysList = data.abilitysList.filter(
-          item =>
-            item.updateStatus !== 3 ||
-            item.updateStatus !== -1 ||
-            item.updateStatus !== 1 ||
-            item.status !== 2 ||
-            item.status !== 3
+          item => item.updateStatus == 0 || item.status == 1
         )
 
         let list = data.deviceModelFormat.modelFormatPages
