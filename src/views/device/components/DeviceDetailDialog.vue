@@ -52,8 +52,8 @@
                 <el-form-item label="类型名称">
                   {{form.deviceType}}
                 </el-form-item>
-                <el-form-item label="类型ID">
-                  {{form.typeId}}
+                <el-form-item label="typeNo">
+                  {{form.typeNo}}
                 </el-form-item>
                 <el-form-item label="项目ID">
                   <template v-if='form.groupId > 0'>
