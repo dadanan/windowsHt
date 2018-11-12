@@ -29,20 +29,34 @@ export default {
       address: '',
       events: {
         click(e) {
-          let { lng, lat } = e.lnglat
-          const position = [lng, lat]
-          self.center = position
-          self.marker.position = position
-
-          self.getDetailLocation(lng, lat, addr => {
-            const component = addr.addressComponent
-            self.$emit('getLocation', {
-              gps: position,
-              location: `${component.province},${component.city},${
-                component.district
-              },${addr.formattedAddress}`
+          self
+            .$confirm('是否重新设置设备位置?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
             })
-          })
+            .then(() => {
+              let { lng, lat } = e.lnglat
+              const position = [lng, lat]
+              self.center = position
+              self.marker.position = position
+
+              self.getDetailLocation(lng, lat, addr => {
+                const component = addr.addressComponent
+                self.$emit('getLocation', {
+                  gps: position,
+                  location: `${component.province},${component.city},${
+                    component.district
+                  },${addr.formattedAddress}`
+                })
+              })
+            })
+            .catch(() => {
+              self.$message({
+                type: 'info',
+                message: '已取消设置！'
+              })
+            })
         }
       },
       marker: {
