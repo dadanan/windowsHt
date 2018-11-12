@@ -95,13 +95,13 @@
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
       <el-form-item label="版式选择">
-        <el-select v-model="form.formatId" @change="handleFormatChange">
+        <el-select clearable v-model="form.formatId" @change="handleFormatChange">
           <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="安卓版式选择">
-        <el-select v-model="form.androidFormatId">
+        <el-select clearable v-model="form.androidFormatId">
           <el-option v-for="format in androidForamtList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>

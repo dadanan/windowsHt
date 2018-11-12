@@ -323,24 +323,8 @@ export default {
           message: '设备位置信息更新成功！',
           type: 'success'
         })
+        this.form.location = location
       })
-    },
-    showDistrict() {
-      // 显示地区卡片
-      const location = this.form.location
-      // 通过手动干预地区选择组件的内部属性，来解决v-model数据刷新后，组件没有实时更新的问题
-      if (!this.$refs.areaCascader) {
-        return
-      }
-      const areaCascader = this.$refs.areaCascader.$children[0]
-
-      if (location) {
-        this.selected = location.split(',')
-        areaCascader.label = location.replace(/,/g, '/')
-      } else {
-        this.selected = []
-        areaCascader.label = ''
-      }
     },
     // 工作日志
     queryDeviceWorkLog(id) {
