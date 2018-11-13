@@ -344,7 +344,7 @@ export default {
         h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
           return {
             bgImg: item.image,
-            id: item.id ? item.id : ''
+            id: item.id ? item.id : null
           }
         })
       }
@@ -388,7 +388,7 @@ export default {
         this.$notify.info({
           title: '注意事项',
           duration: 5000,
-          message: `须上传五张背景图片，供H5端APP使用。“依次”为：关机，白天-晴天，白天-阴天，页面-晴天，夜晚-阴天`
+          message: `须上传五张背景图片，供H5端APP使用。“依次”为：关机，白天-晴天，白天-阴天，夜晚-晴天，夜晚-阴天`
         })
       }
     }
