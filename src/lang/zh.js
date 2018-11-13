@@ -29,7 +29,7 @@ export default {
     income: '分润管理',
     incomeRule: '分润规则',
     incomeBill: '分润账单',
-    rent: '基础信息',
+    rent: '基础数据维护',
     rentWechat: '实施阶段',
     rentBlacklist: '规划分类',
     rentToll: '工程资料分配',
