@@ -273,6 +273,17 @@ export default {
         this.baseInfo = tempForm
         const h5Config = tempForm.h5Config
         if (h5Config) {
+          // 如果存在背景图册，修改数据格式
+          if (h5Config.h5BgImgList) {
+            h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
+              return {
+                image: item.bgImg,
+                id: item.id
+              }
+            })
+          } else {
+            h5Config.h5BgImgList = []
+          }
           this.h5Config = h5Config
         }
         this.androidConfig = tempForm.androidConfig || {}
@@ -328,6 +339,15 @@ export default {
     },
     updateOwnerH5Info() {
       const h5Config = JSON.parse(JSON.stringify(this.h5Config))
+      // 转换背景图册数据格式
+      if (h5Config.h5BgImgList) {
+        h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
+          return {
+            bgImg: item.image,
+            id: item.id ? item.id : ''
+          }
+        })
+      }
 
       updateOwnerH5Info(h5Config).then(res => {
         this.$message({
