@@ -272,38 +272,40 @@ export default {
     selectById(id) {
       selectById(id).then(res => {
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
-        for (var i = 0; i < this.deviceModelAbilitys.length; i++) {
-          if (this.deviceModelAbilitys[i].abilityId == 202) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.co2 = true
+        console.log(this.deviceModelAbilitys)
+        for(var i = 0;i<this.deviceModelAbilitys.length;i++){
+          if(this.deviceModelAbilitys[i].abilityId == 120){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.co2 = true 
             }
           }
-          if (this.deviceModelAbilitys[i].abilityId == 203) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.tvoc = true
+          if(this.deviceModelAbilitys[i].abilityId == 150){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.tvoc = true 
             }
           }
-          if (this.deviceModelAbilitys[i].abilityId == 206) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.temp = true
+          if(this.deviceModelAbilitys[i].abilityId == 140){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.temp = true 
             }
           }
-          if (this.deviceModelAbilitys[i].abilityId == 207) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.hum = true
+          if(this.deviceModelAbilitys[i].abilityId == 130){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hum = true 
             }
           }
-          if (this.deviceModelAbilitys[i].abilityId == 211) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.pm25 = true
+          if(this.deviceModelAbilitys[i].abilityId == 110){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.pm25 = true 
             }
           }
-          if (this.deviceModelAbilitys[i].abilityId == 219) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.hcho = true
+          if(this.deviceModelAbilitys[i].abilityId == 160){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.hcho = true 
             }
           }
         }
+        console.log(this.deviceModelAbility)
       })
     },
     init(val) {
