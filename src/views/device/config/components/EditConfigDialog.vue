@@ -80,9 +80,9 @@
             <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="是否使用">
+        <el-table-column label="是否使用" align='center'>
           <template slot-scope="scope">
-            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用" :disabled="scope.row.updateStatus === 3 || scope.row.updateStatus === -1 ">
+            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" :disabled="scope.row.updateStatus === 3 || scope.row.updateStatus === -1 ">
             </el-switch>
           </template>
         </el-table-column>
@@ -95,13 +95,13 @@
     </el-form>
     <el-form v-else-if='step===3' label-width="100px" class="mb-22">
       <el-form-item label="版式选择">
-        <el-select v-model="form.formatId" @change="handleFormatChange">
+        <el-select clearable v-model="form.formatId" @change="handleFormatChange">
           <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="安卓版式选择">
-        <el-select v-model="form.androidFormatId">
+        <el-select clearable v-model="form.androidFormatId">
           <el-option v-for="format in androidForamtList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
@@ -130,9 +130,9 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <el-table-column label="是否显示" show-overflow-tooltip>
+            <el-table-column label="是否显示" align='center' show-overflow-tooltip>
               <template slot-scope="scope">
-                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
@@ -602,8 +602,16 @@ export default {
     this.getAndroidFrmatList()
   },
   watch: {
+    /**
+     *   总结下： status: 1 正常状态
+     *   status: 2 逻辑删除
+     *   status: 3 禁用
+     *   updateStatus: 0 正常
+     *   updateStatus: 1 新增
+     *   updateStatus: -1 删除
+     *   updateStatus: 3 禁用使用
+     */
     data(val) {
-      console.log(val)
       const newData = JSON.parse(JSON.stringify(val))
       this.childModelIds = newData.childModelIds
         ? newData.childModelIds.split(',').map(Number)
@@ -613,7 +621,11 @@ export default {
       newData.deviceModelAbilitys &&
         newData.deviceModelAbilitys.forEach(item => {
           item['abilityName'] = item.definedName
-          if (item.updateStatus === 1) {
+          if (
+            item.updateStatus === 1 ||
+            item.updateStatus === 3 ||
+            item.updateStatus === -1
+          ) {
             // 新添加的功能项，默认禁用。可手动启用
             this.$set(item, 'status', 3)
           }

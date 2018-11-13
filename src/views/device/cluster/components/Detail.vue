@@ -7,7 +7,7 @@
             <el-row :gutter="20">
               <el-col :span="24">
                 <el-form-item label="项目名">
-                  <el-input v-model="form.name" disabled></el-input>
+                  {{form.name}}
                 </el-form-item>
                 <el-form-item label="客户">
                   <el-select v-model="form.customerId" disabled>
@@ -15,20 +15,19 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="介绍">
-                  <el-input v-model="form.introduction" disabled></el-input>
+                  {{form.introduction}}
                 </el-form-item>
                 <el-form-item label="地点">
-                  <el-input v-model="form.createLocation" disabled></el-input>
+                  {{form.createLocation}}
                 </el-form-item>
                 <el-form-item label="创建时间">
                   {{new Date(form.createTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="创建人">
-                  <el-input v-model="form.createUser" disabled></el-input>
+                  {{form.createUser}}
                 </el-form-item>
                 <el-form-item label="备注">
-                  <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" v-model="form.remark" disabled>
-                  </el-input>
+                  {{form.remark}}
                 </el-form-item>
               </el-col>
             </el-row>

@@ -7,13 +7,13 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="名称">
-                  <el-input v-model="form.name" disabled></el-input>
+                  {{form.name}}
                 </el-form-item>
                 <el-form-item label="MAC">
-                  <el-input v-model="form.mac" disabled></el-input>
+                  {{form.mac}}
                 </el-form-item>
                 <el-form-item label="设备归属">
-                  <el-input v-model="form.customerName" disabled></el-input>
+                  {{form.customerName}}
                 </el-form-item>
                 <el-form-item label="分配状态">
                   {{form.assignStatus === 1 ? '已分配' : '未分配'}}
@@ -25,10 +25,10 @@
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
                 </el-form-item> -->
                 <el-form-item label="项目名">
-                  <el-input v-model="form.groupName" disabled></el-input>
+                  {{form.groupName}}
                 </el-form-item>
                 <el-form-item label="管理名称">
-                  <el-input v-model="form.manageName" disabled></el-input>
+                  {{form.manageName}}
                 </el-form-item>
                 <el-form-item label="在线状态">
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
@@ -44,24 +44,23 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="modelNo">
-                  <el-input v-model="form.modelNo" disabled></el-input>
+                  {{form.modelNo}}
                 </el-form-item>
                 <el-form-item label="型号名称">
-                  <el-input v-model="form.modelName" disabled></el-input>
+                  {{form.modelName}}
                 </el-form-item>
                 <el-form-item label="类型名称">
-                  <el-input v-model="form.deviceType" disabled></el-input>
+                  {{form.deviceType}}
                 </el-form-item>
-                <el-form-item label="类型ID">
-                  <el-input v-model="form.typeId" disabled></el-input>
+                <el-form-item label="typeNo">
+                  {{form.typeNo}}
                 </el-form-item>
                 <el-form-item label="项目ID">
-                  <!-- <el-input v-model="form.groupId" disabled></el-input> -->
                   <template v-if='form.groupId > 0'>
-                    <el-input v-model="form.groupId" disabled></el-input>
+                    {{form.groupId}}
                   </template>
                   <template v-else>
-                    <el-input v-model="group" disabled></el-input>
+                    {{form.group}}
                   </template>
                 </el-form-item>
                 <el-form-item label="注册时间">
@@ -74,6 +73,9 @@
                   <template v-else>
                     - -
                   </template>
+                </el-form-item>
+                <el-form-item label="设备位置">
+                  {{form.location}}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -95,17 +97,17 @@
           <el-table-column type="index"></el-table-column>
           <!-- <el-table-column prop="name" label="设备管理名"  show-overflow-tooltip sortable>
           </el-table-column> -->
-          <el-table-column prop="co2" label="co2" v-if = "deviceModelAbility.co2" show-overflow-tooltip sortable>
+          <el-table-column prop="co2" label="co2" v-if="deviceModelAbility.co2" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛" v-if = "deviceModelAbility.hcho" show-overflow-tooltip sortable>
+          <el-table-column prop="hcho" label="甲醛" v-if="deviceModelAbility.hcho" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="hum" label="湿度" v-if = "deviceModelAbility.hum" show-overflow-tooltip sortable>
+          <el-table-column prop="hum" label="湿度" v-if="deviceModelAbility.hum" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="pm" label="PM2.5" v-if = "deviceModelAbility.pm25" show-overflow-tooltip sortable>
+          <el-table-column prop="pm" label="PM2.5" v-if="deviceModelAbility.pm25" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tem" label="温度" v-if = "deviceModelAbility.temp" show-overflow-tooltip sortable>
+          <el-table-column prop="tem" label="温度" v-if="deviceModelAbility.temp" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="tvoc" label="tvoc" v-if = "deviceModelAbility.tvoc" show-overflow-tooltip sortable>
+          <el-table-column prop="tvoc" label="tvoc" v-if="deviceModelAbility.tvoc" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="startTime" label="状态时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
@@ -238,14 +240,14 @@ export default {
       shareListVisible: false,
       shareData: {}, // 分享数据
       group: '--',
-      deviceModelAbilitys:[],
+      deviceModelAbilitys: [],
       deviceModelAbility: {
-        co2:false,
-        tvoc:false,
-        temp:false,
-        hum:false,
-        pm25:false,
-        hcho:false
+        co2: false,
+        tvoc: false,
+        temp: false,
+        hum: false,
+        pm25: false,
+        hcho: false
       }
     }
   },
@@ -323,24 +325,8 @@ export default {
           message: '设备位置信息更新成功！',
           type: 'success'
         })
+        this.form.location = location
       })
-    },
-    showDistrict() {
-      // 显示地区卡片
-      const location = this.form.location
-      // 通过手动干预地区选择组件的内部属性，来解决v-model数据刷新后，组件没有实时更新的问题
-      if (!this.$refs.areaCascader) {
-        return
-      }
-      const areaCascader = this.$refs.areaCascader.$children[0]
-
-      if (location) {
-        this.selected = location.split(',')
-        areaCascader.label = location.replace(/,/g, '/')
-      } else {
-        this.selected = []
-        areaCascader.label = ''
-      }
     },
     // 工作日志
     queryDeviceWorkLog(id) {
@@ -373,9 +359,9 @@ export default {
       }).then(res => {
         this.deviceList1 = res.data.dataList
         console.log(this.deviceList1)
-        for(var i=0;i<this.deviceList1.length;i++){
-          this.deviceList1[i].hcho = (this.deviceList1[i].hcho)/100
-          this.deviceList1[i].tvoc = (this.deviceList1[i].tvoc)/100
+        for (var i = 0; i < this.deviceList1.length; i++) {
+          this.deviceList1[i].hcho = this.deviceList1[i].hcho / 100
+          this.deviceList1[i].tvoc = this.deviceList1[i].tvoc / 100
         }
         this.queryDeviceSensorStatCound = res.data.totalCount
       })

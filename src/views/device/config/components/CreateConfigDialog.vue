@@ -72,9 +72,9 @@
             <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="是否使用">
+        <el-table-column label="是否使用" align='center'>
           <template slot-scope="scope">
-            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" active-text="使用" inactive-text="不使用">
+            <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949">
             </el-switch>
           </template>
         </el-table-column>
@@ -114,9 +114,9 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <el-table-column label="是否显示" show-overflow-tooltip>
+            <el-table-column label="是否显示" show-overflow-tooltip align='center'>
               <template slot-scope="scope">
-                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="显示" inactive-text="不显示">
+                <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
