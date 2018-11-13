@@ -274,32 +274,32 @@ export default {
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
         console.log(this.deviceModelAbilitys)
         for(var i = 0;i<this.deviceModelAbilitys.length;i++){
-          if(this.deviceModelAbilitys[i].abilityId == 120){
+          if(this.deviceModelAbilitys[i].dirValue == 120){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.co2 = true 
             }
           }
-          if(this.deviceModelAbilitys[i].abilityId == 150){
+          if(this.deviceModelAbilitys[i].dirValue == 150){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.tvoc = true 
             }
           }
-          if(this.deviceModelAbilitys[i].abilityId == 140){
+          if(this.deviceModelAbilitys[i].dirValue == 140){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.temp = true 
             }
           }
-          if(this.deviceModelAbilitys[i].abilityId == 130){
+          if(this.deviceModelAbilitys[i].dirValue == 130){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.hum = true 
             }
           }
-          if(this.deviceModelAbilitys[i].abilityId == 110){
+          if(this.deviceModelAbilitys[i].dirValue == 110){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.pm25 = true 
             }
           }
-          if(this.deviceModelAbilitys[i].abilityId == 160){
+          if(this.deviceModelAbilitys[i].dirValue == 160){
             if(this.deviceModelAbilitys[i].status == 1){
               this.deviceModelAbility.hcho = true 
             }

@@ -65,7 +65,6 @@
 export default {
   data() {
     const levelList = []
-
     for (let i = 0; i < 15; i++) {
       levelList.push({
         name: 'PmLose',
