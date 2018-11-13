@@ -1,23 +1,18 @@
 <template>
   <div class="dashboard-container">
-    <!-- <el-row :gutter="20">
-      <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanCardList" :key="item.id" v-if="item.isVisible">
-        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#EC7063' }"></data-card>
-      </el-col>
-    </el-row> -->
-    <!-- <el-card class="mb20">
-      <chart :options="kanbanChart" class="chart" auto-resize></chart>
-    </el-card> -->
     <el-card>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary">添加</el-button>
+          <el-button type="primary" @click="addBlackList = true">添加</el-button>
           <el-button type="primary">禁用</el-button>
           <el-button type="primary">启用</el-button>
           <el-button type="primary">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
       </div>
+      <add-black-list :visible.sync="addBlackList" ></add-black-list>
+      <edit-black-list :visible.sync="editBlackList" ></edit-black-list>
+      <deta-black-list :visible.sync="detaBlackList" ></deta-black-list>
       <el-table :data="alarmList" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="mac" label="规划分类名称" show-overflow-tooltip sortable>
@@ -32,8 +27,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">修改</el-button>
-            <el-button type="text">详情</el-button>
+            <el-button type="text" @click="editWechat = true">修改</el-button>
+            <el-button type="text" @click="detaWechat = true">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,15 +39,18 @@
 </template>
 
 <script>
-import DataCard from '@/components/DataCard'
+import AddBlackList from './components/AddBlackList'
+import EditBlackList from './components/EditBlackList'
+import DetaBlackList from './components/DetaBlackList'
 
 export default {
   components: {
-    DataCard
+    AddBlackList,
+    EditBlackList,
+    DetaBlackList
   },
   data() {
     const alarmList = []
-
     for (let i = 0; i < 15; i++) {
       alarmList.push({
         mac: '862151034187433',
@@ -66,6 +64,9 @@ export default {
     }
     return {
       alarmList,
+      addBlackList:false,
+      editBlackList:false,
+      detaBlackList:false
     }
   }
 }

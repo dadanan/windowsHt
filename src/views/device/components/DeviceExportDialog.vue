@@ -76,8 +76,8 @@ export default {
       if (!this.deviceColumnVisible.id) {
         delete this.deviceColumnVisible.id
       }
-      if (!this.deviceColumnVisible.lastUpdateTime) {
-        delete this.deviceColumnVisible.lastUpdateTime
+      if (!this.deviceColumnVisible.lastOnlineTime) {
+        delete this.deviceColumnVisible.lastOnlineTime
       }
       if (!this.deviceColumnVisible.location) {
         delete this.deviceColumnVisible.location
