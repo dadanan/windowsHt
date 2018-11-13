@@ -93,7 +93,7 @@ export default {
         introduction: [
           { required: true, message: '请输入项目介绍', trigger: 'blur' }
         ],
-        createLocation: [
+        location: [
           { required: true, message: '请输入地点', trigger: 'blur' },
           { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
         ],

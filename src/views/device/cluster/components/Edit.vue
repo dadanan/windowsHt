@@ -91,7 +91,7 @@ export default {
         introduction: [
           { required: true, message: '请输入项目介绍', trigger: 'blur' }
         ],
-        createLocation: [
+        location: [
           { required: true, message: '请输入地点', trigger: 'blur' },
           { min: 0, max: 50, message: '长度在 0 到 50 个字符', trigger: 'blur' }
         ],
@@ -134,8 +134,8 @@ export default {
         if (data.deviceList) {
           this.deviceList = data.deviceList
         }
-        if (data.createLocation) {
-          const location = data.createLocation.split(',')
+        if (data.location) {
+          const location = data.location.split(',')
           this.selectArea.province = location[0]
           this.selectArea.city = location[1]
           this.selectArea.area = location[2]
