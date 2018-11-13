@@ -47,7 +47,7 @@ export function selectById(id) {
 
 export function selectModelsByTypeIds(typeIds) {
   return request({
-    url: `/temp/api/deviceModel/selectModelsByTypeIds/${typeIds}`,
+    url: `/temp/api/tempiceModel/selectModelsByTypeIds/${typeIds}`,
     method: 'get'
   })
 }
@@ -78,7 +78,7 @@ export function selectByUserId(data) {
 
 export function updateOwnerBaseInfo(data) {
   return request({
-    url: '/dev/api/customer/updateOwnerBaseInfo',
+    url: '/temp/api/customer/updateOwnerBaseInfo',
     method: 'post',
     data
  })
@@ -87,7 +87,7 @@ export function updateOwnerBaseInfo(data) {
 
 export function updateOwnerH5Info(data) {
   return request({
-    url: '/dev/api/customer/updateOwnerH5Info',
+    url: '/temp/api/customer/updateOwnerH5Info',
     method: 'post',
     data
  })
@@ -96,7 +96,7 @@ export function updateOwnerH5Info(data) {
 
 export function updateOwnerAndroidInfo(data) {
   return request({
-    url: '/dev/api/customer/updateOwnerAndroidInfo',
+    url: '/temp/api/customer/updateOwnerAndroidInfo',
     method: 'post',
     data
  })
@@ -104,7 +104,7 @@ export function updateOwnerAndroidInfo(data) {
 // 用户自己修改后台设置
 export function updateOwnerBackendInfo(data) {
   return request({
-    url: '/dev/api/customer/updateOwnerBackendInfo',
+    url: '/temp/api/customer/updateOwnerBackendInfo',
     method: 'post',
     data
  })
