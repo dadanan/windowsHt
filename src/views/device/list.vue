@@ -66,10 +66,10 @@
                   {{new Date(scope.row.birthTime).toLocaleString()}}
                 </template>
               </el-table-column>
-              <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastUpdateTime">
+              <el-table-column label="最后上线时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.lastOnlineTime">
                 <template slot-scope="scope">
-                  <template v-if='scope.row.lastUpdateTime'>
-                    {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+                  <template v-if='scope.row.lastOnlineTime'>
+                    {{new Date(scope.row.lastOnlineTime).toLocaleString()}}
                   </template>
                   <template v-else>
                     - -
@@ -141,10 +141,10 @@
             {{new Date(scope.row.birthTime).toLocaleString()}}
           </template>
         </el-table-column>
-        <el-table-column label="最后上线时间" show-overflow-tooltip v-if="deviceColumnVisible.lastUpdateTime">
+        <el-table-column label="最后上线时间" show-overflow-tooltip v-if="deviceColumnVisible.lastOnlineTime">
           <template slot-scope="scope">
-            <template v-if='scope.row.lastUpdateTime'>
-              {{new Date(scope.row.lastUpdateTime).toLocaleString()}}
+            <template v-if='scope.row.lastOnlineTime'>
+              {{new Date(scope.row.lastOnlineTime).toLocaleString()}}
             </template>
             <template v-else>
               - -
@@ -228,7 +228,7 @@
           <el-checkbox v-model="deviceColumnVisible.birthTime">创建时间</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.lastUpdateTime">最后上线时间</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.lastOnlineTime">最后上线时间</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.createUser">创建人</el-checkbox>
@@ -365,7 +365,7 @@ export default {
         modelName: false,
         modelNo: false,
         birthTime: false,
-        lastUpdateTime: true,
+        lastOnlineTime: true,
         bindCustomer: false,
         location: true,
         createUser: false,
