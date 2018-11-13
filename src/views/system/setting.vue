@@ -28,8 +28,8 @@
           <el-form-item label="客服">
             <el-input type="text" v-model="h5Config.serviceUser"></el-input>
           </el-form-item>
-          <el-form-item label="背景图片">
-            <image-uploader :key='20' :url='h5Config.backgroundImg' @get-url='setURL(arguments,h5Config,"backgroundImg")'></image-uploader>
+          <el-form-item label="背景图册">
+            <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model="h5Config.themeName"></el-input>
@@ -38,12 +38,12 @@
             <image-uploader :key='21' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
           </el-form-item>
           <el-form-item label="H5 版本" prop="version">
-              <el-select v-model="h5Config.version">
-                <el-option label="版本 1" value="1"></el-option>
-                <el-option label="版本 2" value="2"></el-option>
-                <el-option label="版本 3" value="3"></el-option>
-              </el-select>
-            </el-form-item>
+            <el-select v-model="h5Config.version">
+              <el-option label="版本 1" value="1"></el-option>
+              <el-option label="版本 2" value="2"></el-option>
+              <el-option label="版本 3" value="3"></el-option>
+            </el-select>
+          </el-form-item>
           <el-button type="primary" @click="updateOwnerH5Info">确认修改</el-button>
         </el-form>
       </el-tab-pane>
@@ -169,13 +169,13 @@ export default {
         use: ''
       },
       h5Config: {
-        backgroundImg: '',
+        h5BgImgList: [],
         defaultTeamName: '',
         logo: '',
         password: '',
         themeName: '',
         serviceUser: '',
-        version:''
+        version: ''
       },
       androidConfig: {
         androidSceneList: [
@@ -208,11 +208,22 @@ export default {
         name: '',
         type: 0
       },
-      userId: 0,
-      selectedDeviceList: []
+      userId: 0
     }
   },
   methods: {
+    removeImg(file) {
+      const index = this.h5Config.h5BgImgList.findIndex(
+        v => v.image === file.url
+      )
+      this.h5Config.h5BgImgList.splice(index, 1)
+    },
+    setImg(file) {
+      this.h5Config.h5BgImgList = [
+        ...this.h5Config.h5BgImgList,
+        { image: file.url }
+      ]
+    },
     addScene() {
       this.androidConfig.androidSceneList.push({
         androidSceneImgList: [
@@ -262,40 +273,35 @@ export default {
         this.baseInfo = tempForm
         const h5Config = tempForm.h5Config
         if (h5Config) {
-          if (h5Config.htmlTypeIds) {
-            h5Config.htmlTypeIds = h5Config.htmlTypeIds
-              .split(',')
-              .map(id => Number(id))
-          }
           this.h5Config = h5Config
         }
         this.androidConfig = tempForm.androidConfig || {}
-      this.backendConfig = tempForm.backendConfig || {}
+        this.backendConfig = tempForm.backendConfig || {}
 
-      this.backendConfig.enableStatus =
-        Boolean(this.backendConfig.enableStatus) || false
+        this.backendConfig.enableStatus =
+          Boolean(this.backendConfig.enableStatus) || false
 
-      if (
-        !this.androidConfig.androidSceneList ||
-        this.androidConfig.androidSceneList.length === 0
-      ) {
-        this.androidConfig.androidSceneList = [
-          {
-            androidSceneImgList: [
-              {
-                description: '',
-                id: 0,
-                imgVideo: '',
-                name: ''
-              }
-            ],
-            description: '',
-            id: 0,
-            imgsCover: '',
-            name: ''
-          }
-        ]
-      }
+        if (
+          !this.androidConfig.androidSceneList ||
+          this.androidConfig.androidSceneList.length === 0
+        ) {
+          this.androidConfig.androidSceneList = [
+            {
+              androidSceneImgList: [
+                {
+                  description: '',
+                  id: 0,
+                  imgVideo: '',
+                  name: ''
+                }
+              ],
+              description: '',
+              id: 0,
+              imgsCover: '',
+              name: ''
+            }
+          ]
+        }
       })
     },
     setURL(argu, data, name) {
@@ -306,10 +312,8 @@ export default {
       backendConfig.enableStatus = backendConfig.enableStatus ? 1 : 2
       const h5Config = JSON.parse(JSON.stringify(this.h5Config))
       // 拼接成一个字符串
-      h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
       const form = {
         ...this.baseInfo,
-        typeIds: this.selectedDeviceList.map(item => item.id).join(','),
         h5Config,
         androidConfig: this.androidConfig,
         backendConfig: backendConfig,
@@ -317,29 +321,27 @@ export default {
       }
       updateOwnerBaseInfo(form).then(res => {
         this.$message({
-            type: 'success',
-            message: "修改成功"
-          })
+          type: 'success',
+          message: '修改成功'
+        })
       })
     },
     updateOwnerH5Info() {
       const h5Config = JSON.parse(JSON.stringify(this.h5Config))
-      // 拼接成一个字符串
-      h5Config.htmlTypeIds = h5Config.htmlTypeIds.join(',')
 
       updateOwnerH5Info(h5Config).then(res => {
         this.$message({
-            type: 'success',
-            message: "修改成功"
-          })
+          type: 'success',
+          message: '修改成功'
+        })
       })
     },
     updateOwnerAndroidInfo() {
       updateOwnerAndroidInfo(this.androidConfig).then(res => {
         this.$message({
-            type: 'success',
-            message: "修改成功"
-          })
+          type: 'success',
+          message: '修改成功'
+        })
       })
     },
     updateOwnerBackendInfo() {
@@ -348,7 +350,7 @@ export default {
       updateOwnerBackendInfo(backendConfig).then(res => {
         this.$message({
           type: 'success',
-          message: "修改成功"
+          message: '修改成功'
         })
       })
     }
@@ -361,8 +363,14 @@ export default {
     this.getCurrentUser()
   },
   watch: {
-    h5Config(val) {
-      this.h5Config.backgroundImg = val.backgroundImg
+    activeTab(tab) {
+      if (tab === '2') {
+        this.$notify.info({
+          title: '注意事项',
+          duration: 5000,
+          message: `须上传五张背景图片，供H5端APP使用。“依次”为：关机，白天-晴天，白天-阴天，页面-晴天，夜晚-阴天`
+        })
+      }
     }
   }
 }
@@ -384,9 +392,9 @@ export default {
   padding: 30px 30px 30px 50px;
   background: #fff;
 }
-.tool{
+.tool {
   text-align: right;
   font-size: 24px;
-  color: #646464
+  color: #646464;
 }
 </style>

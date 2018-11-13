@@ -18,7 +18,7 @@
                   {{form.introduction}}
                 </el-form-item>
                 <el-form-item label="地点">
-                  {{form.createLocation}}
+                  {{form.location}}
                 </el-form-item>
                 <el-form-item label="创建时间">
                   {{new Date(form.createTime).toLocaleString()}}

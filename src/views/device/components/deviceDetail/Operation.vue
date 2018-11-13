@@ -209,7 +209,7 @@ export default {
           }
 
           item.deviceModelAbilityOptions = item.deviceModelAbilityOptions.filter(
-            item => item.updateStatus == 0 || item.status == 1
+            item => item.updateStatus == 0 && item.status == 1
           )
 
           item.deviceModelAbilityOptions.forEach(iItem => {
@@ -219,7 +219,7 @@ export default {
 
         // 筛选功能项数据
         this.abilitysList = data.abilitysList.filter(
-          item => item.updateStatus == 0 || item.status == 1
+          item => item.updateStatus == 0 && item.status == 1
         )
 
         let list = data.deviceModelFormat.modelFormatPages
