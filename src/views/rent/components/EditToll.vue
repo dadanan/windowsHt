@@ -1,8 +1,8 @@
 <template>
   <el-dialog top='4vh' :close-on-click-modal=false title="创建实施阶段" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
       <el-form label-width="130px" class="mb-22" :model="form" :rules="rules" ref="form">
-        <el-form-item label="规则分类名称" prop="name">
-          <el-input v-model="form.name" placeholder="规则分类名称"></el-input>
+        <el-form-item label="工程资料分类名称" prop="name">
+          <el-input v-model="form.name" placeholder="工程资料分类名称"></el-input>
         </el-form-item>
         <el-form-item label="创建者" prop="createUserOpenId">
           <el-input placeholder="创建者..." v-model='form.createUserOpenId'></el-input>
@@ -13,8 +13,8 @@
         <el-form-item label="状态" prop="createUserOpenId">
           <el-input placeholder="状态..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
-        <el-form-item label="规则分类描述" prop="createUserOpenId">
-          <el-input type="textarea" :rows='3' placeholder="规则分类描述..." v-model='form.createUserOpenId'></el-input>
+        <el-form-item label="工程资料分类描述" prop="createUserOpenId">
+          <el-input type="textarea" :rows='3' placeholder="工程资料分类描述..." v-model='form.createUserOpenId'></el-input>
         </el-form-item>
       </el-form>
     <div slot="footer" class="dialog-footer">
@@ -44,11 +44,11 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入规则分类名称', trigger: 'blur' },
+          { required: true, message: '请输入工程资料分类名称', trigger: 'blur' },
           { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ],
         createUserOpenId: [
-          { required: true, message: '请输入规则分类描述', trigger: 'blur' }
+          { required: true, message: '请输入工程资料分类描述', trigger: 'blur' }
         ]
       },
       query: {

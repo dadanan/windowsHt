@@ -4,15 +4,13 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="规则名称" :value='value1'>
-              <el-option label="设备 MAC" value="1"></el-option>
-              <el-option label="设备序列号" value="2"></el-option>
-              <el-option label="设备名称" value="3"></el-option>
-              <el-option label="投放点" value="4"></el-option>
-            </el-select>
+            <el-input v-model="value1" placeholder="规则名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="状态"></el-input>
+            <el-select placeholder="状态" :value='value1'>
+              <el-option label="启用" value="1"></el-option>
+              <el-option label="禁用" value="2"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-select placeholder="告警级别" :value='value3'>
@@ -28,13 +26,14 @@
       </div>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary">添加</el-button>
+          <el-button type="primary" @click="AddProcess = true">添加</el-button>
           <el-button type="primary">禁用</el-button>
           <el-button type="primary">启用</el-button>
           <el-button type="primary">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
       </div>
+      <add-process :visible.sync="AddProcess" ></add-process>
       <el-table :data="levelList" style="width: 100%" class="mb20" border>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
@@ -62,7 +61,12 @@
 </template>
 
 <script>
+import AddProcess from './components/AddProcess'
+
 export default {
+  components: {
+    AddProcess
+  },
   data() {
     const levelList = []
     for (let i = 0; i < 15; i++) {
@@ -79,7 +83,8 @@ export default {
       levelList,
       value1: '',
       value2: '',
-      value3: ''
+      value3: '',
+      AddProcess:false
     }
   }
 }

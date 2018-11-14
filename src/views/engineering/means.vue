@@ -1,17 +1,9 @@
 <template>
   <div class="dashboard-container">
-    <!-- <el-row :gutter="20">
-      <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanCardList" :key="item.id" v-if="item.isVisible">
-        <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#EC7063' }"></data-card>
-      </el-col>
-    </el-row>
-    <el-card class="mb20">
-      <chart :options="kanbanChart" class="chart" auto-resize></chart>
-    </el-card> -->
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="6" :lg="6">
+      <el-col :xs="24" :sm="6" :lg="8">
         <el-tabs class="btn" tabPosition="left" v-model="activeTab" type="card" style="height:230px">
-          <el-tab-pane label="全部" name="1">
+          <!-- <el-tab-pane label="全部" name="1">
             <h2>1220</h2>
             <p>告警总数</p>
           </el-tab-pane>
@@ -30,16 +22,14 @@
           <el-tab-pane label="当年" name="5">
             <h2>12220</h2>
             <p>告警总数</p>
-          </el-tab-pane>
-        </el-tabs>
+          </el-tab-pane>-->
+        </el-tabs> 
+        <div class=""></div>
       </el-col>
-      <el-col :xs="24" :sm="6" :lg="6">
+      <el-col :xs="24" :sm="6" :lg="8">
         <chart :options="kanbanChart" class="chart" auto-resize></chart>
       </el-col>
-      <el-col :xs="24" :sm="6" :lg="6">
-        <chart :options="kanbanChart" class="chart" auto-resize></chart>
-      </el-col>
-      <el-col :xs="24" :sm="6" :lg="6">
+      <el-col :xs="24" :sm="6" :lg="8">
         <chart :options="kanbanChart2" class="chart" auto-resize></chart>
       </el-col>
     </el-row>
