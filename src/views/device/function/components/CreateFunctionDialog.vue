@@ -7,6 +7,9 @@
       <el-form-item label="指令" prop="dirValue">
         <el-input v-model="form.dirValue"></el-input>
       </el-form-item>
+      <el-form-item label="功能代号">
+        <el-input v-model="form.abilityCode"></el-input>
+      </el-form-item>
       <el-form-item label="运行状态">
         <el-radio v-model="form.runStatus" :label="1">可运行</el-radio>
         <el-radio v-model="form.runStatus" :label="0">不可运行</el-radio>
@@ -104,6 +107,7 @@ export default {
       form: {
         abilityName: '',
         dirValue: '',
+        abilityCode: '',
         remark: '',
         permissions: [],
         writeStatus: 0,
@@ -150,7 +154,12 @@ export default {
         ],
         remark: [
           { required: false, message: '请添加备注', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          {
+            min: 0,
+            max: 100,
+            message: '长度在 0 到 100 个字符',
+            trigger: 'blur'
+          }
         ]
       }
     }
@@ -166,17 +175,19 @@ export default {
         this.$emit('update:visible', false)
       })
     },
-    submitForm(formName) {  //判断表单数据是否为空
-      this.$refs[formName].validate((valid) => {
+    submitForm(formName) {
+      //判断表单数据是否为空
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.createHandler()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) { //清空表单里面的数据
-      this.$refs[formName].resetFields();
+    resetForm(formName) {
+      //清空表单里面的数据
+      this.$refs[formName].resetFields()
       this.$emit('update:visible', false)
     },
     handlePermissionListChange(permissions) {
@@ -233,7 +244,6 @@ export default {
           }
         ])
       }
-      
     },
     deleteConfigOption(i) {
       this.form.deviceAbilityOptions.splice(i, 1)
