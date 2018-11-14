@@ -36,7 +36,7 @@
       </div>
       <div class="flex-item">
         <el-card class="el-card--solid map-container">
-          <a-map :id='datas.deviceList && datas.deviceList[0] &&  datas.deviceList[0].id' @getLocation='getLocation'></a-map>
+          <a-map :gps='form && form.mapGps' @getLocation='getLocation'></a-map>
         </el-card>
       </div>
     </div>
@@ -89,14 +89,13 @@
 
 <script>
 import { selectAllCustomers as select } from '@/api/customer'
-import { queryGroupById } from '@/api/device/cluster'
+import {
+  queryGroupById,
+  addOrUpdateGroupAndDevice,
+  groupSendFunc
+} from '@/api/device/cluster'
 import { deviceColumnData } from '../cluster.js'
-import { groupSendFunc } from '@/api/device/cluster'
 import AMap from '@/views/device/components/deviceDetail/AMap'
-
-const img = require('@/assets/404_images/404.png')
-
-const images = new Array(20).fill(img)
 
 export default {
   props: {
@@ -109,7 +108,6 @@ export default {
       placeholder: 'placeholder',
       activeTab: '1',
       deviceList: [],
-      images: images,
       imgVisible: false,
       imageUrl: '',
       query: {
@@ -128,7 +126,22 @@ export default {
     }
   },
   methods: {
-    getLocation({ gps, location }) {},
+    getLocation({ gps, location }) {
+      addOrUpdateGroupAndDevice({
+        ...this.form,
+        deviceQueryRequest: {
+          deviceList: this.form.deviceList
+        },
+        mapGps: gps.join(','),
+        location
+      }).then(() => {
+        this.form.location = location
+        this.$message({
+          message: `更新项目位置成功！`,
+          type: 'success'
+        })
+      })
+    },
     handleSelectionChange(selection) {
       const selectedDeviceList = []
       for (var i = 0; i < selection.length; i++) {
@@ -156,7 +169,6 @@ export default {
     },
     queryGroupById() {
       queryGroupById(this.datas.id).then(res => {
-        console.log(res.data)
         const data = res.data
         if (!data.imagesList) {
           data.imagesList = []
