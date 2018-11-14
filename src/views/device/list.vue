@@ -136,6 +136,8 @@
         </el-table-column>
         <el-table-column prop="modelNo" label="型号" show-overflow-tooltip v-if="deviceColumnVisible.modelNo">
         </el-table-column>
+         <el-table-column prop="userName" label="绑定用户" show-overflow-tooltip v-if="deviceColumnVisible.userName">
+        </el-table-column>
         <el-table-column label="创建时间" show-overflow-tooltip v-if="deviceColumnVisible.birthTime">
           <template slot-scope="scope">
             {{new Date(scope.row.birthTime).toLocaleString()}}
@@ -202,6 +204,9 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.clusterName">项目名</el-checkbox>
+        </el-form-item>
+         <el-form-item>
+          <el-checkbox v-model="deviceColumnVisible.userName">绑定用户</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.powerStatus">工作状态</el-checkbox>
@@ -369,7 +374,8 @@ export default {
         bindCustomer: false,
         location: true,
         createUser: false,
-        manageName: true
+        manageName: true,
+        userName: false
       },
       deviceColumnControlDialogVisible: false,
       query: {
