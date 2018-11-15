@@ -1,86 +1,132 @@
 <template>
-  <div class="dashboard-container">
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="6" :lg="8">
-        <el-tabs class="btn" tabPosition="left" v-model="activeTab" type="card" style="height:230px">
-          <!-- <el-tab-pane label="全部" name="1">
-            <h2>1220</h2>
-            <p>告警总数</p>
-          </el-tab-pane>
-          <el-tab-pane label="近七日" name="2">
-            <h2>120</h2>
-            <p>告警总数</p>
-          </el-tab-pane>
-          <el-tab-pane label="当月" name="3">
-            <h2>122</h2>
-            <p>告警总数</p>
-          </el-tab-pane>
-          <el-tab-pane label="近三个月" name="4">
-            <h2>10</h2>
-            <p>告警总数</p>
-          </el-tab-pane>
-          <el-tab-pane label="当年" name="5">
-            <h2>12220</h2>
-            <p>告警总数</p>
-          </el-tab-pane>-->
-        </el-tabs> 
-        <div class=""></div>
-      </el-col>
-      <el-col :xs="24" :sm="6" :lg="8">
-        <chart :options="kanbanChart" class="chart" auto-resize></chart>
-      </el-col>
-      <el-col :xs="24" :sm="6" :lg="8">
-        <chart :options="kanbanChart2" class="chart" auto-resize></chart>
-      </el-col>
-    </el-row>
-    <el-card>
-      <div class="table-opts">
-        <el-button-group>
-          <el-button type="primary">添加</el-button>
-          <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button>
-          <el-button type="primary">删除</el-button>
-          <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
-        </el-button-group>
-      </div>
-      <el-table :data="alarmList" style="width: 100%" class="mb20" border>
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column type="index"></el-table-column>
-        <el-table-column prop="mac" label="消息名称" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="mac" label="消息描述" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="mac" label="选择关联" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="sn" label="是否规则化" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="name" label="告警级别" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="pos" label="告警来源" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="pos" label="告警时间" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="text">修改</el-button>
-            <el-button type="text">详情</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
-      </el-pagination>
-    </el-card>
-  </div>
+    <div class="dashboard-container">
+        <el-row :gutter="20">
+            <el-col :xs="24" class="btn" :sm="6" :lg="8">
+                <el-row :gutter="20">
+                    <el-col :xs="24" :sm="12" :lg="12" style="border-right:2px solid #66c8d9">
+                        <h2>12212</h2>
+                        <p>工程总数</p>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :lg="12">
+                        <h2>34567</h2>
+                        <p>设备总数</p>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <el-col :xs="24" :sm="6" :lg="8">
+                <chart :options="kanbanChart" class="chart" auto-resize></chart>
+            </el-col>
+            <el-col :xs="24" :sm="6" :lg="8">
+                <chart :options="kanbanChart2" class="chart" auto-resize></chart>
+            </el-col>
+        </el-row>
+        <el-card>
+            <div class="table-opts">
+                <el-form :inline="true" class="el-form--flex">
+                    <el-form-item>
+                        <el-select placeholder="任务名称" :value='value1'>
+                            <el-option label="设备 MAC" value="1"></el-option>
+                            <el-option label="设备序列号" value="2"></el-option>
+                            <el-option label="设备名称" value="3"></el-option>
+                            <el-option label="投放点" value="4"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input placeholder="选择关联"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-select placeholder="告警级别" :value='value2'>
+                            <el-option label="预留布尔值故障" value="1"></el-option>
+                            <el-option label="滤网到期提醒" value="2"></el-option>
+                            <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
+                            <el-option label="设备移开 1000 米报警" value="4"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-select placeholder="状态" :value='value3'>
+                            <el-option label="未修复" value="1"></el-option>
+                            <el-option label="已修复" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-select placeholder="范围" :value='value3'>
+                            <el-option label="未修复" value="1"></el-option>
+                            <el-option label="已修复" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                        <el-button>重置</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="table-opts">
+                <el-button-group>
+                    <el-button type="primary" icon="el-icon-menu" @click="switchs"></el-button>
+                </el-button-group>
+                <div style="flex: 1;"></div>
+                <el-button-group>
+                    <el-button type="primary" @click="AddMeans = true">实施</el-button>
+                    <el-button type="primary">添加</el-button>
+                    <el-button type="primary">删除</el-button>
+                    <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
+                </el-button-group>
+            </div>
+            <add-means :visible.sync="AddMeans"></add-means>
+            <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="mac" label="消息名称1" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="mac" label="消息描述" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="mac" label="选择关联" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="sn" label="是否规则化" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="name" label="告警级别" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="pos" label="告警来源" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="pos" label="告警时间" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="text">修改</el-button>
+                        <el-button type="text">详情</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- <el-table :data="alarmList" style="width: 100%" class="mb20" border :span-method="arraySpanMethod">
+                <el-table-column label="消息描述" show-overflow-tooltip>
+                    <div class="">
+                        <p>{{alarmList.name}}</p>
+                    </div>
+                </el-table-column>
+                <el-table-column label="选择关联" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column label="是否规则化" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column label="告警级别" show-overflow-tooltip sortable>
+                </el-table-column>
+            </el-table> -->
+            <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+            </el-pagination>
+        </el-card>
+    </div>
 </template>
 
 <script>
 import DataCard from '@/components/DataCard'
+import AddMeans from './components/AddMeans'
+
 
 export default {
   components: {
-    DataCard
+    DataCard,
+    AddMeans
   },
   data() {
     const alarmList = []
@@ -97,33 +143,13 @@ export default {
       })
     }
     return {
+      AddMeans:false,
       alarmList,
       activeTab: '1',
-      // kanbanChart1: {
-      //   title: {
-      //     text: '个状态占比图'
-      //   },
-      //   tooltip: {
-      //     formatter: '{b}: {c} ({d}%)'
-      //   },
-      //   legend: {},
-      //   series: [
-      //     {
-      //       type: 'pie',
-      //       radius: ['50%', '70%'],
-      //       data: [
-      //         {
-      //           value: 671,
-      //           name: '在线设备'
-      //         },
-      //         {
-      //           value: 181,
-      //           name: '离线设备'
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // },
+      list: true,
+      value1: '',
+      value2: '',
+      value3: '',
       kanbanChart2: {
         title: {
           text: '设备增速排名'
@@ -183,6 +209,32 @@ export default {
         ]
       }
     }
+  },
+  methods: {
+    switchs() {
+      this.list = !this.list
+    },
+    // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+    //   console.log(row, column, rowIndex, columnIndex)
+    //   // 打印出的数据就是表格当前行的数据,当前列的数据,索引
+    //   if (rowIndex === 2 || rowIndex === 0 || rowIndex === 1) {
+    //     // 合并第二行
+    //     if (columnIndex === 0) {
+    //       // 从第二列开始
+    //     //   return [0, 2]
+    //       // 这里返回的是行和列的合并数量,可以返回一个数组,也可以返回一个对象,效果一样
+    //       // 这里rowspan为1是行有一行合并,colspan为3是列有3列合并,你要合并几行几列就写上相应的数字
+    //       return {
+    //          rowspan: 1,
+    //          colspan: 4
+    //        }
+    //       // 这里要写一个else的判断,不然被合并列的原始数据会填充到合并之后的表格里
+    //       // 这个判断是把合并的第3列,第4列的值省略,在合并的表格右边直接填原先第5列的值,合并了几列,就省略几列的值
+    //     } else if (columnIndex === 2 || columnIndex === 3) {
+    //       return [0, 0]
+    //     }
+    //   }
+    // }
   }
 }
 </script>
