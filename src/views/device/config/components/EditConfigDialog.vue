@@ -138,7 +138,7 @@
             </el-table-column>
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
-                <el-select v-model="scope.row.abilityId">
+                <el-select clearable v-model="scope.row.abilityId">
                   <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
                   </el-option>
                   <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
