@@ -208,10 +208,13 @@ export default {
       this.keyword = ''
     },
     searchDevice() {
+      console.log(this.keyword)
       this.$router.push({
         path: '/device/list',
         query: {
-          [this.filterKey]: this.keyword
+          [this.filterKey]: this.keyword,
+          limit:200,
+          page:1
         }
       })
     },

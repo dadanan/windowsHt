@@ -44,7 +44,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="创建人">
-                  {{form.createUser}}
+                  {{form.createUserName}}
                 </el-form-item>
                 <el-form-item label="modelNo">
                   {{form.modelNo}}
@@ -278,11 +278,10 @@ export default {
     selectById(id) {
       selectById(id).then(res => {
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
-        console.log(this.deviceModelAbilitys)
-        for (var i = 0; i < this.deviceModelAbilitys.length; i++) {
-          if (this.deviceModelAbilitys[i].dirValue == 120) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.co2 = true
+        for(var i = 0;i<this.deviceModelAbilitys.length;i++){
+          if(this.deviceModelAbilitys[i].dirValue == 120){
+            if(this.deviceModelAbilitys[i].status == 1){
+              this.deviceModelAbility.co2 = true 
             }
           }
           if (this.deviceModelAbilitys[i].dirValue == 150) {
@@ -311,7 +310,6 @@ export default {
             }
           }
         }
-        console.log(this.deviceModelAbility)
       })
     },
     init(val) {
@@ -364,7 +362,6 @@ export default {
         deviceId: id
       }).then(res => {
         this.deviceList1 = res.data.dataList
-        console.log(this.deviceList1)
         for (var i = 0; i < this.deviceList1.length; i++) {
           this.deviceList1[i].hcho = this.deviceList1[i].hcho / 100
           this.deviceList1[i].tvoc = this.deviceList1[i].tvoc / 100
@@ -395,7 +392,7 @@ export default {
           form.id
         }&token=${res.data}&customerId=${form.customerId}`
 
-        console.log('分享URL: ', url)
+        // console.log('分享URL: ', url)
         this.shareURL = url
       })
     },

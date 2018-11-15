@@ -59,7 +59,7 @@
               </el-table-column>
               <el-table-column prop="modelName" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
               </el-table-column>
-              <el-table-column prop="modelNo" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelNo">
+              <el-table-column prop="modelCode" label="型号" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelCode">
               </el-table-column>
               <el-table-column label="创建时间" show-overflow-tooltip sortable v-if="deviceColumnVisible.birthTime">
                 <template slot-scope="scope">
@@ -134,7 +134,7 @@
         </el-table-column>
         <el-table-column prop="modelName" label="型号名" show-overflow-tooltip sortable v-if="deviceColumnVisible.modelName">
         </el-table-column>
-        <el-table-column prop="modelNo" label="型号" show-overflow-tooltip v-if="deviceColumnVisible.modelNo">
+        <el-table-column prop="modelCode" label="型号" show-overflow-tooltip v-if="deviceColumnVisible.modelCode">
         </el-table-column>
          <el-table-column prop="userName" label="绑定用户" show-overflow-tooltip v-if="deviceColumnVisible.userName">
         </el-table-column>
@@ -227,7 +227,7 @@
           <el-checkbox v-model="deviceColumnVisible.modelName">型号名</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="deviceColumnVisible.modelNo">型号</el-checkbox>
+          <el-checkbox v-model="deviceColumnVisible.modelCode">型号</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="deviceColumnVisible.birthTime">创建时间</el-checkbox>
@@ -368,7 +368,7 @@ export default {
         powerStatus: true,
         onlineStatus: true,
         modelName: false,
-        modelNo: false,
+        modelCode: false,
         birthTime: false,
         lastOnlineTime: true,
         bindCustomer: false,

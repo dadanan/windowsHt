@@ -4,10 +4,45 @@
       <el-col :xs="24" :sm="12" :lg="6" v-for="item in kanbanCardList" :key="item.id" v-if="item.isVisible">
         <data-card :icon="item.icon" :name="item.name" :value="item.value" :unit="item.unit" :style="{ backgroundColor: '#EC7063' }"></data-card>
       </el-col>
-    </el-row> -->
-    <!-- <el-card class="mb20">
+    </el-row>
+    <el-card class="mb20">
       <chart :options="kanbanChart" class="chart" auto-resize></chart>
     </el-card> -->
+    <el-row :gutter="20">
+      <el-col :xs="24" :sm="6" :lg="6">
+        <el-tabs class="btn" tabPosition="left" v-model="activeTab" type="card" style="height:230px">
+          <el-tab-pane label="全部" name="1">
+            <h2>1220</h2>
+            <p>告警总数</p>
+          </el-tab-pane>
+          <el-tab-pane label="近七日" name="2">
+            <h2>120</h2>
+            <p>告警总数</p>
+          </el-tab-pane>
+          <el-tab-pane label="当月" name="3">
+            <h2>122</h2>
+            <p>告警总数</p>
+          </el-tab-pane>
+          <el-tab-pane label="近三个月" name="4">
+            <h2>10</h2>
+            <p>告警总数</p>
+          </el-tab-pane>
+          <el-tab-pane label="当年" name="5">
+            <h2>12220</h2>
+            <p>告警总数</p>
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="24" :sm="6" :lg="6">
+        <chart :options="kanbanChart" class="chart" auto-resize></chart>
+      </el-col>
+      <el-col :xs="24" :sm="6" :lg="6">
+        <chart :options="kanbanChart" class="chart" auto-resize></chart>
+      </el-col>
+      <el-col :xs="24" :sm="6" :lg="6">
+        <chart :options="kanbanChart2" class="chart" auto-resize></chart>
+      </el-col>
+    </el-row>
     <el-card>
       <div class="table-opts">
         <el-button-group>
@@ -19,14 +54,21 @@
         </el-button-group>
       </div>
       <el-table :data="alarmList" style="width: 100%" class="mb20" border>
+        <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="mac" label="工程资料分类名称" show-overflow-tooltip sortable>
+        <el-table-column prop="mac" label="消息名称" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="sn" label="工程资料分类描述" show-overflow-tooltip sortable>
+        <el-table-column prop="mac" label="消息描述" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="name" label="创建时间" show-overflow-tooltip sortable>
+        <el-table-column prop="mac" label="选择关联" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="pos" label="创建者" show-overflow-tooltip sortable>
+        <el-table-column prop="sn" label="是否规则化" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="name" label="告警级别" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="pos" label="告警来源" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="pos" label="告警时间" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
@@ -66,6 +108,90 @@ export default {
     }
     return {
       alarmList,
+      activeTab: '1',
+      // kanbanChart1: {
+      //   title: {
+      //     text: '个状态占比图'
+      //   },
+      //   tooltip: {
+      //     formatter: '{b}: {c} ({d}%)'
+      //   },
+      //   legend: {},
+      //   series: [
+      //     {
+      //       type: 'pie',
+      //       radius: ['50%', '70%'],
+      //       data: [
+      //         {
+      //           value: 671,
+      //           name: '在线设备'
+      //         },
+      //         {
+      //           value: 181,
+      //           name: '离线设备'
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // },
+      kanbanChart2: {
+        title: {
+          text: '设备增速排名'
+        },
+        tooltip: {},
+        legend: {},
+        xAxis: {
+          data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '增长趋势',
+            data: [2, 54, 32, 18, 20],
+            type: 'line'
+          }
+        ]
+      },
+      kanbanChart: {
+        title: {
+          text: '售后类型'
+        },
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: [
+              '预留布尔值故障',
+              '预留布尔值故障',
+              '滤网到期提醒',
+              'PM 2.5 数值丢失报警',
+              '设备移开 1000 米报警'
+            ],
+            axisTick: {
+              alignWithLabel: true
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '占比',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390]
+          }
+        ]
+      }
     }
   }
 }
@@ -73,7 +199,15 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  height: 360px;
+  height: 230px;
   width: 100%;
+}
+.btn {
+  text-align: center;
+  color: #646464;
+  h2 {
+    padding-top: 20px;
+    font-size: 50px;
+  }
 }
 </style>

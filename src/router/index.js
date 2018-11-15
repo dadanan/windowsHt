@@ -419,28 +419,28 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'means',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/engineering/means'),
         name: 'means',
         meta: {
           title: 'means'
         }
-      },
-      {
-        path: 'measure',
-        component: () => import('@/views/blank'),
-        name: 'measure',
-        meta: {
-          title: 'measure'
-        }
-      },
-      {
-        path: 'maintenance',
-        component: () => import('@/views/blank'),
-        name: 'maintenance',
-        meta: {
-          title: 'maintenance'
-        }
       }
+      // {
+      //   path: 'measure',
+      //   component: () => import('@/views/blank'),
+      //   name: 'measure',
+      //   meta: {
+      //     title: 'measure'
+      //   }
+      // },
+      // {
+      //   path: 'maintenance',
+      //   component: () => import('@/views/blank'),
+      //   name: 'maintenance',
+      //   meta: {
+      //     title: 'maintenance'
+      //   }
+      // }
     ]
   },
   {
