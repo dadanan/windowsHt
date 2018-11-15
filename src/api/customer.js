@@ -47,7 +47,7 @@ export function selectById(id) {
 
 export function selectModelsByTypeIds(typeIds) {
   return request({
-    url: `/temp/api/tempiceModel/selectModelsByTypeIds/${typeIds}`,
+    url: `/temp/api/deviceModel/selectModelsByTypeIds/${typeIds}`,
     method: 'get'
   })
 }
@@ -72,7 +72,7 @@ export function selectByUserId(data) {
   return request({
     url: `/temp/api/customer/selectByUserId/${data}`,
     method: 'get'
- })
+  })
 }
 // 用户自己修改基本信息
 
@@ -81,7 +81,7 @@ export function updateOwnerBaseInfo(data) {
     url: '/temp/api/customer/updateOwnerBaseInfo',
     method: 'post',
     data
- })
+  })
 }
 // 用户自己修改H5APP设置
 
@@ -90,7 +90,7 @@ export function updateOwnerH5Info(data) {
     url: '/temp/api/customer/updateOwnerH5Info',
     method: 'post',
     data
- })
+  })
 }
 // 用户自己修改安卓设置
 
@@ -99,7 +99,7 @@ export function updateOwnerAndroidInfo(data) {
     url: '/temp/api/customer/updateOwnerAndroidInfo',
     method: 'post',
     data
- })
+  })
 }
 // 用户自己修改后台设置
 export function updateOwnerBackendInfo(data) {
@@ -107,5 +107,5 @@ export function updateOwnerBackendInfo(data) {
     url: '/temp/api/customer/updateOwnerBackendInfo',
     method: 'post',
     data
- })
+  })
 }

@@ -85,7 +85,7 @@
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
             <el-form-item label="背景图册">
-              <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+              <image-uploader :key='1' :urls='filterBg(h5Config.h5BgImgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -297,11 +297,14 @@ export default {
     }
   },
   methods: {
+    filterBg(data) {
+      return data.filter(item => item.status !== 2)
+    },
     removeImg(file) {
       const index = this.h5Config.h5BgImgList.findIndex(
         v => v.image === file.url
       )
-      this.h5Config.h5BgImgList.splice(index, 1)
+      this.h5Config.h5BgImgList[index].status = 2
     },
     setImg(file) {
       this.h5Config.h5BgImgList = [
@@ -385,7 +388,8 @@ export default {
         h5Config.h5BgImgList = h5Config.h5BgImgList.map(item => {
           return {
             bgImg: item.image,
-            id: item.id ? item.id : ''
+            id: item.id ? item.id : null,
+            status: item.status
           }
         })
       }

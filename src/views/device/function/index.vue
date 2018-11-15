@@ -29,6 +29,8 @@
         </el-table-column>
         <el-table-column label="指令" prop="dirValue" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column label="功能代号" prop="abilityCode" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip>
           <template slot-scope="scope">
             <el-button type="text" @click="showEditRoleDialog(scope.row)">编辑</el-button>
