@@ -43,6 +43,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
+                <el-form-item label="创建人">
+                  {{form.createUserName}}
+                </el-form-item>
                 <el-form-item label="modelNo">
                   {{form.modelNo}}
                 </el-form-item>

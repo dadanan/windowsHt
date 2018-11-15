@@ -91,8 +91,8 @@ export default {
       if (!this.deviceColumnVisible.modelName) {
         delete this.deviceColumnVisible.modelName
       }
-      if (!this.deviceColumnVisible.modelNo) {
-        delete this.deviceColumnVisible.modelNo
+      if (!this.deviceColumnVisible.modelCode) {
+        delete this.deviceColumnVisible.modelCode
       }
       if (!this.deviceColumnVisible.name) {
         delete this.deviceColumnVisible.name

@@ -140,7 +140,7 @@ export default {
     queryHomePageStatistic() {
       // 查询首页数据
       queryHomePageStatistic().then(res => {
-        // console.log(res.data)
+        console.log(res.data)
         const data = res.data
         const dataAnalysis = this.kanbanData.数据展示.设备分析
         dataAnalysis[0].value = data.deviceTotalCount
