@@ -119,15 +119,13 @@ export default {
       addOrUpdateGroupAndDevice({
         name: this.devList.name,
         customerId: this.devList.customerId,
-        deviceQueryRequest: {
-          deviceList: this.selectedDeviceList.map(item => {
-            return {
-              mac: item.mac,
-              mame: item.name,
-              typeId: item.typeId
-            }
-          })
-        }
+        deviceList: this.selectedDeviceList.map(item => {
+          return {
+            mac: item.mac,
+            mame: item.name,
+            typeId: item.typeId
+          }
+        })
       }).then(() => {
         this.$message({
           message: '添加项目成功！',

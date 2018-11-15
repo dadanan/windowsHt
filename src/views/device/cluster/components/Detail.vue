@@ -129,9 +129,6 @@ export default {
     getLocation({ gps, location }) {
       addOrUpdateGroupAndDevice({
         ...this.form,
-        deviceQueryRequest: {
-          deviceList: this.form.deviceList
-        },
         mapGps: gps.join(','),
         location
       }).then(() => {

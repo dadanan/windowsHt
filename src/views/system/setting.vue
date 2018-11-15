@@ -115,7 +115,7 @@
       <el-tab-pane label="后台设置" name="4">
         <el-form label-position="left" label-width="150px" :model='backendConfig' ref='backendConfig' style="width:600px">
           <el-form-item label="Logo">
-            <image-uploader :key='24' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+            <image-uploader :key='25' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model='backendConfig.name'></el-input>
