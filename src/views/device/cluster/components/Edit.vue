@@ -176,9 +176,7 @@ export default {
     createCluster() {
       const form = {
         ...this.form,
-        deviceQueryRequest: {
-          deviceList: this.deviceList
-        }
+        deviceList: this.deviceList
       }
       addOrUpdateGroupAndDevice(form).then(res => {
         const data = res.data

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-upload :action='host' :data='attachedData' :on-remove='handleRemove' :on-success='handleSuccess' multiple :limit='limit' :on-change='(file, fileList) => $emit("onChange", file, fileList)' :on-exceed='handleExceed' :file-list='fileList' :before-upload='beforeUpload'>
+    <el-upload :action='host' :data='attachedData' :on-remove='handleRemove' :on-success='handleSuccess' multiple :limit='limit' :on-change='(file, fileList) => $emit("onChange", file, fileList)' :on-exceed='handleExceed' :file-list='fileList' :before-upload='beforeUpload' :on-progress='progressHandle'>
       <el-button size='small' type='primary'>点击上传</el-button>
       <div slot='tip' class='el-upload__tip'>只能上传{{limit}}个 mp4/ogg/flv/avi/wmv/rmvb 文件，且单个不超过{{maxSize}}MB</div>
     </el-upload>
@@ -108,6 +108,9 @@ export default {
           name: this.getName(data.video)
         }
       })
+    },
+    progressHandle(event, file, fileList) {
+      console.log(event, file, fileList)
     }
   },
   watch: {

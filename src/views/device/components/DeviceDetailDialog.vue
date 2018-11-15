@@ -52,6 +52,9 @@
                 <el-form-item label="型号名称">
                   {{form.modelName}}
                 </el-form-item>
+                <el-form-item label="型号">
+                  {{form.modelCode}}
+                </el-form-item>
                 <el-form-item label="类型名称">
                   {{form.deviceType}}
                 </el-form-item>
@@ -281,29 +284,29 @@ export default {
               this.deviceModelAbility.co2 = true 
             }
           }
-          if(this.deviceModelAbilitys[i].dirValue == 150){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.tvoc = true 
+          if (this.deviceModelAbilitys[i].dirValue == 150) {
+            if (this.deviceModelAbilitys[i].status == 1) {
+              this.deviceModelAbility.tvoc = true
             }
           }
-          if(this.deviceModelAbilitys[i].dirValue == 140){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.temp = true 
+          if (this.deviceModelAbilitys[i].dirValue == 140) {
+            if (this.deviceModelAbilitys[i].status == 1) {
+              this.deviceModelAbility.temp = true
             }
           }
-          if(this.deviceModelAbilitys[i].dirValue == 130){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.hum = true 
+          if (this.deviceModelAbilitys[i].dirValue == 130) {
+            if (this.deviceModelAbilitys[i].status == 1) {
+              this.deviceModelAbility.hum = true
             }
           }
-          if(this.deviceModelAbilitys[i].dirValue == 110){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.pm25 = true 
+          if (this.deviceModelAbilitys[i].dirValue == 110) {
+            if (this.deviceModelAbilitys[i].status == 1) {
+              this.deviceModelAbility.pm25 = true
             }
           }
-          if(this.deviceModelAbilitys[i].dirValue == 160){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.hcho = true 
+          if (this.deviceModelAbilitys[i].dirValue == 160) {
+            if (this.deviceModelAbilitys[i].status == 1) {
+              this.deviceModelAbility.hcho = true
             }
           }
         }
