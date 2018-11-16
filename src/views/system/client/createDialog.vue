@@ -85,7 +85,7 @@
               <el-input type="text" v-model="h5Config.serviceUser"></el-input>
             </el-form-item>
             <el-form-item label="背景图册">
-              <image-uploader :key='1' :urls='h5Config.h5BgImgList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+              <image-uploader :key='1' :urls='filterBg(h5Config.h5BgImgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
             </el-form-item>
             <el-form-item label="页面版式" prop="htmlTypeIds">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -128,46 +128,21 @@
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
             </el-form-item>
             <el-form-item label="安卓场景">
-              <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList' :key="index">
-                <div class='tool'>
-                  <span class='close-icon' @click='deleteScene(index)'></span>
-                  <span class='add-icon' @click='addScene'></span>
-                </div>
-                <div>
-                  <el-form-item label="场景名称">
-                    <el-input v-model='item.name'></el-input>
-                  </el-form-item>
-                  <el-form-item label="场景描述">
-                    <el-input v-model='item.description' type='textarea'></el-input>
-                  </el-form-item>
-                  <el-form-item label="场景封面">
-                    <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
-                  </el-form-item>
-                  <el-form-item label="场景图册列表" class="pictureList">
-                    <transition-group name="fade">
-                      <el-card v-for='(list, listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
-                        <div class='tool'>
-                          <i class="el-icon-back up" @click="handleUp(item, listIndex)" v-if="listIndex"></i>
-                          <i class="el-icon-back down" @click="handleDown(item, listIndex)" v-if="item.androidSceneImgList.length - listIndex !== 1"></i>
-                          <span class='close-icon' @click='deleteSceneImg(item, listIndex)'></span>
-                          <span class='add-icon' @click='addSceneImg(item)'></span>
-                        </div>
-                        <div>
-                          <el-form-item label="名称">
-                            <el-input v-model='list.name'></el-input>
-                          </el-form-item>
-                          <el-form-item label="描述">
-                            <el-input v-model='list.description' type='textarea'></el-input>
-                          </el-form-item>
-                          <el-form-item label="图片/视频">
-                            <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
-                          </el-form-item>
-                        </div>
-                      </el-card>
-                    </transition-group>
-                  </el-form-item>
-                </div>
-              </el-card>
+              <el-form-item label="场景名称">
+                <el-input v-model='androidConfig.androidScene.name'></el-input>
+              </el-form-item>
+              <el-form-item label="场景描述">
+                <el-input v-model='androidConfig.androidScene.description' type='textarea'></el-input>
+              </el-form-item>
+              <el-form-item label="场景封面">
+                <image-uploader :url='androidConfig.androidScene.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+              </el-form-item>
+              <el-form-item label="场景图册">
+                <image-uploader :urls='filterBg(androidConfig.androidScene.androidSceneImgList)' @get-url='setImgForScene' @remove-url='removeImgForScene' :isList='true' :limit='5'></image-uploader>
+              </el-form-item>
+              <el-form-item label="场景视频">
+                <video-uploader :maxSize='50' :list='filterBg(androidConfig.androidScene.androidSceneVideoList)' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+              </el-form-item>
             </el-form-item>
           </el-form>
         </div>
@@ -299,28 +274,21 @@ export default {
         version: ''
       },
       androidConfig: {
-        androidSceneList: [
-          {
-            androidSceneImgList: [
-              {
-                description: '',
-                id: 0,
-                imgVideo: '',
-                name: ''
-              }
-            ],
-            description: '',
-            id: 0,
-            imgsCover: '',
-            name: ''
-          }
-        ],
+        androidScene: {
+          androidSceneImgList: [],
+          androidSceneVideoList: [],
+          description: '',
+          imgsCover: '',
+          name: '',
+          status: 0
+        },
+        appUrl: '',
         deviceChangePassword: '',
         logo: '',
-        qrcode: '',
         name: '',
-        version: '',
-        appUrl: ''
+        qrcode: '',
+        status: 0,
+        version: ''
       },
       backendConfig: {
         enableStatus: true,
@@ -341,17 +309,49 @@ export default {
     }
   },
   methods: {
+    filterBg(data) {
+      return data.filter(item => item.status !== 2)
+    },
     removeImg(file) {
       const index = this.h5Config.h5BgImgList.findIndex(
         v => v.image === file.url
       )
-      this.h5Config.h5BgImgList.splice(index, 1)
+      this.h5Config.h5BgImgList[index].status = 2
     },
     setImg(file) {
       this.h5Config.h5BgImgList = [
         ...this.h5Config.h5BgImgList,
         { image: file.url }
       ]
+    },
+    removeImgForScene(file) {
+      const data = this.androidConfig.androidScene
+      const index = data.androidSceneImgList.findIndex(
+        v => v.image === file.url
+      )
+      data.androidSceneImgList[index].status = 2
+    },
+    setImgForScene(file) {
+      let data = this.androidConfig.androidScene
+      data.androidSceneImgList = [
+        ...data.androidSceneImgList,
+        { image: file.url }
+      ]
+    },
+
+    handleVideoSuccess(file, fileList) {
+      let data = this.androidConfig.androidScene
+      data.androidSceneVideoList = [
+        ...data.androidSceneVideoList,
+        { video: file.url }
+      ]
+    },
+    handleVideoRemove(file) {
+      let data = this.androidConfig.androidScene
+      const index = data.androidSceneVideoList.findIndex(
+        v => v.video === file.url
+      )
+      data.androidSceneVideoList[index].status = 2
     },
     getForamtList() {
       getForamtList(this.listQuery).then(res => {
@@ -463,11 +463,34 @@ export default {
         })
       }
 
+      // 转换场景图册/视频格式
+      const androidScene = this.androidConfig.androidScene
+      const androidConfig = {
+        ...this.androidConfig,
+        androidScene: {
+          ...androidScene,
+          androidSceneImgList: androidScene.androidSceneImgList.map(item => {
+            return {
+              imgVideo: item.image,
+              status: item.image ? item.status : 2
+            }
+          }),
+          androidSceneVideoList: androidScene.androidSceneVideoList.map(
+            item => {
+              return {
+                imgVideo: item.video,
+                status: item.video ? item.status : 2
+              }
+            }
+          )
+        }
+      }
+
       const form = {
         ...this.baseInfo,
         typeIds: this.selectedDeviceList.map(item => item.id).join(','),
         h5Config,
-        androidConfig: this.androidConfig,
+        androidConfig,
         backendConfig: this.backendConfig
       }
 

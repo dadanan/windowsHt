@@ -1,6 +1,6 @@
 <template>
   <div class="file-container">
-    <el-upload class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess" :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :on-exceed='handleExceed' :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}' :limit='limit'>
+    <el-upload ref='uploader' class="avatar-uploader" :action="host" :show-file-list="isList" :on-success="handleSuccess" :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :on-exceed='handleExceed' :data='attachedData' :file-list="fileList" list-type="picture" :class='{"is-list": isList}' :limit='limit'>
       <el-button v-if='isList' size="small" type="primary">点击上传</el-button>
       <template v-else>
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -32,16 +32,6 @@ export default {
       name: '',
       imageUrl: '',
       fileList: []
-    }
-  },
-  computed: {
-    imageList: {
-      get() {
-        return this.fileList
-      },
-      set(newValue) {
-        this.fileList = newValue
-      }
     }
   },
   props: {
@@ -81,6 +71,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
+        this.$refs.uploader.clearFiles()
         this.imageUrl = ''
         this.$emit('get-url', '')
       })
@@ -140,7 +131,9 @@ export default {
       }
       return isValid && isLt2M
     },
-    handleExceed() {
+    handleExceed(a, b) {
+      console.log(a, b, this.fileList)
+
       this.$message.warning(
         `上传图片数量超出限制，最多可上传 ${this.limit} 张图片！`
       )
