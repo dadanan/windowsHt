@@ -161,7 +161,7 @@ export default {
           if (!item.deviceModelAbilityOptions) {
             return
           }
-          tem.deviceModelAbilityOptions.forEach(option => {
+          item.deviceModelAbilityOptions.forEach(option => {
             delete option.id
           })
         })
