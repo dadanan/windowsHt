@@ -12,8 +12,36 @@
           <vue-qrcode :value="shareURL" :options="{ width: 200 }"></vue-qrcode>
         </el-form-item>
         <el-form-item label="绑定状态">
-           <el-input v-model="status" disabled></el-input>
+          <el-input v-model="status" disabled></el-input>
         </el-form-item>
+
+        <!-- 设备传参 -->
+        <el-form-item label="设备传参" border>
+          <div v-for="item in ginsengList" style="width:100%">
+            <div style="padding: .24rem;">
+              <p style="padding:0px 20px">{{item.paramName}}</p>
+              <div>
+                <table class="table">
+                  <tr>
+                    <th>档位</th>
+                    <th>转数</th>
+                    <th>默认值</th>
+                  </tr>
+                  <tr v-for="ls in item.configValuesList" style="text-align:center">
+                    <td style="width:200px">{{ls.definedName}}</td>
+                    <td style="width:200px"><el-input type="number" placeholder="请输入档位" v-model="ls.currentValue"></el-input></td>
+                    <td style="width:200px">{{ls.defaultValue}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <el-button-group class='button-group'>
+            <el-button type="primary" @click='addParamConfig(1)'>保存</el-button>
+            <!-- <el-button type="danger" @click='addParamConfig(2)'>恢复默认</el-button> -->
+          </el-button-group>
+        </el-form-item>
+        <!-- 授权管理 -->
         <el-form-item label="授权管理">
           <el-table :data="shareData.list" style="width: 100%" border>
             <el-table-column type="index"></el-table-column>
@@ -73,7 +101,9 @@ import {
   clearRelation,
   updateAllRelation,
   updateRelation,
-  deviceShareList
+  deviceShareList,
+  queryAllParamConfig,
+  addParamConfig
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -89,6 +119,7 @@ export default {
   },
   data() {
     return {
+      ginsengList: [],
       form: {
         name: '',
         manageName: '',
@@ -102,7 +133,8 @@ export default {
       shareData: {
         list: []
       },
-      status:''
+      status: '',
+      status1: false
     }
   },
   methods: {
@@ -152,16 +184,87 @@ export default {
         })
     },
     getDeviceShareList() {
-      deviceShareList(this.form.id).then(res => {
+      deviceShareList(this.form.id)
+        .then(res => {
           this.shareData = {
             deviceId: this.form.id,
             list: res.data
           }
-        this.status ="设备已绑定"
-      })
-      .catch(res => {
-        this.status ="设备未绑定"
-      })
+          this.status = '设备已绑定'
+        })
+        .catch(res => {
+          this.status = '设备未绑定'
+        })
+    },
+       //设备参数修改
+    addParamConfig(id) {
+      this.status1 = true
+      let paramConfigList = []
+      if (id == 1) {
+        for (var i = 0; i < this.ginsengList.length; i++) {
+          var valuesList = {}
+          const list = this.ginsengList[i].configValuesList
+          var defaultValue = []
+          for (var j = 0; j < list.length; j++) {
+            if (list[j].currentValue == '') {
+              defaultValue.push(Number(list[j].defaultValue))
+            } else {
+              var s = list[j].currentValue
+              if (s < list[j].maxValue && s > list[j].minValue) {
+                defaultValue.push(Number(list[j].currentValue))
+              } else {
+                this.status1 = false
+                this.$message({
+                  message: this.ginsengList[i].paramName +' ' +list[j].definedName +'最小值为' +list[j].minValue +'最大值为' +list[j].maxValue,
+                  type: 'error'
+                })
+              }
+            }
+          }
+          valuesList.sort = i
+          valuesList.valuesList = defaultValue
+          paramConfigList.push(valuesList)
+          // console.log(paramConfigList)
+        }
+      } else {
+        for (var i = 0; i < this.ginsengList.length; i++) {
+          var valuesList = {}
+          const list = this.ginsengList[i].configValuesList
+          var defaultValue = []
+          for (var j = 0; j < list.length; j++) {
+            defaultValue.push(Number(list[j].defaultValue))
+          }
+          valuesList.sort = i
+          valuesList.valuesList = defaultValue
+          paramConfigList.push(valuesList)
+          // console.log(paramConfigList)
+        }
+      }
+      if (this.status1) {
+        addParamConfig({
+          deviceId: this.form.id,
+          abilityTypeName: 'C10',
+          paramConfigList: paramConfigList
+        }).then(res => {
+          console.log(res)
+          this.queryAllParamConfig()
+          this.$message({
+          message: '修改成功！',
+          type: 'success'
+        })
+        })
+      }
+    },
+    // 设备传参
+    queryAllParamConfig() {
+      queryAllParamConfig(this.form.id)
+        .then(res => {
+          console.log(res.data)
+          this.ginsengList = res.data
+        })
+        .catch(res => {
+          // this.status ="设备未绑定"
+        })
     },
     updateDevice() {
       const form = {
@@ -203,7 +306,7 @@ export default {
           form.id
         }&token=${res.data}&customerId=${form.customerId}`
 
-        console.log('分享URL: ', url)
+        // console.log('分享URL: ', url)
         this.shareURL = url
       })
     }
@@ -214,6 +317,7 @@ export default {
       this.form = data
       this.getShareToken()
       this.getDeviceShareList()
+      this.queryAllParamConfig()
     }
   },
   components: {
@@ -227,5 +331,16 @@ export default {
 }
 .inside-image {
   width: 100%;
+}
+.table{
+  border: 1px solid #ccc;
+  td{
+   border: 1px solid #ccc;
+   border-right: none;
+   border-bottom: none;
+  }
+}
+.table td:first-child{
+  border-left: none
 }
 </style>

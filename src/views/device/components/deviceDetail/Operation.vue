@@ -279,6 +279,7 @@ export default {
         deviceId: this.detailData.id,
         abilityIds: tempIds
       }).then(res => {
+        console.log(res.data)
         const data = res.data
         // 将res.data中的isSelect和dirValue赋值过去
         this.abilitysList.forEach((item, index) => {

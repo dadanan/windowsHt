@@ -43,3 +43,12 @@ export function queryHomePageStatistic() {
     method: 'get'
   })
 }
+
+// 用户列表
+export function selectCustomerUser(data) {
+  return request({
+    url: '/temp/api/customerUser/selectCustomerUser',
+    method: 'post',
+    data
+  })
+}

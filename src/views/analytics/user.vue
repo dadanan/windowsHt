@@ -46,20 +46,22 @@
       </div>
       <el-table :data="tableData" style="width: 100%" class="mb20" border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="用户名">
+        <el-table-column prop="id" label="id">
         </el-table-column>
-        <el-table-column prop="pos" label="区域">
+        <el-table-column prop="groupName" label="用户名">
         </el-table-column>
-        <el-table-column prop="deviceType" label="设备类型">
+        <el-table-column prop="region" label="区域">
         </el-table-column>
-        <el-table-column prop="deviceSN" label="设备型号">
+        <el-table-column prop="typeName" label="设备类型">
         </el-table-column>
-        <el-table-column prop="updateDatetime" label="最后操作时间">
+        <el-table-column prop="modelName" label="设备型号">
+        </el-table-column>
+        <el-table-column prop="lastVisitTime" label="最后操作时间">
         </el-table-column>
       </el-table>
       <div class="excel-container">
-        <!-- <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
-        </el-pagination> -->
+        <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
         <el-button type="primary">导出 Excel</el-button>
       </div>
     </el-card>
@@ -87,7 +89,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
-import {selectCustomerUserCount,queryHomePageStatistic} from '@/api/big-picture-mode/bigPictureMode'
+import {selectCustomerUserCount,queryHomePageStatistic,selectCustomerUser} from '@/api/big-picture-mode/bigPictureMode'
 import { userData, userDataT } from '../dashboardData'
 export default {
   components: {
@@ -114,7 +116,12 @@ export default {
         keywords: '',
         date: ''
       },
-      tableData: mockData,
+      query:{
+        limit:100,
+        page:1
+      },
+      total:0,
+      tableData: [],
       addPercent: [],
       userCount: [],
       addCount: [],
@@ -133,6 +140,7 @@ export default {
     init() {
       this.selectCustomerUserCount()
       this.queryHomePageStatistic()
+      this.selectCustomerUser()
     },
     test() {
       this.fakeData = !this.fakeData
@@ -142,6 +150,26 @@ export default {
         this.kanbanData = userDataT
         this.init()
       }
+    },
+    selectCustomerUser() {
+      // 用户列表
+      selectCustomerUser(this.query).then(res => {
+        const data = res.data.dataList
+        this.tableData = data
+        this.total = res.data.totalCount
+        for(var i = 0;i<data.length;i++){
+          this.tableData[i].region = (data[i].province+","+data[i].city)
+        }
+      //  console.log(res)
+      })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.selectCustomerUser()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.selectCustomerUser()
     },
     queryHomePageStatistic() {
       // 查询首页数据
