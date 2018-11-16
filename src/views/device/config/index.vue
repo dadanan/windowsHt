@@ -158,6 +158,12 @@ export default {
       if (form.deviceModelAbilitys) {
         form.deviceModelAbilitys.forEach(item => {
           delete item.id
+          if (!item.deviceModelAbilityOptions) {
+            return
+          }
+          tem.deviceModelAbilityOptions.forEach(option => {
+            delete option.id
+          })
         })
       }
 
@@ -166,9 +172,6 @@ export default {
           delete item.id
           delete item.formatId
           delete item.modelId
-          // if (!item.pageId) {
-          //   item.pageId = 1
-          // }
           if (!item.modelFormatItems) {
             return
           }
