@@ -35,7 +35,7 @@
             <el-input v-model="h5Config.themeName"></el-input>
           </el-form-item>
           <el-form-item label="Logo">
-            <image-uploader :key='21' :urls='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+            <image-uploader :key='21' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
           </el-form-item>
           <el-form-item label="H5 版本" prop="version">
             <el-select v-model="h5Config.version">
@@ -53,10 +53,10 @@
             <el-input v-model='androidConfig.name'></el-input>
           </el-form-item>
           <el-form-item label="APP Logo">
-            <image-uploader :key='22' :urls='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+            <image-uploader :key='22' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
           </el-form-item>
           <el-form-item label="公众号二维码">
-            <image-uploader :key='23' :urls='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
+            <image-uploader :key='23' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
           </el-form-item>
           <el-form-item label="APP 软件版本">
             <el-input v-model='androidConfig.version'></el-input>
@@ -90,7 +90,7 @@
       <el-tab-pane label="后台设置" name="4">
         <el-form label-position="left" label-width="150px" :model='backendConfig' ref='backendConfig' style="width:600px">
           <el-form-item label="Logo">
-            <image-uploader :key='24' :urls='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+            <image-uploader :key='24' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
           </el-form-item>
           <el-form-item label="名称">
             <el-input v-model='backendConfig.name'></el-input>
@@ -118,6 +118,7 @@
 <script>
 import ImageUploader from '@/components/Upload/image'
 import FileUploader from '@/components/Upload/file'
+import VideoUploader from '@/components/Upload/VideoUpload'
 import {
   updateWebsiteInfo,
   selectByUserId,
@@ -174,7 +175,6 @@ export default {
   },
   methods: {
     filterBg(data) {
-      console.log('data', data)
       return data.filter(item => item.status !== 2)
     },
     removeImg(file) {
@@ -378,7 +378,8 @@ export default {
   },
   components: {
     ImageUploader,
-    FileUploader
+    FileUploader,
+    VideoUploader
   },
   created() {
     this.getCurrentUser()
