@@ -42,8 +42,8 @@
         <el-table-column prop="createTime" label="修改时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             {{scope.row.lastUpdateTime}} -->
-            <!-- {{new Date(scope.row.lastUpdateTime).toLocaleString()}} -->
-          <!-- </template>
+        <!-- {{new Date(scope.row.lastUpdateTime).toLocaleString()}} -->
+        <!-- </template>
         </el-table-column> -->
         <el-table-column label="操作" show-overflow-tooltip width='180'>
           <template slot-scope="scope">
@@ -164,11 +164,17 @@ export default {
       if (form.deviceModelFormat) {
         form.deviceModelFormat.modelFormatPages.forEach(item => {
           delete item.id
+          delete item.formatId
+          delete item.modelId
+          // if (!item.pageId) {
+          //   item.pageId = 1
+          // }
           if (!item.modelFormatItems) {
             return
           }
           item.modelFormatItems.forEach(formatItem => {
             delete formatItem.id
+            delete formatItem.modelFormatId
           })
         })
       }

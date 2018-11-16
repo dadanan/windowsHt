@@ -128,6 +128,17 @@
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
             </el-form-item>
             <el-form-item label="安卓场景">
+              <div class=''>
+                 <el-form-item label="场景名称">
+                    <el-input v-model='item.name'></el-input>
+                  </el-form-item>
+                  <el-form-item label="场景描述">
+                    <el-input v-model='item.description' type='textarea'></el-input>
+                  </el-form-item>
+                  <el-form-item label="场景封面">
+                    <image-uploader :url='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+                  </el-form-item>
+              </div>
               <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList' :key="index">
                 <div class='tool'>
                   <span class='close-icon' @click='deleteScene(index)'></span>
@@ -299,28 +310,35 @@ export default {
         version: ''
       },
       androidConfig: {
-        androidSceneList: [
-          {
-            androidSceneImgList: [
-              {
-                description: '',
-                id: 0,
-                imgVideo: '',
-                name: ''
-              }
-            ],
-            description: '',
-            id: 0,
-            imgsCover: '',
-            name: ''
-          }
-        ],
+        androidScene: {
+          androidSceneImgList: [
+            {
+              description: '',
+              imgVideo: '',
+              name: '',
+              status: 0
+            }
+          ],
+          androidSceneVideoList: [
+            {
+              description: '',
+              imgVideo: '',
+              name: '',
+              status: 0
+            }
+          ],
+          description: '',
+          imgsCover: '',
+          name: '',
+          status: 0
+        },
+        appUrl: '',
         deviceChangePassword: '',
         logo: '',
-        qrcode: '',
         name: '',
-        version: '',
-        appUrl: ''
+        qrcode: '',
+        status: 0,
+        version: ''
       },
       backendConfig: {
         enableStatus: true,

@@ -560,13 +560,17 @@ export default {
         this.formatSelected && this.formatSelected[0].wxFormatPageVos
 
       this.pageOfForamt.forEach(page => {
+        delete page.id
         if (!page.wxFormatItemVos) {
           return
         }
         // 修改原版式数据的参数名称
+        // 删除版式表的id参数
         page.wxFormatItemVos.forEach(item => {
           item.showName = item.name
           this.$set(item, 'showStatus', true)
+          this.$set(item, 'itemId', item.id)
+          delete item.id
         })
         page.modelFormatItems = page.wxFormatItemVos
       })
