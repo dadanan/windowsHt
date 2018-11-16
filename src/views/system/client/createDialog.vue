@@ -275,22 +275,8 @@ export default {
       },
       androidConfig: {
         androidScene: {
-          androidSceneImgList: [
-            {
-              description: '',
-              imgVideo: '',
-              name: '',
-              status: 0
-            }
-          ],
-          androidSceneVideoList: [
-            {
-              description: '',
-              imgVideo: '',
-              name: '',
-              status: 0
-            }
-          ],
+          androidSceneImgList: [],
+          androidSceneVideoList: [],
           description: '',
           imgsCover: '',
           name: '',
@@ -352,7 +338,7 @@ export default {
         { image: file.url }
       ]
     },
-    
+
     handleVideoSuccess(file, fileList) {
       let data = this.androidConfig.androidScene
       data.androidSceneVideoList = [

@@ -68,46 +68,21 @@
             <el-input v-model='androidConfig.deviceChangePassword'></el-input>
           </el-form-item>
           <el-form-item label="安卓场景">
-            <el-card class="box-card" v-for='(item,index) in androidConfig.androidSceneList' :key="index">
-              <div class='tool'>
-                <span class='close' @click='deleteScene(index)'>x</span>
-                <span class='add' @click='addScene'>+</span>
-              </div>
-              <div>
-                <el-form-item label="场景名称">
-                  <el-input v-model='item.name'></el-input>
-                </el-form-item>
-                <el-form-item label="场景描述">
-                  <el-input v-model='item.description' type='textarea'></el-input>
-                </el-form-item>
-                <el-form-item label="场景封面">
-                  <image-uploader :urls='item.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
-                </el-form-item>
-                <el-form-item label="场景图册列表" class="pictureList">
-                  <transition-group name="fade">
-                    <el-card v-for='(list,listIndex) in item.androidSceneImgList' :key="list.id" class="box-card">
-                      <div class='tool'>
-                        <!-- <i class="el-icon-back up" @click="handleUp(item, listIndex)" v-if="listIndex"></i>
-                        <i class="el-icon-back down" @click="handleDown(item, listIndex)" v-if="item.androidSceneImgList.length - listIndex !== 1"></i> -->
-                        <span class='close-icon' @click='deleteSceneImg(item, listIndex)'>x</span>
-                        <span class='add-icon' @click='addSceneImg(item)'>+</span>
-                      </div>
-                      <div>
-                        <el-form-item label="名称">
-                          <el-input v-model='list.name'></el-input>
-                        </el-form-item>
-                        <el-form-item label="描述">
-                          <el-input v-model='list.description' type='textarea'></el-input>
-                        </el-form-item>
-                        <el-form-item label="图片/视频">
-                          <image-uploader :url='list.imgVideo' @get-url='setURL(arguments,list,"imgVideo")'></image-uploader>
-                        </el-form-item>
-                      </div>
-                    </el-card>
-                  </transition-group>
-                </el-form-item>
-              </div>
-            </el-card>
+            <el-form-item label="场景名称">
+              <el-input v-model='androidConfig.androidScene.name'></el-input>
+            </el-form-item>
+            <el-form-item label="场景描述">
+              <el-input v-model='androidConfig.androidScene.description' type='textarea'></el-input>
+            </el-form-item>
+            <el-form-item label="场景封面">
+              <image-uploader :url='androidConfig.androidScene.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+            </el-form-item>
+            <el-form-item label="场景图册">
+              <image-uploader :urls='filterBg(androidConfig.androidScene.androidSceneImgList)' @get-url='setImgForScene' @remove-url='removeImgForScene' :isList='true' :limit='5'></image-uploader>
+            </el-form-item>
+            <el-form-item label="场景视频">
+              <video-uploader :maxSize='50' :list='filterBg(androidConfig.androidScene.androidSceneVideoList)' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+            </el-form-item>
           </el-form-item>
           <el-button type="primary" @click="updateOwnerAndroidInfo">确认修改</el-button>
         </el-form>
@@ -178,28 +153,14 @@ export default {
         version: ''
       },
       androidConfig: {
-        androidSceneList: [
-          {
-            androidSceneImgList: [
-              {
-                description: '',
-                id: 0,
-                imgVideo: '',
-                name: ''
-              }
-            ],
-            description: '',
-            id: 0,
-            imgsCover: '',
-            name: ''
-          }
-        ],
-        deviceChangePassword: '',
-        logo: '',
-        qrcode: '',
-        name: '',
-        version: '',
-        appUrl: ''
+        androidScene: {
+          androidSceneImgList: [],
+          androidSceneVideoList: [],
+          description: '',
+          imgsCover: '',
+          name: '',
+          status: 0
+        }
       },
       backendConfig: {
         enableStatus: 1,
@@ -213,6 +174,7 @@ export default {
   },
   methods: {
     filterBg(data) {
+      console.log('data', data)
       return data.filter(item => item.status !== 2)
     },
     removeImg(file) {
@@ -227,40 +189,33 @@ export default {
         { image: file.url }
       ]
     },
-    addScene() {
-      this.androidConfig.androidSceneList.push({
-        androidSceneImgList: [
-          {
-            description: '',
-            id: 0,
-            imgVideo: '',
-            name: ''
-          }
-        ],
-        description: '',
-        id: 0,
-        imgsCover: '',
-        name: ''
-      })
+    removeImgForScene(file) {
+      const data = this.androidConfig.androidScene
+      const index = data.androidSceneImgList.findIndex(
+        v => v.image === file.url
+      )
+      data.androidSceneImgList[index].status = 2
     },
-    deleteScene(index) {
-      if (this.androidConfig.androidSceneList.length <= 1) return
-
-      this.androidConfig.androidSceneList.splice(index, 1)
+    setImgForScene(file) {
+      let data = this.androidConfig.androidScene
+      data.androidSceneImgList = [
+        ...data.androidSceneImgList,
+        { image: file.url }
+      ]
     },
-    deleteSceneImg(data, index) {
-      if (data.androidSceneImgList.length <= 1) return
-
-      data.androidSceneImgList.splice(index, 1)
+    handleVideoSuccess(file, fileList) {
+      let data = this.androidConfig.androidScene
+      data.androidSceneVideoList = [
+        ...data.androidSceneVideoList,
+        { video: file.url }
+      ]
     },
-    addSceneImg(data) {
-      // transition-group动画必须提供唯一id且id不能为循环出来的index值
-      data.androidSceneImgList.push({
-        description: '',
-        id: this.$options.filters.GUID(),
-        imgVideo: '',
-        name: ''
-      })
+    handleVideoRemove(file) {
+      let data = this.androidConfig.androidScene
+      const index = data.androidSceneVideoList.findIndex(
+        v => v.video === file.url
+      )
+      data.androidSceneVideoList[index].status = 2
     },
     // 获取当前的用户
     getCurrentUser() {
@@ -295,26 +250,43 @@ export default {
         this.backendConfig.enableStatus =
           Boolean(this.backendConfig.enableStatus) || false
 
-        if (
-          !this.androidConfig.androidSceneList ||
-          this.androidConfig.androidSceneList.length === 0
-        ) {
-          this.androidConfig.androidSceneList = [
-            {
-              androidSceneImgList: [
-                {
-                  description: '',
-                  id: 0,
-                  imgVideo: '',
-                  name: ''
-                }
-              ],
+        const androidScene = this.androidConfig.androidScene
+        if (!androidScene) {
+          this.androidConfig = {
+            androidScene: {
+              androidSceneImgList: [],
+              androidSceneVideoList: [],
               description: '',
-              id: 0,
               imgsCover: '',
               name: ''
+            },
+            deviceChangePassword: '',
+            logo: '',
+            name: '',
+            version: '',
+            appUrl: ''
+          }
+        } else {
+          // 规范图册/视频数据格式，来适应组件所需格式
+          androidScene.androidSceneImgList = androidScene.androidSceneImgList.map(
+            item => {
+              return {
+                image: item.imgVideo,
+                id: item.id,
+                status: item.status
+              }
             }
-          ]
+          )
+
+          androidScene.androidSceneVideoList = androidScene.androidSceneVideoList.map(
+            item => {
+              return {
+                video: item.imgVideo,
+                id: item.id,
+                status: item.status
+              }
+            }
+          )
         }
       })
     },
@@ -361,7 +333,32 @@ export default {
       })
     },
     updateOwnerAndroidInfo() {
-      updateOwnerAndroidInfo(this.androidConfig).then(res => {
+      // 转换场景图册/视频格式
+      const androidScene = this.androidConfig.androidScene
+      const androidConfig = {
+        ...this.androidConfig,
+        androidScene: {
+          ...androidScene,
+          androidSceneImgList: androidScene.androidSceneImgList.map(item => {
+            return {
+              imgVideo: item.image,
+              id: item.id,
+              status: item.image ? item.status : 2
+            }
+          }),
+          androidSceneVideoList: androidScene.androidSceneVideoList.map(
+            item => {
+              return {
+                imgVideo: item.video,
+                id: item.id,
+                status: item.video ? item.status : 2
+              }
+            }
+          )
+        }
+      }
+
+      updateOwnerAndroidInfo(androidConfig).then(res => {
         this.$message({
           type: 'success',
           message: '修改成功'
