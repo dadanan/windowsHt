@@ -138,10 +138,10 @@
                 <image-uploader :url='androidConfig.androidScene.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
               </el-form-item>
               <el-form-item label="场景图册">
-                <image-uploader :urls='androidConfig.androidScene.androidSceneImgList' @get-url='setImgForScene' @remove-url='removeImgForScene' :isList='true'></image-uploader>
+                <image-uploader :urls='filterBg(androidConfig.androidScene.androidSceneImgList)' @get-url='setImgForScene' @remove-url='removeImgForScene' :isList='true' :limit='5'></image-uploader>
               </el-form-item>
               <el-form-item label="场景视频">
-                <video-uploader :maxSize='50' :list='androidConfig.androidScene.androidSceneVideoList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+                <video-uploader :maxSize='50' :list='filterBg(androidConfig.androidScene.androidSceneVideoList)' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
               </el-form-item>
             </el-form-item>
           </el-form>
@@ -195,6 +195,7 @@ import FileUploader from '@/components/Upload/file'
 import { selectTypesBySLD } from '@/api/device/type'
 import { updateDetail } from '@/api/customer'
 import { select as getForamtList } from '@/api/format'
+import VideoUploader from '@/components/Upload/VideoUpload'
 
 export default {
   props: {
@@ -279,13 +280,32 @@ export default {
       ]
     },
     removeImgForScene(file) {
-      const data = this.androidConfig.androidScene.androidSceneImgList
-      const index = data.findIndex(v => v.image === file.url)
-      data[index].status = 2
+      const data = this.androidConfig.androidScene
+      const index = data.androidSceneImgList.findIndex(
+        v => v.image === file.url
+      )
+      data.androidSceneImgList[index].status = 2
     },
     setImgForScene(file) {
-      let data = this.androidConfig.androidScene.androidSceneImgList
-      data = [...data, { image: file.url }]
+      let data = this.androidConfig.androidScene
+      data.androidSceneImgList = [
+        ...data.androidSceneImgList,
+        { image: file.url }
+      ]
+    },
+    handleVideoSuccess(file, fileList) {
+      let data = this.androidConfig.androidScene
+      data.androidSceneVideoList = [
+        ...data.androidSceneVideoList,
+        { video: file.url }
+      ]
+    },
+    handleVideoRemove(file) {
+      let data = this.androidConfig.androidScene
+      const index = data.androidSceneVideoList.findIndex(
+        v => v.video === file.url
+      )
+      data.androidSceneVideoList[index].status = 2
     },
     setURL(argu, data, name) {
       data[name] = argu[0]
@@ -369,11 +389,36 @@ export default {
         })
       }
 
+      // 转换场景图册/视频格式
+      const androidScene = this.androidConfig.androidScene
+      const androidConfig = {
+        ...this.androidConfig,
+        androidScene: {
+          ...androidScene,
+          androidSceneImgList: androidScene.androidSceneImgList.map(item => {
+            return {
+              imgVideo: item.image,
+              id: item.id,
+              status: item.image ? item.status : 2
+            }
+          }),
+          androidSceneVideoList: androidScene.androidSceneVideoList.map(
+            item => {
+              return {
+                imgVideo: item.video,
+                id: item.id,
+                status: item.video ? item.status : 2
+              }
+            }
+          )
+        }
+      }
+
       const form = {
         ...this.baseInfo,
         typeIds: this.selectedDeviceList.map(item => item.id).join(','),
         h5Config,
-        androidConfig: this.androidConfig,
+        androidConfig,
         backendConfig: backendConfig,
         id: this.id
       }
@@ -454,13 +499,27 @@ export default {
           version: '',
           appUrl: ''
         }
-      }else{
+      } else {
         // 规范图册/视频数据格式，来适应组件所需格式
-        androidScene.androidSceneImgList =  androidScene.androidSceneImgList.map(item=>{
-          return {
-            image: item
+        androidScene.androidSceneImgList = androidScene.androidSceneImgList.map(
+          item => {
+            return {
+              image: item.imgVideo,
+              id: item.id,
+              status: item.status
+            }
           }
-        })
+        )
+
+        androidScene.androidSceneVideoList = androidScene.androidSceneVideoList.map(
+          item => {
+            return {
+              video: item.imgVideo,
+              id: item.id,
+              status: item.status
+            }
+          }
+        )
       }
     },
     visible(val) {
@@ -498,7 +557,8 @@ export default {
   },
   components: {
     ImageUploader,
-    FileUploader
+    FileUploader,
+    VideoUploader
   }
 }
 </script>
