@@ -245,3 +245,19 @@ export function encodeSearchParams(obj) {
 
   return params.join('&')
 }
+
+//查询设备传参
+export function queryAllParamConfig(data) {
+  return request({
+    url: `/temp/api/deviceParams/queryAllParamConfig/${data}`,
+    method: 'get'
+  })
+}
+//控制设备传参
+export function addParamConfig(data) {
+  return request({
+    url: '/temp/api/deviceParams/addParamConfig',
+    method: 'post',
+    data
+  })
+}
