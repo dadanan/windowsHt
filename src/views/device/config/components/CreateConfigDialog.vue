@@ -288,18 +288,10 @@ export default {
   },
   methods: {
     disableConfigOption(data, i) {
-      this.modifyData.deviceModelAbilityOptions.splice(
-        i,
-        1,
-        Object.assign({}, data, { status: 3 })
-      )
+      this.$set(data, 'status', 3)
     },
     ableConfigOption(data, i) {
-      this.modifyData.deviceModelAbilityOptions.splice(
-        i,
-        1,
-        Object.assign({}, data, { status: 1 })
-      )
+      this.$set(data, 'status', 1)
     },
     useableAbility(key) {
       return this.deviceModelAbilitys.filter(item => item.abilityType === key)
