@@ -121,7 +121,7 @@ export const dashboardData = {
         name: '优良环境比率',
         value: 80,
         unit: '',
-        isVisible: true
+        isVisible: false
       }
     ],
     订单分析: [{
@@ -578,7 +578,7 @@ export const realData = {
         name: '优良环境比率',
         value: 80,
         unit: '',
-        isVisible: true
+        isVisible: false
       }
     ],
     订单分析: [{
@@ -787,7 +787,7 @@ export const realData = {
             ]
           }]
         },
-        isVisible: true
+        isVisible: false
       },
       {
         id: 4,
@@ -1486,7 +1486,7 @@ export const developData = {
           ]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 4,
@@ -1746,7 +1746,7 @@ export const developDataT = {
           ]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 4,

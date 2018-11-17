@@ -43,6 +43,7 @@ export default {
         query.deviceListQueryRequest.limit
       this.deviceColumnVisible['deviceListQueryRequest.page'] =
         query.deviceListQueryRequest.page
+      this.deviceColumnVisible['typeNo'] =true
       if (!this.deviceColumnVisible.assignStatus) {
         delete this.deviceColumnVisible.assignStatus
       }

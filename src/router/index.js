@@ -517,7 +517,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'user',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/message/user'),
         name: 'userMessage',
         meta: {
           title: 'userMessage'
