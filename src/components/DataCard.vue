@@ -4,7 +4,7 @@
       <font-awesome-icon v-if="icon" :icon="icon" class="data-card__icon"></font-awesome-icon>
       <span class="data-card__content">
         <span class="data-card__title">{{ name }}</span>
-        <count-to class="data-card__data" :startVal="0" :endVal="value" :duration="3000" :suffix='unit' :decimals="2" ></count-to>
+        <count-to class="data-card__data" :startVal="0" :endVal="value" :duration="3000" :suffix='unit' ></count-to>
       </span>
     </div>
   </div>

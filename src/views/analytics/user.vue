@@ -48,7 +48,7 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="id" label="id">
         </el-table-column>
-        <el-table-column prop="groupName" label="用户名">
+        <el-table-column prop="nickname" label="用户名">
         </el-table-column>
         <el-table-column prop="region" label="区域">
         </el-table-column>

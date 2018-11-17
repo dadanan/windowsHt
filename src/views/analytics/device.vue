@@ -166,7 +166,7 @@ export default {
         dataAnalysis[0].value = data.deviceTotalCount //设备总数
         dataAnalysis[1].value = data.todayDeviceAddCount //今日设备新增数
         dataAnalysis[3].value = data.todayDeviceBugCount //今日设备故障数
-        dataAnalysis[4].value = Number(data.deviceOnlinePercent) //今日设备在线率
+        dataAnalysis[4].value = Number(data.deviceOnlinePercent)*100 //今日设备在线率
       })
     },
     // 每月新增设备统计
