@@ -175,6 +175,9 @@ export default {
   },
   methods: {
     filterBg(data) {
+      if (!data) {
+        return []
+      }
       return data.filter(item => item.status !== 2)
     },
     removeImg(file) {
@@ -268,25 +271,33 @@ export default {
           }
         } else {
           // 规范图册/视频数据格式，来适应组件所需格式
-          androidScene.androidSceneImgList = androidScene.androidSceneImgList.map(
-            item => {
-              return {
-                image: item.imgVideo,
-                id: item.id,
-                status: item.status
+          if (androidScene.androidSceneImgList) {
+            androidScene.androidSceneImgList = androidScene.androidSceneImgList.map(
+              item => {
+                return {
+                  image: item.imgVideo,
+                  id: item.id,
+                  status: item.status
+                }
               }
-            }
-          )
+            )
+          } else {
+            androidScene.androidSceneImgList = []
+          }
 
-          androidScene.androidSceneVideoList = androidScene.androidSceneVideoList.map(
-            item => {
-              return {
-                video: item.imgVideo,
-                id: item.id,
-                status: item.status
+          if (androidScene.androidSceneVideoList) {
+            androidScene.androidSceneVideoList = androidScene.androidSceneVideoList.map(
+              item => {
+                return {
+                  video: item.imgVideo,
+                  id: item.id,
+                  status: item.status
+                }
               }
-            }
-          )
+            )
+          } else {
+            androidScene.androidSceneVideoList = []
+          }
         }
       })
     },
