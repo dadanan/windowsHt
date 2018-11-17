@@ -148,7 +148,9 @@ export default {
     }
   },
   created() {
-    this.imageUrl = this.url
+    if (this.url) {
+      this.imageUrl = this.url
+    }
     if (this.urls) {
       this.initFileList(this.urls)
     }
@@ -159,6 +161,9 @@ export default {
         return
       }
       this.initFileList(val)
+    },
+    url(val) {
+      this.imageUrl = val
     }
   }
 }
