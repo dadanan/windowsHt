@@ -75,7 +75,7 @@
               <el-input v-model='androidConfig.androidScene.description' type='textarea'></el-input>
             </el-form-item>
             <el-form-item label="场景封面">
-              <image-uploader :url='androidConfig.androidScene.imgsCover' @get-url='setURL(arguments,item,"imgsCover")'></image-uploader>
+              <image-uploader :url='androidConfig.androidScene.imgsCover' @get-url='setURL(arguments,androidConfig.androidScene,"imgsCover")'></image-uploader>
             </el-form-item>
             <el-form-item label="场景图册">
               <image-uploader :urls='filterBg(androidConfig.androidScene.androidSceneImgList)' @get-url='setImgForScene' @remove-url='removeImgForScene' :isList='true' :limit='5'></image-uploader>
