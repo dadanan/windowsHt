@@ -108,7 +108,7 @@
       </el-form-item>
       <template v-for='(item,index) in filterPageOfForamt()'>
         <el-card class='box-card' :key='item.id'>
-          <div class='tool' v-if='index !== 0'>
+          <div class='tool'>
             <span class='close' @click='deleteFormatConfig(index)'></span>
           </div>
           <el-form-item label='页面预览'>
@@ -349,9 +349,6 @@ export default {
       return this.pageOfForamt.filter(item => item.status === 1)
     },
     deleteFormatConfig(index) {
-      if (index === 0) {
-        return
-      }
       this.pageOfForamt[index].status = 2
     },
     getSld() {
@@ -581,18 +578,10 @@ export default {
       })
     },
     disableConfigOption(data, i) {
-      this.modifyData.deviceModelAbilityOptions.splice(
-        i,
-        1,
-        Object.assign({}, data, { status: 3 })
-      )
+      this.$set(data, 'status', 3)
     },
     ableConfigOption(data, i) {
-      this.modifyData.deviceModelAbilityOptions.splice(
-        i,
-        1,
-        Object.assign({}, data, { status: 1 })
-      )
+      this.$set(data, 'status', 1)
     },
     getAndroidFrmatList() {
       select({ limit: 100, page: 1, type: 3 }).then(res => {
