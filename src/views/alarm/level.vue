@@ -53,11 +53,11 @@
         </el-table-column>
         <el-table-column prop="description" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="告警来源" show-overflow-tooltip sortable>
+        <el-table-column prop="description1" label="告警来源" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="到期处理日" show-overflow-tooltip sortable>
+        <el-table-column prop="description2" label="到期处理日" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="description3" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作">
            <template slot-scope="scope">
@@ -79,12 +79,14 @@ export default {
 
     for (let i = 0; i < 15; i++) {
       levelList.push({
-        name: 'PmLose',
+        name: '任务名称',
         nameText: 'PM 2.5 报数丢失',
-        type: '报警',
-        dataType: 'bool',
-        description: '滤网到期提醒',
-        level: '1'
+        type: '不关联',
+        dataType: '是',
+        description: '一级',
+        description1: '计划维保',
+        description2: '2018-07-28 01:24:29',
+        description3: '待处理'
       })
     }
     return {

@@ -99,11 +99,11 @@ export default {
 
     for (let i = 0; i < 15; i++) {
       alarmList.push({
-        mac: '862151034187433',
-        sn: '10063679114543329199',
-        name: '金敦煌C910',
-        pos: '金敦煌 KTV',
-        tel: '13166666007',
+        mac: '计划1',
+        sn: '这次技术是要求我们...',
+        name: '不关联',
+        pos: '是',
+        tel: '一级',
         createDatetime: '2018-03-28 01:24:29',
         state: '已修复'
       })
