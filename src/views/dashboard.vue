@@ -92,7 +92,8 @@ import {
   modelPercent,
   selectDeviceCount,
   newDeviceCountOfToday,
-  queryHomePageStatistic
+  queryHomePageStatistic,
+  selectLiveCustomerUserCountPerHour
 } from '@/api/big-picture-mode/bigPictureMode'
 import { dashboardData, realData } from './dashboardData'
 
@@ -114,7 +115,9 @@ export default {
       devedata: [],
       newDeviceCount: '',
       fakeData: false, // 是否切换为虚假数据
-      status: 1
+      status: 1,
+      countPerHour:[],
+      countPerHourData:[]
     }
   },
   created() {
@@ -127,6 +130,7 @@ export default {
       this.modelPercent()
       this.newDeviceCountOfToday()
       this.queryHomePageStatistic()
+      this.selectLiveCustomerUserCountPerHour()
     },
     test() {
       this.fakeData = !this.fakeData
@@ -216,6 +220,20 @@ export default {
           })
         }
         this.kanbanData.图表展示.设备分析[3].options.series[0].data = this.devedata
+      })
+    },
+     // 每天活跃用户统计
+    selectLiveCustomerUserCountPerHour() {
+      selectLiveCustomerUserCountPerHour().then(res => {
+        // console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          this.countPerHour.push(res.data[i].hour)
+          this.countPerHourData.push(res.data[i].userLiveCount)
+        }
+        const deviceC = this.kanbanData.图表展示.用户分析[1].options
+        deviceC.xAxis.data = this.countPerHour
+        deviceC.series[0].data = this.countPerHourData
+
       })
     },
     // 今日新增设备统计
