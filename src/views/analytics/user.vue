@@ -57,6 +57,9 @@
         <el-table-column prop="modelName" label="设备型号">
         </el-table-column>
         <el-table-column prop="lastVisitTime" label="最后操作时间">
+          <template slot-scope="scope">
+            {{new Date(scope.row.lastVisitTime).toLocaleString()}}
+          </template>
         </el-table-column>
       </el-table>
       <div class="excel-container">
@@ -89,7 +92,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
-import {selectCustomerUserCount,queryHomePageStatistic,selectCustomerUser} from '@/api/big-picture-mode/bigPictureMode'
+import {selectCustomerUserCount,queryHomePageStatistic,selectCustomerUser,selectLiveCustomerUserCountPerMonth} from '@/api/big-picture-mode/bigPictureMode'
 import { userData, userDataT } from '../dashboardData'
 export default {
   components: {
@@ -129,7 +132,9 @@ export default {
       devAddPercent: [],
       deviceCount: [],
       devedata: [],
-      newDeviceCount: ''
+      newDeviceCount: '',
+      countPerMonth:[],
+      countPerMonthData:[]
     }
   },
   methods: {
@@ -141,6 +146,8 @@ export default {
       this.selectCustomerUserCount()
       this.queryHomePageStatistic()
       this.selectCustomerUser()
+      this.selectLiveCustomerUserCountPerMonth()
+
     },
     test() {
       this.fakeData = !this.fakeData
@@ -178,6 +185,20 @@ export default {
         const userAnalysis = this.kanbanData.数据展示
         userAnalysis[0].value = data.totalUserCount //用户总数
         userAnalysis[2].value = data.todayUserLiveCount //活跃数
+      })
+    },
+    selectLiveCustomerUserCountPerMonth() {
+      // 每月活跃用户统计
+      selectLiveCustomerUserCountPerMonth().then(res => {
+        const data = res.data
+        for (let i = 0; i < data.length; i++) {
+          this.countPerMonth.push(data[i].month)
+          this.countPerMonthData.push(data[i].userLiveCount)
+        }
+        const userAnalysis = this.kanbanData.图表展示[1].options
+        userAnalysis.xAxis.data = this.countPerMonth
+        userAnalysis.series[0].data = this.countPerMonthData
+        userAnalysis.series[1].data = this.countPerMonthData
       })
     },
     // 每月新增用户统计

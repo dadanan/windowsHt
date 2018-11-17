@@ -52,3 +52,17 @@ export function selectCustomerUser(data) {
     data
   })
 }
+// 每天活跃用户统计
+export function selectLiveCustomerUserCountPerHour() {
+  return request({
+    url: '/temp/api/statistics/selectLiveCustomerUserCountPerHour',
+    method: 'get',
+  })
+}
+// 每月活跃用户统计
+export function selectLiveCustomerUserCountPerMonth() {
+  return request({
+    url: '/temp/api/statistics/selectLiveCustomerUserCountPerMonth',
+    method: 'get',
+  })
+}

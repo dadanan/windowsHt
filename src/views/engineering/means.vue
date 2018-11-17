@@ -4,11 +4,11 @@
             <el-col :xs="24" class="btn" :sm="6" :lg="8">
                 <el-row :gutter="20">
                     <el-col :xs="24" :sm="12" :lg="12" style="border-right:2px solid #66c8d9">
-                        <h2>12212</h2>
+                        <h2>11</h2>
                         <p>工程总数</p>
                     </el-col>
                     <el-col :xs="24" :sm="12" :lg="12">
-                        <h2>34567</h2>
+                        <h2>290</h2>
                         <p>设备总数</p>
                     </el-col>
                 </el-row>
@@ -24,35 +24,32 @@
             <div class="table-opts">
                 <el-form :inline="true" class="el-form--flex">
                     <el-form-item>
-                        <el-select placeholder="任务名称" :value='value1'>
-                            <el-option label="设备 MAC" value="1"></el-option>
+                        <el-input placeholder="工程编号"></el-input>
+                        <!-- <el-select placeholder="工程编号" :value='value1'>
+                            <el-option label="工程名字" value="1"></el-option>
                             <el-option label="设备序列号" value="2"></el-option>
                             <el-option label="设备名称" value="3"></el-option>
                             <el-option label="投放点" value="4"></el-option>
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="选择关联"></el-input>
+                        <el-input placeholder="工程名字"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-select placeholder="告警级别" :value='value2'>
+                        <el-input placeholder="工程建设时间"></el-input>
+                        <!-- <el-select placeholder="工程建设时间" :value='value2'>
                             <el-option label="预留布尔值故障" value="1"></el-option>
                             <el-option label="滤网到期提醒" value="2"></el-option>
                             <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
                             <el-option label="设备移开 1000 米报警" value="4"></el-option>
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                     <el-form-item>
-                        <el-select placeholder="状态" :value='value3'>
+                        <el-input placeholder="工程地址"></el-input>
+                        <!-- <el-select placeholder="工程地址" :value='value3'>
                             <el-option label="未修复" value="1"></el-option>
                             <el-option label="已修复" value="2"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-select placeholder="范围" :value='value3'>
-                            <el-option label="未修复" value="1"></el-option>
-                            <el-option label="已修复" value="2"></el-option>
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search">搜索</el-button>
@@ -76,21 +73,19 @@
             <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column type="index"></el-table-column>
-                <el-table-column prop="mac" label="消息名称1" show-overflow-tooltip>
+                <el-table-column prop="mac" label="工程编号" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="mac" label="消息描述" show-overflow-tooltip>
+                <el-table-column prop="mac1" label="工程名称" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="mac" label="选择关联" show-overflow-tooltip>
+                <el-table-column prop="mac2" label="工程描述" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="sn" label="是否规则化" show-overflow-tooltip sortable>
+                <el-table-column prop="sn" label="工程建设时间" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="name" label="告警级别" show-overflow-tooltip sortable>
+                <el-table-column prop="name" label="工程建设地址" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="pos" label="告警来源" show-overflow-tooltip sortable>
+                <el-table-column prop="pos" label="项目数量" show-overflow-tooltip sortable>
                 </el-table-column>
-                <el-table-column prop="pos" label="告警时间" show-overflow-tooltip sortable>
-                </el-table-column>
-                <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
+                <el-table-column prop="tel" label="设备数量" show-overflow-tooltip sortable>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -133,11 +128,13 @@ export default {
 
     for (let i = 0; i < 15; i++) {
       alarmList.push({
-        mac: '862151034187433',
-        sn: '10063679114543329199',
-        name: '金敦煌C910',
-        pos: '金敦煌 KTV',
-        tel: '13166666007',
+        mac: 'W3RF4ERT4',
+        mac1: '设备定期年检',
+        mac2: '设备定期年检设备定期年检',
+        sn: '2018-10-13',
+        name: '上海市新微大厦',
+        pos: '3',
+        tel: '111',
         createDatetime: '2018-03-28 01:24:29',
         state: '已修复'
       })
@@ -152,12 +149,12 @@ export default {
       value3: '',
       kanbanChart2: {
         title: {
-          text: '设备增速排名'
+          text: '工程量趋势图'
         },
         tooltip: {},
         legend: {},
         xAxis: {
-          data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+          data: ['2018-03', '2018-04', '2018-05', '2018-06', '2018-07']
         },
         yAxis: {},
         series: [
@@ -170,7 +167,7 @@ export default {
       },
       kanbanChart: {
         title: {
-          text: '售后类型'
+          text: '各地工程量TOP5'
         },
         color: ['#3398DB'],
         tooltip: {
@@ -183,11 +180,11 @@ export default {
           {
             type: 'category',
             data: [
-              '预留布尔值故障',
-              '预留布尔值故障',
-              '滤网到期提醒',
-              'PM 2.5 数值丢失报警',
-              '设备移开 1000 米报警'
+              '普陀区',
+              '嘉定区',
+              '建邺区',
+              '朝阳区',
+              '东城区'
             ],
             axisTick: {
               alignWithLabel: true
@@ -204,7 +201,7 @@ export default {
             name: '占比',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390]
+            data: [390,330, 200, 100, 50]
           }
         ]
       }
