@@ -9,7 +9,7 @@
       <chart :options="kanbanChart" class="chart" auto-resize></chart>
     </el-card> -->
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="6" :lg="6">
+      <el-col :xs="24" :sm="6" :lg="5">
         <el-tabs class="btn" tabPosition="left" v-model="activeTab" type="card" style="height:230px">
           <el-tab-pane label="全部" name="1">
             <h2>1220</h2>
@@ -33,8 +33,8 @@
           </el-tab-pane>
         </el-tabs>
       </el-col>
-      <el-col :xs="24" :sm="6" :lg="6">
-        <chart :options="kanbanChart" class="chart" auto-resize></chart>
+      <el-col :xs="24" :sm="6" :lg="7">
+        <chart :options="kanbanChart1" class="chart" auto-resize></chart>
       </el-col>
       <el-col :xs="24" :sm="6" :lg="6">
         <chart :options="kanbanChart" class="chart" auto-resize></chart>
@@ -58,9 +58,9 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="mac" label="消息名称" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="mac" label="消息描述" show-overflow-tooltip>
+        <el-table-column prop="mac1" label="消息描述" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="mac" label="选择关联" show-overflow-tooltip>
+        <el-table-column prop="mac2" label="选择关联" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="sn" label="是否规则化" show-overflow-tooltip sortable>
         </el-table-column>
@@ -68,7 +68,7 @@
         </el-table-column>
         <el-table-column prop="pos" label="告警来源" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="pos" label="告警时间" show-overflow-tooltip sortable>
+        <el-table-column prop="pos1" label="告警时间" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
@@ -97,10 +97,13 @@ export default {
 
     for (let i = 0; i < 15; i++) {
       alarmList.push({
-        mac: '862151034187433',
-        sn: '10063679114543329199',
-        name: '金敦煌C910',
-        pos: '金敦煌 KTV',
+        mac: '任务名称1',
+        mac1: '任务描述',
+        mac2: '不关联',
+        sn: '是',
+        name: '一级',
+        pos: '计划维保',
+        pos1: '2018-10-9',
         tel: '13166666007',
         createDatetime: '2018-03-28 01:24:29',
         state: '已修复'
@@ -109,39 +112,39 @@ export default {
     return {
       alarmList,
       activeTab: '1',
-      // kanbanChart1: {
-      //   title: {
-      //     text: '个状态占比图'
-      //   },
-      //   tooltip: {
-      //     formatter: '{b}: {c} ({d}%)'
-      //   },
-      //   legend: {},
-      //   series: [
-      //     {
-      //       type: 'pie',
-      //       radius: ['50%', '70%'],
-      //       data: [
-      //         {
-      //           value: 671,
-      //           name: '在线设备'
-      //         },
-      //         {
-      //           value: 181,
-      //           name: '离线设备'
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // },
+      kanbanChart1: {
+        title: {
+          text: '个状态占比图'
+        },
+        tooltip: {
+          formatter: '{b}: {c} ({d}%)'
+        },
+        legend: {},
+        series: [
+          {
+            type: 'pie',
+            radius: ['50%', '70%'],
+            data: [
+              {
+                value: 671,
+                name: '在线设备'
+              },
+              {
+                value: 181,
+                name: '离线设备'
+              }
+            ]
+          }
+        ]
+      },
       kanbanChart2: {
         title: {
-          text: '设备增速排名'
+          text: '告警量趋势图'
         },
         tooltip: {},
         legend: {},
         xAxis: {
-          data: ['英德罗曼', '惠阳', '智慧新风', '宝智', '环可']
+          data: ['2018.6', '2018.7', '2018.8', '2018.9', '2018.10']
         },
         yAxis: {},
         series: [
@@ -154,7 +157,7 @@ export default {
       },
       kanbanChart: {
         title: {
-          text: '售后类型'
+          text: '各地工程量TOP5'
         },
         color: ['#3398DB'],
         tooltip: {
@@ -167,11 +170,9 @@ export default {
           {
             type: 'category',
             data: [
-              '预留布尔值故障',
-              '预留布尔值故障',
-              '滤网到期提醒',
-              'PM 2.5 数值丢失报警',
-              '设备移开 1000 米报警'
+              '计划维保',
+              'H5端反馈',
+              '设备告警'
             ],
             axisTick: {
               alignWithLabel: true
@@ -188,7 +189,7 @@ export default {
             name: '占比',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390]
+            data: [10, 52, 200]
           }
         ]
       }

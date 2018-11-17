@@ -56,10 +56,10 @@ export default {
 
     for (let i = 0; i < 15; i++) {
       alarmList.push({
-        mac: '862151034187433',
-        sn: '10063679114543329199',
-        name: '金敦煌C910',
-        pos: '金敦煌 KTV',
+        mac: '归档',
+        sn: '设备定期年检设备定期年检',
+        name: '2018-09-28',
+        pos: 'wkk',
         tel: '13166666007',
         createDatetime: '2018-03-28 01:24:29',
         state: '已修复'

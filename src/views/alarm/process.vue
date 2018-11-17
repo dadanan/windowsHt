@@ -71,12 +71,11 @@ export default {
     const levelList = []
     for (let i = 0; i < 15; i++) {
       levelList.push({
-        name: 'PmLose',
-        nameText: 'PM 2.5 报数丢失',
-        type: '报警',
-        dataType: 'bool',
-        description: '滤网到期提醒',
-        level: '1'
+        name: '采暖管道、阀门、分集水器清洗养护',
+        nameText: '采暖管道、阀门、分集水器清洗养护',
+        type: '一级',
+        dataType: '启用',
+        description: '2018-08-28 04:24:29'
       })
     }
     return {
