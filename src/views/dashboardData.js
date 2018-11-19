@@ -264,7 +264,7 @@ export const dashboardData = {
             data: [70, 137, 218, 102, 90, 90, 170]
           }]
         },
-        isVisible: true
+        isVisible: false
       },
       {
         id: 2,
@@ -721,7 +721,7 @@ export const realData = {
             data: [70, 137, 218, 102, 90, 90, 170]
           }]
         },
-        isVisible: true
+        isVisible: false
       },
       {
         id: 2,
@@ -1417,7 +1417,7 @@ export const developData = {
           data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 2,
@@ -1451,7 +1451,7 @@ export const developData = {
           data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 3,
@@ -1677,7 +1677,7 @@ export const developDataT = {
           data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 2,
@@ -1711,7 +1711,7 @@ export const developDataT = {
           data: [10, 9, 20, 25, 6, 4, 1, 8, 15, 6]
         }]
       },
-      isVisible: true
+      isVisible: false
     },
     {
       id: 3,
