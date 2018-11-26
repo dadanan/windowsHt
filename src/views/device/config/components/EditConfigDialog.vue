@@ -138,7 +138,7 @@
             </el-table-column>
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
-                <el-select clearable v-model="scope.row.abilityId">
+                <el-select multiple collapse-tags clearable v-model="scope.row.abilityId">
                   <el-option v-if='iItem.definedName' v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.definedName" :value="iItem.abilityId">
                   </el-option>
                   <el-option v-else v-for="iItem in useableAbility(scope.row.abilityType)" :key="iItem.id" :label="iItem.abilityName" :value="iItem.abilityId">
@@ -365,7 +365,12 @@ export default {
       return sld === 'pro' || sld === '' || sld === 'dev'
     },
     useableAbility(key) {
-      return this.deviceModelAbilitys.filter(item => item.abilityType === key)
+      if (key === 3) {
+        key = 2
+      }
+      return this.deviceModelAbilitys.filter(
+        item => item.isUsed && item.abilityType === key
+      )
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
@@ -409,7 +414,7 @@ export default {
               item.modelFormatItems.map(iItem => {
                 return {
                   id: iItem.id,
-                  abilityId: iItem.abilityId,
+                  abilityId: iItem.abilityId.join(','),
                   itemId: iItem.itemId,
                   showName: iItem.showName,
                   showStatus: iItem.showStatus ? 1 : 0
@@ -653,7 +658,13 @@ export default {
               iItem.showStatus = iItem.showStatus ? true : false
               if (iItem.abilityId) {
                 // 如果存在挑选的功能项数据，转化为数组元素
-                this.$set(iItem, 'abilityId', Number(iItem.abilityId))
+                this.$set(
+                  iItem,
+                  'abilityId',
+                  iItem.abilityId.split(',').map(Number)
+                )
+              } else {
+                this.$set(iItem, 'abilityId', [])
               }
             })
         })
