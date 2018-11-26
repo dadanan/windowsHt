@@ -4,35 +4,49 @@
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="addWechat = true">添加</el-button>
-          <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button>
-          <el-button type="primary">删除</el-button>
-          <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
+          <!-- <el-button type="primary">禁用</el-button>
+          <el-button type="primary">启用</el-button> -->
+          <el-button type="primary" @click="deleteDict">删除</el-button>
         </el-button-group>
       </div>
-      <add-wechat :visible.sync="addWechat" ></add-wechat>
-      <edit-wechat :visible.sync="editWechat" ></edit-wechat>
+      <add-wechat :visible.sync="addWechat"  @add-data='addData'></add-wechat>
+      <edit-wechat :visible.sync="editWechat" :data ='editingData'></edit-wechat>
       <deta-wechat :visible.sync="detaWechat" ></deta-wechat>
-      <el-table :data="alarmList" style="width: 100%" class="mb20" border>
+      <el-table :data="alarmList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
+        <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="mac" label="实施阶段名称" show-overflow-tooltip sortable>
+        <el-table-column prop="label" label="实施阶段名称" show-overflow-tooltip >
         </el-table-column>
-        <el-table-column prop="sn" label="实施阶段描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="实施阶段描述" show-overflow-tooltip >
         </el-table-column>
-        <el-table-column prop="name" label="创建时间" show-overflow-tooltip sortable>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip >
+          <template slot-scope="scope">
+            <template>
+              {{new Date(scope.row.createTime).toLocaleString()}}
+            </template>
+          </template>
         </el-table-column>
-        <el-table-column prop="pos" label="创建者" show-overflow-tooltip sortable>
+        <el-table-column prop="updateName" label="创建者" show-overflow-tooltip >
         </el-table-column>
-        <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="updateTime" label="修改时间" show-overflow-tooltip >
+          <template slot-scope="scope">
+            <template>
+              {{new Date(scope.row.updateTime).toLocaleString()}}
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createName" label="修改者" show-overflow-tooltip >
+        </el-table-column>
+        <el-table-column prop="isDelete" label="状态" show-overflow-tooltip >
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="editWechat = true">修改</el-button>
-            <el-button type="text" @click="detaWechat = true">详情</el-button>
+            <el-button type="text" @click="EditWechat(scope.row)">编辑</el-button>
+            <!-- <el-button type="text" @click="detaWechat = true">详情</el-button> -->
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
   </div>
@@ -42,7 +56,7 @@
 import AddWechat from './components/AddWechat'
 import EditWechat from './components/EditWechat'
 import DetaWechat from './components/DetaWechat'
-
+import { selectList , deleteDict} from '@/api/rent'
 
 
 export default {
@@ -52,25 +66,78 @@ export default {
     DetaWechat
   },
   data() {
-    const alarmList = []
-
-    for (let i = 0; i < 15; i++) {
-      alarmList.push({
-        mac: '归档',
-        sn: '设备定期年检设备定期年检',
-        name: '2018-09-28',
-        pos: 'wkk',
-        tel: '13166666007',
-        createDatetime: '2018-03-28 01:24:29',
-        state: '已修复'
-      })
-    }
     return {
-      alarmList,
+      alarmList:[],
       addWechat:false,
       editWechat:false,
-      detaWechat:false
+      detaWechat:false,
+      query:{
+        limit:100,
+        page:1,
+        type:"implementation"
+      },
+      total:0,
+      selectedDeviceList:[],
+      ids:[],
+      editingData:{}
     }
+  },
+  methods: {
+    addData(data) {
+      this.alarmList.push(data)
+      this.selectList()
+    },
+    selectList() {
+      selectList(this.query).then(res => {
+        console.log(res)
+        this.alarmList = res.data.dictRspPoList
+        this.total = res.data.totalCount
+      })
+    },
+    deleteDict() {
+      deleteDict({valueList:this.ids}).then(res => {
+        if (res.code === 200) {
+          this.selectList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update-data', this.form)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.selectList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.selectList()
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+      for(var i=0;i<this.selectedDeviceList.length;i++){
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      console.log(this.ids)
+      // if (this.selectedDeviceList.length) {
+      //   this.unassignStatus = this.selectedDeviceList[0].assignStatus
+      // }
+    },
+    EditWechat(data){
+      this.editingData = data
+      this.editWechat = true
+    }
+
+  },
+  created () {
+     this.selectList()
   }
 }
 </script>

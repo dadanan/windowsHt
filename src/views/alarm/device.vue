@@ -12,34 +12,26 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="计划名称" :value='value1'>
-              <el-option label="设备 MAC" value="1"></el-option>
-              <el-option label="设备序列号" value="2"></el-option>
-              <el-option label="设备名称" value="3"></el-option>
-              <el-option label="投放点" value="4"></el-option>
+            <el-input placeholder="输入名称"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select placeholder="选择关联" :value='value2'>
+              <el-option label="不关联" value="1"></el-option>
+              <el-option label="关联设备" value="2"></el-option>
+              <el-option label="关联工程" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="选择关联"></el-input>
-          </el-form-item>
-          <el-form-item>
             <el-select placeholder="告警级别" :value='value2'>
-              <el-option label="预留布尔值故障" value="1"></el-option>
-              <el-option label="滤网到期提醒" value="2"></el-option>
-              <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
-              <el-option label="设备移开 1000 米报警" value="4"></el-option>
+              <el-option label="一级告警" value="1"></el-option>
+              <el-option label="二级告警" value="2"></el-option>
+              <el-option label="三级告警" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select placeholder="状态" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="范围" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
+              <el-option label="禁用" value="1"></el-option>
+              <el-option label="启用" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -50,70 +42,197 @@
       </div>
       <div class="table-opts">
         <el-button-group>
-          <el-button type="primary">添加</el-button>
-          <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button>
-          <el-button type="primary">删除</el-button>
+          <el-button type="primary" @click="AddDevice = true">添加</el-button>
+          <el-button type="primary" @click="forbitPlan">禁用</el-button>
+          <el-button type="primary" @click="reversePlan">启用</el-button>
+          <el-button type="primary" @click="deletePlan">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
       </div>
-      <el-table :data="alarmList" style="width: 100%" class="mb20" border>
+      <add-device :visible.sync="AddDevice" @add-data='addData'></add-device>
+      <create-device :visible.sync="CreateDevice" :data='editingData' @updata-data='updata'></create-device>
+      <el-table :data="alarmList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="mac" label="计划名称" show-overflow-tooltip sortable>
+        <el-table-column prop="name" label="计划名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="sn" label="计划描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="计划描述" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="name" label="选择关联" show-overflow-tooltip sortable>
+        <el-table-column prop="linkType" label="选择关联" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="pos" label="是否规则内" show-overflow-tooltip sortable>
+        <el-table-column prop="isRule" label="是否规则内" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <template v-if='scope.row.isRule == 1'>
+              是
+            </template>
+            <template v-else>
+              否
+            </template>
+          </template>
         </el-table-column>
-        <el-table-column prop="tel" label="告警级别" show-overflow-tooltip sortable>
+        <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="state" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createDatetime" label="创建时间" show-overflow-tooltip sortable>
+        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <template>
+              {{new Date(scope.row.createTime).toLocaleString()}}
+            </template>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">修改</el-button>
+            <el-button type="text" @click="createDevice(scope.row)">修改</el-button>
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="query.currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
   </div>
 </template>
 
 <script>
-import DataCard from '@/components/DataCard'
+import AddDevice from './components/AddDevice'
+import CreateDevice from './components/CreateDevice'
 
+import { selectList1, deletePlan, forbitPlan,reversePlan } from '@/api/alarm'
 export default {
   components: {
-    DataCard
+    AddDevice,
+    CreateDevice
   },
   data() {
-    const alarmList = []
-
-    for (let i = 0; i < 15; i++) {
-      alarmList.push({
-        mac: '计划1',
-        sn: '这次技术是要求我们...',
-        name: '不关联',
-        pos: '是',
-        tel: '一级',
-        createDatetime: '2018-03-28 01:24:29',
-        state: '已修复'
-      })
-    }
     return {
       value1: '',
       value2: '',
       value3: '',
-      alarmList,
+      alarmList: [],
+      query: {
+        limit: 100,
+        currentPage: 1
+      },
+      total: 0,
+      AddDevice: false,
+      CreateDevice: false,
+      selectedDeviceList: [],
+      ids: [],
+      editingData: {}
     }
+  },
+  methods: {
+    addData(data) {
+      this.alarmList.push(data)
+      this.selectList1()
+    },
+    updata() {
+      this.selectList1()
+    },
+    selectList1() {
+      selectList1(this.query).then(res => {
+        console.log(res)
+        const list = res.data.planRspPoList
+        const mapList = {
+          '1': '一级告警',
+          '2': '二级告警',
+          '3': '三级告警'
+        }
+        const linkList = {
+          '0': '不关联',
+          '1': '关联设备',
+          '2': '关联工程'
+        }
+        for (var i = 0; i < list.length; i++) {
+          list[i].warnLevel = mapList[list[i].warnLevel]
+          list[i].linkType = linkList[list[i].linkType]
+          if (list[i].status == 1) {
+            list[i].status = '正常'
+          }
+          if (list[i].status == 3) {
+            list[i].status = '禁用'
+          }
+        }
+        this.alarmList = list
+        this.total = res.data.totalCount
+      })
+    },
+    deletePlan() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      deletePlan({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.selectList1()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    forbitPlan() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      forbitPlan({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.selectList1()
+          this.$message({
+            type: 'success',
+            message: '禁用成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    reversePlan() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      reversePlan({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.selectList1()
+          this.$message({
+            type: 'success',
+            message: '禁用成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.selectList1()
+    },
+    handleCurrentChange(val) {
+      this.query.currentPage = val
+      this.selectList1()
+    },
+    createDevice(data) {
+      this.editingData = data
+      this.CreateDevice = true
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+    }
+  },
+  created() {
+    this.selectList1()
   }
 }
 </script>

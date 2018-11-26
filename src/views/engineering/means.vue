@@ -64,12 +64,14 @@
                 <div style="flex: 1;"></div>
                 <el-button-group>
                     <el-button type="primary" @click="AddMeans = true">实施</el-button>
-                    <el-button type="primary">添加</el-button>
+                    <el-button type="primary" @click="AddMessage = true">添加</el-button>
                     <el-button type="primary">删除</el-button>
                     <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
                 </el-button-group>
             </div>
             <add-means :visible.sync="AddMeans"></add-means>
+            <add-message :visible.sync="AddMessage"></add-message>
+            <project-details :visible.sync="ProjectDetails"></project-details>
             <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column type="index"></el-table-column>
@@ -90,23 +92,10 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button type="text">修改</el-button>
-                        <el-button type="text">详情</el-button>
+                        <el-button type="text" @click="ProjectDetails = true">详情</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- <el-table :data="alarmList" style="width: 100%" class="mb20" border :span-method="arraySpanMethod">
-                <el-table-column label="消息描述" show-overflow-tooltip>
-                    <div class="">
-                        <p>{{alarmList.name}}</p>
-                    </div>
-                </el-table-column>
-                <el-table-column label="选择关联" show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column label="是否规则化" show-overflow-tooltip sortable>
-                </el-table-column>
-                <el-table-column label="告警级别" show-overflow-tooltip sortable>
-                </el-table-column>
-            </el-table> -->
             <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
             </el-pagination>
         </el-card>
@@ -116,12 +105,15 @@
 <script>
 import DataCard from '@/components/DataCard'
 import AddMeans from './components/AddMeans'
-
+import AddMessage from './components/AddMessage'
+import ProjectDetails from './components/ProjectDetails'
 
 export default {
   components: {
     DataCard,
-    AddMeans
+    AddMeans,
+    AddMessage,
+    ProjectDetails
   },
   data() {
     const alarmList = []
@@ -141,6 +133,8 @@ export default {
     }
     return {
       AddMeans:false,
+      AddMessage:false,
+      ProjectDetails:false,
       alarmList,
       activeTab: '1',
       list: true,
