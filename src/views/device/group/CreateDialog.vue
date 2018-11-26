@@ -43,7 +43,7 @@
           </el-table-column>
           <el-table-column label="联动设置" show-overflow-tooltip width='180'>
             <template slot-scope="scope">
-              <el-switch @change='switchChanged(scope.row)' style="display: block" v-model="scope.row.linkAgeStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="关联" inactive-text="非关联">
+              <el-switch @change='switchChanged(scope.row)' style="display: block" v-model="scope.row.linkAgeStatus" active-color="#13ce66" inactive-color="#ff4949" active-text="非关联" inactive-text="关联">
               </el-switch>
             </template>
           </el-table-column>

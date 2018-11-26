@@ -422,6 +422,7 @@ export default {
         backendConfig: backendConfig,
         id: this.id
       }
+      console.log(form)
       updateDetail(form).then(res => {
         if (res.code !== 200) {
           this.$message({

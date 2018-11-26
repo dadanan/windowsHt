@@ -70,10 +70,10 @@
         </el-table-column>
         <el-table-column prop="sourceType" label="告警来源" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="createTime" label="到期处理日" show-overflow-tooltip sortable>
+        <el-table-column prop="finalTime" label="到期处理日" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <template>
-              {{new Date(scope.row.createTime).toLocaleString()}}
+              {{new Date(scope.row.finalTime).toLocaleString()}}
             </template>
           </template>
         </el-table-column>
@@ -121,6 +121,7 @@ export default {
   components: {
     CreateLevel,
     IgnoreLevel,
+    DealLevel,
     SubDealLevel
   },
   data() {

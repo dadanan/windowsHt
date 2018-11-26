@@ -150,9 +150,9 @@ export function jobFlow(data) {
 }
 
 // 查询任务详情
-export function subselect(data) {
+export function subselect(jobId) {
   return request({
-    url: `/temp/api/job/select/${data}`,
+    url: `/temp/api/job/select/${jobId}`,
     method: 'get',
   })
 }
