@@ -27,34 +27,43 @@
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="AddProcess = true">添加</el-button>
-          <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button>
-          <el-button type="primary">删除</el-button>
+          <el-button type="primary" @click="forbitRule">禁用</el-button>
+          <el-button type="primary" @click="reverseRule">启用</el-button>
+          <el-button type="primary" @click="deleteRule">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
       </div>
-      <add-process :visible.sync="AddProcess" ></add-process>
-      <el-table :data="levelList" style="width: 100%" class="mb20" border>
+      <add-process :visible.sync="AddProcess" @add-data='addData'></add-process>
+      <editor-process :visible.sync="EditorProcess" :data='editingData' @update-data='updateData'></editor-process>
+
+      <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="规则名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="nameText" label="规则描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="规则描述" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="type" label="告警级别" show-overflow-tooltip sortable>
+        <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="dataType" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="createName" label="创建者" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="时间" show-overflow-tooltip sortable>
+        <el-table-column prop="createTime" label="时间" show-overflow-tooltip sortable>
+          <template slot-scope="scope">
+            <template>
+              {{new Date(scope.row.createTime).toLocaleString()}}
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column label="操作">
-           <template slot-scope="scope">
-            <el-button type="text">修改</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="editorProcess(scope.row)">修改</el-button>
             <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+      <el-pagination :current-page="query.page" :page-sizes="[100, 200, 300, 400]" :page-size="query.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </el-card>
   </div>
@@ -62,29 +71,141 @@
 
 <script>
 import AddProcess from './components/AddProcess'
+import EditorProcess from './components/EditorProcess'
+
+import { selectList, deleteRule, forbitRule, reverseRule } from '@/api/alarm'
 
 export default {
   components: {
-    AddProcess
+    AddProcess,
+    EditorProcess
   },
   data() {
-    const levelList = []
-    for (let i = 0; i < 15; i++) {
-      levelList.push({
-        name: '采暖管道、阀门、分集水器清洗养护',
-        nameText: '采暖管道、阀门、分集水器清洗养护',
-        type: '一级',
-        dataType: '启用',
-        description: '2018-08-28 04:24:29'
-      })
-    }
     return {
-      levelList,
+      levelList: [],
       value1: '',
       value2: '',
       value3: '',
-      AddProcess:false
+      AddProcess: false,
+      EditorProcess: false,
+      query: {
+        limit: 100,
+        page: 1,
+        type: ''
+      },
+      total: 0,
+      editingData: {},
+      ids: [],
+      selectedDeviceList: []
     }
+  },
+  methods: {
+    addData(data) {
+      this.levelList.push(data)
+      this.selectList()
+    },
+    updateData() {
+      this.selectList()
+    },
+    selectList() {
+      selectList(this.query).then(res => {
+        // console.log(res)
+        const list = res.data.ruleRspPoList
+        const mapList = {
+          '1': '一级告警',
+          '2': '二级告警',
+          '3': '三级告警'
+        }
+        for (var i = 0; i < list.length; i++) {
+          list[i].warnLevel = mapList[list[i].warnLevel]
+          if (list[i].status == 1) {
+            list[i].status = '正常'
+          }
+          if (list[i].status == 3) {
+            list[i].status = '禁用'
+          }
+        }
+        this.levelList = list
+        console.log(this.levelList)
+        this.total = res.data.totalCount
+      })
+    },
+    deleteRule() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      deleteRule({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.selectList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    reverseRule() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      reverseRule({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '启用成功!'
+          })
+          this.selectList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    forbitRule() {
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      forbitRule({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '禁用成功!'
+          })
+          this.selectList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    handleSizeChange(val) {
+      this.query.limit = val
+      this.selectList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = val
+      this.selectList()
+    },
+    editorProcess(data) {
+      this.editingData = data
+      this.EditorProcess = true
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+      console.log(selection)
+    }
+  },
+  created() {
+    this.selectList()
   }
 }
 </script>
