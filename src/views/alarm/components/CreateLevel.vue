@@ -63,7 +63,7 @@
                         <div>
                             <h3>历史数据</h3>
                             <el-table :data="historyDataList" style="width: 100%" class="mb20" border>
-                                <el-table-column prop="name" label="操作时间" show-overflow-tooltip>
+                                <el-table-column prop="createTime" label="操作时间" show-overflow-tooltip>
                                     <template slot-scope="scope">
                                         <template v-if='scope.row.createTime'>
                                             {{new Date(scope.row.createTime).toLocaleString()}}
@@ -80,6 +80,14 @@
                                 <el-table-column prop="description" label="操作说明" show-overflow-tooltip>
                                 </el-table-column>
                                 <el-table-column prop="imgList" label="其他" show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <template v-if='scope.row.imgList'>
+                                            <a :href="scope.row.imgList[0]">客户单</a>
+                                        </template>
+                                        <template v-else>
+                                            --
+                                        </template>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </div>

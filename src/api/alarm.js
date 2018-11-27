@@ -156,3 +156,21 @@ export function subselect(jobId) {
     method: 'get',
   })
 }
+
+// 工程列表
+export function EngList(data) {
+  return request({
+    url: '/temp/api/project/selectList',
+    method: 'post',
+    data
+  })
+}
+
+// 工程列表
+export function addImpl(data) {
+  return request({
+    url: '/temp/api/implement/addImpl',
+    method: 'post',
+    data
+  })
+}

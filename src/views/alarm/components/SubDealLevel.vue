@@ -62,25 +62,25 @@
                     <el-card class="el-card--solid map-container">
                         <div style="border-bottom:1px solid #969696">
                             <h3>处理</h3>
-                            <el-form label-width="130px" class="mb-22" :model="form">
+                            <el-form label-width="130px" class="mb-22" :model="circulation">
                                 <el-form-item label="处理说明">
-                                    <el-input type="textarea" :rows='3' v-model='form.description'></el-input>
+                                    <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
                                 </el-form-item>
                                 <el-form-item label="指定任务负责人">
                                     <el-button type="primary " @click="addEle = true">添加</el-button>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
-                                        {{item.roleName}}
+                                        {{item.userName}}
                                     </el-tag>
                                 </el-form-item>
                                 <el-form-item label="客户确认单">
-                                    <el-button type="primary ">上传</el-button>
+                                    <file-uploader @get-url='setURL(arguments,circulation,"name")' :fileName='circulation.name'></file-uploader>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer" style="padding-bottom:30px;">
-                                <el-button @click="addEle = false">取消</el-button>
-                                <el-button type="primary" @click="addEle =false ">确定</el-button>
+                                <el-button @click="handleCancel">取消</el-button>
+                                <el-button type="primary" @click="jobFlow">确定</el-button>
                             </div>
                         </div>
                         <div>
@@ -103,6 +103,14 @@
                                 <el-table-column prop="description" label="操作说明" show-overflow-tooltip>
                                 </el-table-column>
                                 <el-table-column prop="imgList" label="其他" show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <template v-if='scope.row.imgList'>
+                                            <a :href="scope.row.imgList[0]">客户单</a>
+                                        </template>
+                                        <template v-else>
+                                            --
+                                        </template>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </div>
@@ -114,7 +122,7 @@
             <el-table :data="projects" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column type="index"></el-table-column>
-                <el-table-column prop="roleName" label="名称" show-overflow-tooltip sortable>
+                <el-table-column prop="userName" label="名称" show-overflow-tooltip sortable>
                 </el-table-column>
                 <el-table-column prop="id" label="id" show-overflow-tooltip sortable>
                 </el-table-column>
@@ -128,10 +136,14 @@
 </template>
 
 <script>
-import { subselect } from '@/api/alarm'
-import { getRoleList } from '@/api/role'
+import { subselect, jobFlow } from '@/api/alarm'
+import { getUserList } from '@/api/user'
+import FileUploader from '@/components/Upload/excel'
+
 export default {
-  components: {},
+  components: {
+    FileUploader
+  },
   props: {
     visible: {
       type: Boolean,
@@ -148,7 +160,12 @@ export default {
       consumablesList1: [],
       historyDataList: [],
       projects: [],
-      selectedDeviceList: []
+      selectedDeviceList: [],
+      circulation: {
+        imgList: [],
+        name: ''
+      },
+      ids: []
     }
   },
   methods: {
@@ -211,10 +228,43 @@ export default {
       this.selectedDeviceList = selection
       console.log(selection)
     },
-    getRoleList() {
-      getRoleList().then(res => {
+    getUserList() {
+      getUserList().then(res => {
         if (res.code === 200) {
+          console.log(res.data)
           this.projects = res.data
+        }
+      })
+    },
+    setURL(argu, data, name) {
+      data[name] = argu[0]
+    },
+    handleCancel() {
+      this.$emit('update:visible', false)
+    },
+    jobFlow() {
+      // console.log(this.circulation)
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      this.circulation.targetUsers = this.ids
+      this.circulation.jobId = this.form.id
+      this.circulation.operateType = 3
+      this.circulation.imgList.push(this.circulation.name)
+      delete this.circulation.name
+      jobFlow(this.circulation).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '提交成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('add-data', this.circulation)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
         }
       })
     }
@@ -223,7 +273,7 @@ export default {
     data(val) {
       //   console.log(val)
       this.subselect(val.id)
-      this.getRoleList()
+      this.getUserList()
     }
   }
 }

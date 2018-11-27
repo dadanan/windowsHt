@@ -44,8 +44,8 @@
       <create-level :visible.sync="CreateLevel" :data='editingData' @add-data='addData'></create-level>
       <ignore-level :visible.sync="IgnoreLevel" :data='editingData' @add-data='addData'></ignore-level>
       <deal-level :visible.sync="DealLevel" :data='editingData'></deal-level>
-      <sub-deal-level :visible.sync="SubDealLevel" :data='editingData'></sub-deal-level>
-
+      <sub-deal-level :visible.sync="SubDealLevel" :data='editingData' @add-data='addData'></sub-deal-level>
+      <audit-deal-level :visible.sync="AuditDealLevel" :data='editingData' @add-data='addData'></audit-deal-level>
 
       <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
@@ -91,7 +91,7 @@
               <el-button type="text" @click="createLevel(scope.row)">详情</el-button>
             </template>
             <template v-else-if="scope.row.flowStatus == '待审核'">
-              <el-button type="text">审核</el-button>
+              <el-button type="text" @click="auditDealLevel(scope.row)">审核</el-button>
               <el-button type="text" @click="createLevel(scope.row)">详情</el-button>
             </template>
             <template v-else-if="scope.row.flowStatus == '已完成'">
@@ -114,7 +114,7 @@ import CreateLevel from './components/CreateLevel'
 import IgnoreLevel from './components/IgnoreLevel'
 import DealLevel from './components/DealLevel'
 import SubDealLevel from './components/SubDealLevel'
-
+import AuditDealLevel from './components/AuditDealLevel'
 
 import { selectList2, deletePlan, forbitPlan } from '@/api/alarm'
 export default {
@@ -122,7 +122,8 @@ export default {
     CreateLevel,
     IgnoreLevel,
     DealLevel,
-    SubDealLevel
+    SubDealLevel,
+    AuditDealLevel
   },
   data() {
     return {
@@ -140,7 +141,8 @@ export default {
       CreateLevel: false,
       IgnoreLevel: false,
       DealLevel: false,
-      SubDealLevel:false,
+      SubDealLevel: false,
+      AuditDealLevel: false,
       editingData: {}
     }
   },
@@ -210,6 +212,10 @@ export default {
     subDealLevel(val) {
       this.editingData = val
       this.SubDealLevel = true
+    },
+    auditDealLevel(val) {
+      this.editingData = val
+      this.AuditDealLevel = true
     }
   },
   created() {
