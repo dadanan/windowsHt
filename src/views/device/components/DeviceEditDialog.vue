@@ -259,7 +259,6 @@ export default {
     queryAllParamConfig() {
       queryAllParamConfig(this.form.id)
         .then(res => {
-          console.log(res.data)
           this.ginsengList = res.data
         })
         .catch(res => {

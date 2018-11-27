@@ -204,7 +204,6 @@ export default {
     // 每月新增用户统计
     selectCustomerUserCount() {
       selectCustomerUserCount().then(res => {
-        console.log(res.data)
         for (let i = 0; i < res.data.length; i++) {
           this.addCount.push(res.data[i].addCount)
           if (res.data[i].addPercent === '--') {

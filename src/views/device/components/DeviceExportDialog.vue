@@ -106,9 +106,7 @@ export default {
       }
       this.deviceColumnVisible.fileName = (this.name+".xlsx")
       this.deviceColumnVisible.sheetTitle = '1'
-      console.log(this.deviceColumnVisible)
       exportDeviceData(this.deviceColumnVisible).then(res => {
-        console.log(res.data)
       })
     },
     handleConfirm() {
