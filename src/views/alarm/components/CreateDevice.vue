@@ -156,7 +156,6 @@ export default {
     select(id) {
       select(id).then(res => {
         this.selectedDeviceList = res.data.enableUserList
-        console.log(res.data)
         this.form = res.data
         if (this.form.linkType == 1) {
         this.selectModelDict() // 查客户下模型

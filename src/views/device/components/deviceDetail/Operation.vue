@@ -6,14 +6,14 @@
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <template v-if='scope.row.abilityType == 2'>
-            <template v-if='isDoubleMachine(scope.row.abilityId) && windOneData'>
+          <template v-if='scope.row.abilityType == 2 '>
+            <template v-if='hasMultipleId(scope.row.abilityId) && windData'>
               <!-- 双风机 -->
-              <el-select v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windOneData.abilityId)'>
-                <el-option v-for='item in windOneData.deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
+              <el-select v-if='windData[0]' v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windData[0].abilityId)'>
+                <el-option v-for='item in windData[0].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
               </el-select>
-              <el-select v-model="windTwoSelectedId" @change='optionChangedHandler(arguments,windTwoData.abilityId)' :disabled="isCircleSwitchOff()">
-                <el-option v-for='item in windTwoData.deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
+              <el-select v-if='windData[1]' v-model="windTwoSelectedId" @change='optionChangedHandler(arguments,windData[1].abilityId)' :disabled="isCircleSwitchOff()">
+                <el-option v-for='item in windData[1].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
               </el-select>
             </template>
             <template v-else>
@@ -55,6 +55,7 @@ export default {
       windTwoData: {
         deviceModelAbilityOptions: []
       },
+      windData: null, // 双风机数据
       windOneSelectedId: undefined, // 风机1被选择的档位的id
       windTwoSelectedId: undefined
     }
@@ -70,17 +71,17 @@ export default {
       return circleSwitch && circleSwitch.isSelect == 0
     },
     /**
-     * 当前版式是双风机型
+     * abilityId参数有多个id？
+     * 如果调用时this.formatItemsList还没有赋值时，从data参数里取
      * @param abilityId 版式配置项选择的功能项id
+     * @param data 型号版式数据
      */
-    isDoubleMachine(abilityId) {
-      const data = this.getAbilityData(abilityId)
-      if (!data) {
-        return false
+    hasMultipleId(abilityId, data) {
+      if (data) {
+        return data[2].abilityId.split(',').length !== 1
       }
 
-      const option = data.deviceModelAbilityOptions
-      return option[0].optionValue == '280' || option[1].optionValue == '280'
+      return abilityId.split(',').length !== 1
     },
     /**
      * 下拉选择框数据变化监听器，然后发送对应指令
@@ -89,7 +90,10 @@ export default {
      */
     optionChangedHandler(argu, abilityId) {
       argu = argu[0]
+
       const ability = this.getAbilityData(abilityId)
+      console.log('ability', ability)
+
       if (ability.abilityType == 2) {
         // 如果是单选型
         if (ability.dirValue == '281') {
@@ -118,7 +122,7 @@ export default {
         // 多个发送指令接口的参数变量
         const tempArguments = []
 
-        ability.deviceModelAbilityOptions.forEach(item => {
+        ability.forEach(item => {
           if (newChecked.includes(item.id)) {
             tempArguments.push({
               funcId: item.dirValue,
@@ -175,8 +179,15 @@ export default {
       )
     },
     getAbilityData(id) {
-      const result = this.abilitysList.filter(item => item.abilityId == id)
-      return result && result[0]
+      const ids = String(id).split(',')
+      if (ids.length === 1) {
+        const result = this.abilitysList.filter(item => item.abilityId == id)
+        return result && result[0]
+      }
+
+      return this.abilitysList.filter(ability =>
+        ids.includes(String(ability.abilityId))
+      )
     },
     /**
      * 根据指令查询功能项数据
@@ -186,13 +197,27 @@ export default {
       return result && result[0]
     },
     getAbilityOption(id) {
-      const data = this.getAbilityData(id)
-
-      if (!data) {
+      if (!id) {
         return []
       }
+      const ids = String(id).split(',')
+      // 非选择多功能项id时
+      if (ids.length === 1) {
+        const data = this.getAbilityData(id)
+        if (!data) {
+          return []
+        }
 
-      return data.deviceModelAbilityOptions
+        return data.deviceModelAbilityOptions
+      }
+
+      let filterData = []
+      this.abilitysList.forEach(item => {
+        if (ids.includes(String(item.abilityId))) {
+          filterData.push(item)
+        }
+      })
+      return filterData
     },
     selectById(id) {
       selectById(id).then(res => {
@@ -225,15 +250,22 @@ export default {
         let list = data.deviceModelFormat.modelFormatPages
         if (list[0]) {
           list = list[0].modelFormatItems
+          if (!list) {
+            return
+          }
 
           // 如果是双风机，单独将送/回风机的功能项加进来
-          const tempList = []
-          if (this.isDoubleMachine(list[2].abilityId)) {
-            tempList.push({
-              abilityId: this.getAbilityByDirValue('280').abilityId
-            })
-            tempList.push({
-              abilityId: this.getAbilityByDirValue('281').abilityId
+          const windData = []
+          if (this.hasMultipleId(list[2].abilityId, list)) {
+            // 将功能集里的内外风机的数据加到版式集合中。为了后面持续刷新两个风机的数据
+            let ids = list[2].abilityId.split(',')
+            data.abilitysList.forEach(item => {
+              if (ids.includes(String(item.dirValue))) {
+                windData.push({
+                  ...item,
+                  showStatus: 1
+                })
+              }
             })
           }
 
@@ -248,7 +280,7 @@ export default {
           this.formatItemsList = list
           // 定时请求接口数据，更新页面数据
           this.setInter = setInterval(() => {
-            this.getIndexFormatData(list.concat(tempList))
+            this.getIndexFormatData(list.concat(windData))
           }, 3000)
         }
       })
@@ -261,25 +293,18 @@ export default {
         return result && result[0]
       }
 
-      const tempIds = list
-        .filter(item => item.abilityId)
+      let ids = this.formatItemsList
+        .filter(item => item.showStatus == 1 && item.abilityId)
         .map(item => item.abilityId)
-
-      // const ids = []
-      // // 将可能存在的多个ids拆分成单独的id
-      // tempIds.forEach(item => {
-      //   if (!item) {
-      //     return
-      //   }
-      //   const temp = item.split(',')
-      //   ids.push(...temp)
-      // })
+      let tempIds = []
+      ids.forEach(id => {
+        tempIds.push(...String(id).split(','))
+      })
 
       newQueryDetailByDeviceId({
         deviceId: this.detailData.id,
         abilityIds: tempIds
       }).then(res => {
-        console.log(res.data)
         const data = res.data
         // 将res.data中的isSelect和dirValue赋值过去
         this.abilitysList.forEach((item, index) => {
@@ -317,25 +342,38 @@ export default {
       formatItemsList.forEach(item => {
         const optionList = this.getAbilityOption(item.abilityId)
 
-        if (this.isDoubleMachine(item.abilityId)) {
+        if (
+          this.formatItemsList[2].abilityId === item.abilityId &&
+          this.hasMultipleId(item.abilityId)
+        ) {
           // 双风机初始化
-          this.windOneData = this.getAbilityByDirValue(optionList[0].dirValue)
-          this.windTwoData = this.getAbilityByDirValue(optionList[1].dirValue)
-          if (!this.windOneData) {
-            return
+          this.windData = this.getAbilityOption(item.abilityId)
+
+          if (!this.windData) {
+            return []
           }
           // 找到用户选择的档位，初始化
-          this.windOneData.deviceModelAbilityOptions.forEach(option => {
-            if (option.isSelect == 1) {
-              this.windOneSelectedId = option.id
+          // 回风风机
+          const tempLeft = this.windData[0].deviceModelAbilityOptions
+          if (!tempLeft) {
+            return
+          }
+          tempLeft.forEach(tempList => {
+            if (tempList.isSelect == 1) {
+              this.windOneSelectedId = tempList.id
             }
           })
-          this.windTwoData.deviceModelAbilityOptions.forEach(option => {
-            if (option.isSelect == 1) {
-              this.windTwoSelectedId = option.id
+
+          // 送风风机
+          const tempRight = this.windData[1].deviceModelAbilityOptions
+          if (!tempRight) {
+            return
+          }
+          tempRight.forEach(tempList => {
+            if (tempList.isSelect == 1) {
+              this.windTwoSelectedId = tempList.id
             }
           })
-          return
         }
 
         if (item.abilityType == 2) {
@@ -353,7 +391,18 @@ export default {
           // 多选
           let selection = []
           optionList.forEach(option => {
-            if (option.isSelect == 1) {
+            // 获取功能项的选项
+            const tempList = option.deviceModelAbilityOptions
+            if (!tempList) {
+              return
+            }
+
+            // 判断功能项选项中开指令是否被选择
+            const isChecked = tempList.some(temp => {
+              return temp.dirValue == '1' && temp.isSelect == 1
+            })
+
+            if (isChecked) {
               selection.push(option.id)
             }
           })

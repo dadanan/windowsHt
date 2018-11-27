@@ -144,7 +144,6 @@ export default {
     queryHomePageStatistic() {
       // 查询首页数据
       queryHomePageStatistic().then(res => {
-        console.log(res.data)
         const data = res.data
         const dataAnalysis = this.kanbanData.数据展示.设备分析
         dataAnalysis[0].value = data.deviceTotalCount
@@ -212,7 +211,6 @@ export default {
     // 设备类型统计
     modelPercent() {
       modelPercent().then(res => {
-        // console.log(res.data)
         for (var i = 0; i < res.data.length; i++) {
           this.devedata.push({
             value: res.data[i].modelPercent.substring(0, 2),
@@ -225,7 +223,6 @@ export default {
      // 每天活跃用户统计
     selectLiveCustomerUserCountPerHour() {
       selectLiveCustomerUserCountPerHour().then(res => {
-        // console.log(res.data)
         for (let i = 0; i < res.data.length; i++) {
           this.countPerHour.push(res.data[i].hour)
           this.countPerHourData.push(res.data[i].userLiveCount)

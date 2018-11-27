@@ -122,7 +122,6 @@ export default {
   methods: {
     subselect(id) {
       subselect(id).then(res => {
-        // console.log(res.data)
         const list = res.data
         const mapList = {
           '1': '一级告警',

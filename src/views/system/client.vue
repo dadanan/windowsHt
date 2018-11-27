@@ -168,7 +168,6 @@ export default {
     },
     getCustomer() {
       select(this.listQuery).then(res => {
-        // console.log(res.data)
         const data = res.data
         this.clientList = data.customerVos
         this.total = data.totalCount
