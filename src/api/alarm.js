@@ -166,11 +166,55 @@ export function EngList(data) {
   })
 }
 
-// 工程列表
+// 添加工程
+export function addProject(data) {
+  return request({
+    url: '/temp/api/project/addProject',
+    method: 'post',
+    data
+  })
+}
+
+// 查询单个工程
+export function createselect(data) {
+  return request({
+    url: `/temp/api/project/select/${data}`,
+    method: 'get'
+  })
+}
+
+// 修改工程
+export function editProject(data) {
+  return request({
+    url: '/temp/api/project/editProject',
+    method: 'post',
+    data
+  })
+}
+
+// 删除工程
+export function deleteProject(data) {
+  return request({
+    url: '/temp/api/project/deleteProject',
+    method: 'post',
+    data
+  })
+}
+
+
+
+// 添加实施工程信息
 export function addImpl(data) {
   return request({
     url: '/temp/api/implement/addImpl',
     method: 'post',
     data
+  })
+}
+// 查询所有集群
+export function queryAllGroup() {
+  return request({
+    url: '/temp/api/deviceGroup/queryAllGroup',
+    method: 'get'
   })
 }

@@ -4,39 +4,31 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="任务名称" :value='value1'>
-              <el-option label="设备 MAC" value="1"></el-option>
-              <el-option label="设备序列号" value="2"></el-option>
-              <el-option label="设备名称" value="3"></el-option>
-              <el-option label="投放点" value="4"></el-option>
+            <el-input placeholder="输入名称" v-model="query.name"></el-input>
+          </el-form-item>
+          <!-- <el-form-item>
+            <el-select placeholder="选择关联" v-model="search.linkType">
+              <el-option label="不关联" value="1"></el-option>
+              <el-option label="关联设备" value="2"></el-option>
+              <el-option label="关联工程" value="3"></el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item>
+            <el-select placeholder="告警级别" v-model="query.warnLevel">
+              <el-option label="一级告警" value="1"></el-option>
+              <el-option label="二级告警" value="2"></el-option>
+              <el-option label="三级告警" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="选择关联"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="告警级别" :value='value2'>
-              <el-option label="预留布尔值故障" value="1"></el-option>
-              <el-option label="滤网到期提醒" value="2"></el-option>
-              <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
-              <el-option label="设备移开 1000 米报警" value="4"></el-option>
+            <el-select placeholder="状态" v-model="query.status">
+              <el-option label="禁用" value="1"></el-option>
+              <el-option label="启用" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="状态" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="范围" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-            <el-button>重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="selectList2">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -148,6 +140,12 @@ export default {
   },
   methods: {
     addData(data) {
+      this.selectList2()
+    },
+    reset(){
+      this.query.name = ''
+      this.query.status = ''
+      this.query.warnLevel = ''
       this.selectList2()
     },
     selectList2() {

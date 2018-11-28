@@ -78,8 +78,8 @@
           <el-button type="primary " @click="addEle = true">添加</el-button>
         </el-form-item>
         <el-form-item>
-          <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
-            {{item.roleName}}
+          <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
+            {{item.userName}}
           </el-tag>
         </el-form-item>
       </el-form>
@@ -92,7 +92,7 @@
       <el-table :data="projects" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="roleName" label="名称" show-overflow-tooltip sortable>
+        <el-table-column prop="userName" label="名称" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="id" label="id" show-overflow-tooltip sortable>
         </el-table-column>
@@ -114,7 +114,7 @@ import {
   selectByModelId,
   selectProjectDict
 } from '@/api/alarm'
-import { getRoleList } from '@/api/role'
+import { getUserList } from '@/api/user'
 export default {
   props: {
     visible: {
@@ -198,7 +198,16 @@ export default {
         }
       })
     },
-
+  toggleSelection() {
+      this.addEle = true
+      this.$nextTick(function() {
+        if (this.selectedDeviceList) {
+          this.selectedDeviceList.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
+        }
+      })
+    },
     editRule1() {
       console.log(this.form)
     },
@@ -213,8 +222,9 @@ export default {
       this.selectedDeviceList.splice(this.selectedDeviceList.indexOf(tag), 1)
       console.log(this.selectedDeviceList)
     },
-    getRoleList() {
-      getRoleList().then(res => {
+    getUserList() {
+      getUserList().then(res => {
+        // console.log(res.data)
         if (res.code === 200) {
           this.projects = res.data
         }
@@ -223,7 +233,7 @@ export default {
   },
   created() {
     this.selectList()
-    this.getRoleList()
+    this.getUserList()
     this.selectModelDict()
     this.selectProjectDict()
   }

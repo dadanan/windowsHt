@@ -12,31 +12,31 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-input placeholder="输入名称"></el-input>
+            <el-input placeholder="输入名称" v-model="query.name"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-select placeholder="选择关联" :value='value2'>
+          <!-- <el-form-item>
+            <el-select placeholder="选择关联" v-model="search.linkType">
               <el-option label="不关联" value="1"></el-option>
               <el-option label="关联设备" value="2"></el-option>
               <el-option label="关联工程" value="3"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
-            <el-select placeholder="告警级别" :value='value2'>
+            <el-select placeholder="告警级别" v-model="query.warnLevel">
               <el-option label="一级告警" value="1"></el-option>
               <el-option label="二级告警" value="2"></el-option>
               <el-option label="三级告警" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="状态" :value='value3'>
+            <el-select placeholder="状态" v-model="query.status">
               <el-option label="禁用" value="1"></el-option>
               <el-option label="启用" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-            <el-button>重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="selectList1">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -51,6 +51,8 @@
       </div>
       <add-device :visible.sync="AddDevice" @add-data='addData'></add-device>
       <create-device :visible.sync="CreateDevice" :data='editingData' @updata-data='updata'></create-device>
+      <details-device :visible.sync="DetailsDevice" :data='editingData' @updata-data='updata'></details-device>
+
       <el-table :data="alarmList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
@@ -84,7 +86,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="createDevice(scope.row)">修改</el-button>
-            <el-button type="text">详情</el-button>
+            <el-button type="text" @click="detailsDevice(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,12 +99,15 @@
 <script>
 import AddDevice from './components/AddDevice'
 import CreateDevice from './components/CreateDevice'
+import DetailsDevice from './components/DetailsDevice'
+
 
 import { selectList1, deletePlan, forbitPlan,reversePlan } from '@/api/alarm'
 export default {
   components: {
     AddDevice,
-    CreateDevice
+    CreateDevice,
+    DetailsDevice
   },
   data() {
     return {
@@ -110,6 +115,12 @@ export default {
       value2: '',
       value3: '',
       alarmList: [],
+      // search:{
+      //   warnLevel:'',
+      //   limit: 100,
+      //   currentPage: 1,
+      //   status:1
+      // },
       query: {
         limit: 100,
         currentPage: 1
@@ -117,6 +128,7 @@ export default {
       total: 0,
       AddDevice: false,
       CreateDevice: false,
+      DetailsDevice:false,
       selectedDeviceList: [],
       ids: [],
       editingData: {}
@@ -128,6 +140,12 @@ export default {
       this.selectList1()
     },
     updata() {
+      this.selectList1()
+    },
+    reset(){
+      this.query.name = ''
+      this.query.status = ''
+      this.query.warnLevel = ''
       this.selectList1()
     },
     selectList1() {
@@ -164,6 +182,7 @@ export default {
       }
       deletePlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
+          this.selectedDeviceList = []
           this.selectList1()
           this.$message({
             type: 'success',
@@ -183,6 +202,7 @@ export default {
       }
       forbitPlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
+          this.selectedDeviceList = []
           this.selectList1()
           this.$message({
             type: 'success',
@@ -202,6 +222,7 @@ export default {
       }
       reversePlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
+          this.selectedDeviceList = []
           this.selectList1()
           this.$message({
             type: 'success',
@@ -226,6 +247,10 @@ export default {
     createDevice(data) {
       this.editingData = data
       this.CreateDevice = true
+    },
+    detailsDevice(data) {
+      this.editingData = data
+      this.DetailsDevice = true
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection

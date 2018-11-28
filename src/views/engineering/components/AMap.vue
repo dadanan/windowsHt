@@ -5,9 +5,9 @@
       <el-amap vid="amapDemo" :zoom="zoom" :center="center" :events="events" class="amap-demo" :plugin="plugin">
         <el-amap-marker :position="marker.position" :events="events" :visible="marker.visible" :draggable="marker.draggable"></el-amap-marker>
       </el-amap>
-      <div class="toolbar">
+      <!-- <div class="toolbar">
         经纬度: [{{ center[0] }}, {{ center[1] }}] 地址: {{ address }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -126,6 +126,8 @@ export default {
   },
   watch: {
     gps(val) {
+      console.log(val)
+      // const gps = val.split(",")
       this.setGps(val)
     }
   },
@@ -137,7 +139,7 @@ export default {
 
 <style lang='scss' scoped>
 .amap-page-container {
-  height: 500px;
+  height: 400px;
   position: relative;
   .search-box {
     position: absolute;

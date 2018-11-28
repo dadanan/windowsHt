@@ -69,12 +69,13 @@
         </el-button-group>
       </div>
       <add-means :visible.sync="AddMeans" :data ='editingData'></add-means>
-      <add-message :visible.sync="AddMessage" :data ='editingData'></add-message>
+      <add-message :visible.sync="AddMessage" :data ='editingData' @add-data='addData'></add-message>
+      <create-message :visible.sync="CreateMessage" :data ='editingData' @add-data='addData'></create-message>
       <project-details :visible.sync="ProjectDetails"></project-details>
       <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="typeId" label="工程编号" show-overflow-tooltip>
+        <el-table-column prop="projectNo" label="工程编号" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="name" label="工程名称" show-overflow-tooltip>
         </el-table-column>
@@ -96,7 +97,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="addMeans(scope.row)">实施</el-button>
-            <el-button type="text">修改</el-button>
+            <el-button type="text" @click="createMessage(scope.row)">修改</el-button>
             <el-button type="text" @click="ProjectDetails = true">详情</el-button>
           </template>
         </el-table-column>
@@ -111,6 +112,7 @@
 import DataCard from '@/components/DataCard'
 import AddMeans from './components/AddMeans'
 import AddMessage from './components/AddMessage'
+import CreateMessage from './components/CreateMessage'
 import ProjectDetails from './components/ProjectDetails'
 import { EngList } from '@/api/alarm'
 
@@ -119,13 +121,15 @@ export default {
     DataCard,
     AddMeans,
     AddMessage,
-    ProjectDetails
+    ProjectDetails,
+    CreateMessage
   },
   data() {
     return {
       AddMeans: false,
       AddMessage: false,
       ProjectDetails: false,
+      CreateMessage:true,
       alarmList: [],
       editingData:{},
       activeTab: '1',
@@ -193,6 +197,9 @@ export default {
     }
   },
   methods: {
+    addData(val){
+      this.EngList()
+    },
     switchs() {
       this.list = !this.list
     },
@@ -213,6 +220,10 @@ export default {
     },
     addMeans(val){
       this.AddMeans = true
+      this.editingData = val
+    },
+    createMessage(val){
+      this.CreateMessage = true
       this.editingData = val
     }
   },
