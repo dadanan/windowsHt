@@ -54,18 +54,25 @@
           </template>
           <template v-if="form.cycleType == 1">
             <span>每</span>
-            <el-input v-model="form.cycleNums" style="width:10%"></el-input>
+            <el-input type="number" v-model="form.cycleNums" style="width:10%"></el-input>
             <span>月告警日期</span>
-            <el-date-picker v-model="form.nextExecuteTime" type="date" value-format="timestamp" placeholder="选择日期" :picker-options="pickerOptions0" style="width:40%; margin-right:20px">
-            </el-date-picker>
+            <el-select v-model="dayData" style="width:40%;margin-right:20px">
+              <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+            </el-select>
             <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
           </template>
           <template v-if="form.cycleType == 2">
             <span>每</span>
-            <el-input v-model="form.cycleNums" style="width:10%"></el-input>
+            <el-input type="number" v-model="form.cycleNums" style="width:10%"></el-input>
             <span>年告警日期</span>
-            <el-date-picker v-model="form.nextExecuteTime" type="date" value-format="timestamp" placeholder="选择日期" :picker-options="pickerOptions0" style="width:40%; margin-right:20px">
-            </el-date-picker>
+            <el-select v-model="monthData" style="width:10%;">
+              <el-option v-for='item in months' :label="item.name" :value="item.id" :key='item.id'></el-option>
+            </el-select>
+            <span style="margin:0px 20px">月</span>
+            <el-select v-model="daysData" style="width:10%;margin-right:20px">
+              <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+            </el-select>
+            <span style="margin-right:20px">日</span>
             <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
           </template>
         </el-form-item>
@@ -123,7 +130,26 @@ export default {
     }
   },
   data() {
+    const paymentList = []
+    for (let i = 1; i < 31; i++) {
+      paymentList.push({
+        id: i,
+        name: i,
+      })
+    }
+    const payment = []
+    for (let i = 1; i < 13; i++) {
+      payment.push({
+        id: i,
+        name: i,
+      })
+    }
     return {
+      day:paymentList, //天数
+      months:payment,  //月
+      monthData:0,
+      dayData:0,
+      daysData:0,
       addEle: false,
       selectedDeviceList: [],
       isRule: '',
@@ -176,12 +202,19 @@ export default {
       if (this.form.ruleId) {
         this.form.isRule = 1
       }
-      if (this.form.isRightExcute1) {
+      if (this.isRightExcute1) {
         this.form.isRightExcute = 1
       } else {
         this.form.isRightExcute = 0
       }
       this.form.enableUserList = this.ids
+      if(this.form.cycleType == 1){
+        this.form.day = this.dayData
+      }else if(this.form.cycleType == 2){
+        this.form.day = this.daysData
+        this.form.month = this.monthData
+      }
+      console.log(this.form)
       addPlan(this.form).then(res => {
         if (res.code === 200) {
           this.$message({

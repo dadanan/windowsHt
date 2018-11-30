@@ -20,18 +20,19 @@
       </el-form-item>
       <el-form-item>
         <el-table :data="sub" style="width: 100%" class="mb20" border>
+          <el-table-column type="index"></el-table-column>
           <el-table-column prop="name" label="url" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="选择" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-select v-model="scope.row.value">
-                <el-option v-for='item in enginList' :label="item.label" :value="item.id" :key='item.id'></el-option>
+                <el-option v-for='item in enginList' :label="item.label" :value="item.label" :key='item.id'></el-option>
               </el-select>
             </template>
           </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-button>删除</el-button>
+              <el-button @click="dele(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -96,6 +97,15 @@ export default {
     }
   },
   methods: {
+    dele(val){
+      console.log(this.sub)
+      console.log(val)
+      for(var i = 0;i<this.sub.length;i++){
+        if(val.name == this.sub[i].name){
+         this.sub.splice(i,1)
+        }
+      }
+    },
     setURL(argu, data) {
       // data[name] = argu[0]
       var index = argu[0].lastIndexOf('/')
@@ -120,7 +130,7 @@ export default {
     submitForm() {
       var arr = []
       for (var i = 0; i < this.sub.length; i++) {
-        const val = this.sub[i].value
+        var val = (this.sub[i].value).toString()
         if(this.form.fileMap[val] == null){
           var list = [];
           list.push(this.sub[i].url)

@@ -3,7 +3,7 @@
     <el-dialog
       top='4vh'
       :close-on-click-modal=false
-      title="创建工程"
+      title="修改工程"
       :visible="visible"
       width="800px"
       @update:visible="$emit('update:visible', $event)"
@@ -53,7 +53,7 @@
               </el-form-item>
               <el-form-item label="选择工程建设地址">
                 <a-map
-                  :gps='form && form.mapGps'
+                  :gps='form && form.gps'
                   @getLocation='getLocation'
                 ></a-map>
               </el-form-item>
@@ -352,7 +352,7 @@
 <script>
 import AMap from "./AMap";
 import FileUploader from "@/components/Upload/excel";
-import { queryAllGroup, editProject ,createselect } from "@/api/alarm";
+import { queryAllGroup, editProject ,createselect ,existProjectNo } from "@/api/alarm";
 
 export default {
   props: {
@@ -381,6 +381,7 @@ export default {
       projects: [],
       ids: [],
       createStep: 0,
+      projectIds:0,
       rules: {
         name: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
@@ -410,6 +411,31 @@ export default {
         this.isCreateClientDialogVisible = false;
         this.createStep = 0;
       }
+    },
+     existProjectNo() {
+      existProjectNo({ value: this.form.projectNo ,projectId:this.projectIds}).then(res => {
+        console.log(res.data);
+        if (res.code === 200) {
+          if (res.data) {
+            this.$message({
+              type: "error",
+              message: "编号已存在!"
+            });
+            this.status = false;
+          } else {
+            this.$message({
+              type: "success",
+              message: "恭喜编号可以使用!"
+            });
+            this.status = true;
+          }
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          });
+        }
+      });
     },
     submitForm() {
       this.form.extraDeviceList.push(Object.assign({}, this.addDeve));
@@ -455,7 +481,6 @@ export default {
             }
           }
           this.selectedDeviceList = Object.assign([], list1, []);
-          console.log(this.selectedDeviceList)
         }
       });
     },
@@ -465,22 +490,23 @@ export default {
         this.ids.push(this.selectedDeviceList[i].id);
       }
       this.form.groupIds = this.ids.toString();
-      console.log(this.form);
-      editProject(this.form).then(res => {
-        if (res.code === 200) {
-          this.$message({
-            type: "success",
-            message: "修改成功!"
-          });
-          this.$emit("update:visible", false);
-          this.$emit("add-data", this.form);
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
-          });
-        }
-      });
+        editProject(this.form).then(res => {
+          this.selectedDeviceList=[]
+          this.ids = []
+          if (res.code === 200) {
+            this.$message({
+              type: "success",
+              message: "修改成功!"
+            });
+            this.$emit("update:visible", false);
+            this.$emit("add-data", this.form);
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            });
+          }
+        });
     },
     createselect(id){
       createselect(id).then(res => {
@@ -490,7 +516,7 @@ export default {
     toggleSelection() {
       this.addEle = true
       this.$nextTick(function() {
-        console.log(this.selectedDeviceList)
+        // console.log(this.selectedDeviceList)
         if (this.selectedDeviceList) {
           this.selectedDeviceList.forEach(row => {
             this.$refs.multipleTable.toggleRowSelection(row)
@@ -501,6 +527,8 @@ export default {
   },
   watch: {
     data(val){
+      this.createStep = 0
+      this.projectIds = val.id
       this.createselect(val.id)
       const arr = val.groupIds.split(',')
       this.queryAllGroup(arr)

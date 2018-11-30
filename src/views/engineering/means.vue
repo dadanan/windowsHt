@@ -24,43 +24,32 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-input placeholder="工程编号"></el-input>
-            <!-- <el-select placeholder="工程编号" :value='value1'>
-                            <el-option label="工程名字" value="1"></el-option>
-                            <el-option label="设备序列号" value="2"></el-option>
-                            <el-option label="设备名称" value="3"></el-option>
-                            <el-option label="投放点" value="4"></el-option>
-                        </el-select> -->
+            <el-input placeholder="工程编号" v-model="query.projectNo"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="工程名字"></el-input>
+            <el-input placeholder="工程名字" v-model="query.name"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="工程建设时间"></el-input>
-            <!-- <el-select placeholder="工程建设时间" :value='value2'>
-                            <el-option label="预留布尔值故障" value="1"></el-option>
-                            <el-option label="滤网到期提醒" value="2"></el-option>
-                            <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
-                            <el-option label="设备移开 1000 米报警" value="4"></el-option>
-                        </el-select> -->
+            <el-select placeholder="工程建设时间" v-model="createTime">
+                <el-option label="今天" value="1"></el-option>
+                <el-option label="前七天" value="2"></el-option>
+                <el-option label="前30天" value="3"></el-option>
+                <el-option label="全部" value="4"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="工程地址"></el-input>
-            <!-- <el-select placeholder="工程地址" :value='value3'>
-                            <el-option label="未修复" value="1"></el-option>
-                            <el-option label="已修复" value="2"></el-option>
-                        </el-select> -->
+            <el-input placeholder="工程地址" v-model="query.buildAddress"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-            <el-button>重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="table-opts">
-        <el-button-group>
+        <!-- <el-button-group>
           <el-button type="primary" icon="el-icon-menu" @click="switchs"></el-button>
-        </el-button-group>
+        </el-button-group> -->
         <div style="flex: 1;"></div>
         <el-button-group>
           <el-button type="primary" @click="AddMessage = true">添加</el-button>
@@ -70,8 +59,8 @@
       </div>
       <add-means :visible.sync="AddMeans" :data ='editingData'></add-means>
       <add-message :visible.sync="AddMessage" :data ='editingData' @add-data='addData'></add-message>
-      <create-message :visible.sync="CreateMessage" :data ='editingData' @add-data='addData'></create-message>
-      <project-details :visible.sync="ProjectDetails"></project-details>
+      <create-message :visible.sync="CreateMessage" :data ='editingDataa' @add-data='addData'></create-message>
+      <project-details :visible.sync="ProjectDetails" :data ='editingData'></project-details>
       <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
@@ -98,7 +87,7 @@
           <template slot-scope="scope">
             <el-button type="text" @click="addMeans(scope.row)">实施</el-button>
             <el-button type="text" @click="createMessage(scope.row)">修改</el-button>
-            <el-button type="text" @click="ProjectDetails = true">详情</el-button>
+            <el-button type="text" @click="projectDetails(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -114,7 +103,7 @@ import AddMeans from './components/AddMeans'
 import AddMessage from './components/AddMessage'
 import CreateMessage from './components/CreateMessage'
 import ProjectDetails from './components/ProjectDetails'
-import { EngList } from '@/api/alarm'
+import { EngList ,createselect } from '@/api/alarm'
 
 export default {
   components: {
@@ -129,8 +118,12 @@ export default {
       AddMeans: false,
       AddMessage: false,
       ProjectDetails: false,
-      CreateMessage:true,
+      CreateMessage:false,
+      editingDataa:{},
       alarmList: [],
+      // taday: new Date(new Date().setHours(0, 0, 0, 0)) / 1000,
+      // SevenDayAgo :this.taday - 86400 * 7,
+      // SevenDayAgos:this.taday - 86400 * 30,
       editingData:{},
       activeTab: '1',
       list: true,
@@ -141,6 +134,7 @@ export default {
         limit: 100,
         page: 1
       },
+      createTime:'',
       total: 0,
       kanbanChart2: {
         title: {
@@ -200,12 +194,33 @@ export default {
     addData(val){
       this.EngList()
     },
+    search(){
+      const taday = new Date(new Date().setHours(0, 0, 0, 0))
+      const SevenDayAgo = taday - 86400 * 7
+      const SevenDayAgos = taday - 86400 * 30
+      if(this.createTime ==1){
+        this.query.createTime =taday
+      }else if(this.createTime ==2){
+        this.query.createTime =SevenDayAgo
+      }else if(this.createTime ==3){
+        this.query.createTime =SevenDayAgos
+      }
+      console.log(this.query)
+      this.EngList()
+    },
+    reset(){
+      this.query.buildAddress ='',
+      this.createTime ='',
+      this.query.name ='',
+      this.query.projectNo =''
+      this.EngList()
+    },
     switchs() {
       this.list = !this.list
     },
     EngList() {
       EngList(this.query).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.alarmList = res.data.projectRspPoList
         this.total = res.data.totalCount
       })
@@ -223,8 +238,16 @@ export default {
       this.editingData = val
     },
     createMessage(val){
-      this.CreateMessage = true
-      this.editingData = val
+     createselect(val.id).then(res=>{
+          this.CreateMessage = true
+          this.editingDataa = res.data
+      })
+    },
+    projectDetails(val){
+      createselect(val.id).then(res=>{
+          this.ProjectDetails = true
+          this.editingData = res.data
+      })
     }
   },
   created() {

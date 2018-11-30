@@ -22,8 +22,8 @@
           </el-form-item>
           <el-form-item>
             <el-select placeholder="状态" v-model="query.status">
-              <el-option label="禁用" value="1"></el-option>
-              <el-option label="启用" value="2"></el-option>
+              <el-option label="禁用" value="3"></el-option>
+              <el-option label="启用" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -139,7 +139,7 @@ export default {
           }
         }
         this.levelList = list
-        console.log(this.levelList)
+        // console.log(this.levelList)
         this.total = res.data.totalCount
       })
     },
@@ -154,6 +154,7 @@ export default {
             message: '删除成功!'
           })
           this.selectedDeviceList = []
+          this.ids = []
           this.selectList()
         } else {
           this.$message({
@@ -174,6 +175,7 @@ export default {
             message: '启用成功!'
           })
           this.selectedDeviceList = []
+          this.ids = []          
           this.selectList()
         } else {
           this.$message({
@@ -194,6 +196,7 @@ export default {
             message: '禁用成功!'
           })
           this.selectedDeviceList = []
+          this.ids = []
           this.selectList()
         } else {
           this.$message({
@@ -217,7 +220,7 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-      console.log(selection)
+      // console.log(selection)
     }
   },
   created() {

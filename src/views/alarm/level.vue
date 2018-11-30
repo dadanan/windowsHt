@@ -7,7 +7,7 @@
             <el-input placeholder="输入名称" v-model="query.name"></el-input>
           </el-form-item>
           <!-- <el-form-item>
-            <el-select placeholder="选择关联" v-model="search.linkType">
+            <el-select placeholder="选择关联" v-model="query.linkType">
               <el-option label="不关联" value="1"></el-option>
               <el-option label="关联设备" value="2"></el-option>
               <el-option label="关联工程" value="3"></el-option>
@@ -21,9 +21,12 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="状态" v-model="query.status">
-              <el-option label="禁用" value="1"></el-option>
-              <el-option label="启用" value="2"></el-option>
+            <el-select placeholder="状态" v-model="query.flowStatus">
+              <el-option label="待处理" value="1"></el-option>
+              <el-option label="处理中" value="2"></el-option>
+              <el-option label="审核中" value="3"></el-option>
+              <el-option label="已完成" value="4"></el-option>
+              <el-option label="已忽略" value="5"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -146,11 +149,12 @@ export default {
       this.query.name = ''
       this.query.status = ''
       this.query.warnLevel = ''
+      this.query.linkType =''
       this.selectList2()
     },
     selectList2() {
       selectList2(this.query).then(res => {
-        console.log(res)
+        // console.log(res)
         const list = res.data.jobRspPoList
         const mapList = {
           '1': '一级告警',

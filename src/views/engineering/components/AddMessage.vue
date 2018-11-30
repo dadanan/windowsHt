@@ -30,7 +30,10 @@
               label-width="150px"
             >
               <el-form-item label="工程编号">
-                <el-input v-model="form.projectNo"></el-input>
+                <el-input
+                  v-model="form.projectNo"
+                  @blur="existProjectNo"
+                ></el-input>
               </el-form-item>
               <el-form-item label="工程名称">
                 <el-input v-model="form.name"></el-input>
@@ -352,7 +355,7 @@
 <script>
 import AMap from "./AMap";
 import FileUploader from "@/components/Upload/excel";
-import { queryAllGroup, addProject } from "@/api/alarm";
+import { queryAllGroup, addProject, existProjectNo } from "@/api/alarm";
 
 export default {
   props: {
@@ -376,6 +379,7 @@ export default {
       consumablesList1: {},
       projects: [],
       ids: [],
+      status: false,
       createStep: 0,
       rules: {
         name: [
@@ -407,6 +411,31 @@ export default {
         this.createStep = 0;
       }
     },
+    existProjectNo() {
+      existProjectNo({ value: this.form.projectNo }).then(res => {
+        console.log(res.data);
+        if (res.code === 200) {
+          if (res.data) {
+            this.$message({
+              type: "error",
+              message: "编号已存在!"
+            });
+            this.status = false;
+          } else {
+            this.$message({
+              type: "success",
+              message: "恭喜编号可以使用!"
+            });
+            this.status = true;
+          }
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          });
+        }
+      });
+    },
     submitForm() {
       this.form.extraDeviceList.push(Object.assign({}, this.addDeve));
       this.otherDeve = false;
@@ -435,7 +464,7 @@ export default {
     //关联设备项目
     queryAllGroup() {
       queryAllGroup().then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.projects = res.data;
       });
     },
@@ -445,22 +474,29 @@ export default {
         this.ids.push(this.selectedDeviceList[i].id);
       }
       this.form.groupIds = this.ids.toString();
-    //   console.log(this.form);
-      addProject(this.form).then(res => {
-        if (res.code === 200) {
-          this.$message({
-            type: "success",
-            message: "添加成功!"
-          });
-          this.$emit("update:visible", false);
-          this.$emit("add-data", this.form);
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
-          });
-        }
-      });
+      //   console.log(this.form);
+      if (this.status) {
+        addProject(this.form).then(res => {
+          if (res.code === 200) {
+            this.$message({
+              type: "success",
+              message: "添加成功!"
+            });
+            this.$emit("update:visible", false);
+            this.$emit("add-data", this.form);
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            });
+          }
+        });
+      }else{
+        this.$message({
+          type: "error",
+          message: "工程编号已存在!"
+        });
+      }
     }
   },
   created() {

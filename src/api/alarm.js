@@ -182,11 +182,27 @@ export function createselect(data) {
     method: 'get'
   })
 }
+// 查询单个工程项目
+export function selectGroups(data) {
+  return request({
+    url: '/temp/api/project/selectGroups',
+    method: 'post',
+    data
+  })
+}
 
 // 修改工程
 export function editProject(data) {
   return request({
     url: '/temp/api/project/editProject',
+    method: 'post',
+    data
+  })
+}
+// 查询工程是否重复
+export function existProjectNo(data) {
+  return request({
+    url: '/temp/api/project/existProjectNo',
     method: 'post',
     data
   })
@@ -201,8 +217,6 @@ export function deleteProject(data) {
   })
 }
 
-
-
 // 添加实施工程信息
 export function addImpl(data) {
   return request({
@@ -211,6 +225,23 @@ export function addImpl(data) {
     data
   })
 }
+// 根据工程查实施工程信息
+export function project(data) {
+  return request({
+    url: `/temp/api/implement/select/${data}`,
+    method: 'post'
+  })
+}
+
+// 根据工程查实施工程维保
+export function maintenance(data) {
+  return request({
+    url: '/temp/api/plan/maintenance',
+    method: 'post',
+    data
+  })
+}
+
 // 查询所有集群
 export function queryAllGroup() {
   return request({

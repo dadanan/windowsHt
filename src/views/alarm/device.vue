@@ -15,7 +15,7 @@
             <el-input placeholder="输入名称" v-model="query.name"></el-input>
           </el-form-item>
           <!-- <el-form-item>
-            <el-select placeholder="选择关联" v-model="search.linkType">
+            <el-select placeholder="选择关联" v-model="query.linkType">
               <el-option label="不关联" value="1"></el-option>
               <el-option label="关联设备" value="2"></el-option>
               <el-option label="关联工程" value="3"></el-option>
@@ -30,8 +30,8 @@
           </el-form-item>
           <el-form-item>
             <el-select placeholder="状态" v-model="query.status">
-              <el-option label="禁用" value="1"></el-option>
-              <el-option label="启用" value="2"></el-option>
+              <el-option label="禁用" value="3"></el-option>
+              <el-option label="启用" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -115,12 +115,6 @@ export default {
       value2: '',
       value3: '',
       alarmList: [],
-      // search:{
-      //   warnLevel:'',
-      //   limit: 100,
-      //   currentPage: 1,
-      //   status:1
-      // },
       query: {
         limit: 100,
         currentPage: 1
@@ -146,11 +140,12 @@ export default {
       this.query.name = ''
       this.query.status = ''
       this.query.warnLevel = ''
+      // this.query.linkType = ''
       this.selectList1()
     },
     selectList1() {
       selectList1(this.query).then(res => {
-        console.log(res)
+        // console.log(res)
         const list = res.data.planRspPoList
         const mapList = {
           '1': '一级告警',
@@ -183,6 +178,7 @@ export default {
       deletePlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
           this.selectedDeviceList = []
+          this.ids =[]
           this.selectList1()
           this.$message({
             type: 'success',
@@ -203,6 +199,7 @@ export default {
       forbitPlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
           this.selectedDeviceList = []
+          this.ids =[]
           this.selectList1()
           this.$message({
             type: 'success',
@@ -223,6 +220,7 @@ export default {
       reversePlan({ valueList: this.ids }).then(res => {
         if (res.code === 200) {
           this.selectedDeviceList = []
+          this.ids =[]
           this.selectList1()
           this.$message({
             type: 'success',

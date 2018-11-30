@@ -126,8 +126,6 @@ export default {
   },
   watch: {
     gps(val) {
-      console.log(val)
-      // const gps = val.split(",")
       this.setGps(val)
     }
   },
