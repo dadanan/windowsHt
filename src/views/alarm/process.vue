@@ -132,7 +132,7 @@ export default {
         for (var i = 0; i < list.length; i++) {
           list[i].warnLevel = mapList[list[i].warnLevel]
           if (list[i].status == 1) {
-            list[i].status = '正常'
+            list[i].status = '启用'
           }
           if (list[i].status == 3) {
             list[i].status = '禁用'

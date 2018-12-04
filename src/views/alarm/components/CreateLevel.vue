@@ -35,25 +35,30 @@
                                 </el-table>
                             </el-form-item>
                             <el-form-item v-if="form.type == '关联工程'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="mac" label="工程ID" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="name" label="工程名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=工程ID>
+                                        <el-input v-model="form.linkProjectId" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=工程名称>
+                                        <el-input v-model="form.linkProjectName" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                             <el-form-item label="是否规则内">
                                 <el-input v-model='form.isRule'></el-input>
                             </el-form-item>
                             <el-form-item v-if="form.isRule == '是'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="name" label="规则名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则描述" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则级别" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=规则名称>
+                                        <el-input v-model="form.ruleName" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则描述>
+                                        <el-input v-model="form.ruleDescription" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则级别>
+                                        <el-input v-model="form.warnLevel" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                         </el-form>
                     </el-card>
@@ -155,7 +160,6 @@ export default {
         list.flowStatus = flowStatus[list.flowStatus]
         list.isRule = isRule[list.isRule]
         list.finalTime = new Date(list.finalTime).toLocaleString()
-        console.log(list)
         this.form = list
         this.consumablesList1 = this.form.deviceList
         const historyList ={
@@ -176,7 +180,6 @@ export default {
   },
   watch: {
     data(val) {
-      //   console.log(val)
       this.subselect(val.id)
     }
   }

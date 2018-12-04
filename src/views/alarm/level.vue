@@ -36,11 +36,11 @@
         </el-form>
       </div>
       <!-- CreateLevel -->
-      <create-level :visible.sync="CreateLevel" :data='editingData' @add-data='addData'></create-level>
+      <create-level :visible.sync="CreateLevel" :data='editingDataCre' @add-data='addData'></create-level>
       <ignore-level :visible.sync="IgnoreLevel" :data='editingData' @add-data='addData'></ignore-level>
       <deal-level :visible.sync="DealLevel" :data='editingData'></deal-level>
-      <sub-deal-level :visible.sync="SubDealLevel" :data='editingData' @add-data='addData'></sub-deal-level>
-      <audit-deal-level :visible.sync="AuditDealLevel" :data='editingData' @add-data='addData'></audit-deal-level>
+      <sub-deal-level :visible.sync="SubDealLevel" :data='editingDatas' @add-data='addData'></sub-deal-level>
+      <audit-deal-level :visible.sync="AuditDealLevel" :data='editingDataD' @add-data='addData'></audit-deal-level>
 
       <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
@@ -111,7 +111,7 @@ import DealLevel from './components/DealLevel'
 import SubDealLevel from './components/SubDealLevel'
 import AuditDealLevel from './components/AuditDealLevel'
 
-import { selectList2, deletePlan, forbitPlan } from '@/api/alarm'
+import { selectList2,subselect, deletePlan, forbitPlan } from '@/api/alarm'
 export default {
   components: {
     CreateLevel,
@@ -138,7 +138,10 @@ export default {
       DealLevel: false,
       SubDealLevel: false,
       AuditDealLevel: false,
-      editingData: {}
+      editingData: {},
+      editingDatas:{},
+      editingDataD:{},
+      editingDataCre:{}
     }
   },
   methods: {
@@ -176,7 +179,7 @@ export default {
           '2': '处理中',
           '3': '待审核',
           '4': '已完成',
-          '6': '已忽略'
+          '5': '已忽略'
         }
         for (var i = 0; i < list.length; i++) {
           list[i].warnLevel = mapList[list[i].warnLevel]
@@ -200,8 +203,10 @@ export default {
       this.selectedDeviceList = selection
     },
     createLevel(val) {
-      this.editingData = val
-      this.CreateLevel = true
+      subselect(val.id).then(res=>{
+        this.editingDataCre = res.data
+        this.CreateLevel = true
+      })
     },
     ignoreLevel(val) {
       this.editingData = val
@@ -212,12 +217,16 @@ export default {
       this.DealLevel = true
     },
     subDealLevel(val) {
-      this.editingData = val
-      this.SubDealLevel = true
+      subselect(val.id).then(res=>{
+        this.editingDatas = res.data
+        this.SubDealLevel = true
+      })
     },
     auditDealLevel(val) {
-      this.editingData = val
-      this.AuditDealLevel = true
+      subselect(val.id).then(res=>{
+        this.editingDataD = res.data
+        this.AuditDealLevel = true
+      })
     }
   },
   created() {

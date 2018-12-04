@@ -35,25 +35,30 @@
                                 </el-table>
                             </el-form-item>
                             <el-form-item v-if="form.type == '关联工程'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="mac" label="工程ID" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="name" label="工程名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=工程ID>
+                                        <el-input v-model="form.linkProjectId" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=工程名称>
+                                        <el-input v-model="form.linkProjectName" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                             <el-form-item label="是否规则内">
                                 <el-input v-model='form.isRule'></el-input>
                             </el-form-item>
                             <el-form-item v-if="form.isRule == '是'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="name" label="规则名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则描述" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则级别" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=规则名称>
+                                        <el-input v-model="form.ruleName" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则描述>
+                                        <el-input v-model="form.ruleDescription" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则级别>
+                                        <el-input v-model="form.warnLevel" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                         </el-form>
                     </el-card>
@@ -63,6 +68,19 @@
                         <div style="border-bottom:1px solid #969696">
                             <h3>处理</h3>
                             <el-form label-width="130px" class="mb-22" :model="circulation">
+                                <el-form-item label="材料类别" v-if="ifExist">
+                                    <el-button type="primary " @click="IfExist = true">添加</el-button>
+                                </el-form-item>
+                                <el-form-item v-if="ifExist">
+                                    <el-table :data="showConsumables" style="width: 100%" class="mb20" border>
+                                        <!-- <el-table-column prop="type" label="材料类别" show-overflow-tooltip>
+                                        </el-table-column> -->
+                                        <el-table-column prop="id" label="材料名称" show-overflow-tooltip>
+                                        </el-table-column>
+                                        <el-table-column prop="handerNums" label="材料数量" show-overflow-tooltip>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-form-item>
                                 <el-form-item label="处理说明">
                                     <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
                                 </el-form-item>
@@ -85,7 +103,7 @@
                         </div>
                         <div>
                             <h3>历史数据</h3>
-                            <el-table :data="historyDataList" style="width: 100%" class="mb20" border height="300px">
+                            <el-table :data="historyDataList" style="width: 100%" class="mb20" border>
                                 <el-table-column prop="name" label="操作时间" show-overflow-tooltip>
                                     <template slot-scope="scope">
                                         <template v-if='scope.row.createTime'>
@@ -132,11 +150,34 @@
                 <el-button type="primary" @click="addEle =false ">确定</el-button>
             </div>
         </el-dialog>
+        <!-- 材料耗材类 -->
+        <el-dialog top='4vh' :close-on-click-modal=false :visible.sync="IfExist">
+            <el-form label-width="130px" class="mb-22" :model="categorys">
+                <el-form-item label="材料耗材类别">
+                    <el-select v-model="categorys.type" style="width:100%" @change = "categoryData">
+                        <el-option label="材料" value="1"></el-option>
+                        <el-option label="耗材" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+               <el-form-item label="材料名称">
+                    <el-select v-model="categorys.id" style="width:100%">
+                        <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="数量">
+                    <el-input placeholder="请输入数量"  v-model="categorys.handerNums"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="IfExist = false">取消</el-button>
+                <el-button type="primary" @click="addDatas">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { subselect, jobFlow } from '@/api/alarm'
+import { subselect, jobFlow , ifExistMateria} from '@/api/alarm'
 import { getUserList } from '@/api/user'
 import FileUploader from '@/components/Upload/excel'
 
@@ -156,11 +197,18 @@ export default {
   data() {
     return {
       addEle: false,
+      IfExist:false,
       form: {},
       consumablesList1: [],
+      consumables:[],
       historyDataList: [],
       projects: [],
       selectedDeviceList: [],
+      ifExist:false,
+      category:[],
+      categorys:{},
+      showConsumables:[],
+      list:[],
       circulation: {
         imgList: [],
         name: ''
@@ -204,7 +252,6 @@ export default {
         list.flowStatus = flowStatus[list.flowStatus]
         list.isRule = isRule[list.isRule]
         list.finalTime = new Date(list.finalTime).toLocaleString()
-        console.log(list)
         this.form = list
         this.consumablesList1 = this.form.deviceList
         const historyList = {
@@ -225,24 +272,48 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-      console.log(selection)
     },
     getUserList() {
       getUserList().then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.projects = res.data
         }
       })
     },
+    ifExistMateria(id){
+        ifExistMateria(id).then(res=>{
+            this.ifExist = res.data.ifExist
+            this.category = res.data.jobMateriaList
+        })
+    },
     setURL(argu, data, name) {
       data[name] = argu[0]
+    },
+    categoryData(val){
+        this.list = []
+        for(var i = 0;i<this.category.length;i++){
+            if( val == this.category[i].type){
+                this.list.push(this.category[i])
+            }
+        }
+    },
+    addDatas(){
+        this.IfExist = false
+        this.consumables.push(this.categorys)
+        this.showConsumables.push(this.categorys)
+        this.categorys = {}
+        for(var i = 0;i<this.showConsumables.length;i++){
+            for(var j = 0 ;j<this.category.length;j++){
+                if(this.showConsumables[i].id == this.category[j].id){
+                    this.showConsumables[i].id = this.category[j].name
+                }
+            }
+        }
     },
     handleCancel() {
       this.$emit('update:visible', false)
     },
     jobFlow() {
-      // console.log(this.circulation)
       for (var i = 0; i < this.selectedDeviceList.length; i++) {
         this.ids.push(this.selectedDeviceList[i].id)
       }
@@ -251,6 +322,15 @@ export default {
       this.circulation.operateType = 3
       this.circulation.imgList.push(this.circulation.name)
       delete this.circulation.name
+      for(var i = 0;i<this.showConsumables.length;i++){
+            for(var j = 0 ;j<this.category.length;j++){
+                if(this.showConsumables[i].id == this.category[j].name){
+                    this.showConsumables[i].id = this.category[j].id
+                }
+            }
+            this.showConsumables[i].type =5
+        }
+      this.circulation.materiaUpdateRequestList = this.consumables
       jobFlow(this.circulation).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -270,9 +350,9 @@ export default {
   },
   watch: {
     data(val) {
-      //   console.log(val)
       this.subselect(val.id)
       this.getUserList()
+      this.ifExistMateria(val.id)
     }
   }
 }

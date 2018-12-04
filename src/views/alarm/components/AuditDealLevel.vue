@@ -35,25 +35,30 @@
                                 </el-table>
                             </el-form-item>
                             <el-form-item v-if="form.type == '关联工程'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="mac" label="工程ID" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="name" label="工程名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=工程ID>
+                                        <el-input v-model="form.linkProjectId" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=工程名称>
+                                        <el-input v-model="form.linkProjectName" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                             <el-form-item label="是否规则内">
                                 <el-input v-model='form.isRule'></el-input>
                             </el-form-item>
                             <el-form-item v-if="form.isRule == '是'">
-                                <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
-                                    <el-table-column prop="name" label="规则名称" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则描述" show-overflow-tooltip>
-                                    </el-table-column>
-                                    <el-table-column prop="typeId" label="规则级别" show-overflow-tooltip>
-                                    </el-table-column>
-                                </el-table>
+                                <el-form>
+                                    <el-form-item label=规则名称>
+                                        <el-input v-model="form.ruleName" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则描述>
+                                        <el-input v-model="form.ruleDescription" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item label=规则级别>
+                                        <el-input v-model="form.warnLevel" disabled></el-input>
+                                    </el-form-item>
+                                </el-form>
                             </el-form-item>
                         </el-form>
                     </el-card>
@@ -63,6 +68,16 @@
                         <div style="border-bottom:1px solid #969696">
                             <h3>审核</h3>
                             <el-form label-width="130px" class="mb-22" :model="circulation">
+                              <el-form-item v-if="status" label="耗材明细">
+                                    <el-table :data="showConsumables" style="width: 100%" class="mb20" border>
+                                        <!-- <el-table-column prop="type" label="材料类别" show-overflow-tooltip>
+                                        </el-table-column> -->
+                                        <el-table-column prop="name" label="材料名称" show-overflow-tooltip>
+                                        </el-table-column>
+                                        <el-table-column prop="nums" label="材料数量" show-overflow-tooltip>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-form-item>
                                 <el-form-item label="审核说明">
                                     <el-input type="textarea" :rows='3' placeholder="审核说明.." v-model='circulation.description'></el-input>
                                 </el-form-item>
@@ -126,7 +141,7 @@
 </template>
 
 <script>
-import { subselect, jobFlow } from '@/api/alarm'
+import { subselect, jobFlow , queryJobMateria } from '@/api/alarm'
 import { getUserList } from '@/api/user'
 
 export default {
@@ -149,13 +164,14 @@ export default {
       historyDataList: [],
       projects: [],
       selectedDeviceList: [],
-      circulation: {}
+      circulation: {},
+      showConsumables:[],
+      status:false
     }
   },
   methods: {
     subselect(id) {
       subselect(id).then(res => {
-        // console.log(res.data)
         const list = res.data
         const mapList = {
           '1': '一级告警',
@@ -189,7 +205,6 @@ export default {
         list.flowStatus = flowStatus[list.flowStatus]
         list.isRule = isRule[list.isRule]
         list.finalTime = new Date(list.finalTime).toLocaleString()
-        console.log(list)
         this.form = list
         this.consumablesList1 = this.form.deviceList
         const historyList = {
@@ -210,12 +225,10 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-      console.log(selection)
     },
     getUserList() {
       getUserList().then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.projects = res.data
         }
       })
@@ -225,6 +238,16 @@ export default {
     },
     handleCancel() {
       this.$emit('update:visible', false)
+    },
+    queryJobMateria(id){
+      queryJobMateria(id).then(res=>{
+        if(res.code == 200){
+          this.showConsumables = res.data
+          this.status = true
+        }else{
+          this.status = false
+        }
+      })
     },
     rejected() {
       this.circulation.jobId = this.form.id
@@ -267,9 +290,9 @@ export default {
   },
   watch: {
     data(val) {
-      //   console.log(val)
       this.subselect(val.id)
       this.getUserList()
+      this.queryJobMateria(val.id)
     }
   }
 }

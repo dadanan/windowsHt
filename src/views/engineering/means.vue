@@ -4,11 +4,11 @@
       <el-col :xs="24" class="btn" :sm="6" :lg="8">
         <el-row :gutter="20">
           <el-col :xs="24" :sm="12" :lg="12" style="border-right:2px solid #66c8d9">
-            <h2>11</h2>
+            <h2>{{total}}</h2>
             <p>工程总数</p>
           </el-col>
           <el-col :xs="24" :sm="12" :lg="12">
-            <h2>290</h2>
+            <h2>{{deviceTotalCount}}</h2>
             <p>设备总数</p>
           </el-col>
         </el-row>
@@ -53,15 +53,15 @@
         <div style="flex: 1;"></div>
         <el-button-group>
           <el-button type="primary" @click="AddMessage = true">添加</el-button>
-          <el-button type="primary">删除</el-button>
+          <el-button type="primary" @click="deleteProject">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
       </div>
-      <add-means :visible.sync="AddMeans" :data ='editingData'></add-means>
+      <add-means :visible.sync="AddMeans" :data ='editingDatas'></add-means>
       <add-message :visible.sync="AddMessage" :data ='editingData' @add-data='addData'></add-message>
       <create-message :visible.sync="CreateMessage" :data ='editingDataa' @add-data='addData'></create-message>
       <project-details :visible.sync="ProjectDetails" :data ='editingData'></project-details>
-      <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list">
+      <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="projectNo" label="工程编号" show-overflow-tooltip>
@@ -103,8 +103,8 @@ import AddMeans from './components/AddMeans'
 import AddMessage from './components/AddMessage'
 import CreateMessage from './components/CreateMessage'
 import ProjectDetails from './components/ProjectDetails'
-import { EngList ,createselect } from '@/api/alarm'
-
+import { EngList ,createselect ,deleteProject ,projectLocationCount ,projectTrendCount} from '@/api/alarm'
+import { queryHomePageStatistic } from '@/api/big-picture-mode/bigPictureMode'
 export default {
   components: {
     DataCard,
@@ -120,16 +120,14 @@ export default {
       ProjectDetails: false,
       CreateMessage:false,
       editingDataa:{},
+      editingDatas:{},
       alarmList: [],
-      // taday: new Date(new Date().setHours(0, 0, 0, 0)) / 1000,
-      // SevenDayAgo :this.taday - 86400 * 7,
-      // SevenDayAgos:this.taday - 86400 * 30,
       editingData:{},
       activeTab: '1',
+      selectedDeviceList:[],
+      ids:[],
       list: true,
-      value1: '',
-      value2: '',
-      value3: '',
+      deviceTotalCount:0,
       query: {
         limit: 100,
         page: 1
@@ -143,13 +141,13 @@ export default {
         tooltip: {},
         legend: {},
         xAxis: {
-          data: ['2018-03', '2018-04', '2018-05', '2018-06', '2018-07']
+          data: []
         },
         yAxis: {},
         series: [
           {
             name: '增长趋势',
-            data: [2, 54, 32, 18, 20],
+            data: [],
             type: 'line'
           }
         ]
@@ -168,7 +166,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['普陀区', '嘉定区', '建邺区', '朝阳区', '东城区'],
+            data:[],
             axisTick: {
               alignWithLabel: true
             }
@@ -184,7 +182,7 @@ export default {
             name: '占比',
             type: 'bar',
             barWidth: '60%',
-            data: [390, 330, 200, 100, 50]
+            data: []
           }
         ]
       }
@@ -205,7 +203,6 @@ export default {
       }else if(this.createTime ==3){
         this.query.createTime =SevenDayAgos
       }
-      console.log(this.query)
       this.EngList()
     },
     reset(){
@@ -220,7 +217,6 @@ export default {
     },
     EngList() {
       EngList(this.query).then(res => {
-        // console.log(res.data)
         this.alarmList = res.data.projectRspPoList
         this.total = res.data.totalCount
       })
@@ -235,7 +231,7 @@ export default {
     },
     addMeans(val){
       this.AddMeans = true
-      this.editingData = val
+      this.editingDatas = val
     },
     createMessage(val){
      createselect(val.id).then(res=>{
@@ -248,10 +244,69 @@ export default {
           this.ProjectDetails = true
           this.editingData = res.data
       })
+    },
+    projectLocationCount(){
+      projectLocationCount().then(res=>{
+          const list = res.data
+          const distance = []
+          const projectPercent = []
+          for(var i = 0;i<list.length;i++){
+            distance.push(list[i].distance)
+            projectPercent.push(list[i].projectCount)
+          }
+          this.kanbanChart.xAxis[0].data = distance
+          this.kanbanChart.series[0].data = projectPercent
+      })
+    },
+    projectTrendCount(){
+      projectTrendCount().then(res=>{
+          const list = res.data
+          const date = []
+          const projectCount = []
+          for(var i = 0;i<list.length;i++){
+            date.push(list[i].date)
+            projectCount.push(list[i].projectCount)
+          }
+          this.kanbanChart2.xAxis.data = date
+          this.kanbanChart2.series[0].data = projectCount
+      })
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+    },
+    deleteProject(){
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      deleteProject({ valueList: this.ids }).then(res => {
+        if (res.code === 200) {
+          this.selectedDeviceList = []
+          this.ids =[]
+          this.EngList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    queryHomePageStatistic() {
+      // 查询首页数据
+      queryHomePageStatistic().then(res => {
+        const data = res.data
+        this.deviceTotalCount=data.deviceTotalCount
+      })
     }
   },
   created() {
     this.EngList()
+    this.projectLocationCount()
+    this.projectTrendCount()
   }
 }
 </script>

@@ -249,3 +249,60 @@ export function queryAllGroup() {
     method: 'get'
   })
 }
+
+// 工程区域统计
+export function projectLocationCount() {
+  return request({
+    url: '/temp/api/project/statistics/projectLocationCount',
+    method: 'get'
+  })
+}
+
+//工程量趋势统计
+export function projectTrendCount() {
+  return request({
+    url: '/temp/api/project/statistics/projectTrendCount',
+    method: 'get'
+  })
+}
+
+//查询是否存在材料
+export function ifExistMateria(jobId) {
+  return request({
+    url: `/temp/api/materia/ifExistMateria/${jobId}`,
+    method: 'get'
+  })
+}
+
+//查询任务待审核状态下材料情况
+export function queryJobMateria(jobId) {
+  return request({
+    url: `/temp/api/materia/queryJobMateria/${jobId}`,
+    method: 'get'
+  })
+}
+
+//工程分析
+export function projectAnalysis(projectId) {
+  return request({
+    url: `/temp/api/project/projectAnalysis/${projectId}`,
+    method: 'get'
+  })
+}
+
+//耗材变更
+export function updateMateria(data) {
+  return request({
+    url: '/temp/api/materia/updateMateria',
+    method: 'post',
+    data
+  })
+}
+
+//查询任务待审核状态下材料情况
+export function queryJobMateriaLog(materialId) {
+  return request({
+    url: `/temp/api/materia/queryJobMateriaLog/${materialId}`,
+    method: 'get'
+  })
+}

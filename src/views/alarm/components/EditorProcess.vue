@@ -55,18 +55,16 @@ export default {
   methods: {
     selectList() {
       selectList(this.query).then(res => {
-        console.log(res)
         this.list = res.data.dictRspPoList
       })
     },
     editRule() {
-        if(this.form.status == '正常'){
+        if(this.form.status == '启用'){
             this.form.status = 1
           }
           if(this.form.status == '禁用'){
             this.form.status = 3
           }
-      console.log(this.form)
       editRule(this.form).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -89,7 +87,6 @@ export default {
   },
   watch: {
     data(val) {
-      console.log(val)
       this.form = val
     }
   },
