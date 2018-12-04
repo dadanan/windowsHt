@@ -306,3 +306,12 @@ export function queryJobMateriaLog(materialId) {
     method: 'get'
   })
 }
+
+//查询报警任务
+export function queryWarnJob(data) {
+  return request({
+    url: '/temp/api/job/queryWarnJob',
+    method: 'post',
+    data
+  })
+}

@@ -511,6 +511,7 @@ export default {
     createselect(id){
       createselect(id).then(res => {
         this.form = res.data
+        console.log(this.form)
       })
     },
     toggleSelection() {
@@ -527,6 +528,8 @@ export default {
   },
   watch: {
     data(val){
+      this.selectedDeviceList = []
+      this.ids = []
       this.createStep = 0
       this.projectIds = val.id
       this.createselect(val.id)

@@ -170,6 +170,7 @@
             <div class="input-group">
               <el-input v-model="option.definedName" placeholder="选项名称"></el-input>
               <el-input v-model="option.optionValue" placeholder="选项指令" v-if='option.new'></el-input>
+              <el-input v-model="option.actualOptionValue" placeholder="映射指令值"></el-input>
               <el-tag type="success" v-if='option.updateStatus === 1'>新增</el-tag>
               <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
               <el-button type="danger" v-if='option.status === 3 && option.updateStatus !==3 ' @click="ableConfigOption(option,i)">已禁用</el-button>
@@ -389,6 +390,7 @@ export default {
               return {
                 id: iItem.id,
                 abilityOptionId: iItem.abilityOptionId,
+                actualOptionValue:iItem.actualOptionValue,
                 definedName: iItem.definedName,
                 maxVal: iItem.maxVal,
                 defaultVal: iItem.defaultVal,

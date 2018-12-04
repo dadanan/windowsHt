@@ -154,11 +154,14 @@ export default {
       selectedDeviceList: [],
       isRule: '',
       form: {
-        status: 1
+        status: 1,
+        cycleType:0,
+        linkType:0
       },
       isRightExcute1: false,
       query: {
         limit: 1000,
+        useType:1,
         page: 1
       },
       projects: [],

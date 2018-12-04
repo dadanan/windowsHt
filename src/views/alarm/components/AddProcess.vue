@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="创建实施阶段" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="创建规则" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
       <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
         <el-form-item label="规则分类">
           <el-select v-model="form.typeId"  style="width:100%">
@@ -18,6 +18,13 @@
             <el-option  label="二级告警" value="2"></el-option>
             <el-option  label="三级告警" value="3"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="规则用途">
+          <template>
+            <el-radio v-model="form.useType" label="1">计划</el-radio>
+            <el-radio v-model="form.useType" label="2">用户报修反馈</el-radio>
+            <el-radio v-model="form.useType" label="3">设备告警</el-radio>
+          </template>
         </el-form-item>
       </el-form>
     <div slot="footer" class="dialog-footer">
@@ -40,7 +47,9 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+        useType:"1"
+      },
       rules: {
         name: [
           { required: true, message: '规则名称', trigger: 'blur' },
