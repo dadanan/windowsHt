@@ -3,7 +3,9 @@
     <el-upload class="avatar-uploader" :action="host" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :data='attachedData'>
       <el-button size="small" type="primary">点击上传</el-button>
     </el-upload>
-    <div>{{getName}}</div>
+    <!-- <div>
+      {{getName}}
+    </div> -->
   </div>
 </template>
 
@@ -24,7 +26,10 @@ export default {
         success_action_status: 200,
         signature
       },
-      name: ''
+      name: [],
+      value: '',
+      sub1:{},
+      sub:[]
     }
   },
   props: {
@@ -32,10 +37,10 @@ export default {
       type: String,
       default: ''
     },
-    // format: {
-    //   type: String,
-    //   default: ''
-    // }
+    format: {
+      type: String,
+      default: ''
+    }
   },
   computed: {
     getName() {
@@ -44,14 +49,15 @@ export default {
   },
   methods: {
     handleSuccess(res, file) {
+      // this.sub1.name =file.name
+      // this.sub1.url  =this.host+'/'+file.name
+      // this.sub.push(this.sub1)
       this.$emit('get-url', `${this.host}/${file.name}`)
-      this.name = file.name
+      // console.log( `${this.host}/${file.name}`)
+      this.name.push(file.name)
     },
     beforeAvatarUpload(file) {
       let isValid = true
-      // if (this.format === 'apk') {
-      //   isValid = file.type === 'application/vnd.android.package-archive'
-      // }
 
       const isLt2M = file.size / 1024 / 1024 < 200
       if (!isValid) {

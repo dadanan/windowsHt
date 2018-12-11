@@ -4,23 +4,31 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-input v-model="value1" placeholder="规则名称"></el-input>
+            <el-input placeholder="输入名称" v-model="query.name"></el-input>
+          </el-form-item>
+          <!-- <el-form-item>
+            <el-select placeholder="选择关联" v-model="search.linkType">
+              <el-option label="不关联" value="1"></el-option>
+              <el-option label="关联设备" value="2"></el-option>
+              <el-option label="关联工程" value="3"></el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item>
+            <el-select placeholder="告警级别" v-model="query.warnLevel">
+              <el-option label="一级告警" value="1"></el-option>
+              <el-option label="二级告警" value="2"></el-option>
+              <el-option label="三级告警" value="3"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="状态" :value='value1'>
+            <el-select placeholder="状态" v-model="query.status">
+              <el-option label="禁用" value="3"></el-option>
               <el-option label="启用" value="1"></el-option>
-              <el-option label="禁用" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="告警级别" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-            <el-button>重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="selectList">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -59,7 +67,6 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="editorProcess(scope.row)">修改</el-button>
-            <el-button type="text">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,6 +114,12 @@ export default {
     updateData() {
       this.selectList()
     },
+    reset(){
+      this.query.name = ''
+      this.query.status = ''
+      this.query.warnLevel = ''
+      this.selectList()
+    },
     selectList() {
       selectList(this.query).then(res => {
         // console.log(res)
@@ -119,14 +132,14 @@ export default {
         for (var i = 0; i < list.length; i++) {
           list[i].warnLevel = mapList[list[i].warnLevel]
           if (list[i].status == 1) {
-            list[i].status = '正常'
+            list[i].status = '启用'
           }
           if (list[i].status == 3) {
             list[i].status = '禁用'
           }
         }
         this.levelList = list
-        console.log(this.levelList)
+        // console.log(this.levelList)
         this.total = res.data.totalCount
       })
     },
@@ -140,6 +153,8 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
+          this.selectedDeviceList = []
+          this.ids = []
           this.selectList()
         } else {
           this.$message({
@@ -159,6 +174,8 @@ export default {
             type: 'success',
             message: '启用成功!'
           })
+          this.selectedDeviceList = []
+          this.ids = []          
           this.selectList()
         } else {
           this.$message({
@@ -178,6 +195,8 @@ export default {
             type: 'success',
             message: '禁用成功!'
           })
+          this.selectedDeviceList = []
+          this.ids = []
           this.selectList()
         } else {
           this.$message({
@@ -201,7 +220,7 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-      console.log(selection)
+      // console.log(selection)
     }
   },
   created() {

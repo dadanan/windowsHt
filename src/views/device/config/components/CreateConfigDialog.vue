@@ -153,6 +153,7 @@
           <div class="input-group">
             <el-input v-model="option.optionName" placeholder="选项名称"></el-input>
             <el-input v-model="option.optionValue" placeholder="选项指令" disabled></el-input>
+            <el-input v-model="option.actualOptionValue" placeholder="映射指令值"></el-input>
             <el-button type="success" v-if='option.status === 1' @click="disableConfigOption(option,i)">已启用</el-button>
             <el-button type="danger" v-if='option.status === 3' @click="ableConfigOption(option,i)">已禁用</el-button>
           </div>
@@ -317,6 +318,7 @@ export default {
               item.deviceModelAbilityOptions.map(iItem => {
                 return {
                   abilityOptionId: iItem.id,
+                  actualOptionValue:iItem.actualOptionValue,
                   definedName: iItem.optionName,
                   maxVal: iItem.maxVal,
                   defaultVal: iItem.defaultVal,
@@ -355,6 +357,7 @@ export default {
           modelFormatPages
         }
       }
+      console.log(form)
       createDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('add-data', {

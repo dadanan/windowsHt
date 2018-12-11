@@ -20,7 +20,7 @@ export default {
     alarm: '售后管理',
     alarmDevice: '计划列表',
     alarmConfig: '任务列表',
-    alarmProcess: '规划管理',
+    alarmProcess: '规则管理',
     order: '订单中心',
     rentOrder: '租凭订单列表',
     paymentOrder: '租凭充值列表',

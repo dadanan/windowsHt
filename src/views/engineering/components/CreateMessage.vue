@@ -3,7 +3,7 @@
     <el-dialog
       top='4vh'
       :close-on-click-modal=false
-      title="创建工程"
+      title="修改工程"
       :visible="visible"
       width="800px"
       @update:visible="$emit('update:visible', $event)"
@@ -30,10 +30,7 @@
               label-width="150px"
             >
               <el-form-item label="工程编号">
-                <el-input
-                  v-model="form.projectNo"
-                  @blur="existProjectNo"
-                ></el-input>
+                <el-input v-model="form.projectNo"></el-input>
               </el-form-item>
               <el-form-item label="工程名称">
                 <el-input v-model="form.name"></el-input>
@@ -56,7 +53,7 @@
               </el-form-item>
               <el-form-item label="选择工程建设地址">
                 <a-map
-                  :gps='form && form.mapGps'
+                  :gps='form && form.gps'
                   @getLocation='getLocation'
                 ></a-map>
               </el-form-item>
@@ -86,7 +83,7 @@
               <el-form-item label="关联设备项目">
                 <el-button
                   type="primary "
-                  @click="addEle = true"
+                  @click="toggleSelection"
                 >添加</el-button>
               </el-form-item>
               <el-form-item>
@@ -95,7 +92,6 @@
                   v-for="item in selectedDeviceList"
                   :value="item.id"
                   :key="item.name"
-                  closable
                   :type="item.type"
                   @close="handleClose(item)"
                   style="margin:0px 10px"
@@ -221,6 +217,7 @@
         style="width: 100%"
         class="mb20"
         border
+        ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection"></el-table-column>
@@ -355,13 +352,16 @@
 <script>
 import AMap from "./AMap";
 import FileUploader from "@/components/Upload/excel";
-import { queryAllGroup, addProject, existProjectNo } from "@/api/alarm";
+import { queryAllGroup, editProject ,createselect ,existProjectNo } from "@/api/alarm";
 
 export default {
   props: {
     visible: {
       type: Boolean,
       default: false
+    },
+    data: {
+      type: Object
     }
   },
   data() {
@@ -371,6 +371,7 @@ export default {
       consumablesDeve: false,
       materialDeve: false,
       selectedDeviceList: [],
+      selectedDeviceList1:[],
       form: {
         extraDeviceList: [],
         materialInfoList: []
@@ -379,8 +380,8 @@ export default {
       consumablesList1: {},
       projects: [],
       ids: [],
-      status: false,
       createStep: 0,
+      projectIds:0,
       rules: {
         name: [
           { required: true, message: "请输入设备名称", trigger: "blur" },
@@ -411,8 +412,8 @@ export default {
         this.createStep = 0;
       }
     },
-    existProjectNo() {
-      existProjectNo({ value: this.form.projectNo }).then(res => {
+     existProjectNo() {
+      existProjectNo({ value: this.form.projectNo ,projectId:this.projectIds}).then(res => {
         console.log(res.data);
         if (res.code === 200) {
           if (res.data) {
@@ -446,41 +447,56 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection;
-      console.log(selection);
+      // console.log(selection);
       if (this.selectedDeviceList.length) {
         this.unassignStatus = this.selectedDeviceList[0].assignStatus;
       }
     },
     handleClose(tag) {
       this.selectedDeviceList.splice(this.selectedDeviceList.indexOf(tag), 1);
-      console.log(this.selectedDeviceList);
+      // console.log(this.selectedDeviceList);
     },
     getLocation({ gps, location }) {
-      console.log(gps, location);
+      // console.log(gps, location);
       this.form.buildAddress = location;
       this.form.gps = gps.toString();
       this.form = Object.assign({}, this.form, {});
     },
     //关联设备项目
-    queryAllGroup() {
+    queryAllGroup(val) {
       queryAllGroup().then(res => {
         // console.log(res.data);
-        this.projects = res.data;
+        if (res.code === 200) {
+          this.projects = res.data
+          const list1 = []
+          this.selectedDeviceList1 = val
+          // console.log(val)
+          if (this.selectedDeviceList1.length > 0) {
+            for (var i = 0; i < this.selectedDeviceList1.length; i++) {
+              for (var j = 0; j < this.projects.length; j++) {
+                if (this.selectedDeviceList1[i] == this.projects[j].id) {
+                  list1.push(this.projects[j])
+                }
+              }
+            }
+          }
+          this.selectedDeviceList = Object.assign([], list1, []);
+        }
       });
     },
-    // 提交
+    // 修改
     addProject() {
       for (var i = 0; i < this.selectedDeviceList.length; i++) {
         this.ids.push(this.selectedDeviceList[i].id);
       }
       this.form.groupIds = this.ids.toString();
-      //   console.log(this.form);
-      if (this.status) {
-        addProject(this.form).then(res => {
+        editProject(this.form).then(res => {
+          this.selectedDeviceList=[]
+          this.ids = []
           if (res.code === 200) {
             this.$message({
               type: "success",
-              message: "添加成功!"
+              message: "修改成功!"
             });
             this.$emit("update:visible", false);
             this.$emit("add-data", this.form);
@@ -491,16 +507,35 @@ export default {
             });
           }
         });
-      }else{
-        this.$message({
-          type: "error",
-          message: "工程编号已存在!"
-        });
-      }
+    },
+    createselect(id){
+      createselect(id).then(res => {
+        this.form = res.data
+        console.log(this.form)
+      })
+    },
+    toggleSelection() {
+      this.addEle = true
+      this.$nextTick(function() {
+        // console.log(this.selectedDeviceList)
+        if (this.selectedDeviceList) {
+          this.selectedDeviceList.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
+        }
+      })
     }
   },
-  created() {
-    this.queryAllGroup();
+  watch: {
+    data(val){
+      this.selectedDeviceList = []
+      this.ids = []
+      this.createStep = 0
+      this.projectIds = val.id
+      this.createselect(val.id)
+      const arr = val.groupIds.split(',')
+      this.queryAllGroup(arr)
+    }
   },
   components: {
     AMap,

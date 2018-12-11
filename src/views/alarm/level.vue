@@ -4,48 +4,43 @@
       <div class="table-opts">
         <el-form :inline="true" class="el-form--flex">
           <el-form-item>
-            <el-select placeholder="任务名称" :value='value1'>
-              <el-option label="设备 MAC" value="1"></el-option>
-              <el-option label="设备序列号" value="2"></el-option>
-              <el-option label="设备名称" value="3"></el-option>
-              <el-option label="投放点" value="4"></el-option>
+            <el-input placeholder="输入名称" v-model="query.name"></el-input>
+          </el-form-item>
+          <!-- <el-form-item>
+            <el-select placeholder="选择关联" v-model="query.linkType">
+              <el-option label="不关联" value="1"></el-option>
+              <el-option label="关联设备" value="2"></el-option>
+              <el-option label="关联工程" value="3"></el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item>
+            <el-select placeholder="告警级别" v-model="query.warnLevel">
+              <el-option label="一级告警" value="1"></el-option>
+              <el-option label="二级告警" value="2"></el-option>
+              <el-option label="三级告警" value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input placeholder="选择关联"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="告警级别" :value='value2'>
-              <el-option label="预留布尔值故障" value="1"></el-option>
-              <el-option label="滤网到期提醒" value="2"></el-option>
-              <el-option label="PM 2.5 数值丢失报警" value="3"></el-option>
-              <el-option label="设备移开 1000 米报警" value="4"></el-option>
+            <el-select placeholder="状态" v-model="query.flowStatus">
+              <el-option label="待处理" value="1"></el-option>
+              <el-option label="处理中" value="2"></el-option>
+              <el-option label="审核中" value="3"></el-option>
+              <el-option label="已完成" value="4"></el-option>
+              <el-option label="已忽略" value="5"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select placeholder="状态" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select placeholder="范围" :value='value3'>
-              <el-option label="未修复" value="1"></el-option>
-              <el-option label="已修复" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-            <el-button>重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="selectList2">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
       <!-- CreateLevel -->
-      <create-level :visible.sync="CreateLevel" :data='editingData' @add-data='addData'></create-level>
+      <create-level :visible.sync="CreateLevel" :data='editingDataCre' @add-data='addData'></create-level>
       <ignore-level :visible.sync="IgnoreLevel" :data='editingData' @add-data='addData'></ignore-level>
       <deal-level :visible.sync="DealLevel" :data='editingData'></deal-level>
-      <sub-deal-level :visible.sync="SubDealLevel" :data='editingData'></sub-deal-level>
-
+      <sub-deal-level :visible.sync="SubDealLevel" :data='editingDatas' @add-data='addData'></sub-deal-level>
+      <audit-deal-level :visible.sync="AuditDealLevel" :data='editingDataD' @add-data='addData'></audit-deal-level>
 
       <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
@@ -91,7 +86,7 @@
               <el-button type="text" @click="createLevel(scope.row)">详情</el-button>
             </template>
             <template v-else-if="scope.row.flowStatus == '待审核'">
-              <el-button type="text">审核</el-button>
+              <el-button type="text" @click="auditDealLevel(scope.row)">审核</el-button>
               <el-button type="text" @click="createLevel(scope.row)">详情</el-button>
             </template>
             <template v-else-if="scope.row.flowStatus == '已完成'">
@@ -114,15 +109,16 @@ import CreateLevel from './components/CreateLevel'
 import IgnoreLevel from './components/IgnoreLevel'
 import DealLevel from './components/DealLevel'
 import SubDealLevel from './components/SubDealLevel'
+import AuditDealLevel from './components/AuditDealLevel'
 
-
-import { selectList2, deletePlan, forbitPlan } from '@/api/alarm'
+import { selectList2,subselect, deletePlan, forbitPlan } from '@/api/alarm'
 export default {
   components: {
     CreateLevel,
     IgnoreLevel,
     DealLevel,
-    SubDealLevel
+    SubDealLevel,
+    AuditDealLevel
   },
   data() {
     return {
@@ -140,17 +136,28 @@ export default {
       CreateLevel: false,
       IgnoreLevel: false,
       DealLevel: false,
-      SubDealLevel:false,
-      editingData: {}
+      SubDealLevel: false,
+      AuditDealLevel: false,
+      editingData: {},
+      editingDatas:{},
+      editingDataD:{},
+      editingDataCre:{}
     }
   },
   methods: {
     addData(data) {
       this.selectList2()
     },
+    reset(){
+      this.query.name = ''
+      this.query.status = ''
+      this.query.warnLevel = ''
+      this.query.linkType =''
+      this.selectList2()
+    },
     selectList2() {
       selectList2(this.query).then(res => {
-        console.log(res)
+        // console.log(res)
         const list = res.data.jobRspPoList
         const mapList = {
           '1': '一级告警',
@@ -172,7 +179,7 @@ export default {
           '2': '处理中',
           '3': '待审核',
           '4': '已完成',
-          '6': '已忽略'
+          '5': '已忽略'
         }
         for (var i = 0; i < list.length; i++) {
           list[i].warnLevel = mapList[list[i].warnLevel]
@@ -196,8 +203,10 @@ export default {
       this.selectedDeviceList = selection
     },
     createLevel(val) {
-      this.editingData = val
-      this.CreateLevel = true
+      subselect(val.id).then(res=>{
+        this.editingDataCre = res.data
+        this.CreateLevel = true
+      })
     },
     ignoreLevel(val) {
       this.editingData = val
@@ -208,8 +217,16 @@ export default {
       this.DealLevel = true
     },
     subDealLevel(val) {
-      this.editingData = val
-      this.SubDealLevel = true
+      subselect(val.id).then(res=>{
+        this.editingDatas = res.data
+        this.SubDealLevel = true
+      })
+    },
+    auditDealLevel(val) {
+      subselect(val.id).then(res=>{
+        this.editingDataD = res.data
+        this.AuditDealLevel = true
+      })
     }
   },
   created() {

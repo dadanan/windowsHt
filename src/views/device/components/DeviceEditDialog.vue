@@ -16,7 +16,7 @@
         </el-form-item>
 
         <!-- 设备传参 -->
-        <el-form-item label="设备传参" border>
+        <el-form-item label="设备传参" border v-if = "ginseng">
           <div v-for="item in ginsengList" style="width:100%">
             <div style="padding: .24rem;">
               <p style="padding:0px 20px">{{item.paramName}}</p>
@@ -134,6 +134,7 @@ export default {
         list: []
       },
       status: '',
+      ginseng:true,
       status1: false
     }
   },
@@ -259,7 +260,13 @@ export default {
     queryAllParamConfig() {
       queryAllParamConfig(this.form.id)
         .then(res => {
-          this.ginsengList = res.data
+          console.log(res.data)
+          if(res.data){
+            this.ginseng = true
+            this.ginsengList = res.data
+          }else{
+            this.ginseng = false
+          }
         })
         .catch(res => {
           // this.status ="设备未绑定"

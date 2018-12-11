@@ -535,6 +535,7 @@ export default {
           const tempArray = this.typeList.filter(type =>
             tempType.some(id => id == type.id)
           )
+          console.log(tempArray)
           this.$nextTick(() => {
             tempArray.forEach(item => {
               this.$refs.typeTree.toggleRowSelection(item)
