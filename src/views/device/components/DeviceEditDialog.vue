@@ -187,6 +187,9 @@ export default {
     getDeviceShareList() {
       deviceShareList(this.form.id)
         .then(res => {
+          if(!res.data){
+            return
+          }
           this.shareData = {
             deviceId: this.form.id,
             list: res.data
@@ -247,7 +250,9 @@ export default {
           abilityTypeName: 'C10',
           paramConfigList: paramConfigList
         }).then(res => {
-          console.log(res)
+          if(!res.data){
+            return
+          }
           this.queryAllParamConfig()
           this.$message({
           message: '修改成功！',
@@ -260,7 +265,9 @@ export default {
     queryAllParamConfig() {
       queryAllParamConfig(this.form.id)
         .then(res => {
-          console.log(res.data)
+          if(!res.data){
+              return
+            }
           if(res.data){
             this.ginseng = true
             this.ginsengList = res.data

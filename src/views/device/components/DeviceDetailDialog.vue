@@ -364,6 +364,9 @@ export default {
         page: this.queryDeviceW.page,
         deviceId: id
       }).then(res => {
+        if(!res.data || !res.data.dataList){
+          return
+        }
         this.deviceWorkLog = res.data.dataList
         this.deviceWorkLogCound = res.data.totalCount
       })
@@ -375,6 +378,9 @@ export default {
         page: this.queryOperLogc.page,
         deviceId: id
       }).then(res => {
+        if(!res.data || !res.data.dataList){
+          return
+        }
         this.deviceList = res.data.dataList
         this.queryOperLogCound = res.data.totalCount
       })

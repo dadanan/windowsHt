@@ -28,6 +28,13 @@ export function selectTypePercent() {
     method: 'get'
   })
 }
+// 设备类型统计
+export function typePercent() {
+  return request({
+    url: '/temp/api/statistics/typePercent',
+    method: 'get'
+  })
+}
 // 今日新增设备统计
 export function newDeviceCountOfToday() {
   return request({

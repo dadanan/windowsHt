@@ -545,11 +545,7 @@ export default {
       }
       return res
     },
-    watch: {
-      option() {
-        this.$refs.map.mergeOptions(this.option)
-      }
-    },
+
     onProvienceClick(param) {
       if (this.option.geo.map === 'china') {
         this.option.geo.map = this.lookupProvienceTable(param.name)
@@ -564,9 +560,15 @@ export default {
           result = element.code
         }
       })
+      console.log(result)
       return result
     }
-  }
+  },
+  watch: {
+      option() {
+        this.$refs.map.mergeOptions(this.option)
+      }
+  },
 }
 </script>
 <style lang="scss" scoped>
