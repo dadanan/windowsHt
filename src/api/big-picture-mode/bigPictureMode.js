@@ -66,3 +66,12 @@ export function selectLiveCustomerUserCountPerMonth() {
     method: 'get',
   })
 }
+
+// 城市统计
+export function deviceLocationCount(data) {
+  return request({
+    url: '/temp/api/statistics/deviceLocationCount',
+    method: 'post',
+    data
+  })
+}

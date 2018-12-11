@@ -17,27 +17,23 @@
     </el-row>
     <el-card>
       <div class="table-opts">
-        <el-form :inline="true" :model="form" ref="form" class="el-form--flex">
+        <el-form :inline="true" class="el-form--flex">
           <el-form-item>
             <el-select v-model="form.type" placeholder="搜索条件">
-              <el-option label="类型" value="1"></el-option>
-              <el-option label="用户" value="2"></el-option>
-              <el-option label="运营者" value="3"></el-option>
-              <el-option label="区域" value="4"></el-option>
-              <el-option label="全部" value="5"></el-option>
+              <el-option label="用户名" value="1"></el-option>
+              <el-option label="区域" value="2"></el-option>
+              <el-option label="设备型号" value="3"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-input v-model="form.keywords" placeholder="搜索关键词"></el-input>
+          <el-form-item v-if="form.type == 1">
+            <el-input v-model="query.userName" placeholder="请输入用户名"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-select v-model="form.date" placeholder="搜索范围">
-              <el-option label="7 天" value="1"></el-option>
-              <el-option label="30 天" value="2"></el-option>
-              <el-option label="全部" value="3"></el-option>
-            </el-select>
+          <el-form-item v-if="form.type == 2">
+            <el-input v-model="query.location" placeholder="请输入区域"></el-input>
           </el-form-item>
-          <div style="flex: 1;"></div>
+          <el-form-item v-if="form.type == 3">
+            <el-input v-model="query.modelName" placeholder="请输入设备型号"></el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="search" icon="el-icon-search">搜索</el-button>
             <el-button @click="resetForm">重置</el-button>
@@ -115,9 +111,7 @@ export default {
       kanbanData:userDataT,
       isEditKanbanDialogVisible: false,
       form: {
-        type: '',
-        keywords: '',
-        date: ''
+        type: "1",
       },
       query:{
         limit:100,
@@ -138,9 +132,14 @@ export default {
     }
   },
   methods: {
-    search() {},
+    search() {
+      this.selectCustomerUser()
+    },
     resetForm() {
-      this.$refs.form.resetFields()
+      this.query.modelName = ''
+      this.query.userName = ''
+      this.query.location = ''
+      this.form.type = "1"
     },
     init() {
       this.selectCustomerUserCount()

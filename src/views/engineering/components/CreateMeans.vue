@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import ImageUploader from '@/components/Upload/image'
+import ImageUploader from '@/components/Upload/image1'
 // import { selectList } from '@/api/alarm'
 import { selectList } from '@/api/rent'
 import { addImpl } from '@/api/alarm'
@@ -100,8 +100,6 @@ export default {
   },
   methods: {
     dele(val){
-      console.log(this.sub)
-      console.log(val)
       for(var i = 0;i<this.sub.length;i++){
         if(val.name == this.sub[i].name){
          this.sub.splice(i,1)
@@ -114,7 +112,9 @@ export default {
       var urlName = argu[0].substring(index + 1, argu[0].length)
       this.sub.push({ url: argu[0], name: urlName })
     },
-    filterBg(data) {},
+    filterBg(data) {
+      return data
+    },
     removeImg(file) {
       const index = this.form.imgList.findIndex(v => v.image === file.url)
     },
@@ -143,7 +143,6 @@ export default {
           this.form.fileMap[val]=list
         }
       }
-      console.log(this.form)
       addImpl(this.form).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -171,8 +170,8 @@ export default {
   },
   watch: {
     data(val){
-      console.log(val)
       this.form.projectId = val.id
+      this.form = val
     }
   }
 }

@@ -88,9 +88,9 @@
       <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="任务名称" show-overflow-tooltip sortable>
+        <el-table-column prop="name" label="告警名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="任务描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="告警内容" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="type" label="选择关联" show-overflow-tooltip sortable>
         </el-table-column>
@@ -104,7 +104,7 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
+        <el-table-column prop="warnLevel" label="告警等级" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="sourceType" label="告警来源" show-overflow-tooltip sortable>
         </el-table-column>
@@ -155,7 +155,7 @@ import DealLevel from './components/DealLevel'
 import SubDealLevel from './components/SubDealLevel'
 import AuditDealLevel from './components/AuditDealLevel'
 
-import { queryWarnJob,subselect, deletePlan, forbitPlan } from '@/api/alarm'
+import { queryWarnJob,subselect, deletePlan, forbitPlan ,jobWarningSourceCount} from '@/api/alarm'
 export default {
   components: {
     DataCard,
@@ -190,7 +190,7 @@ export default {
       activeTab: '1',
       kanbanChart1: {
         title: {
-          text: '个状态占比图'
+          text: '告警设备占比'
         },
         tooltip: {
           formatter: '{b}: {c} ({d}%)'
@@ -233,7 +233,7 @@ export default {
       },
       kanbanChart: {
         title: {
-          text: '各地工程量TOP5'
+          text: '告警来源分布'
         },
         color: ['#3398DB'],
         tooltip: {
@@ -246,8 +246,8 @@ export default {
           {
             type: 'category',
             data: [
-              '计划维保',
-              'H5端反馈',
+              '计划任务',
+              '客户反馈',
               '设备告警'
             ],
             axisTick: {
@@ -284,7 +284,7 @@ export default {
     },
     queryWarnJob() {
       queryWarnJob(this.query).then(res => {
-        const list = res.data
+        const list = res.data.projectJobInfoList
         const mapList = {
           '1': '一级告警',
           '2': '二级告警',
@@ -334,6 +334,19 @@ export default {
         this.CreateLevel = true
       })
     },
+    jobWarningSourceCount() {
+      jobWarningSourceCount().then(res=>{
+        const list = res.data
+        const listCound = []
+        const listNum = []
+        for(var i = 0;i<list.length;i++){
+          listCound.push(list[i].date)
+          listNum.push(list[i].jobCount)
+        }
+        this.kanbanChart.xAxis[0].data = listCound
+        this.kanbanChart.series[0].data = listNum
+      })
+    },
     ignoreLevel(val) {
       this.editingData = val
       this.IgnoreLevel = true
@@ -357,6 +370,7 @@ export default {
   },
   created() {
     this.queryWarnJob()
+    this.jobWarningSourceCount()
   }
 }
 </script>

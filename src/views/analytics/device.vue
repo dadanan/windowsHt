@@ -15,7 +15,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-card>
+    <!-- <el-card>
       <div class="table-opts">
         <el-form :inline="true" :model="form" ref="form" class="el-form--flex">
           <el-form-item>
@@ -60,11 +60,11 @@
         </el-table-column>
       </el-table>
       <div class="excel-container">
-        <!-- <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
-        </el-pagination> -->
+        <el-pagination :current-page="1" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+        </el-pagination>
         <el-button type="primary">导出 Excel</el-button>
       </div>
-    </el-card>
+    </el-card> -->
     <el-dialog top='4vh' :close-on-click-modal=false title="编辑看板" :visible.sync="dialogEditKanbanVisible" class="kanban-edit">
       <el-form label-position="left" label-width="100px">
         <el-form-item label="数据展示">
@@ -89,7 +89,7 @@
 <script>
 import DataCard from '@/components/DataCard'
 import DTitle from '@/components/Title'
-import {modelPercent,selectDeviceCount ,newDeviceCountOfToday,queryHomePageStatistic} from '@/api/big-picture-mode/bigPictureMode'
+import {modelPercent,selectDeviceCount ,newDeviceCountOfToday,queryHomePageStatistic ,deviceLocationCount} from '@/api/big-picture-mode/bigPictureMode'
 import { developData, developDataT } from '../dashboardData'
 
 export default {
@@ -128,7 +128,8 @@ export default {
       devedata: [],
       newDeviceCount: '',
       ttt:false,
-      status: 1
+      status: 1,
+      ationCount:{}
     }
   },
   created () {
@@ -148,6 +149,7 @@ export default {
       this.modelPercent()
       this.newDeviceCountOfToday()
       this.queryHomePageStatistic()
+      this.deviceLocationCount()
     },
     test() {
       this.fakeData = !this.fakeData
@@ -165,8 +167,8 @@ export default {
         const dataAnalysis = this.kanbanData.数据展示
         dataAnalysis[0].value = data.deviceTotalCount //设备总数
         dataAnalysis[1].value = data.todayDeviceAddCount //今日设备新增数
-        dataAnalysis[3].value = data.todayDeviceBugCount //今日设备故障数
-        dataAnalysis[4].value = Number(data.deviceOnlinePercent)*100 //今日设备在线率
+        dataAnalysis[2].value = data.todayDeviceBugCount //今日设备故障数
+        dataAnalysis[3].value = Number(data.deviceOnlinePercent)*100 //今日设备在线率
       })
     },
     // 每月新增设备统计
@@ -191,7 +193,7 @@ export default {
         for(var i = 0; i<res.data.length;i++){
           this.devedata.push({value:((res.data[i].modelPercent).substring(0, 2)),name:res.data[i].modelName})
         }
-        this.kanbanData.图表展示[3].options.series[0].data = this.devedata
+        this.kanbanData.图表展示[2].options.series[0].data = this.devedata
       })
     },
     // 今日新增设备统计
@@ -206,6 +208,22 @@ export default {
         this.kanbanData.数据展示[0].value= res.data
       })
     },
+    // 城市统计
+    deviceLocationCount() {
+      deviceLocationCount(this.ationCount).then(res => {
+        // this.kanbanData.数据展示.设备分析[1].value = res.data
+        const list = res.data.provinces
+        const listName = []
+        const listNum = []
+        for(var i = 0;i<list.length; i++){
+          listName.push(list[i].province)
+          listNum.push(list[i].count)
+        }
+        const deviceC = this.kanbanData.图表展示[1].options
+        deviceC.yAxis.data = listName
+        deviceC.series[0].data = listNum
+      })
+    }
   }
 }
 </script>

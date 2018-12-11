@@ -61,9 +61,10 @@ export default {
         ],
       },
       query: {
-        limit: 100,
+        limit: 10000,
         page: 1,
-        type: 'planning'
+        type: 'planning',
+        isDelete:0
       },
       list:[]
     }

@@ -4,8 +4,8 @@
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="addToll = true">添加</el-button>
-          <!-- <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button> -->
+          <el-button type="primary" @click ="disableDict">禁用</el-button>
+          <el-button type="primary" @click="enableDict">启用</el-button>
           <el-button type="primary" @click="deleteDict">删除</el-button>
           <!-- <el-button type="primary" @click="isColumnDialogVisible = true">自定义</el-button> -->
         </el-button-group>
@@ -38,7 +38,15 @@
         </el-table-column>
         <el-table-column prop="createName" label="修改者" show-overflow-tooltip >
         </el-table-column>
-        <el-table-column prop="isDelete" label="状态" show-overflow-tooltip sortable>
+        <el-table-column prop="isDelete" label="状态" show-overflow-tooltip >
+          <template slot-scope="scope">
+            <template v-if = "scope.row.isDelete == 0">
+              启用
+            </template>
+            <template v-if = "scope.row.isDelete == 2">
+              禁用
+            </template>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -58,6 +66,7 @@ import AddToll from './components/AddToll'
 import EditToll from './components/EditToll'
 import DetaToll from './components/DetaToll'
 import { selectList, deleteDict } from '@/api/rent'
+import { disableDict ,enableDict } from '@/api/alarm'
 
 export default {
   components: {
@@ -115,6 +124,46 @@ export default {
         }
       })
     },
+    disableDict() {
+      disableDict({valueList:this.ids}).then(res => {
+        if (res.code === 200) {
+          this.selectList()
+          this.ids = []
+          this.selectedDeviceList = []
+          this.$message({
+            type: 'success',
+            message: '禁用成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update-data', this.form)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    enableDict() {
+      enableDict({valueList:this.ids}).then(res => {
+        if (res.code === 200) {
+          this.selectList()
+          this.ids = []
+          this.selectedDeviceList = []
+          this.$message({
+            type: 'success',
+            message: '启用成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update-data', this.form)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
     handleSizeChange(val) {
       this.query.limit = val
       this.selectList()
@@ -125,6 +174,9 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+      for(var i=0;i<this.selectedDeviceList.length;i++){
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
     },
     EditToll(data){
       this.editingData = data

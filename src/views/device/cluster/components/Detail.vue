@@ -58,9 +58,9 @@
           {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
         </template>
       </el-table-column>
-      <el-table-column prop="workStatus" label="工作状态" show-overflow-tooltip sortable>
+      <el-table-column prop="powerStatus" label="工作状态" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          {{scope.row.workStatus === 1 ? '开机' : '关机'}}
+          {{scope.row.powerStatus === 1 ? '开机' : '关机'}}
         </template>
       </el-table-column>
     </el-table>

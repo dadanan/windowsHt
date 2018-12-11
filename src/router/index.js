@@ -57,7 +57,24 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'tachometer-alt', noCache: true }
       }
     ]
-  }
+  },
+  {
+    path: '/engineering',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'means',
+        component: () => import('@/views/engineering/means'),
+        name: 'means',
+        meta: {
+          title: 'means',
+          icon: 'tachometer-alt', 
+          noCache: true 
+        }
+      }
+    ]
+  },
 ]
 
 export default new Router({
@@ -406,25 +423,25 @@ export const asyncRouterMap = [
       // }
     ]
   },
-  {
-    path: '/engineering',
-    component: Layout,
-    name: 'engineering',
-    redirect: 'noredirect',
-    alwaysShow: true,
-    meta: {
-      title: 'engineering',
-      icon: 'hand-holding-usd'
-    },
-    children: [
-      {
-        path: 'means',
-        component: () => import('@/views/engineering/means'),
-        name: 'means',
-        meta: {
-          title: 'means'
-        }
-      }
+  // {
+  //   path: '/engineering',
+  //   component: Layout,
+  //   name: 'engineering',
+  //   redirect: 'noredirect',
+  //   alwaysShow: true,
+  //   meta: {
+  //     title: 'engineering',
+  //     icon: 'hand-holding-usd'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'means',
+  //       component: () => import('@/views/engineering/means'),
+  //       name: 'means',
+  //       meta: {
+  //         title: 'means'
+  //       }
+  //     }
       // {
       //   path: 'measure',
       //   component: () => import('@/views/blank'),
@@ -441,8 +458,8 @@ export const asyncRouterMap = [
       //     title: 'maintenance'
       //   }
       // }
-    ]
-  },
+  //   ]
+  // },
   {
     path: '/system',
     component: Layout,
@@ -525,7 +542,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'alarm',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/message/message'),
         name: 'alarmMessage',
         meta: {
           title: 'alarmMessage'
@@ -533,7 +550,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'after-sale',
-        component: () => import('@/views/blank'),
+        component: () => import('@/views/message/NoticeMessage'),
         name: 'afterSaleMessage',
         meta: {
           title: 'afterSaleMessage'

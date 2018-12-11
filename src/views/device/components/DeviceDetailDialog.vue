@@ -80,8 +80,11 @@
                     - -
                   </template>
                 </el-form-item>
-                <el-form-item label="设备位置">
-                  {{form.location}}
+                <el-form-item label="设备位置" v-if="form.location">
+                  <!-- {{((form.location).split(","))[3]}} -->
+                  <el-input v-model="location" @blur="blur"></el-input>
+                </el-form-item>
+                <el-form-item label="设备位置" v-else>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -246,6 +249,7 @@ export default {
       shareListVisible: false,
       shareData: {}, // 分享数据
       group: '--',
+      location:'',
       deviceModelAbilitys: [],
       deviceModelAbility: {
         co2: false,
@@ -259,6 +263,8 @@ export default {
   },
   watch: {
     detailData(val) {
+      console.log(val)
+      this.location = (val.location).split(",")[3]
       this.init(val)
       this.valId = val.id
       this.selectById(val.modelId)
@@ -312,8 +318,26 @@ export default {
         }
       })
     },
+    blur(){
+      const location1 = (this.form.location).split(",")
+      const location = location1.toString()
+      const gps = this.form.mapGps
+    updateDevice({
+          id: this.form.id,
+          location,
+          mapGps: gps
+        }).then(() => {
+          this.$message({
+            message: '设备位置信息更新成功！',
+            type: 'success'
+          })
+          
+          this.location = location.split(",")[3]
+      })
+    },
     init(val) {
       this.form = JSON.parse(JSON.stringify(val))
+      console.log(this.form)
       this.queryOperLog(val.id)
       this.queryDeviceSensorStat(val.id)
       // this.getShareToken()
@@ -330,6 +354,7 @@ export default {
           type: 'success'
         })
         this.form.location = location
+        this.location = (this.form.location).split(",")[3]
       })
     },
     // 工作日志

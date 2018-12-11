@@ -167,6 +167,10 @@ export default {
           value: 'name'
         },
         {
+          label: '管理名称',
+          value: 'manageName'
+        },
+        {
           label: 'MAC',
           value: 'mac'
         }

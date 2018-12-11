@@ -234,6 +234,7 @@ export default {
     },
     getPermissions() {
       getPermissions().then(res => {
+        console.log(res.data)
         const data = res.data
         if (data && data.length > 0) {
           this.originPermissionData = data
