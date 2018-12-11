@@ -386,6 +386,9 @@ export default {
         page: this.queryDevice.page,
         deviceId: id
       }).then(res => {
+        if(!res.data || !res.data.dataList){
+          return
+        }
         this.deviceList1 = res.data.dataList
         for (var i = 0; i < this.deviceList1.length; i++) {
           this.deviceList1[i].hcho = this.deviceList1[i].hcho / 100

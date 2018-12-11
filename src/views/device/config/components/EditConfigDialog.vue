@@ -219,15 +219,15 @@
 </template>
 
 <script>
-import ImageUploader from '@/components/Upload/image'
-import File from '@/components/Upload/file'
+import ImageUploader from "@/components/Upload/image";
+import File from "@/components/Upload/file";
 
-import { fetchList as getTypeList } from '@/api/device/type'
-import { selectAllCustomers as getCustomer } from '@/api/customer'
-import { selectFormatsByCustomerId, select } from '@/api/format'
-import { updateDeviceModel } from '@/api/device/model'
-import { selectTypesBySLD } from '@/api/device/type'
-import DTitle from '@/components/Title'
+import { fetchList as getTypeList } from "@/api/device/type";
+import { selectAllCustomers as getCustomer } from "@/api/customer";
+import { selectFormatsByCustomerId, select } from "@/api/format";
+import { updateDeviceModel } from "@/api/device/model";
+import { selectTypesBySLD } from "@/api/device/type";
+import DTitle from "@/components/Title";
 
 export default {
   props: {
@@ -243,19 +243,19 @@ export default {
   data() {
     return {
       form: {
-        typeId: '',
-        customerId: '',
+        typeId: "",
+        customerId: "",
         showStatus: true,
-        devicePoolCount: '',
-        name: '',
-        modelCode: '',
-        modelNo: '',
-        remark: '',
-        icon: ''
+        devicePoolCount: "",
+        name: "",
+        modelCode: "",
+        modelNo: "",
+        remark: "",
+        icon: ""
       },
       createFunctionDialogVisible: false,
       childModelIds: [],
-      formatId: '',
+      formatId: "",
       formatSelectedList: [], // 用户可选择的总版式列表
       formatSelected: [], // 用户选择的某个版式列表
       androidForamtList: [], // 安卓版式列表
@@ -265,117 +265,117 @@ export default {
       deviceModelAbilitys: [], // 设备类型里的功能项数据
       rules: {
         customerId: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: "请输入活动名称", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
+          { required: true, message: "请选择活动区域", trigger: "change" }
         ],
         date1: [
           {
-            type: 'date',
+            type: "date",
             required: true,
-            message: '请选择日期',
-            trigger: 'change'
+            message: "请选择日期",
+            trigger: "change"
           }
         ],
         date2: [
           {
-            type: 'date',
+            type: "date",
             required: true,
-            message: '请选择时间',
-            trigger: 'change'
+            message: "请选择时间",
+            trigger: "change"
           }
         ],
         type: [
           {
-            type: 'array',
+            type: "array",
             required: true,
-            message: '请至少选择一个活动性质',
-            trigger: 'change'
+            message: "请至少选择一个活动性质",
+            trigger: "change"
           }
         ],
         resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
+          { required: true, message: "请选择活动资源", trigger: "change" }
         ],
-        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
+        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
       },
       abilitySelected: [
         {
-          name: '功能项1',
+          name: "功能项1",
           id: 1
         },
         {
-          name: '功能项2',
+          name: "功能项2",
           id: 2
         },
         {
-          name: '功能项3',
+          name: "功能项3",
           id: 3
         }
       ],
       step: 0,
       options: [
         {
-          name: 'asd',
-          type: '开关类',
-          remark: '备注1'
+          name: "asd",
+          type: "开关类",
+          remark: "备注1"
         },
         {
-          name: 'dfgfg',
-          type: '文本类',
-          remark: '备注2'
+          name: "dfgfg",
+          type: "文本类",
+          remark: "备注2"
         }
       ],
       customterList: [],
       modifyData: {}, // 正在自定义的功能配置项数据
       typeModel: {
-        1: '文本类',
-        2: '单选类',
-        3: '多选类',
-        4: '阈值类',
-        5: '阈值选择类',
-        6: '设备传参类'
+        1: "文本类",
+        2: "单选类",
+        3: "多选类",
+        4: "阈值类",
+        5: "阈值选择类",
+        6: "设备传参类"
       },
       updateStatus: {
-        0: '',
-        1: '新增',
-        '-1': '禁用'
+        0: "",
+        1: "新增",
+        "-1": "禁用"
       },
-      software: ''
-    }
+      software: ""
+    };
   },
   methods: {
     filterPageOfForamt() {
-      return this.pageOfForamt.filter(item => item.status === 1)
+      return this.pageOfForamt.filter(item => item.status === 1);
     },
     deleteFormatConfig(index) {
-      this.pageOfForamt[index].status = 2
+      this.pageOfForamt[index].status = 2;
     },
     getSld() {
       // 获取二级域名
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      const sld = location.href.match(/:\/\/(.*?).hcocloud/);
       if (sld) {
-        return sld[1]
+        return sld[1];
       }
-      return ''
+      return "";
     },
     isPro() {
       // 是正式环境或者开发环境？
-      const sld = this.getSld()
-      return sld === 'pro' || sld === '' || sld === 'dev'
+      const sld = this.getSld();
+      return sld === "pro" || sld === "" || sld === "dev";
     },
     useableAbility(key) {
       if (key === 3) {
-        key = 2
+        key = 2;
       }
       return this.deviceModelAbilitys.filter(
         item => item.isUsed && item.abilityType === key
-      )
+      );
     },
     updateDeviceModel() {
       // 调整第三步「硬件功能项」的数据结构
-      let newArray = this.deviceModelAbilitys
+      let newArray = this.deviceModelAbilitys;
       newArray = newArray.map(item => {
         return {
           id: item.id,
@@ -390,16 +390,16 @@ export default {
               return {
                 id: iItem.id,
                 abilityOptionId: iItem.abilityOptionId,
-                actualOptionValue:iItem.actualOptionValue,
+                actualOptionValue: iItem.actualOptionValue,
                 definedName: iItem.definedName,
                 maxVal: iItem.maxVal,
                 defaultVal: iItem.defaultVal,
                 minVal: iItem.minVal,
                 status: iItem.status
-              }
+              };
             })
-        }
-      })
+        };
+      });
 
       // 调整第四步「版式配置」的数据结构
       const modelFormatPages =
@@ -416,56 +416,56 @@ export default {
               item.modelFormatItems.map(iItem => {
                 return {
                   id: iItem.id,
-                  abilityId: iItem.abilityId.join(','),
+                  abilityId: iItem.abilityId.join(","),
                   itemId: iItem.itemId,
                   showName: iItem.showName,
                   showStatus: iItem.showStatus ? 1 : 0
-                }
+                };
               })
-          }
-        })
+          };
+        });
 
       const form = {
         ...this.form,
-        childModelIds: this.childModelIds.join(','),
-        description: '',
+        childModelIds: this.childModelIds.join(","),
+        description: "",
         deviceModelAbilitys: newArray,
         deviceModelFormat: {
           modelFormatPages
         }
-      }
+      };
       updateDeviceModel(form).then(res => {
-        this.$emit('update:visible', false)
-        this.$emit('update-data', {
+        this.$emit("update:visible", false);
+        this.$emit("update-data", {
           ...form,
           id: res.data
-        })
+        });
         if (!this.form.formatId) {
-          return
+          return;
         }
         const formatSelected = this.formatSelectedList.filter(
           item => item.id === this.form.formatId
-        )
+        );
 
         let url = `${this.formatSelected[0].htmlUrl}?customerId=${
           this.form.customerId
-        }`
-        const domain = window.origin.match('://(.*).hcocloud.com')[1]
-        url = url.replace('://pro', '://' + domain)
+        }`;
+        const domain = window.origin.match("://(.*).hcocloud.com")[1];
+        url = url.replace("://pro", "://" + domain);
 
         this.$alert(
           `您已成功配置好型号数据，请先保存链接，稍后添加至微信公众号自定义菜单中: ${url}`,
-          '预览地址',
+          "预览地址",
           {
-            confirmButtonText: '确定'
+            confirmButtonText: "确定"
           }
-        )
-      })
+        );
+      });
     },
     selectFormatsByCustomerId() {
       selectFormatsByCustomerId(this.form.customerId, this.form.typeId).then(
         res => {
-          this.formatSelectedList = res.data
+          this.formatSelectedList = res.data;
           // // 如果是编辑状态，详情中没有版式配置项数据的话，从原版式数据copy过来一份数据。
           // if (Number.isInteger(this.data.formatId)) {
           //   // 手动将特定版式的一些数据塞到用户当前版式数据中（因为查询型号详情的版式数据中缺少一些参数）
@@ -486,120 +486,121 @@ export default {
           //   }
           // }
         }
-      )
+      );
     },
     handleTypeChange(id) {
-      const theType = this.typeList.filter(item => item.id === id)[0]
+      const theType = this.typeList.filter(item => item.id === id)[0];
 
-      const form = this.form
-      form.name = theType.name
-      form.icon = theType.icon
-      form.remark = theType.remark
+      const form = this.form;
+      form.name = theType.name;
+      form.icon = theType.icon;
+      form.remark = theType.remark;
 
       theType.deviceTypeAbilitys &&
         theType.deviceTypeAbilitys.forEach(item => {
-          item['definedName'] = item.abilityName
-          this.$set(item, 'isUsed', true)
+          item["definedName"] = item.abilityName;
+          this.$set(item, "isUsed", true);
           // 将类型的不同名称的功能选项数据换成和型号详情里的对应
-          item['deviceModelAbilityOptions'] = item.deviceAbilityOptions
-        })
+          item["deviceModelAbilityOptions"] = item.deviceAbilityOptions;
+        });
 
-      this.deviceModelAbilitys = theType.deviceTypeAbilitys
+      this.deviceModelAbilitys = theType.deviceTypeAbilitys;
     },
     modifyAbilityItem(data) {
-      this.dialogFormVisible = true
-      this.modifyData = data
+      this.dialogFormVisible = true;
+      this.modifyData = data;
     },
     handleCustomerChange(id) {
-      const temp = this.customterList.filter(item => item.id === id)
-      this.getTypeById()
-      this.form.typeId = ''
+      const temp = this.customterList.filter(item => item.id === id);
+      this.getTypeById();
+      this.form.typeId = "";
     },
     getCustomer() {
       getCustomer({
         limit: 100,
         page: 1
       }).then(res => {
-        this.customterList = res.data
-      })
+        this.customterList = res.data;
+      });
     },
     backStep() {
       if (this.step > 0) {
-        this.step--
+        this.step--;
       }
     },
     nextStep() {
       if (this.step === 1) {
-        this.selectFormatsByCustomerId()
+        this.selectFormatsByCustomerId();
       }
-      if (this.step++ > 2) this.step = 0
+      if (this.step++ > 2) this.step = 0;
     },
     getModelList() {
       getTypeList({
         page: 1,
         limit: 100
       }).then(response => {
-        this.typeList = response.data
-      })
+        this.typeList = response.data;
+      });
     },
     setURL(argu, data, name) {
       if (!data) {
-        this[name] = argu[0]
-        return
+        this[name] = argu[0];
+        return;
       }
-      data[name] = argu[0]
+      data[name] = argu[0];
     },
     getImageName(url) {
       if (!url) {
-        return ''
+        return "";
       }
-      const match = url.match('aliyuncs.com/(.*)')
-      return match ? match[1] : ''
+      const match = url.match("aliyuncs.com/(.*)");
+      return match ? match[1] : "";
     },
     handleFormatChange(id) {
       this.formatSelected = this.formatSelectedList.filter(
         item => item.id === id
-      )
+      );
       this.pageOfForamt =
-        this.formatSelected && this.formatSelected[0].wxFormatPageVos
+        this.formatSelected && this.formatSelected[0].wxFormatPageVos;
 
       this.pageOfForamt.forEach(page => {
-        delete page.id
+        this.$set(page, "pageId", page.id);
+        delete page.id;
         if (!page.wxFormatItemVos) {
-          return
+          return;
         }
         // 修改原版式数据的参数名称
         // 删除版式表的id参数
         page.wxFormatItemVos.forEach(item => {
-          item.showName = item.name
-          this.$set(item, 'showStatus', true)
-          this.$set(item, 'itemId', item.id)
-          delete item.id
-        })
-        page.modelFormatItems = page.wxFormatItemVos
-      })
+          item.showName = item.name;
+          this.$set(item, "showStatus", true);
+          this.$set(item, "itemId", item.id);
+          delete item.id;
+        });
+        page.modelFormatItems = page.wxFormatItemVos;
+      });
     },
     getTypeById() {
       selectTypesBySLD().then(res => {
-        this.typeList = res.data
-      })
+        this.typeList = res.data;
+      });
     },
     disableConfigOption(data, i) {
-      this.$set(data, 'status', 3)
+      this.$set(data, "status", 3);
     },
     ableConfigOption(data, i) {
-      this.$set(data, 'status', 1)
+      this.$set(data, "status", 1);
     },
     getAndroidFrmatList() {
       select({ limit: 100, page: 1, type: 3 }).then(res => {
-        this.androidForamtList = res.data
-      })
+        this.androidForamtList = res.data;
+      });
     }
   },
   created() {
-    this.getModelList()
-    this.getCustomer()
-    this.getAndroidFrmatList()
+    this.getModelList();
+    this.getCustomer();
+    this.getAndroidFrmatList();
   },
   watch: {
     /**
@@ -612,27 +613,27 @@ export default {
      *   updateStatus: 3 禁用使用
      */
     data(val) {
-      const newData = JSON.parse(JSON.stringify(val))
+      const newData = JSON.parse(JSON.stringify(val));
       this.childModelIds = newData.childModelIds
-        ? newData.childModelIds.split(',').map(Number)
-        : []
+        ? newData.childModelIds.split(",").map(Number)
+        : [];
 
       // 第三步：预设自定义名称
       newData.deviceModelAbilitys &&
         newData.deviceModelAbilitys.forEach(item => {
-          item['abilityName'] = item.definedName
+          item["abilityName"] = item.definedName;
           if (
             item.updateStatus === 1 ||
             item.updateStatus === 3 ||
             item.updateStatus === -1
           ) {
             // 新添加的功能项，默认禁用。可手动启用
-            this.$set(item, 'status', 3)
+            this.$set(item, "status", 3);
           }
           if (item.status === 1) {
-            this.$set(item, 'isUsed', true)
+            this.$set(item, "isUsed", true);
           } else if (item.status === 3) {
-            this.$set(item, 'isUsed', false)
+            this.$set(item, "isUsed", false);
           }
 
           // 新增的选项默认设置为禁用状态
@@ -640,36 +641,36 @@ export default {
             item.deviceModelAbilityOptions.forEach(option => {
               // 如果是新增的，或者设备功能那边禁用了的选项
               if (option.updateStatus === 1 || option.updateStatus === 3) {
-                option.status = 3
+                option.status = 3;
               }
-            })
-        })
+            });
+        });
 
-      this.deviceModelAbilitys = newData.deviceModelAbilitys
+      this.deviceModelAbilitys = newData.deviceModelAbilitys;
 
       if (newData.deviceModelFormat) {
-        this.pageOfForamt = newData.deviceModelFormat.modelFormatPages
+        this.pageOfForamt = newData.deviceModelFormat.modelFormatPages;
       }
 
       // 如果用户上次配置了版式数据，那么转换一些参数
       if (this.pageOfForamt) {
         this.pageOfForamt.forEach(item => {
-          item.showStatus = item.showStatus ? true : false
+          item.showStatus = item.showStatus ? true : false;
           Array.isArray(item.modelFormatItems) &&
             item.modelFormatItems.forEach(iItem => {
-              iItem.showStatus = iItem.showStatus ? true : false
+              iItem.showStatus = iItem.showStatus ? true : false;
               if (iItem.abilityId) {
                 // 如果存在挑选的功能项数据，转化为数组元素
                 this.$set(
                   iItem,
-                  'abilityId',
-                  iItem.abilityId.split(',').map(Number)
-                )
+                  "abilityId",
+                  iItem.abilityId.split(",").map(Number)
+                );
               } else {
-                this.$set(iItem, 'abilityId', [])
+                this.$set(iItem, "abilityId", []);
               }
-            })
-        })
+            });
+        });
         // for(var i = 0;i<this.pageOfForamt[0].modelFormatItems.length;i++){
         //   if(this.pageOfForamt[0].modelFormatItems[i].abilityId == ''){
         //     this.pageOfForamt[0].modelFormatItems[i].abilityId = ''
@@ -681,11 +682,11 @@ export default {
         // 如果用户上次没有配置版式数据的话
       }
 
-      this.form = newData
+      this.form = newData;
     },
     visible(val) {
       if (val) {
-        this.step = 0
+        this.step = 0;
       }
     }
   },
@@ -694,7 +695,7 @@ export default {
     DTitle,
     File
   }
-}
+};
 </script>
 
 <style lang='scss'>
@@ -715,7 +716,7 @@ export default {
       display: inline-block;
       width: 12px;
       height: 12px;
-      background-image: url('~@/assets/img/close.png');
+      background-image: url("~@/assets/img/close.png");
       background-size: cover;
       margin-right: 5px;
     }
