@@ -76,9 +76,9 @@
                   </template>
                 </template>
               </el-table-column>
-              <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
+              <el-table-column prop="createUser" label="创建人ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
               </el-table-column>
-              <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+              <el-table-column prop="location" label="地理位置" show-overflow-tooltip  v-if="deviceColumnVisible.location">
               </el-table-column>
               <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.manageName">
               </el-table-column>
@@ -153,9 +153,9 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column prop="createUser" label="创建人" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
+        <el-table-column prop="createUser" label="创建人Id" show-overflow-tooltip sortable v-if="deviceColumnVisible.createUser">
         </el-table-column>
-        <el-table-column prop="location" label="地理位置" show-overflow-tooltip sortable v-if="deviceColumnVisible.location">
+        <el-table-column prop="location" label="地理位置" show-overflow-tooltip v-if="deviceColumnVisible.location">
         </el-table-column>
         <el-table-column prop="manageName" label="管理名称" show-overflow-tooltip v-if="deviceColumnVisible.manageName">
         </el-table-column>
@@ -245,7 +245,7 @@
           <el-checkbox v-model="deviceColumnVisible.manageName">管理名称</el-checkbox>
         </el-form-item>
       </el-form>
-      <div>
+      <!-- <div>
         <h3>筛选设备</h3>
         <el-form label-width="100px" label-location="left">
           <el-form-item label-width='0'>
@@ -265,14 +265,14 @@
               <el-radio :label="true">已分配</el-radio>
               <el-radio :label="false">未分配</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <!-- <el-form-item label-width='0'>
             <el-radio-group v-model='showDeviceEnable' @change="showDeviceEnabledChange">
               <el-radio :label="true">已启用</el-radio>
               <el-radio :label="false">已禁用</el-radio>
             </el-radio-group>
           </el-form-item> -->
-          <el-form-item label-width='0'>
+          <!-- <el-form-item label-width='0'>
             <el-radio-group v-model='showDeviceOnline' @change="showDeviceOnlineChange">
               <el-radio :label="true">在线</el-radio>
               <el-radio :label="false">离线</el-radio>
@@ -285,7 +285,7 @@
             </el-radio-group>
           </el-form-item>
         </el-form>
-      </div>
+      </div> -->
       <div slot="footer">
         <el-button type="primary" @click="deviceColumnControlDialogVisible = false">确定</el-button>
       </div>

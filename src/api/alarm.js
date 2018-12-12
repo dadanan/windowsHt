@@ -315,3 +315,37 @@ export function queryWarnJob(data) {
     data
   })
 }
+
+//禁用字典
+export function disableDict(data) {
+  return request({
+    url: '/temp/api/dict/disableDict',
+    method: 'post',
+    data
+  })
+}
+
+//启用字典
+export function enableDict(data) {
+  return request({
+    url: '/temp/api/dict/enableDict',
+    method: 'post',
+    data
+  })
+}
+
+//导出工程维保列表
+export function exportMaintenance(materialId) {
+  // return request({
+  //   url: `/temp/api/plan/exportMaintenance/${materialId}`,
+  //   method: 'get'
+  // })
+  window.open(`/temp/api/plan/exportMaintenance/${materialId}`)
+}
+//
+export function jobWarningSourceCount() {
+  return request({
+    url: '/temp/api/project/statistics/jobWarningSourceCount',
+    method: 'get'
+  })
+}

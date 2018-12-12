@@ -58,10 +58,68 @@
         </el-button-group>
       </div>
       <add-means :visible.sync="AddMeans" :data ='editingDatas'></add-means>
+      <create-means :visible.sync="CreateMeans" :data ='editingDatasc'></create-means>
       <add-message :visible.sync="AddMessage" :data ='editingData' @add-data='addData'></add-message>
       <create-message :visible.sync="CreateMessage" :data ='editingDataa' @add-data='addData'></create-message>
-      <project-details :visible.sync="ProjectDetails" :data ='editingData'></project-details>
-      <el-table :data="alarmList" style="width: 100%" class="mb20" border v-if="list" @selection-change="handleSelectionChange">
+      <project-details :visible.sync="ProjectDetails" :data ='editingDataf'></project-details>
+      <el-table @expand-change="expandChanged"  :data="alarmList" style="width: 100%" class="mb20" border v-if="list" @selection-change="handleSelectionChange">
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-table v-if="scope.row.describeData" :data="scope.row.describeData" style="width: 100%" class="mb20" border>
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="imgList" label="图册" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <img :src="scope.row.imgList[0]" style="width:100%">
+                    </template>
+                </el-table-column>
+                <el-table-column prop="typeName" label="实施阶段" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="description" label="工程实施描述" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="implTime" label="实施时间" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <template v-if='scope.row.implTime'>
+                            {{new Date(scope.row.implTime).toLocaleString()}}
+                        </template>
+                        <template v-else>
+                            - -
+                        </template>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="as" label="工程资料分配" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <template v-for="(item,key) in scope.row.as">
+                            <template v-for="(items,key) in item">
+                                <div class="" style="padding:20px 0px;">
+                                    {{key}}
+                                </div>
+                            </template>
+                        </template>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="as" label="文件列表" show-overflow-tooltip width="400px">
+                    <template slot-scope="scope">
+                          <template v-for="(item,key) in scope.row.as">
+                            <template v-for="(items,key) in item">
+                                  <template v-for="(itemss,key) in items">
+                                    <div class="" style="padding:10px 0px;">
+                                        {{itemss.substring((itemss.lastIndexOf('/')) + 1, itemss.length )}}
+                                        <a :href="itemss" style="padding-left:20px">下载</a>
+                                    </div>
+                                </template>
+                              </template>
+                        </template>
+                    </template>
+                  </el-table-column>
+                  <!-- <el-table-column label="操作" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="createMeans(scope.row)">修改</el-button>
+                    </template>
+                  </el-table-column> -->
+            </el-table>
+            <el-alert v-else title="该工程下没有对应的实施！" type="info" center show-icon :closable="false"></el-alert>
+          </template>
+        </el-table-column>
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="projectNo" label="工程编号" show-overflow-tooltip>
@@ -102,8 +160,9 @@ import DataCard from '@/components/DataCard'
 import AddMeans from './components/AddMeans'
 import AddMessage from './components/AddMessage'
 import CreateMessage from './components/CreateMessage'
+import CreateMeans from './components/CreateMeans'
 import ProjectDetails from './components/ProjectDetails'
-import { EngList ,createselect ,deleteProject ,projectLocationCount ,projectTrendCount} from '@/api/alarm'
+import { EngList ,createselect ,deleteProject ,projectLocationCount ,projectTrendCount ,project} from '@/api/alarm'
 import { queryHomePageStatistic } from '@/api/big-picture-mode/bigPictureMode'
 export default {
   components: {
@@ -111,7 +170,8 @@ export default {
     AddMeans,
     AddMessage,
     ProjectDetails,
-    CreateMessage
+    CreateMessage,
+    CreateMeans
   },
   data() {
     return {
@@ -119,8 +179,11 @@ export default {
       AddMessage: false,
       ProjectDetails: false,
       CreateMessage:false,
+      CreateMeans:false,
       editingDataa:{},
       editingDatas:{},
+      editingDatasc:{},
+      editingDataf:{},
       alarmList: [],
       editingData:{},
       activeTab: '1',
@@ -215,6 +278,21 @@ export default {
     switchs() {
       this.list = !this.list
     },
+    expandChanged(data) {
+      if (data.describeData) {
+        return
+      }
+      project(data.id).then(res=>{
+            const list = res.data
+            for(var i = 0;i<list.length;i++){
+                list[i].as = []
+                list[i].as.push(list[i].fileMap)
+            }
+            console.log(list)
+
+        data.describeData = Object.assign([], list, []);
+      })
+    },
     EngList() {
       EngList(this.query).then(res => {
         this.alarmList = res.data.projectRspPoList
@@ -239,10 +317,15 @@ export default {
           this.editingDataa = res.data
       })
     },
+    createMeans(val){
+      // console.log(val)
+      this.CreateMeans = true
+      this.editingDatasc = val
+    },
     projectDetails(val){
       createselect(val.id).then(res=>{
           this.ProjectDetails = true
-          this.editingData = res.data
+          this.editingDataf = res.data
       })
     },
     projectLocationCount(){

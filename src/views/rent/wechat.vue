@@ -4,8 +4,8 @@
       <div class="table-opts">
         <el-button-group>
           <el-button type="primary" @click="addWechat = true">添加</el-button>
-          <!-- <el-button type="primary">禁用</el-button>
-          <el-button type="primary">启用</el-button> -->
+          <el-button type="primary" @click ="disableDict">禁用</el-button>
+          <el-button type="primary" @click="enableDict">启用</el-button>
           <el-button type="primary" @click="deleteDict">删除</el-button>
         </el-button-group>
       </div>
@@ -38,6 +38,14 @@
         <el-table-column prop="createName" label="修改者" show-overflow-tooltip >
         </el-table-column>
         <el-table-column prop="isDelete" label="状态" show-overflow-tooltip >
+          <template slot-scope="scope">
+            <template v-if = "scope.row.isDelete == 0">
+              启用
+            </template>
+            <template v-if = "scope.row.isDelete == 2">
+              禁用
+            </template>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -56,7 +64,8 @@
 import AddWechat from './components/AddWechat'
 import EditWechat from './components/EditWechat'
 import DetaWechat from './components/DetaWechat'
-import { selectList , deleteDict} from '@/api/rent'
+import { selectList , deleteDict } from '@/api/rent'
+import { disableDict ,enableDict } from '@/api/alarm'
 
 
 export default {
@@ -98,9 +107,51 @@ export default {
       deleteDict({valueList:this.ids}).then(res => {
         if (res.code === 200) {
           this.selectList()
+          this.ids = []
+          this.selectedDeviceList = []
           this.$message({
             type: 'success',
             message: '删除成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update-data', this.form)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    disableDict() {
+      disableDict({valueList:this.ids}).then(res => {
+        if (res.code === 200) {
+          this.selectList()
+          this.ids = []
+          this.selectedDeviceList = []
+          this.$message({
+            type: 'success',
+            message: '禁用成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('update-data', this.form)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    enableDict() {
+      enableDict({valueList:this.ids}).then(res => {
+        if (res.code === 200) {
+          this.selectList()
+          this.ids = []
+          this.selectedDeviceList = []
+          this.$message({
+            type: 'success',
+            message: '启用成功!'
           })
           this.$emit('update:visible', false)
           this.$emit('update-data', this.form)

@@ -28,6 +28,13 @@ export function selectTypePercent() {
     method: 'get'
   })
 }
+// 设备类型统计
+export function typePercent() {
+  return request({
+    url: '/temp/api/statistics/typePercent',
+    method: 'get'
+  })
+}
 // 今日新增设备统计
 export function newDeviceCountOfToday() {
   return request({
@@ -64,5 +71,14 @@ export function selectLiveCustomerUserCountPerMonth() {
   return request({
     url: '/temp/api/statistics/selectLiveCustomerUserCountPerMonth',
     method: 'get',
+  })
+}
+
+// 城市统计
+export function deviceLocationCount(data) {
+  return request({
+    url: '/temp/api/statistics/deviceLocationCount',
+    method: 'post',
+    data
   })
 }

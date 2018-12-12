@@ -31,8 +31,8 @@ export default {
     incomeBill: '分润账单',
     rent: '基础数据维护',
     rentWechat: '实施阶段',
-    rentBlacklist: '规划分类',
-    rentToll: '工程资料分配',
+    rentBlacklist: '工程系统分类',
+    rentToll: '资料分类',
     // rentPutin: '投放点管理',
     // rentOperator: '运营商管理',
     // rentPayment: '充值设定',
@@ -49,8 +49,8 @@ export default {
     message: '消息管理',
     systemMessage: '告警信息列表',
     userMessage: '客户反馈',
-    alarmMessage: '告警消息',
-    afterSaleMessage: '售后消息'
+    alarmMessage: '消息列表',
+    afterSaleMessage: '通知消息'
   },
   navbar: {
     logOut: '退出登录',

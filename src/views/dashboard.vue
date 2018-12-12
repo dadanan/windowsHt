@@ -93,7 +93,8 @@ import {
   selectDeviceCount,
   newDeviceCountOfToday,
   queryHomePageStatistic,
-  selectLiveCustomerUserCountPerHour
+  selectLiveCustomerUserCountPerHour,
+  deviceLocationCount
 } from '@/api/big-picture-mode/bigPictureMode'
 import { dashboardData, realData } from './dashboardData'
 
@@ -117,7 +118,8 @@ export default {
       fakeData: false, // 是否切换为虚假数据
       status: 1,
       countPerHour:[],
-      countPerHourData:[]
+      countPerHourData:[],
+      ationCount:{},
     }
   },
   created() {
@@ -131,6 +133,7 @@ export default {
       this.newDeviceCountOfToday()
       this.queryHomePageStatistic()
       this.selectLiveCustomerUserCountPerHour()
+      this.deviceLocationCount()
     },
     test() {
       this.fakeData = !this.fakeData
@@ -161,7 +164,7 @@ export default {
 
         const environmentAnalysis = this.kanbanData.数据展示.环境分析
         environmentAnalysis[0].value = data.totalPMCount
-        environmentAnalysis[5].value = data.envPercent
+        environmentAnalysis[1].value = data.envPercent
 
         const alarmAnalysis = this.kanbanData.数据展示.告警分析
         alarmAnalysis[0].value = data.nowDeviceAlarmCount
@@ -237,6 +240,24 @@ export default {
     newDeviceCountOfToday() {
       newDeviceCountOfToday().then(res => {
         this.kanbanData.数据展示.设备分析[1].value = res.data
+      })
+    },
+    // 城市统计
+    deviceLocationCount() {
+      deviceLocationCount(this.ationCount).then(res => {
+        // this.kanbanData.数据展示.设备分析[1].value = res.data
+        console.log(res.data)
+        const list = res.data.provinces
+        const listName = []
+        const listNum = []
+        for(var i = 0;i<list.length; i++){
+          listName.push(list[i].province)
+          listNum.push(list[i].count)
+        }
+        const deviceC = this.kanbanData.图表展示.设备分析[1].options
+        deviceC.yAxis.data = listName
+        deviceC.series[0].data = listNum
+        console.log(listName,listNum)
       })
     }
   }

@@ -9,13 +9,13 @@
                                 <h3 style="margin-bottom:30px">基本信息</h3>
                                 <el-form label-width="130px" class="mb-22">
                                     <el-form-item label="工程编号">
-                                        <el-input v-model='form.projectNo'></el-input>
+                                        <el-input v-model='form.projectNo' disabled></el-input>
                                     </el-form-item>
                                     <el-form-item label="工程名称">
-                                        <el-input v-model='form.name'></el-input>
+                                        <el-input v-model='form.name' disabled></el-input>
                                     </el-form-item>
                                     <el-form-item label="工程描述">
-                                        <el-input type="textarea" :rows='3' v-model='form.description'></el-input>
+                                        <el-input type="textarea" :rows='3' v-model='form.description' disabled></el-input>
                                     </el-form-item>
                                     <el-form-item label="工程建设时间">
                                         <!-- <el-date-picker type="date" v-model='form.buildTime' value-format="timestamp"></el-date-picker> -->
@@ -71,7 +71,10 @@
                                         </el-row>
                                     </el-tab-pane>
                                     <el-tab-pane label="工程地点" name="6">
-                                        <a-map :gps='form && form.gps' @getLocation='getLocation'></a-map>
+                                        <div class="sd">
+                                            <span></span>
+                                            <a-map :gps='form && form.gps' @getLocation='getLocation'></a-map>
+                                        </div>
                                     </el-tab-pane>
                                     <el-tab-pane label="概况预览" name="7">
                                         <p>111</p>
@@ -347,6 +350,12 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="工程维保" name="3">
+                    <div class="table-opts">
+                        <div style="flex: 1;"></div>
+                        <el-button-group>
+                        <el-button type="primary" @click="exportMaintenance">导出Elcel</el-button>
+                        </el-button-group>
+                    </div>
                     <el-table :data="maintenances" style="width: 100%" class="mb20" border>
                         <el-table-column type="index"></el-table-column>
                         <el-table-column prop="ruleName" label="规则分类" show-overflow-tooltip sortable>
@@ -427,7 +436,7 @@
 <script>
 import AMap from './AMap'
 
-import { selectGroups ,project ,maintenance ,projectAnalysis ,updateMateria ,queryJobMateriaLog} from "@/api/alarm";
+import { selectGroups ,project ,maintenance ,projectAnalysis ,updateMateria ,queryJobMateriaLog ,exportMaintenance} from "@/api/alarm";
 
 export default {
   components: {
@@ -519,14 +528,16 @@ export default {
     project(val){
         project(val).then(res=>{
             this.describeData = res.data
-            this.describe = (this.describeData)[0]
-            this.describe.imgUrl = this.describe.imgList[0]
-            this.describe.as = []
-            this.describe.as.push(this.describe.fileMap)
-            const list = res.data
-            for(var i = 0;i<list.length;i++){
-                list[i].as = []
-                list[i].as.push(list[i].fileMap)
+            if(this.describeData.length>0){
+                this.describe = (this.describeData)[0]
+                this.describe.imgUrl = this.describe.imgList[0]
+                this.describe.as = []
+                this.describe.as.push(this.describe.fileMap)
+                const list = res.data
+                for(var i = 0;i<list.length;i++){
+                    list[i].as = []
+                    list[i].as.push(list[i].fileMap)
+                }
             }
         })
     },
@@ -565,12 +576,28 @@ export default {
             this.projectAnalysi.powerDeviceProportion = (parseInt(this.projectAnalysi.powerDeviceProportion))*100
         })
     },
+    exportMaintenance(){
+        exportMaintenance(this.qurey.projectId).then(res=>{
+            if (res.code === 200) {
+                this.$message({
+                    type: 'success',
+                    message: '导出成功!'
+                })
+                this.ChangeMaterial = false
+                } else {
+                this.$message({
+                    type: 'error',
+                    message: res.msg
+                })
+            }
+        })
+    },
      handleSizeChange(val) {
-      this.query.limit = val
+      this.qurey.limit = val
       this.maintenance()
     },
     handleCurrentChange(val) {
-      this.query.currentPage = val
+      this.qurey.currentPage = val
       this.maintenance()
     },
     
@@ -703,6 +730,18 @@ export default {
 }
 .tabs table tr th:last-child,.tabs table tr td:last-child{
     border-right:none
+}
+.sd{
+    position:relative
+}
+.sd span{
+    position:absolute;
+    top:0px;
+    left:0px;
+    display:block;
+    width:100%;
+    height:100%;
+    z-index: 1111;
 }
 </style>
 

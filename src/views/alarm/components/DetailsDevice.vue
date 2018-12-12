@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog top='4vh' :close-on-click-modal=false title="修改实施阶段" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
+    <el-dialog top='4vh' :close-on-click-modal=false title="计划详情" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
       <el-form label-width="120px" class="mb-22" :model="form">
         <el-form-item label="计划名称">
           <el-input placeholder="计划名称..." v-model='form.name' disabled></el-input>

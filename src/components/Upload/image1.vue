@@ -140,8 +140,8 @@ export default {
     initFileList(val) {
       this.fileList = val.map(data => {
         return {
-          url: data.image,
-          name: this.getImageName(data.image)
+          url: data,
+          name: this.getImageName(data)
         }
       })
     }

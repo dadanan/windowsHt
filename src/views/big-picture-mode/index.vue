@@ -103,13 +103,13 @@
                   <div class="col full">
                     <div class="row col center vcenter">
                       <div class="bdp-count__text1">设备总数 (台)</div>
-                      <div class="bdp-count__text2">19,298</div>
+                      <div class="bdp-count__text2">{{deviceOfflineCount}}</div>
                     </div>
                   </div>
                   <div class="col full">
                     <div class="row col center vcenter">
                       <div class="bdp-count__text1">用户总数 (人)</div>
-                      <div class="bdp-count__text3">89,298</div>
+                      <div class="bdp-count__text3">{{totalUserCount}}</div>
                     </div>
                   </div>
                 </div>
@@ -337,12 +337,16 @@ import UserDialog from './compoments/UserDialog'
 import {
   selectCustomerUserCount,
   selectTypePercent,
-  selectDeviceCount
+  selectDeviceCount,
+  typePercent,
+  queryHomePageStatistic
 } from '@/api/big-picture-mode/bigPictureMode'
 
 export default {
   data() {
     return {
+      deviceOfflineCount:0,
+      totalUserCount:0,
       userCount: [],
       addCount: [],
       addPercent: [],
@@ -410,8 +414,8 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '设备数量',
-            min: 0,
-            max: 50,
+            // min: 0,
+            // max: 500000,
             interval: 10,
             axisLine: {
               lineStyle: {
@@ -430,8 +434,8 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '增长率',
-            min: 0,
-            max: 1000,
+            // min: 0,
+            // max: 100000000,
             interval: 100,
             axisLabel: {
               formatter: '{value}%'
@@ -556,8 +560,8 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '用户数量',
-            min: 0,
-            max: 50,
+            // min: 0,
+            // max: 10000000,
             interval: 10,
             axisLine: {
               lineStyle: {
@@ -576,8 +580,8 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '增长率',
-            min: 0,
-            max: 500,
+            // min: 0,
+            // max: 10000000,
             interval: 50,
             axisLabel: {
               formatter: '{value}%'
@@ -989,15 +993,19 @@ export default {
         this.deviceDataChartOptions.series[1].data = this.devAddPercent
       })
     },
-    selectTypePercent() {
-      selectTypePercent().then(res => {
+    typePercent() {
+      typePercent().then(res => {
         const deviceTypeChartOptions = this.deviceTypeChartOptions.series[0]
         for (let i = 0; i < res.data.length; i++) {
-          deviceTypeChartOptions.data[i].value = res.data[
-            i
-          ].typePercent.substring(0, 3)
+          deviceTypeChartOptions.data[i].value = res.data[i].typePercent.substring(0, 3)
           deviceTypeChartOptions.data[i].name = res.data[i].typeName
         }
+      })
+    },
+    queryHomePageStatistic() {
+      queryHomePageStatistic().then(res => {
+        this.totalUserCount = res.data.totalUserCount
+        this.deviceOfflineCount = res.data.deviceOfflineCount
       })
     },
     handleShowProjectDropdown() {
@@ -1012,8 +1020,9 @@ export default {
   },
   created() {
     this.selectCustomerUserCount()
-    this.selectTypePercent()
+    this.typePercent()
     this.selectDeviceCount()
+    this.queryHomePageStatistic()
   }
 }
 </script>
