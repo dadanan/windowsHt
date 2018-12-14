@@ -263,8 +263,9 @@ export default {
   },
   watch: {
     detailData(val) {
-      console.log(val)
-      this.location = (val.location).split(",")[3]
+      if(val.location){
+        this.location = (val.location).split(",")[3]
+      }
       this.init(val)
       this.valId = val.id
       this.selectById(val.modelId)

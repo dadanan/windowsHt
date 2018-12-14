@@ -12,7 +12,8 @@ export function queryGroupByPage(data) {
 export function queryGroupById(id) {
   return request({
     url: `/temp/api/deviceGroup/queryGroupById/${id}`,
-    method: 'post'
+    method: 'post',
+    notLoading: true
   })
 }
 

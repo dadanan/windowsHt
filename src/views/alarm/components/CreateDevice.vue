@@ -298,11 +298,11 @@ export default {
       this.select(val.id)
       this.selectList() // 查询规则列表
       this.getUserList(val.enableUserList) //客户列表
-      if (val.linkType == 1) {
+      // if (val.linkType == 1) {
         this.selectModelDict() // 查客户下模型
-      } else if (val.linkType == 2) {
+      // } else if (val.linkType == 2) {
         this.selectProjectDict() //工程查询
-      }
+      // }
     }
   },
   watch: {

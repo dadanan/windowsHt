@@ -110,6 +110,7 @@ export default {
       deviceList: [],
       imgVisible: false,
       imageUrl: '',
+      setInter:undefined,
       query: {
         limit: 100,
         page: 1
@@ -189,9 +190,15 @@ export default {
   created() {
     this.select()
     this.queryGroupById()
+    this.setInter = setInterval(() => {
+      this.queryGroupById()
+    }, 3000)
   },
   components: {
     AMap
+  },
+  destroyed() {
+    clearInterval(this.setInter)
   }
 }
 </script>
