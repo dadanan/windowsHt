@@ -6,34 +6,34 @@
           <el-form label-width="100px" label-position="left">
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="名称">
+                <el-form-item label="名称 :">
                   {{form.name}}
                 </el-form-item>
-                <el-form-item label="MAC">
+                <el-form-item label="MAC :">
                   {{form.mac}}
                 </el-form-item>
-                <el-form-item label="设备归属">
+                <el-form-item label="设备归属 :">
                   {{form.customerName}}
                 </el-form-item>
-                <el-form-item label="分配状态">
+                <el-form-item label="分配状态 :">
                   {{form.assignStatus === 1 ? '已分配' : '未分配'}}
                 </el-form-item>
-                <el-form-item label="绑定状态">
+                <el-form-item label="绑定状态 :">
                   {{form.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </el-form-item>
                 <!-- <el-form-item label="启用状态">
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
                 </el-form-item> -->
-                <el-form-item label="项目名">
+                <el-form-item label="项目名 :">
                   {{form.groupName}}
                 </el-form-item>
-                <el-form-item label="管理名称">
+                <el-form-item label="管理名称 :">
                   {{form.manageName}}
                 </el-form-item>
-                <el-form-item label="在线状态">
+                <el-form-item label="在线状态 :">
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
-                <el-form-item label="工作状态">
+                <el-form-item label="工作状态 :">
                   <template v-if='form.onlineStatus'>
                     {{form.powerStatus === 1 ? '开机' : '关机'}}
                   </template>
@@ -43,25 +43,25 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="创建人">
+                <el-form-item label="创建人 :">
                   {{form.createUserName}}
                 </el-form-item>
-                <el-form-item label="modelNo">
+                <el-form-item label="modelNo :">
                   {{form.modelNo}}
                 </el-form-item>
-                <el-form-item label="型号名称">
+                <el-form-item label="型号名称 :">
                   {{form.modelName}}
                 </el-form-item>
-                <el-form-item label="型号">
+                <el-form-item label="型号 :">
                   {{form.modelCode}}
                 </el-form-item>
-                <el-form-item label="类型名称">
+                <el-form-item label="类型名称 :">
                   {{form.deviceType}}
                 </el-form-item>
-                <el-form-item label="typeNo">
+                <el-form-item label="typeNo :">
                   {{form.typeNo}}
                 </el-form-item>
-                <el-form-item label="项目ID">
+                <el-form-item label="项目ID :">
                   <template v-if='form.groupId > 0'>
                     {{form.groupId}}
                   </template>
@@ -69,7 +69,7 @@
                     {{form.group}}
                   </template>
                 </el-form-item>
-                <el-form-item label="注册时间">
+                <el-form-item label="注册时间 :">
                   {{new Date(form.birthTime).toLocaleString()}}
                 </el-form-item>
                 <el-form-item label="最后上线时间">
@@ -80,11 +80,11 @@
                     - -
                   </template>
                 </el-form-item>
-                <el-form-item label="设备位置" v-if="form.location">
+                <el-form-item label="设备位置 :" v-if="form.location">
                   <!-- {{((form.location).split(","))[3]}} -->
                   <el-input v-model="location" @blur="blur"></el-input>
                 </el-form-item>
-                <el-form-item label="设备位置" v-else>
+                <el-form-item label="设备位置 :" v-else>
                 </el-form-item>
               </el-col>
             </el-row>

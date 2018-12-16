@@ -138,6 +138,14 @@
                     show-overflow-tooltip
                   >
                   </el-table-column>
+                  <el-table-column
+                    label="操作"
+                    show-overflow-tooltip
+                  >
+                  <template slot-scope="scope">
+                    <el-button type="text" @click="dele(scope.row)">删除</el-button>
+                  </template>
+                  </el-table-column>
                 </el-table>
               </el-form-item>
               <el-form-item label="添加材料耗材类">
@@ -180,6 +188,14 @@
                     label="库存数量"
                     show-overflow-tooltip
                   >
+                  </el-table-column>
+                  <el-table-column
+                    label="操作"
+                    show-overflow-tooltip
+                  >
+                  <template slot-scope="scope">
+                    <el-button type="text" @click="deletes(scope.row)">删除</el-button>
+                  </template>
                   </el-table-column>
                 </el-table>
               </el-form-item>
@@ -398,6 +414,19 @@ export default {
     };
   },
   methods: {
+    dele(val){
+     const list = this.form.extraDeviceList.filter(function(item) {
+          return item != val
+      });
+      this.form.extraDeviceList = list
+    },
+    deletes(val){
+      console.log(val)
+      const list = this.form.materialInfoList.filter(function(item) {
+          return item != val
+      });
+      this.form.materialInfoList = list
+    },
     setURL(argu, data, name) {
       data[name] = argu[0];
     },

@@ -5,43 +5,42 @@
       <div class="dialog__form">
         <div class="dialog__select-group">
           <label>省：</label>
-          <el-select v-model="placeholder" class="omg-select">
-            <el-option label="浙江省" value="1"></el-option>
-            <el-option label="浙江省" value="2"></el-option>
-            <el-option label="浙江省" value="3"></el-option>
-            <el-option label="浙江省" value="4"></el-option>
-            <el-option label="浙江省" value="5"></el-option>
+          <el-select v-model="prov" placeholder="请选择" class="omg-select">
+            <el-option
+              v-for="item in arr"
+              :key="item.name"
+              :value="item.name">
+            </el-option>
           </el-select>
         </div>
         <div class="dialog__select-group">
           <label>市：</label>
-          <el-select v-model="placeholder" class="omg-select">
-            <el-option label="浙江省" value="1"></el-option>
-            <el-option label="浙江省" value="2"></el-option>
-            <el-option label="浙江省" value="3"></el-option>
-            <el-option label="浙江省" value="4"></el-option>
-            <el-option label="浙江省" value="5"></el-option>
+          <el-select v-model="city" placeholder="请选择" class="omg-select">
+            <el-option
+              v-for="item in cityArr"
+              :key="item.name"
+              :value="item.name">
+            </el-option>
           </el-select>
         </div>
         <div class="dialog__select-group">
           <label>区：</label>
-          <el-select v-model="placeholder" class="omg-select">
-            <el-option label="浙江省" value="1"></el-option>
-            <el-option label="浙江省" value="2"></el-option>
-            <el-option label="浙江省" value="3"></el-option>
-            <el-option label="浙江省" value="4"></el-option>
-            <el-option label="浙江省" value="5"></el-option>
+          <el-select v-model="district" placeholder="请选择" class="omg-select" v-if="district">
+            <el-option
+              v-for="item in districtArr"
+              :key="item.name"
+              :value="item.name">
+            </el-option>
           </el-select>
         </div>
       </div>
-      <div class="dialog__done"></div>
+      <div class="dialog__done" @click="sub"></div>
       <div class="dialog__cancel" @click.self="handleClose"></div>
     </div>
   </div>
 </template>
-
-<style lang="scss">
-  .omg-select {
+<style lang="scss" scoped>
+ .omg-select {
     flex: 1;
     .el-input__inner {
       padding-top: 10px;
@@ -55,9 +54,7 @@
       border-radius: unset;
     }
   }
-</style>
 
-<style lang="scss" scoped>
   .modal {
     font-family: "Microsoft YaHei",serif;
     position: fixed;
@@ -132,17 +129,77 @@
 </style>
 
 <script>
+import {dataa} from '../../bigData'
+import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
   export default {
     props: ['visible'],
     data() {
       return {
-        placeholder: '1'
+        placeholder: '1',
+        arr: dataa,
+        prov: '北京',
+        city: '北京',
+        district: '东城区',
+        cityArr: [],
+        districtArr: []
       }
     },
     methods: {
+      sub(){
+        let district = ''
+        if(this.district == null){
+          district = this.city.substring(0,((this.city.length)-1))
+        }else{
+          district =(this.district).substring(0,((this.district.length)-1))
+        }
+        queryWeather({"location":district}).then(res=>{
+          console.log(res.data)
+          const weathers = res.data
+          this.$emit('weather',{
+             weathers
+          })
+        })
+      },
       handleClose() {
         this.$emit('update:visible', false)
+      },
+      updateCity() {
+        for (var i in this.arr) {
+          var obj = this.arr[i];
+          if (obj.name == this.prov) {
+            this.cityArr = obj.sub;
+            break;
+          }
+        }
+        this.city = this.cityArr[1].name;
+      },
+      updateDistrict() {
+        for (var i in this.cityArr) {
+          var obj = this.cityArr[i];
+          if (obj.name == this.city) {
+            this.districtArr = obj.sub;
+            break;
+          }
+        }
+        if(this.districtArr && this.districtArr.length > 0 && this.districtArr[1].name) {
+          this.district = this.districtArr[1].name;
+        } else {
+          this.district = '';
+        }
       }
-    }
+	},
+	created () {
+		this.updateCity();
+		this.updateDistrict();
+	},
+	watch: {
+		prov(){
+			this.updateCity();
+			this.updateDistrict();
+		},
+		city(){
+			this.updateDistrict();
+		}
+  }
   }
 </script>

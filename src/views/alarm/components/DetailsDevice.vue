@@ -183,7 +183,9 @@ export default {
         this.form = res.data
         if (this.form.linkType == 1) {
         this.selectModelDict() // 查客户下模型
-        this.selectByModelId() // 根据id
+        if(this.form.linkDeviceModelId){
+          this.selectByModelId() // 根据id
+        }
       } else if (this.form.linkType == 2) {
         this.selectProjectDict() //工程查询
       }

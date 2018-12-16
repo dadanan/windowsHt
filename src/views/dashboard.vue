@@ -138,8 +138,10 @@ export default {
     test() {
       this.fakeData = !this.fakeData
       if (this.fakeData) {
+        this.kanbanData = {}
         this.kanbanData = dashboardData
       } else {
+        this.kanbanData = {}
         this.kanbanData = realData
         this.init()
       }
@@ -214,6 +216,7 @@ export default {
     // 设备类型统计
     modelPercent() {
       modelPercent().then(res => {
+        this.devedata = []
         for (var i = 0; i < res.data.length; i++) {
           this.devedata.push({
             value: res.data[i].modelPercent.substring(0, 2),
@@ -246,7 +249,7 @@ export default {
     deviceLocationCount() {
       deviceLocationCount(this.ationCount).then(res => {
         // this.kanbanData.数据展示.设备分析[1].value = res.data
-        console.log(res.data)
+        // console.log(res.data)
         const list = res.data.provinces
         const listName = []
         const listNum = []
@@ -257,7 +260,7 @@ export default {
         const deviceC = this.kanbanData.图表展示.设备分析[1].options
         deviceC.yAxis.data = listName
         deviceC.series[0].data = listNum
-        console.log(listName,listNum)
+        // console.log(listName,listNum)
       })
     }
   }

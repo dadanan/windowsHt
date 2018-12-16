@@ -1,7 +1,7 @@
 <template>
   <el-dialog top='4vh' :close-on-click-modal=false title="创建规则" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
       <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
-        <el-form-item label="规则分类">
+        <el-form-item label="工程系统分类">
           <el-select v-model="form.typeId"  style="width:100%">
             <el-option v-for='item in list' :label="item.label" :value="item.id" :key='item.isDelete'></el-option>
           </el-select>

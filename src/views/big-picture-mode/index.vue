@@ -316,7 +316,7 @@
         </div>
       </div>
     </div>
-    <select-location-dialog :visible.sync="selectLocationDialogVisible"></select-location-dialog>
+    <select-location-dialog :visible.sync="selectLocationDialogVisible" @weather='weather'></select-location-dialog>
     <alarm-dialog :visible.sync="alarmDialogVisible"></alarm-dialog>
     <device-type-dialog :visible.sync="deviceTypeDialogVisible"></device-type-dialog>
     <device-dialog :visible.sync="deviceDialogVisible"></device-dialog>
@@ -957,6 +957,9 @@ export default {
     UserDialog
   },
   methods: {
+    weather(data){
+      console.log(data)
+    },
     back() {
       this.$router.back()
       if (screenfull.enabled) {

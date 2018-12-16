@@ -92,7 +92,7 @@
         </el-table-column>
         <el-table-column prop="description" label="告警内容" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="type" label="选择关联" show-overflow-tooltip sortable>
+        <el-table-column prop="type" label="关联状态" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="isRule" label="是否规则内" show-overflow-tooltip sortable>
           <template slot-scope="scope">

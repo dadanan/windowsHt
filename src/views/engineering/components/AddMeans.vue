@@ -2,7 +2,7 @@
   <el-dialog top='4vh' :close-on-click-modal=false title="添加实施" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="130px" class="mb-22" :model="form">
       <el-form-item label="实施阶段">
-        <el-select v-model="form.typeId" style="width:100%">
+        <el-select v-model="form.typeId" style="width:100%" @change="changData">
           <el-option v-for='item in list' :label="item.label" :value="item.id" :key='item.id'></el-option>
         </el-select>
       </el-form-item>
@@ -163,6 +163,13 @@ export default {
       selectList(this.query1).then(res => {
         this.enginList = res.data.dictRspPoList
       })
+    },
+    changData(val){
+     for(var i = 0;i<this.list.length;i++){
+       if(val == this.list[i].id){
+         this.form.description = this.list[i].description
+       }
+     }
     }
   },
   created() {

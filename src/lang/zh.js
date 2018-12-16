@@ -18,7 +18,7 @@ export default {
     deviceFunction: '设备功能管理',
     // 售后管理
     alarm: '售后管理',
-    alarmDevice: '计划列表',
+    alarmDevice: '保养计划',
     alarmConfig: '任务列表',
     alarmProcess: '规则管理',
     order: '订单中心',
@@ -38,7 +38,7 @@ export default {
     // rentPayment: '充值设定',
     system: '系统管理',
     engineering: '工程管理',
-    means: '工程列表',
+    means: '工程管理',
     // measure: '工程实施',
     // maintenance: '工程维保',
     systemClient: '客户管理',

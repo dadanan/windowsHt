@@ -82,3 +82,12 @@ export function deviceLocationCount(data) {
     data
   })
 }
+
+// 天气
+export function queryWeather(data) {
+  return request({
+    url: '/temp/api/statistics/queryWeather',
+    method: 'post',
+    data
+  })
+}

@@ -534,7 +534,7 @@ export const realData = {
         icon: 'hdd',
         name: '当前用户活跃数',
         value: 759,
-        isVisible: true
+        isVisible: false
       }
     ],
     环境分析: [{
@@ -1130,7 +1130,7 @@ export const userDataT = {
       icon: 'hdd',
       name: '今日活跃用户数',
       value: 671,
-      isVisible: true
+      isVisible: false
     },
     // {
     //   id: 8,

@@ -390,6 +390,7 @@ export default {
     this.EngList()
     this.projectLocationCount()
     this.projectTrendCount()
+    this.queryHomePageStatistic()
   }
 }
 </script>

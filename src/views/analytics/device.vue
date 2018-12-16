@@ -190,6 +190,7 @@ export default {
     // 设备类型统计
     modelPercent() {
       modelPercent().then(res => {
+        this.devedata = []
         for(var i = 0; i<res.data.length;i++){
           this.devedata.push({value:((res.data[i].modelPercent).substring(0, 2)),name:res.data[i].modelName})
         }

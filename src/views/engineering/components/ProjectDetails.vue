@@ -76,9 +76,9 @@
                                             <a-map :gps='form && form.gps' @getLocation='getLocation'></a-map>
                                         </div>
                                     </el-tab-pane>
-                                    <el-tab-pane label="概况预览" name="7">
+                                    <!-- <el-tab-pane label="概况预览" name="7">
                                         <p>111</p>
-                                    </el-tab-pane>
+                                    </el-tab-pane> -->
                                 </el-tabs>
                             </el-card>
                         </div>
@@ -86,7 +86,7 @@
                     <div class="flex-item">
                         <el-card class="el-card--solid ">
                             <el-tabs v-model="activeTabS" type="card">
-                                <el-tab-pane label="设备项目信息" name="8">
+                                <el-tab-pane label="智能设备信息" name="8">
                                     <el-table :data="selectGroup" style="width: 100%" class="mb20" border>
                                         <el-table-column type="expand">
                                             <template slot-scope="scope">
@@ -131,7 +131,7 @@
                                         </el-table-column>
                                     </el-table>
                                 </el-tab-pane>
-                                <el-tab-pane label="其他设备" name="9">
+                                <el-tab-pane label="设备信息" name="9">
                                     <el-table :data="form.extraDeviceList" style="width: 100%" class="mb20" border>
                                         <!-- <el-table-column type="expand">
                                             <template slot-scope="scope">
@@ -349,7 +349,7 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="工程维保" name="3">
+                <el-tab-pane label="工程保养" name="3">
                     <div class="table-opts">
                         <div style="flex: 1;"></div>
                         <el-button-group>
@@ -358,7 +358,7 @@
                     </div>
                     <el-table :data="maintenances" style="width: 100%" class="mb20" border>
                         <el-table-column type="index"></el-table-column>
-                        <el-table-column prop="ruleName" label="规则分类" show-overflow-tooltip sortable>
+                        <el-table-column prop="ruleName" label="工程系统分类" show-overflow-tooltip sortable>
                         </el-table-column>
                         <el-table-column prop="name" label="维保项" show-overflow-tooltip sortable>
                         </el-table-column>
@@ -377,11 +377,11 @@
                         </el-table-column>
                         <el-table-column prop="createName" label="创建者" show-overflow-tooltip sortable>
                         </el-table-column>
-                        <el-table-column prop="typeId" label="操作" show-overflow-tooltip sortable>
+                        <!-- <el-table-column prop="typeId" label="操作" show-overflow-tooltip sortable>
                             <template slot-scope="scope">
                                 <el-button type="text">详情</el-button>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                     </el-table>
                     <el-pagination :current-page="qurey.currentPage" :page-sizes="[100,200,300,400]" :page-size="qurey.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
                     </el-pagination>
