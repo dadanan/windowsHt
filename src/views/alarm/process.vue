@@ -47,9 +47,9 @@
       <el-table :data="levelList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="name" label="规则名称" show-overflow-tooltip sortable>
+        <el-table-column prop="name" label="保养项目名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="规则描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="保养内容" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>

@@ -3,7 +3,7 @@
       <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
         <el-form-item label="工程系统分类">
           <el-select v-model="form.typeId"  style="width:100%">
-            <el-option v-for='item in list' :label="item.label" :value="item.id" :key='item.isDelete'></el-option>
+            <el-option v-for='item in list' :label="item.label" :value="item.id" :key='item.sort'></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="规则名称" prop="name">
@@ -64,7 +64,7 @@ export default {
         limit: 10000,
         page: 1,
         type: 'planning',
-        isDelete:0
+        isDelete: 0
       },
       list:[]
     }
@@ -72,7 +72,7 @@ export default {
   methods: {
     selectList() {
       selectList(this.query).then(res => {
-        // console.log(res)
+        console.log(res)
         this.list = res.data.dictRspPoList
       })
     },

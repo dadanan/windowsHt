@@ -263,6 +263,14 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'process',
+        component: () => import('@/views/alarm/process'),
+        name: 'alarmProcess',
+        meta: {
+          title: 'alarmProcess'
+        }
+      },
+      {
         path: 'device',
         component: () => import('@/views/alarm/device'),
         name: 'alarmDevice',
@@ -276,14 +284,6 @@ export const asyncRouterMap = [
         name: 'alarmConfig',
         meta: {
           title: 'alarmConfig'
-        }
-      },
-      {
-        path: 'process',
-        component: () => import('@/views/alarm/process'),
-        name: 'alarmProcess',
-        meta: {
-          title: 'alarmProcess'
         }
       }
     ]

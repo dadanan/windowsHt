@@ -32,8 +32,8 @@
                         </div>
                         <div>
                           <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
-                          <div class="bdp-weather__text6 bdp-weather__mb2">湿度: 53%</div>
-                          <div class="bdp-weather__text6">PM2.5: 58ug/m3</div>
+                          <div class="bdp-weather__text6 bdp-weather__mb2">湿度: {{datas.outerHum}}</div>
+                          <div class="bdp-weather__text6">PM2.5: {{datas.outerPm}}ug/m3</div>
                         </div>
                       </div>
                     </div>
@@ -45,12 +45,12 @@
                         <div>
                           <div class="row">
                             <div class="col">
-                              <div class="bdp-weather__text3 bdp-weather__mr1">24</div>
+                              <div class="bdp-weather__text3 bdp-weather__mr1">{{datas.outerTem}}</div>
                             </div>
                             <div class="col">
                               <div class="row col vcenter">
                                 <div class="bdp-weather__text4">℃</div>
-                                <div class="bdp-weather__text5">晴</div>
+                                <div class="bdp-weather__text5">{{datas.weather}}</div>
                               </div>
                             </div>
                           </div>
@@ -945,7 +945,8 @@ export default {
       alarmDialogVisible: false,
       deviceTypeDialogVisible: false,
       deviceDialogVisible: false,
-      userDialogVisible: false
+      userDialogVisible: false,
+      datas:{}
     }
   },
   components: {
@@ -959,6 +960,10 @@ export default {
   methods: {
     weather(data){
       console.log(data)
+      this.datas = data.weathers
+      this.datas.outerTem = this.datas.outerTem.substring(0,(this.datas.outerTem.length-1))
+      console.log(this.datas.outerTem.length)
+
     },
     back() {
       this.$router.back()
