@@ -14,7 +14,7 @@ export default {
     },
     text: {
       type: String,
-      default: '环可后台管理'
+      default: '后台管理'
     }
   }
 }
