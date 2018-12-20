@@ -60,7 +60,7 @@ export default {
     },
     createNewTeam() {
       this.teamDeviceCreateRequestList.forEach(item => {
-        item['linkAgeStatus'] = item.linkAgeStatus ? 1 : 0
+        item['linkAgeStatus'] = item.linkAgeStatus ? 1 : 2
       })
 
       const form = {
