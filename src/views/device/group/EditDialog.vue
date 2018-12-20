@@ -59,11 +59,11 @@
 </template>
 
 <script>
-import ImageUploader from '@/components/Upload/image'
-import VideoUploader from '@/components/Upload/VideoUpload'
-import { createNewTeam, queryDeviceInfo } from '@/api/device/team'
-import { selectAllCustomers as select } from '@/api/customer'
-import DTitle from '@/components/Title'
+import ImageUploader from "@/components/Upload/image";
+import VideoUploader from "@/components/Upload/VideoUpload";
+import { createNewTeam, queryDeviceInfo } from "@/api/device/team";
+import { selectAllCustomers as select } from "@/api/customer";
+import DTitle from "@/components/Title";
 
 export default {
   components: {
@@ -83,11 +83,11 @@ export default {
   data() {
     return {
       form: {
-        createUserOpenId: '',
+        createUserOpenId: "",
         imagesList: [],
         videosList: [],
-        cover: '',
-        icon: ''
+        cover: "",
+        icon: ""
       },
 
       teamDeviceCreateRequestList: [],
@@ -96,83 +96,86 @@ export default {
         page: 1
       },
       deviceList: []
-    }
+    };
   },
   methods: {
     handleVideoSuccess(file, fileList) {
-      this.form.videosList = [...this.form.videosList, { video: file.url }]
+      this.form.videosList = [...this.form.videosList, { video: file.url }];
     },
     handleVideoRemove(file) {
-      const index = this.form.videosList.findIndex(v => v.video === file.url)
-      this.form.videosList.splice(index, 1)
+      const index = this.form.videosList.findIndex(v => v.video === file.url);
+      this.form.videosList.splice(index, 1);
     },
     queryDeviceInfo(id) {
       queryDeviceInfo({ customerId: id }).then(res => {
-        this.deviceList = res.data
-      })
+        this.deviceList = res.data;
+      });
     },
     setURL(argu, data, name) {
-      const image = argu[0]
-      data[name] = image
+      const image = argu[0];
+      data[name] = image;
     },
     setImg(file) {
-      this.form.imagesList = [...this.form.imagesList, { image: file.url }]
+      this.form.imagesList = [...this.form.imagesList, { image: file.url }];
     },
     removeImg(file) {
-      const index = this.form.imagesList.findIndex(v => v.image === file.url)
-      this.form.imagesList.splice(index, 1)
+      const index = this.form.imagesList.findIndex(v => v.image === file.url);
+      this.form.imagesList.splice(index, 1);
     },
     switchChanged(data) {
       if (this.teamDeviceCreateRequestList.length < 2) {
-        data.linkAgeStatus = false
+        data.linkAgeStatus = false;
         this.$message({
-          type: 'warning',
-          message: '开启设备‘可关联’需要存在两个及以上的设备！'
-        })
+          type: "warning",
+          message: "开启设备‘可关联’需要存在两个及以上的设备！"
+        });
       }
     },
     newRow() {
-      this.teamDeviceCreateRequestList.push({})
+      this.teamDeviceCreateRequestList.push({});
     },
     createNewTeam() {
       this.teamDeviceCreateRequestList &&
         this.teamDeviceCreateRequestList.forEach(item => {
-          item['linkAgeStatus'] = item.linkAgeStatus ? 1 : 0
-        })
+          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 0;
+        });
 
       const form = {
         ...this.form,
         teamDeviceCreateRequestList: this.teamDeviceCreateRequestList.filter(
           item => item.mac
         )
-      }
+      };
       createNewTeam(form).then(res => {
-        this.$emit('update:visible', false)
-        this.$emit('update-data', form)
-      })
+        this.$emit("update:visible", false);
+        this.$emit("update-data", form);
+      });
     },
     getImageName(url) {
       if (!url) {
-        return ''
+        return "";
       }
-      const match = url.match('aliyuncs.com/(.*)')
-      return match ? match[1] : ''
+      const match = url.match("aliyuncs.com/(.*)");
+      return match ? match[1] : "";
     },
     handleCancel() {
-      this.$emit('update:visible', false)
+      this.$emit("update:visible", false);
     }
   },
   watch: {
     data(val) {
-      const data = JSON.parse(JSON.stringify(val))
+      const data = JSON.parse(JSON.stringify(val));
       if (data.deviceTeamItemVos) {
-        this.teamDeviceCreateRequestList = data.deviceTeamItemVos
+        deviceTeamItemVos.forEach(item => {
+          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 0;
+        });
+        this.teamDeviceCreateRequestList = data.deviceTeamItemVos;
       } else {
         this.teamDeviceCreateRequestList =
-          data.teamDeviceCreateRequestList || []
+          data.teamDeviceCreateRequestList || [];
       }
-      this.form = data
+      this.form = data;
     }
   }
-}
+};
 </script>
