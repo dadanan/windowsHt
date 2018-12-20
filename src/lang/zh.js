@@ -18,7 +18,7 @@ export default {
     deviceFunction: '设备功能管理',
     // 售后管理
     alarm: '售后管理',
-    alarmProcess: '保养项目',
+    alarmProcess: '创建规则',
     alarmDevice: '保养计划',
     alarmConfig: '维保任务',
     order: '订单中心',

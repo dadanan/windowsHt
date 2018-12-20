@@ -349,3 +349,10 @@ export function jobWarningSourceCount() {
     method: 'get'
   })
 }
+//查询功能项
+export function getEnableAbility() {
+  return request({
+    url: '/temp/api/rule/getEnableAbility',
+    method: 'get'
+  })
+}

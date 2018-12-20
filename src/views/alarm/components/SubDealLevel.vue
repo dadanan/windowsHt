@@ -70,6 +70,7 @@
                             <el-form label-width="130px" class="mb-22" :model="circulation">
                                 <el-form-item label="材料类别" v-if="ifExist">
                                     <el-button type="primary " @click="IfExist = true">添加</el-button>
+                                    <p><span class="color"> *录入任务执行中对材料/耗材的使用情况</span></p>
                                 </el-form-item>
                                 <el-form-item v-if="ifExist">
                                     <el-table :data="showConsumables" style="width: 100%" class="mb20" border>
@@ -83,9 +84,11 @@
                                 </el-form-item>
                                 <el-form-item label="处理说明">
                                     <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
+                                    <span class="color"> *描述任务执行情况和结果</span>
                                 </el-form-item>
                                 <el-form-item label="指定任务负责人">
                                     <el-button type="primary " @click="addEle = true">添加</el-button>
+                                    <span class="color"> *指定该任务审核人，任务结果由审核人审查 </span>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
@@ -94,6 +97,7 @@
                                 </el-form-item>
                                 <el-form-item label="客户确认单">
                                     <file-uploader @get-url='setURL(arguments,circulation,"name")' :fileName='circulation.name'></file-uploader>
+                                    <span class="color">*上传任务执行过程中的客户确认单，格式（JPG\JPEG\PDF)单文件小于2M；</span>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer" style="padding-bottom:30px;">
@@ -401,6 +405,9 @@ export default {
 }
 .table-img {
   width: 100%;
+}
+.color{
+    color: #969696
 }
 </style>
 

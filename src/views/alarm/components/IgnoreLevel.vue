@@ -4,6 +4,7 @@
             <el-form label-width="120px" class="mb-22" :model="form">
                 <el-form-item label="说明">
                     <el-input type="textarea" :rows='3' placeholder="请输入忽略说明..." v-model='form.description'></el-input>
+                    <span class="color">*任务/告警不非必须处理或为误报情况，可选择忽略，忽略内容不计入统计范围</span>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -65,4 +66,8 @@ export default {
   }
 }
 </script>
-
+<style lang="scss" scoped>
+.color{
+  color: #969696
+}
+</style>

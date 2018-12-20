@@ -12,6 +12,7 @@
           <el-select v-model="form.ruleId" style="width:100%">
             <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
           </el-select>
+          <span class="color">*规则内的计划，可按规则自动判断任务告警等级</span>
         </el-form-item>
         <el-form-item label="选择关联">
           <template>
@@ -21,6 +22,7 @@
               <el-radio :label="2">关联工程</el-radio>
             </el-radio-group>
           </template>
+          <p><span class="color">*选择该计划执行对象，工程保养选择关联工程、设备售后选择关联设备、其它选择不关联；</span></p>
         </el-form-item>
         <el-form-item>
           <template v-if="form.linkType == 0"></template>
@@ -41,10 +43,13 @@
         <el-form-item label="任务发布日期">
           <template>
             <el-radio-group v-model="form.cycleType">
-              <el-radio :label="0">仅告警一次</el-radio>
-              <el-radio :label="1">按月告警</el-radio>
-              <el-radio :label="2">按年告警</el-radio>
+              <el-radio :label="0">仅发布一次</el-radio>
+              <el-radio :label="1">按月生成</el-radio>
+              <el-radio :label="2">按年生成</el-radio>
             </el-radio-group>
+            <p><span class="color">*任务发布日期   *仅发布一次    *按月生成    *按年生成
+  * 选择计划执行的起始时间，发布任务视为计划预警，任务到期未完成产生告警；
+  * 系统发布任务即视为计划预警，任务发布日至任务截止日之间为任务实际筹备及执行期限；</span></p>
           </template>
         </el-form-item>
         <el-form-item>
@@ -55,7 +60,7 @@
           <template v-if="form.cycleType == 1">
             <span>每</span>
             <el-input type="number" v-model="form.cycleNums" style="width:10%"></el-input>
-            <span>月告警日期</span>
+            <span>月生成日期</span>
             <el-select v-model="dayData" style="width:40%;margin-right:20px">
               <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
             </el-select>
@@ -64,7 +69,7 @@
           <template v-if="form.cycleType == 2">
             <span>每</span>
             <el-input type="number" v-model="form.cycleNums" style="width:10%"></el-input>
-            <span>年告警日期</span>
+            <span>年生成日期</span>
             <el-select v-model="monthData" style="width:10%;">
               <el-option v-for='item in months' :label="item.name" :value="item.id" :key='item.id'></el-option>
             </el-select>
@@ -83,6 +88,7 @@
         </el-form-item>
         <el-form-item label="指定任务负责人">
           <el-button type="primary " @click="toggleSelection">添加</el-button>
+          <p><span class="color">*计划生产的任务，可指定该任务负责人可见，由相关负责人处理该任务；</span></p>
         </el-form-item>
         <el-form-item>
           <el-tag v-for="item in selectedDeviceList" :key="item.id" :type="item.realName" style="margin:0px 10px">
@@ -313,5 +319,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.color{
+  color: #969696
+}
 </style>
 

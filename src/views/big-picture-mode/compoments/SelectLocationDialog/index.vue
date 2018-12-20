@@ -139,7 +139,7 @@ import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
         arr: dataa,
         prov: '北京',
         city: '北京',
-        district: '东城区',
+        district: '朝阳区',
         cityArr: [],
         districtArr: []
       }
@@ -147,17 +147,20 @@ import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
     methods: {
       sub(){
         let district = ''
-        if(this.district == null){
-          district = this.city.substring(0,((this.city.length)-1))
-        }else{
-          district =(this.district).substring(0,((this.district.length)-1))
-        }
+        // if(this.district == null){
+          district = this.city
+        // }else{
+        //   district =(this.district).substring(0,((this.district.length)-1))
+        // }
         queryWeather({"location":district}).then(res=>{
-          console.log(res.data)
           const weathers = res.data
           this.$emit('weather',{
-             weathers
+             "weathers":res.data,
+             "prov":this.prov,
+             "city":this.city,
+             "district":this.district
           })
+          this.$emit('update:visible', false)
         })
       },
       handleClose() {
@@ -195,7 +198,7 @@ import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
 	watch: {
 		prov(){
 			this.updateCity();
-			this.updateDistrict();
+      this.updateDistrict();
 		},
 		city(){
 			this.updateDistrict();

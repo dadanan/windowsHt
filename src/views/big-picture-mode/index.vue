@@ -27,7 +27,7 @@
                     <div class="col">
                       <div class="row col space-between">
                         <div>
-                          <div class="bdp-weather__text1 bdp-weather__mb1">上海 普陀区</div>
+                          <div class="bdp-weather__text1 bdp-weather__mb1">{{ prov }} {{city}}  {{district}}</div>
                           <div class="bdp-weather__text2">2018-07-07 13:28 周三</div>
                         </div>
                         <div>
@@ -135,59 +135,14 @@
               </div>
               <div class="bdp__panel-body advertisement">
                 <div class="bdp-project-list">
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
+                  <div class="bdp-project-list__item" @click="handleProject(item.id)" v-for="item in alarmList" :key="item.id">
+                    <div class="bdp-project-list__item__img" v-if="(item.imgList).length > 0">
+                      <img :src="item.imgList[0]" alt="item.name">
                     </div>
-                    <div class="bdp-project-list__item__text">龙湖一期</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project1.jpg" alt="龙湖一期">
+                    <div class="bdp-project-list__item__img" v-else>
+                      <!-- <img :src="item.imgList[0]" alt="item.name"> -->
                     </div>
-                    <div class="bdp-project-list__item__text">龙湖一期</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project2.jpg" alt="九亭工坊">
-                    </div>
-                    <div class="bdp-project-list__item__text">九亭工坊</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project3.jpg" alt="桃浦智创">
-                    </div>
-                    <div class="bdp-project-list__item__text">桃浦智创</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project4.jpg" alt="恒大丽宫">
-                    </div>
-                    <div class="bdp-project-list__item__text">恒大丽宫</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project5.jpg" alt="新微大厦">
-                    </div>
-                    <div class="bdp-project-list__item__text">新微大厦</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project6.jpg" alt="万科虹桥">
-                    </div>
-                    <div class="bdp-project-list__item__text">万科虹桥</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project7.jpg" alt="绿地大厦">
-                    </div>
-                    <div class="bdp-project-list__item__text">绿地大厦</div>
-                  </div>
-                  <div class="bdp-project-list__item" @click="handleProject">
-                    <div class="bdp-project-list__item__img">
-                      <img src="/static/images/bdp_project8.jpg" alt="万达武汉">
-                    </div>
-                    <div class="bdp-project-list__item__text">万达武汉</div>
+                    <div class="bdp-project-list__item__text">{{item.name}}</div>
                   </div>
                 </div>
               </div>
@@ -197,35 +152,15 @@
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">最新消息</div>
-                <div class="bdp__panel-title__opt">
+                <!-- <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
+                </div> -->
               </div>
               <div class="bdp__panel-body">
                 <div class="bdp-message-list">
-                  <div class="bdp-message-list__item">
+                  <div class="bdp-message-list__item" v-for = "item in queryWarnJobs">
                     <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
-                  </div>
-                  <div class="bdp-message-list__item">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容最新消息文字内容</div>
+                    <div class="bdp-message-list__item__text">{{item.description}}</div>
                   </div>
                 </div>
               </div>
@@ -233,9 +168,9 @@
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">解决方案</div>
-                <div class="bdp__panel-title__opt">
+                <!-- <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
+                </div> -->
               </div>
               <div class="bdp__panel-body bdp__panel-body--mini">
                 <div class="bdp-solution-list">
@@ -293,9 +228,9 @@
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">告警信息</div>
-                <div class="bdp__panel-title__opt">
+                <!-- <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog" @click="alarmDialogVisible = true"></div>
-                </div>
+                </div> -->
               </div>
               <div class="bdp__panel-body">
                 <chart :options="alarmInfoChartOptions" class="bdp-chart"></chart>
@@ -304,9 +239,9 @@
             <div class="bdp__panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">维护信息</div>
-                <div class="bdp__panel-title__opt">
+                <!-- <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog"></div>
-                </div>
+                </div> -->
               </div>
               <div class="bdp__panel-body">
                 <chart :options="fixInfoChartOptions" class="bdp-chart"></chart>
@@ -339,8 +274,11 @@ import {
   selectTypePercent,
   selectDeviceCount,
   typePercent,
-  queryHomePageStatistic
+  queryHomePageStatistic,
+  queryWeather
 } from '@/api/big-picture-mode/bigPictureMode'
+import { EngList , queryWarnJob } from '@/api/alarm'
+
 
 export default {
   data() {
@@ -416,7 +354,7 @@ export default {
             name: '设备数量',
             // min: 0,
             // max: 500000,
-            interval: 10,
+            // interval: 10,
             axisLine: {
               lineStyle: {
                 color: '#fff'
@@ -436,7 +374,7 @@ export default {
             name: '增长率',
             // min: 0,
             // max: 100000000,
-            interval: 100,
+            // interval: 100,
             axisLabel: {
               formatter: '{value}%'
             },
@@ -562,7 +500,7 @@ export default {
             name: '用户数量',
             // min: 0,
             // max: 10000000,
-            interval: 10,
+            // interval: 10,
             axisLine: {
               lineStyle: {
                 color: '#fff'
@@ -582,7 +520,7 @@ export default {
             name: '增长率',
             // min: 0,
             // max: 10000000,
-            interval: 50,
+            // interval: 50,
             axisLabel: {
               formatter: '{value}%'
             },
@@ -946,7 +884,20 @@ export default {
       deviceTypeDialogVisible: false,
       deviceDialogVisible: false,
       userDialogVisible: false,
-      datas:{}
+      datas:{},
+      district:'朝阳区',
+      city:'北京',
+      prov:'北京',
+      query: {
+        limit: 8,
+        page: 1
+      },
+      query1: {
+        limit: 6,
+        page: 1
+      },
+      alarmList:[],
+      queryWarnJobs:[]
     }
   },
   components: {
@@ -958,11 +909,30 @@ export default {
     UserDialog
   },
   methods: {
+    EngList() {
+      EngList(this.query).then(res => {
+        this.alarmList = res.data.projectRspPoList
+        console.log(this.alarmList)
+      })
+    },
+    queryWarnJob() {
+      queryWarnJob(this.query1).then(res => {
+        this.queryWarnJobs = res.data.projectJobInfoList
+        // console.log(this.queryWarnJobs)
+      })
+    },
+    queryWeather(){
+      queryWeather({"location":this.city}).then(res=>{
+        this.datas = res.data
+      })
+    },
     weather(data){
       console.log(data)
       this.datas = data.weathers
       this.datas.outerTem = this.datas.outerTem.substring(0,(this.datas.outerTem.length-1))
-      console.log(this.datas.outerTem.length)
+      this.prov = data.prov
+      this.city = data.city
+      this.district = data.district
 
     },
     back() {
@@ -978,7 +948,7 @@ export default {
           if (res.data[i].addPercent === '--') {
             this.addPercent.push(0)
           } else {
-            this.addPercent.push(res.data[i].addPercent.substring(0, 3))
+            this.addPercent.push(res.data[i].addPercent.substring(0, (res.data[i].addPercent.length-4)))
           }
           this.userCount.push(res.data[i].userCount)
         }
@@ -993,7 +963,7 @@ export default {
           if (res.data[i].addPercent === '--') {
             this.devAddPercent.push(0)
           } else {
-            this.devAddPercent.push(res.data[i].addPercent.substring(0, 3))
+            this.devAddPercent.push(res.data[i].addPercent.substring(0, (res.data[i].addPercent.length-4)))
           }
           this.deviceCount.push(res.data[i].deviceCount)
         }
@@ -1005,7 +975,7 @@ export default {
       typePercent().then(res => {
         const deviceTypeChartOptions = this.deviceTypeChartOptions.series[0]
         for (let i = 0; i < res.data.length; i++) {
-          deviceTypeChartOptions.data[i].value = res.data[i].typePercent.substring(0, 3)
+          deviceTypeChartOptions.data[i].value = res.data[i].typePercent.substring(0, (res.data[i].typePercent.length-4))
           deviceTypeChartOptions.data[i].name = res.data[i].typeName
         }
       })
@@ -1022,7 +992,7 @@ export default {
     handleSolution() {
       this.$router.push({ name: 'big-picture-mode-solution' })
     },
-    handleProject() {
+    handleProject(val) {
       this.$router.push({ name: 'big-picture-mode-project' })
     }
   },
@@ -1031,6 +1001,9 @@ export default {
     this.typePercent()
     this.selectDeviceCount()
     this.queryHomePageStatistic()
+    this.queryWeather()
+    this.EngList()
+    this.queryWarnJob()
   }
 }
 </script>

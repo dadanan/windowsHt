@@ -37,11 +37,11 @@
                   {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+              <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
                 <template slot-scope="scope">
                   {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
                 </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
                 <template slot-scope="scope">
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
@@ -110,11 +110,11 @@
             {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
           </template>
         </el-table-column>
-        <!-- <el-table-column label="启用状态" show-overflow-tooltip v-if="deviceColumnVisible.enableStatus">
+        <el-table-column label="启用状态" show-overflow-tooltip v-if="deviceColumnVisible.enableStatus">
           <template slot-scope="scope">
             {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column prop="groupName" label="项目名" show-overflow-tooltip sortable v-if="deviceColumnVisible.groupName">
         </el-table-column>
         <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">

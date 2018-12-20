@@ -10,12 +10,15 @@
         </el-form-item>
         <el-form-item label="组标">
           <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
+          <span class="color">*上传图片作为组标志，格式PNG,尺寸（1：1，单张小于2M）</span>
         </el-form-item>
         <el-form-item label="封面">
           <image-uploader :url='form.cover' @get-url='setURL(arguments,form,"cover")'></image-uploader>
+          <span class="color">*上传图作作为视频封面，格式（JPG\JPEG\PNG),尺寸（单张小于2M）</span>
         </el-form-item>
         <el-form-item label="图册">
           <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+          <span class="color">*可上传多张图片，格式（JPG\JPEG\PNG），尺寸（单张小于2M）</span>
         </el-form-item>
         <el-form-item label="视频">
           <video-uploader :maxSize='50' :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
@@ -176,3 +179,8 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.color{
+  color: #969696
+}
+</style>

@@ -321,6 +321,8 @@ export default {
     },
     blur(){
       const location1 = (this.form.location).split(",")
+      location1.pop()
+      location1.push(this.location)
       const location = location1.toString()
       const gps = this.form.mapGps
     updateDevice({

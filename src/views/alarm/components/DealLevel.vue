@@ -4,6 +4,7 @@
             <el-form label-width="120px" class="mb-22" :model="form">
                 <el-form-item label="处理说明">
                     <el-input type="textarea" :rows='3' placeholder="请输入处理说明..." v-model='form.description'></el-input>
+                    <span class="color"> *已安排人处理任务时，将任务标志为处理中</span>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -65,4 +66,8 @@ export default {
   }
 }
 </script>
-
+<style lang="scss" scoped>
+.color{
+  color: #969696
+}
+</style>

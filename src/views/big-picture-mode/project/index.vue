@@ -1,6 +1,6 @@
 <template>
   <div class="solution">
-    <div class="solution__back" @click="$router.back()"></div>
+    <div class="solution__back" @click="$router.back()">121212</div>
   </div>
 </template>
 

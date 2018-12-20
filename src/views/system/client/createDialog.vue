@@ -86,6 +86,8 @@
             </el-form-item>
             <el-form-item label="背景图册">
               <image-uploader :key='1' :urls='filterBg(h5Config.h5BgImgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+              <span class="color">*可上传5张图片，格式（JPG\JPEG\PNG），尺寸（单张小于2M）,图册图片作为微信APP的背景，默认使用公版背景图,上传顺序：关机、白天晴、白天阴、夜晚晴、夜晚阴</span>
+              
             </el-form-item>
             <el-form-item label="页面版式" prop="htmlTypeIds">
               <el-checkbox-group v-model="h5Config.htmlTypeIds">
@@ -97,6 +99,8 @@
             </el-form-item>
             <el-form-item label="Logo">
               <image-uploader :key='2' :url='h5Config.logo' @get-url='setURL(arguments,h5Config,"logo")'></image-uploader>
+              <span class="color">*上传客户LOGO图片，格式PNG ，尺寸（ 自定义单张小于2M）</span>
+
             </el-form-item>
             <el-form-item label="H5 版本" prop="version">
               <el-select v-model="h5Config.version">
@@ -114,9 +118,12 @@
             </el-form-item>
             <el-form-item label="APP Logo">
               <image-uploader :key='3' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+              <span class="color">*上传客户LOGO图片，格式PNG ，尺寸（ 自定义单张小于2M),APPLOGO，用于PAD/电视APP独立封装用</span>
+
             </el-form-item>
             <el-form-item label="公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
+              <span class="color">*上传客户公众号二维码，格式(JPE\JPEG\PNG)，尺寸（ 自定义单张小于2M),用于APP上相应位置呈现</span>
             </el-form-item>
             <el-form-item label="APP 软件版本" prop="version">
               <el-input v-model='androidConfig.version'></el-input>
@@ -153,6 +160,8 @@
             </el-form-item>
             <el-form-item label="Logo">
               <image-uploader :key='5' :url='backendConfig.logo' @get-url='setURL(arguments,backendConfig,"logo")'></image-uploader>
+              <span class="color">*可上传图片，格式（JPG\JPEG\PNG），尺寸（单张小于2M）</span>
+
             </el-form-item>
             <el-form-item label="名称" prop="name">
               <el-input v-model='backendConfig.name'></el-input>
@@ -170,6 +179,7 @@
                   &nbsp;&nbsp;+&nbsp;&nbsp;/hcocloud.com/
                 </p>
               </div>
+              <span class="color">*上传客户公众号二维码，格式(JPE\JPEG\PNG)，尺寸（ 自定义单张小于2M),用于APP上相应位置呈现</span>
             </el-form-item>
             <el-form-item label="类型">
               <el-radio-group v-model='backendConfig.type'>
@@ -591,5 +601,8 @@ export default {
   .down {
     transform: rotate(-90deg);
   }
+}
+.color{
+  color: #969696
 }
 </style>

@@ -6,9 +6,11 @@
         </el-form-item>
         <el-form-item label="排序">
           <el-input v-model="form.sort" placeholder="请输入实施排序"></el-input>
+          <span class="color">*使用时下拉框的排序序号</span>
         </el-form-item>
         <el-form-item label="标号">
           <el-input v-model="form.value" placeholder="标号不可重复"></el-input>
+          <span class="color">*备用字段，暂未用，可默认为0</span>
         </el-form-item>
         <el-form-item label="实施阶段描述" prop="description">
           <el-input type="textarea" :rows='3' placeholder="实施阶段描述..." v-model='form.description'></el-input>
@@ -78,3 +80,8 @@ export default {
   }
 }
 </script>
+<style lang='scss'>
+.color{
+  color: #969696
+}
+</style>

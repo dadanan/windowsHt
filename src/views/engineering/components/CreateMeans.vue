@@ -14,9 +14,13 @@
       </el-form-item>
       <el-form-item label="上传图册">
         <image-uploader :key='1' :urls='filterBg(form.imgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+        <p><span class="color">*上传实施过程中需保留的有价值图片文件，如过程图，效果图，执行方案图
+            *格式(JPE\JPEG\PNG)，尺寸（ 自定义单张小于2M） </span></p>   
       </el-form-item>
       <el-form-item label="上传文件">
         <file-uploader @get-url='setURL(arguments,form)'></file-uploader>
+        <p><span class="color">*上传实施过程中的相关文件，如表单、流程、确认文件等；
+            *格式（WORD\Excel\JPG\PDF\DWG，单文件小于50M）</span></p>   
       </el-form-item>
       <el-form-item>
         <el-table :data="sub" style="width: 100%" class="mb20" border>
@@ -180,6 +184,9 @@ export default {
 .el-date-editor.el-input,
 .el-date-editor.el-input__inner {
   width: 100%;
+}
+.color{
+  color: #969696
 }
 </style>
 

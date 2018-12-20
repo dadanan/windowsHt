@@ -32,12 +32,15 @@
         <el-select v-model="form.customerId" placeholder='请选择'>
           <el-option v-for='item in customerList' :label="item.name" :value="item.id" :key='item.key'></el-option>
         </el-select>
+        <span class="color">*选择该项目的归属方（与微信公众号归属方一致）</span>
       </el-form-item>
       <el-form-item label="图册">
         <image-uploader :urls='form.imagesList' @get-url='setImg' @remove-url='removeImg' :isList='true'></image-uploader>
+        <span class="color">*上传多张项目图片，格式（JPG\JPEG\PNG)，尺寸（单张小于2M）</span>
       </el-form-item>
       <el-form-item label="视频">
         <video-uploader :maxSize='50' :list='form.videosList' :multiple='true' @onSuccess="handleVideoSuccess" @onRemove="handleVideoRemove"></video-uploader>
+        <span class="color">*只能上传5段视频 ，格式（MP4\avi\wmv\rmvb)，尺寸单段小于50MB</span>
       </el-form-item>
       <el-form-item label="项目介绍" prop="introduction">
         <el-input v-model="form.introduction"></el-input>
@@ -207,5 +210,8 @@ export default {
 }
 .table-opts {
   margin-top: 30px;
+}
+.color{
+  color: #969696
 }
 </style>

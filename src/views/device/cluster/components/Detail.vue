@@ -17,8 +17,11 @@
                 <el-form-item label="介绍">
                   {{form.introduction}}
                 </el-form-item>
-                <el-form-item label="地点">
-                  {{form.location}}
+                <el-form-item label="设备位置 :" v-if="form.location">
+                  <!-- {{((form.location).split(","))[3]}} -->
+                  <el-input v-model="location" @blur="blur"></el-input>
+                </el-form-item>
+                <el-form-item label="设备位置 :" v-else>
                 </el-form-item>
                 <el-form-item label="创建时间">
                   {{new Date(form.createTime).toLocaleString()}}
@@ -115,6 +118,7 @@ export default {
         limit: 100,
         page: 1
       },
+      location:'',
       form: {
         deviceList: [],
         customerId: '',
@@ -139,6 +143,8 @@ export default {
           type: 'success'
         })
       })
+      this.form.location = location
+      this.location = (this.form.location).split(",")[3]
     },
     handleSelectionChange(selection) {
       const selectedDeviceList = []
@@ -172,6 +178,33 @@ export default {
           data.imagesList = []
         }
         this.form = data
+        
+        if(data.location){
+        this.location = (data.location).split(",")[3]
+        }
+        // this.init(val)
+        // this.valId = val.id
+        // this.selectById(val.modelId)
+      })
+    },
+    blur(){
+      const location1 = (this.form.location).split(",")
+      location1.pop()
+      location1.push(this.location)
+      const location = location1.toString()
+      const gps = this.form.mapGps
+      console.log(location1,location,gps,this.form)
+    addOrUpdateGroupAndDevice({
+          ...this.form,
+          location,
+          mapGps: gps
+        }).then(() => {
+          this.$message({
+            message: '设备位置信息更新成功！',
+            type: 'success'
+          })
+          
+          this.location = location.split(",")[3]
       })
     },
     handlePreview(img) {
@@ -190,9 +223,9 @@ export default {
   created() {
     this.select()
     this.queryGroupById()
-    this.setInter = setInterval(() => {
-      this.queryGroupById()
-    }, 3000)
+    // this.setInter = setInterval(() => {
+    //   this.queryGroupById()
+    // }, 3000)
   },
   components: {
     AMap

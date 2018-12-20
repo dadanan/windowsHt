@@ -150,8 +150,8 @@ export default {
     if (this.url) {
       this.imageUrl = this.url
     }
-    // console.log(this.urls)
     if (this.urls) {
+    console.log(this.urls)
       this.initFileList(this.urls)
     }
   },

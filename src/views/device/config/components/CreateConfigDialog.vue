@@ -12,12 +12,14 @@
           <el-option v-for="model in customterList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
+        <span class="color">*选择该型号所属客户</span>
       </el-form-item>
       <el-form-item label="类型" prop="typeId">
         <el-select v-model="form.typeId" @change="handleTypeChange">
           <el-option v-for="model in typeList" :key="model.id" :label="model.name" :value="model.id">
           </el-option>
         </el-select>
+        <span class="color">*选择该型号产品所属设备类型</span>
       </el-form-item>
       <el-form-item label="型号">
         <el-input v-model="form.modelCode"></el-input>
@@ -27,7 +29,9 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="缩图">
-          <image-uploader :url='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader>
+          <!-- <image-uploader :urls='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader> -->
+         <image-uploader :key='3' :urls='filterBg(form.icons)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
+
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
@@ -35,6 +39,7 @@
       </template>
       <el-form-item label="软件">
         <file @get-url='setURL(arguments,null,"software")' :file-name='getImageName(this.software)'></file>
+        <span class="color">*上传该型号产品远程升级固件</span>
       </el-form-item>
       <el-form-item label="适用从机型号">
         <el-checkbox-group v-model="childModelIds">
@@ -45,9 +50,11 @@
     <el-form v-else-if='step === 1' label-width="100px" class="mb-22">
       <el-form-item label="ProductID">
         <el-input v-model="form.productId"></el-input>
+        <span class="color">*该产品类型对应ProductID（微信）</span>
       </el-form-item>
       <el-form-item label="二维码">
         <image-uploader :url='form.productQrCode' @get-url='setURL(arguments,form,"productQrCode")'></image-uploader>
+        <span class="color">*上传产品绑定二维码，格式（JPG\JPEG\PNG),尺寸（1：1，小于2M）</span>
       </el-form-item>
     </el-form>
     <el-form v-else-if='step===2' label-width="100px" class="mb-22">
@@ -86,12 +93,14 @@
           <el-option v-for="format in formatSelectedList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
+        <span class="color">*选择该型号产品使用的微信APP版式</span>
       </el-form-item>
       <el-form-item label="安卓版式选择">
         <el-select v-model="form.androidFormatId">
           <el-option v-for="format in androidForamtList" :key="format.id" :label="format.name" :value="format.id">
           </el-option>
         </el-select>
+        <span class="color">*选择该型号产品使用的PAD/电视端APP版式</span>
       </el-form-item>
       <template v-for='item in pageOfForamt'>
         <el-card class='box-card' :key='item.id'>
@@ -229,7 +238,7 @@ export default {
         name: '',
         modelCode: '',
         remark: '',
-        icon: ''
+        icons:[]
       },
       childModelIds: [],
       formatId: '',
@@ -395,10 +404,10 @@ export default {
     },
     handleTypeChange(id) {
       const theType = this.typeList.filter(item => item.id === id)[0]
-
+      console.log(theType)
       const form = this.form
       form.name = theType.name
-      form.icon = theType.icon
+      // form.icon = theType.icon
       form.remark = theType.remark
 
       theType.deviceTypeAbilitys &&
@@ -449,6 +458,13 @@ export default {
           return false
         }
       })
+    },
+    filterBg(data) {},
+    removeImg(file) {
+      const index = this.form.icons.findIndex(v => v.image === file.url)
+    },
+    setImg(file) {
+      this.form.icons = [...this.form.icons, file.url]
     },
     setURL(argu, data, name) {
       if (!data) {
@@ -512,5 +528,8 @@ export default {
   .format-page-img {
     width: 300px;
   }
+}
+.color{
+  color: #969696;
 }
 </style>

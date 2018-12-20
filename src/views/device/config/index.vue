@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column label="缩图">
           <template slot-scope="scope">
-            <img :src="scope.row.icon" :alt="scope.row.name" class="table-img">
+            <img :src="scope.row.icons[0]" class="table-img">
           </template>
         </el-table-column>
         <el-table-column prop="typeName" label="类型" show-overflow-tooltip sortable>
