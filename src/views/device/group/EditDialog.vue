@@ -165,11 +165,11 @@ export default {
   watch: {
     data(val) {
       const data = JSON.parse(JSON.stringify(val));
-      if (data.deviceTeamItemVos) {
-        deviceTeamItemVos.forEach(item => {
+      if (data.teamDeviceCreateRequestList) {
+        data.teamDeviceCreateRequestList.forEach(item => {
           item["linkAgeStatus"] = item.linkAgeStatus === 1;
         });
-        this.teamDeviceCreateRequestList = data.deviceTeamItemVos;
+        this.teamDeviceCreateRequestList = data.teamDeviceCreateRequestList;
       } else {
         this.teamDeviceCreateRequestList =
           data.teamDeviceCreateRequestList || [];
