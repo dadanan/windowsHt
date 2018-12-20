@@ -137,7 +137,7 @@ export default {
     createNewTeam() {
       this.teamDeviceCreateRequestList &&
         this.teamDeviceCreateRequestList.forEach(item => {
-          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 0;
+          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 2;
         });
 
       const form = {
@@ -167,7 +167,7 @@ export default {
       const data = JSON.parse(JSON.stringify(val));
       if (data.deviceTeamItemVos) {
         deviceTeamItemVos.forEach(item => {
-          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 0;
+          item["linkAgeStatus"] = item.linkAgeStatus ? 1 : 2;
         });
         this.teamDeviceCreateRequestList = data.deviceTeamItemVos;
       } else {
