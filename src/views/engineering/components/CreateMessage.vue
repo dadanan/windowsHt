@@ -323,7 +323,7 @@ export default {
       return data
     },
     removeImg(file) {
-      const index = this.form.imgs.findIndex(v => v.image === file.url)
+      this.form.imgs.splice((this.form.imgs.indexOf(file.url)),1)
     },
     setImg(file) {
       this.form.imgs = [...this.form.imgs, file.url]

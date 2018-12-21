@@ -269,9 +269,12 @@ export default {
     },
     filterBg(data) {},
     removeImg(file) {
-      const index = this.form.imgs.findIndex(v => v.image === file.url)
+      // const index = this.form.imgs.findIndex(v => v.image === file.url)
+      // console.log(file)
+      this.form.imgs.splice((this.form.imgs.indexOf(file.url)),1)
     },
     setImg(file) {
+      console.log(file)
       this.form.imgs = [...this.form.imgs, file.url]
     },
     submitForm() {

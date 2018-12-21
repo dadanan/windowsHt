@@ -120,7 +120,8 @@ export default {
     },
     filterBg(data) {},
     removeImg(file) {
-      const index = this.form.imgList.findIndex(v => v.image === file.url)
+      // const index = this.form.imgList.findIndex(v => v.image === file.url)
+      this.form.imgList.splice((this.form.imgList.indexOf(file.url)),1)
     },
     setImg(file) {
       this.form.imgList = [...this.form.imgList, file.url]

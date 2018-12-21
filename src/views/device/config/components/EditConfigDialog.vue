@@ -553,7 +553,9 @@ export default {
       return data
     },
      removeImg(file) {
-      const index = this.form.icons.findIndex(v => v.image === file.url)
+      // const index = this.form.icons.findIndex(v => v.image === file.url)
+      this.form.icons.splice((this.form.icons.indexOf(file.url)),1)
+
     },
     setImg(file) {
       this.form.icons = [...this.form.icons, file.url]
