@@ -16,9 +16,9 @@
       <el-table :data="alarmList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column type="index"></el-table-column>
-        <el-table-column prop="label" label="规划分类名称" show-overflow-tooltip sortable>
+        <el-table-column prop="label" label="工程系统分类名称" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="description" label="规划分类描述" show-overflow-tooltip sortable>
+        <el-table-column prop="description" label="工程系统分类描述" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
           <template slot-scope="scope">

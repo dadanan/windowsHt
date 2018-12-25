@@ -396,15 +396,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'rentToll'
         }
-      }
-      // {
-      //   path: 'putin',
-      //   component: () => import('@/views/blank'),
-      //   name: 'rentPutin',
-      //   meta: {
-      //     title: 'rentPutin'
-      //   }
-      // },
+      },
+      {
+        path: 'putin',
+        component: () => import('@/views/rent/putin'),
+        name: 'rentPutin',
+        meta: {
+          title: 'rentPutin'
+        }
+      },
       // {
       //   path: 'operator',
       //   component: () => import('@/views/blank'),

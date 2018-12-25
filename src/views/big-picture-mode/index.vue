@@ -158,7 +158,7 @@
               </div>
               <div class="bdp__panel-body">
                 <div class="bdp-message-list">
-                  <div class="bdp-message-list__item" v-for = "item in queryWarnJobs">
+                  <div class="bdp-message-list__item" v-for = "item in queryWarnJobs" :key = 'item.id'>
                     <div class="bdp-sprite bdp-sprite--laba"></div>
                     <div class="bdp-message-list__item__text">{{item.description}}</div>
                   </div>
@@ -275,7 +275,9 @@ import {
   selectDeviceCount,
   typePercent,
   queryHomePageStatistic,
-  queryWeather
+  queryWeather,
+  queryMaintenance,
+  queryWarnData
 } from '@/api/big-picture-mode/bigPictureMode'
 import { EngList , queryWarnJob } from '@/api/alarm'
 
@@ -787,6 +789,30 @@ export default {
                     globalCoord: false // 缺省为 false
                   }
                 }
+              },
+              {
+                value: 20,
+                name: '其他',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#d662c4' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#f71b73' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
               }
             ]
           }
@@ -808,7 +834,7 @@ export default {
         },
         tooltip: {},
         dataset: {
-          dimensions: ['月份', '软件升级', '滤芯维护', '传感器校准'],
+          dimensions: ['月份', '维保数量'],
           source: [
             { 月份: '1月', 软件升级: 10, 滤芯维护: 45, 传感器校准: 93 },
             { 月份: '2月', 软件升级: 23, 滤芯维护: 53, 传感器校准: 80 },
@@ -855,28 +881,28 @@ export default {
               }
             }
           },
-          {
-            type: 'bar',
-            itemStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: '#6f47d2' },
-                  { offset: 1, color: '#2599fb' }
-                ])
-              }
-            }
-          },
-          {
-            type: 'bar',
-            itemStyle: {
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: '#ff7200' },
-                  { offset: 1, color: '#ffe000' }
-                ])
-              }
-            }
-          }
+          // {
+          //   type: 'bar',
+          //   itemStyle: {
+          //     normal: {
+          //       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          //         { offset: 0, color: '#6f47d2' },
+          //         { offset: 1, color: '#2599fb' }
+          //       ])
+          //     }
+          //   }
+          // },
+          // {
+          //   type: 'bar',
+          //   itemStyle: {
+          //     normal: {
+          //       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          //         { offset: 0, color: '#ff7200' },
+          //         { offset: 1, color: '#ffe000' }
+          //       ])
+          //     }
+          //   }
+          // }
         ]
       },
       selectLocationDialogVisible: false,
@@ -915,12 +941,33 @@ export default {
         console.log(this.alarmList)
       })
     },
+    queryWarnData() {
+      queryWarnData().then(res => {
+        console.log(res.data)
+        const list = res.data
+        for(var i = 0;i<list.length;i++){
+          this.alarmInfoChartOptions.series[0].data[i].value = list[i].num
+          this.alarmInfoChartOptions.series[0].data[i].name = list[i].name
+        }
+      })
+    },
+    queryMaintenance() {
+      queryMaintenance().then(res => {
+        const list = res.data
+        const lists = []
+        for(var i = 0;i<list.length;i++){
+          lists.push({"月份":list[i].dateStr,"维保数量":list[i].num})
+        }
+        this.fixInfoChartOptions.dataset.source = lists
+      })
+    },
     queryWarnJob() {
       queryWarnJob(this.query1).then(res => {
         this.queryWarnJobs = res.data.projectJobInfoList
         // console.log(this.queryWarnJobs)
       })
     },
+
     queryWeather(){
       queryWeather({"location":this.city}).then(res=>{
         this.datas = res.data
@@ -993,6 +1040,7 @@ export default {
       this.$router.push({ name: 'big-picture-mode-solution' })
     },
     handleProject(val) {
+      console.log(val)
       this.$router.push({ name: 'big-picture-mode-project' })
     }
   },
@@ -1004,6 +1052,8 @@ export default {
     this.queryWeather()
     this.EngList()
     this.queryWarnJob()
+    this.queryMaintenance(),
+    this.queryWarnData()
   }
 }
 </script>

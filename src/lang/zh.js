@@ -33,7 +33,7 @@ export default {
     rentWechat: '实施阶段',
     rentBlacklist: '工程系统分类',
     rentToll: '资料分类',
-    // rentPutin: '投放点管理',
+    rentPutin: '维保模板',
     // rentOperator: '运营商管理',
     // rentPayment: '充值设定',
     system: '系统管理',

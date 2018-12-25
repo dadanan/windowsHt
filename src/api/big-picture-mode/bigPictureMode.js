@@ -91,3 +91,20 @@ export function queryWeather(data) {
     data
   })
 }
+
+// 查询维护信息看板
+export function queryMaintenance() {
+  return request({
+    url: '/temp/api/dashboard/queryMaintenance',
+    method: 'get',
+  })
+}
+
+// 查询报警数据看板
+export function queryWarnData() {
+  return request({
+    url: '/temp/api/dashboard/queryWarnData',
+    method: 'get',
+  })
+}
+

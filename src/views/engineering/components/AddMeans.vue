@@ -104,8 +104,8 @@ export default {
   },
   methods: {
     dele(val){
-      console.log(this.sub)
-      console.log(val)
+      // console.log(this.sub)
+      // console.log(val)
       for(var i = 0;i<this.sub.length;i++){
         if(val.name == this.sub[i].name){
          this.sub.splice(i,1)
@@ -148,7 +148,7 @@ export default {
           this.form.fileMap[val]=list
         }
       }
-      console.log(this.form)
+      // console.log(this.form)
       addImpl(this.form).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -183,7 +183,7 @@ export default {
   },
   watch: {
     data(val){
-      console.log(val)
+      // console.log(val)
       this.form.projectId = val.id
     }
   }

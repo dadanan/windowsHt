@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column prop="type" label="选择关联" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="isRule" label="是否规则内" show-overflow-tooltip sortable>
+        <el-table-column prop="isRule" label="维保项目名称" show-overflow-tooltip sortable>
           <template slot-scope="scope">
             <template v-if='scope.row.isRule == 1'>
               是

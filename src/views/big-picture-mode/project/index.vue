@@ -1,6 +1,6 @@
 <template>
   <div class="solution">
-    <div class="solution__back" @click="$router.back()">121212</div>
+    <div class="solution__back" @click="$router.back()"></div>
   </div>
 </template>
 
@@ -14,7 +14,7 @@
     width: 1920px;
     height: 1080px;
     background: url("./assets/bg.png");
-
+    background-size: 100% 100%;
     &__back {
       position: absolute;
       width: 105px;

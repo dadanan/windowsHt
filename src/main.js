@@ -46,12 +46,12 @@ VueAMap.initAMapApiLoader({
   // 默认高德 sdk 版本为 1.4.4
   v: '1.4.4'
 })
-import VueAreaLinkage from 'vue-area-linkage'
+// import VueAreaLinkage from 'vue-area-linkage'
 import { pca, pcaa } from 'area-data' // v5 or higher
-import 'vue-area-linkage/dist/index.css'
+// import 'vue-area-linkage/dist/index.css'
 Vue.prototype.$pca = pca
 Vue.prototype.$pcaa = pcaa
-Vue.use(VueAreaLinkage)
+// Vue.use(VueAreaLinkage)
 
 import ECharts from 'vue-echarts'
 import chinaMap from 'echarts/map/json/china'

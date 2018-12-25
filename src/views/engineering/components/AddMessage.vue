@@ -244,7 +244,7 @@ export default {
     },
     existProjectNo() {
       existProjectNo({ value: this.form.projectNo }).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.code === 200) {
           if (res.data) {
             this.$message({
@@ -274,7 +274,7 @@ export default {
       this.form.imgs.splice((this.form.imgs.indexOf(file.url)),1)
     },
     setImg(file) {
-      console.log(file)
+      // console.log(file)
       this.form.imgs = [...this.form.imgs, file.url]
     },
     submitForm() {
@@ -287,17 +287,17 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection;
-      console.log(selection);
+      // console.log(selection);
       if (this.selectedDeviceList.length) {
         this.unassignStatus = this.selectedDeviceList[0].assignStatus;
       }
     },
     handleClose(tag) {
       this.selectedDeviceList.splice(this.selectedDeviceList.indexOf(tag), 1);
-      console.log(this.selectedDeviceList);
+      // console.log(this.selectedDeviceList);
     },
     getLocation({ gps, location }) {
-      console.log(gps, location);
+      // console.log(gps, location);ss
       this.form.buildAddress = location;
       this.form.gps = gps.toString();
       this.form = Object.assign({}, this.form, {});

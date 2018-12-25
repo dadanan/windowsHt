@@ -356,3 +356,90 @@ export function getEnableAbility() {
     method: 'get'
   })
 }
+
+// 获取到可复制的工程
+export function getCopyProjectPlan(data) {
+  return request({
+    url: `/temp/api/project/getCopyProjectPlan/${data}`,
+    method: 'get',
+  })
+}
+
+//从另一个工程复制周期的维保至本工程
+export function copyProjectPlan(data) {
+  return request({
+    url: '/temp/api/project/copyProjectPlan',
+    method: 'post',
+    data
+  })
+}
+
+// 查询计划模版列表
+export function planModel(data) {
+  return request({
+    url: '/temp/api/planModel/selectList',
+    method: 'post',
+    data
+  })
+}
+
+// 批量禁用计划模版
+export function forbitPlanModel(data) {
+  return request({
+    url: '/temp/api/planModel/forbitPlanModel',
+    method: 'post',
+    data
+  })
+}
+
+// 批量启用计划模版
+export function reversePlanModel(data) {
+  return request({
+    url: '/temp/api/planModel/reversePlanModel',
+    method: 'post',
+    data
+  })
+}
+
+// 批量删除计划模版信息
+export function deletePlanModel(data) {
+  return request({
+    url: '/temp/api/planModel/deletePlanModel',
+    method: 'post',
+    data
+  })
+}
+
+// 添加计划模版信息
+export function addPlanModel(data) {
+  return request({
+    url: '/temp/api/planModel/addPlanModel',
+    method: 'post',
+    data
+  })
+}
+
+// 查询单个计划模版
+export function planModelList(data) {
+  return request({
+    url: `/temp/api/planModel/select/${data}`,
+    method: 'get'
+  })
+}
+
+// 修改计划模版信息
+export function editPlanModel(data) {
+  return request({
+    url: '/temp/api/planModel/editPlanModel',
+    method: 'post',
+    data
+  })
+}
+
+// 查工程维保（计划）模版
+export function queryPlanModels(data) {
+  return request({
+    url: '/temp/api/plan/queryPlanModels',
+    method: 'get'
+  })
+}

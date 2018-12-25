@@ -16,7 +16,7 @@
         </el-form-item>
 
         <!-- 设备传参 -->
-        <el-form-item label="设备传参" border v-if = "ginseng">
+        <el-form-item label="设备传参" border v-if = "ginsengList.length > 0">
           <div v-for="item in ginsengList" style="width:100%">
             <div style="padding: .24rem;">
               <p style="padding:0px 20px">{{item.paramName}}</p>
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import VDistpicker from 'v-distpicker'
+// import VDistpicker from 'v-distpicker'
 import {
   updateDevice,
   shareDeviceToken,
@@ -205,6 +205,7 @@ export default {
       this.status1 = true
       let paramConfigList = []
       if (id == 1) {
+        console.log(this.ginsengList)
         for (var i = 0; i < this.ginsengList.length; i++) {
           var valuesList = {}
           const list = this.ginsengList[i].configValuesList
@@ -270,7 +271,11 @@ export default {
             }
           if(res.data){
             this.ginseng = true
-            this.ginsengList = res.data
+            if(res.data[0].paramName){
+              this.ginsengList = res.data
+            }else{
+              this.ginsengList = []
+            }
           }else{
             this.ginseng = false
           }

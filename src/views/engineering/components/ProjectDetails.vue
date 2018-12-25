@@ -275,7 +275,7 @@
                                         <!-- </template>
                                     </el-table-column>
                                 </el-table> -->
-                                <div v-for="(item,key) in describe.as" class="tab" >
+                                <div v-for="(item,key) in describe.as" class="tab">
                                         <table class="table" border style="width:100%">
                                         <tr>
                                             <th>文件类型</th>
@@ -353,7 +353,9 @@
                     <div class="table-opts">
                         <div style="flex: 1;"></div>
                         <el-button-group>
-                        <el-button type="primary" @click="exportMaintenance">导出Elcel</el-button>
+                        <el-button type="primary" @click="queryPlanModels">导入工程维保模板</el-button>
+                        <el-button type="primary" @click="getCopyProject">导入其他工程维保项</el-button>
+                        <el-button type="primary" @click="exportMaintenance">导出维保Excel</el-button>
                         </el-button-group>
                     </div>
                     <el-table :data="maintenances" style="width: 100%" class="mb20" border>
@@ -377,17 +379,36 @@
                         </el-table-column>
                         <el-table-column prop="createName" label="创建者" show-overflow-tooltip sortable>
                         </el-table-column>
-                        <!-- <el-table-column prop="typeId" label="操作" show-overflow-tooltip sortable>
+                        <el-table-column prop="typeId" label="操作" show-overflow-tooltip sortable>
                             <template slot-scope="scope">
-                                <el-button type="text">详情</el-button>
+                                <el-button type="text" @click="editor(scope.row)">编辑</el-button>
+                                <el-button type="text" @click="dele(scope.row)">删除</el-button>
                             </template>
-                        </el-table-column> -->
+                        </el-table-column>
                     </el-table>
                     <el-pagination :current-page="qurey.currentPage" :page-sizes="[100,200,300,400]" :page-size="qurey.limit" layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange">
                     </el-pagination>
                 </el-tab-pane>
             </el-tabs>
         </el-dialog>
+        <!-- 工程导入 -->
+        <el-dialog top='4vh' :close-on-click-modal=false title="工程导入维保清单" :visible.sync="listings">
+            <el-table :data="listing" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="name" label="工程名称" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="projectNo" label="工程编号" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="count" label="工程清单数量" show-overflow-tooltip sortable>
+                </el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer" style="padding-bottom:30px;">
+                <el-button @click="listings = false">取消</el-button>
+                <el-button type="primary" @click="getListing">确定</el-button>
+            </div>
+        </el-dialog>
+        <!-- 材料类库存变更详情 -->
         <el-dialog top='4vh' :close-on-click-modal=false title="材料类库存变更详情" :visible.sync="ChangeDetails">
             <el-table :data="consumablesList1" style="width: 100%" class="mb20" border>
                 <el-table-column prop="createTime" label="操作时间" show-overflow-tooltip sortable>
@@ -407,6 +428,7 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <!-- 工程材料变更 -->
         <el-dialog top='4vh' :close-on-click-modal=false title="工程材料变更" :visible.sync="ChangeMaterial">
             <el-form label-width="130px" class="mb-22">
                 <el-form-item label="材料ID">
@@ -430,14 +452,289 @@
                 <el-button type="primary" @click="subMaterial">确定</el-button>
             </div>
         </el-dialog>
+        <!-- 编辑计划 -->
+        <el-dialog top='4vh' :close-on-click-modal=false title="维保编辑" :visible.sync="plan">
+            <el-form label-width="120px" class="mb-22" :model="form1">
+                <el-form-item label="计划名称">
+                <el-input placeholder="计划名称..." v-model='form1.name'></el-input>
+                </el-form-item>
+                <el-form-item label="计划描述">
+                <el-input type="textarea" :rows='3' placeholder="计划描述..." v-model='form1.description'></el-input>
+                </el-form-item>
+                <el-form-item label="是否规则内">
+                <el-select v-model="form1.ruleId" style="width:100%">
+                    <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                </el-select>
+                <span class="color">*规则内的计划，可按规则自动判断任务告警等级</span>
+                </el-form-item>
+                <el-form-item label="选择关联">
+                <template>
+                    <el-radio-group v-model="form1.linkType">
+                    <el-radio :label="0">不关联</el-radio>
+                    <el-radio :label="1">关联设备</el-radio>
+                    <el-radio :label="2">关联工程</el-radio>
+                    </el-radio-group>
+                </template>
+                <p><span class="color">*选择该计划执行对象，工程保养选择关联工程、设备售后选择关联设备、其它选择不关联；</span></p>
+                </el-form-item>
+                <el-form-item>
+                <template v-if="form1.linkType == 0"></template>
+                <template v-if="form1.linkType == 1">
+                    <el-select v-model="form1.linkDeviceModelId" style="width:40%" @change="selectByModelId">
+                    <el-option v-for='item in devList' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                    <el-select v-model="form1.linkDeviceId" style="width:40%">
+                    <el-option v-for='item in devilist' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                </template>
+                <template v-if="form1.linkType == 2">
+                    <el-select v-model="form1.linkProjectId" style="width:100%">
+                    <el-option v-for='item in selectLists' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                </template>
+                </el-form-item>
+                <el-form-item label="任务发布日期">
+                <template>
+                    <el-radio-group v-model="form1.cycleType">
+                    <el-radio :label="0">仅发布一次</el-radio>
+                    <el-radio :label="1">按月生成</el-radio>
+                    <el-radio :label="2">按年生成</el-radio>
+                    </el-radio-group>
+                    <p><span class="color">*任务发布日期 *仅发布一次 *按月生成 *按年生成 * 选择计划执行的起始时间，发布任务视为计划预警，任务到期未完成产生告警；* 系统发布任务即视为计划预警，任务发布日至任务截止日之间为任务实际筹备及执行期限；</span></p>
+                </template>
+                </el-form-item>
+                <el-form-item>
+                <template v-if="form1.cycleType == 0">
+                    <el-date-picker v-model="form1.nextExecuteTime" type="date" value-format="timestamp" placeholder="选择日期" :picker-options="pickerOptions0" style="width:70%;margin-left:20px">
+                    </el-date-picker>
+                </template>
+                <template v-if="form1.cycleType == 1">
+                    <span>每</span>
+                    <el-input type="number" v-model="form1.cycleNums" style="width:10%"></el-input>
+                    <span>月生成日期</span>
+                    <el-select v-model="dayData" style="width:40%;margin-right:20px">
+                    <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                    <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
+                </template>
+                <template v-if="form1.cycleType == 2">
+                    <span>每</span>
+                    <el-input type="number" v-model="form1.cycleNums" style="width:10%"></el-input>
+                    <span>年生成日期</span>
+                    <el-select v-model="monthData" style="width:10%;">
+                    <el-option v-for='item in months' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                    <span style="margin:0px 20px">月</span>
+                    <el-select v-model="daysData" style="width:10%;margin-right:20px">
+                    <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                    <span style="margin-right:20px">日</span>
+                    <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
+                </template>
+                </el-form-item>
+                <el-form-item label="任务到期时间">
+                <span>任务发布日期后</span>
+                <el-input type="number" v-model='form1.overTimeDays' style="width:40%; margin:0px 20px"></el-input>
+                <span>天</span>
+                </el-form-item>
+                <el-form-item label="指定任务负责人">
+                <el-button type="primary " @click="toggleSelection">添加</el-button>
+                <p><span class="color">*计划生产的任务，可指定该任务负责人可见，由相关负责人处理该任务；</span></p>
+                </el-form-item>
+                <el-form-item>
+                <el-tag v-for="item in selectedDeviceList" :key="item.id" :type="item.realName" style="margin:0px 10px">
+                    {{item.userName}}
+                </el-tag>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="handleCancel">取消</el-button>
+                <el-button type="primary" @click='editPlan'>确定</el-button>
+            </div>
+            </el-dialog>
+            <el-dialog top='4vh' :close-on-click-modal=false :visible.sync="addEle" title="添加人数">
+                <el-table :data="projects" ref="multipleTable" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange1">
+                    <el-table-column type="selection"></el-table-column>
+                    <el-table-column type="index"></el-table-column>
+                    <el-table-column prop="userName" label="名称" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="id" label="id" show-overflow-tooltip sortable>
+                    </el-table-column>
+                </el-table>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="addEle = false">取消</el-button>
+                    <el-button type="primary" @click="addEle =false ">确定</el-button>
+                </div>
+            </el-dialog>
+            <el-dialog top="4vh" :close-on-click-modal= false :visible.sync="templates" title="选择计划模板">
+                <el-table :data="alarmList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange2">
+                    <el-table-column type="selection"></el-table-column>
+                    <el-table-column type="index"></el-table-column>
+                    <el-table-column prop="name" label="计划名称" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="description" label="计划描述" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="linkType" label="选择关联" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="isRule" label="是否规则内" show-overflow-tooltip sortable>
+                    <template slot-scope="scope">
+                        <template v-if='scope.row.isRule == 1'>
+                        是
+                        </template>
+                        <template v-else>
+                        否
+                        </template>
+                    </template>
+                    </el-table-column>
+                    <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="status" label="状态" show-overflow-tooltip sortable>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip sortable>
+                    <template slot-scope="scope">
+                        <template>
+                        {{new Date(scope.row.createTime).toLocaleString()}}
+                        </template>
+                    </template>
+                    </el-table-column>
+                    <!-- <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="text" @click="createDevice(scope.row)">修改</el-button>
+                        <el-button type="text" @click="detailsDevice(scope.row)">详情</el-button>
+                    </template>
+                    </el-table-column> -->
+                </el-table>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="templates = false">取消</el-button>
+                    <el-button type="primary" @click="subList">确定</el-button>
+                </div>
+            </el-dialog>
+            <!-- 保存计划 -->
+            <el-dialog top='4vh' :close-on-click-modal=false title="编辑计划模板" :visible.sync="plans">
+                <el-form label-width="120px" class="mb-22" :model="form1">
+                    <el-form-item label="计划名称">
+                    <el-input placeholder="计划名称..." v-model='form1.name'></el-input>
+                    </el-form-item>
+                    <el-form-item label="计划描述">
+                    <el-input type="textarea" :rows='3' placeholder="计划描述..." v-model='form1.description'></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否规则内">
+                    <el-select v-model="form1.ruleId" style="width:100%">
+                        <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                    <span class="color">*规则内的计划，可按规则自动判断任务告警等级</span>
+                    </el-form-item>
+                    <el-form-item label="选择关联">
+                    <template>
+                        <el-radio-group v-model="form1.linkType">
+                        <el-radio :label="0">不关联</el-radio>
+                        <el-radio :label="1">关联设备</el-radio>
+                        <el-radio :label="2">关联工程</el-radio>
+                        </el-radio-group>
+                    </template>
+                    <p><span class="color">*选择该计划执行对象，工程保养选择关联工程、设备售后选择关联设备、其它选择不关联；</span></p>
+                    </el-form-item>
+                    <el-form-item>
+                    <template v-if="form1.linkType == 0"></template>
+                    <template v-if="form1.linkType == 1">
+                        <el-select v-model="form1.linkDeviceModelId" style="width:40%" @change="selectByModelId">
+                        <el-option v-for='item in devList' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                        <el-select v-model="form1.linkDeviceId" style="width:40%">
+                        <el-option v-for='item in devilist' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                    </template>
+                    <template v-if="form1.linkType == 2">
+                        <el-select v-model="form1.linkProjectId" style="width:100%">
+                        <el-option v-for='item in selectLists' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                    </template>
+                    </el-form-item>
+                    <el-form-item label="任务发布日期">
+                    <template>
+                        <el-radio-group v-model="form1.cycleType">
+                        <el-radio :label="0">仅发布一次</el-radio>
+                        <el-radio :label="1">按月生成</el-radio>
+                        <el-radio :label="2">按年生成</el-radio>
+                        </el-radio-group>
+                        <p><span class="color">*任务发布日期 *仅发布一次 *按月生成 *按年生成 * 选择计划执行的起始时间，发布任务视为计划预警，任务到期未完成产生告警；* 系统发布任务即视为计划预警，任务发布日至任务截止日之间为任务实际筹备及执行期限；</span></p>
+                    </template>
+                    </el-form-item>
+                    <el-form-item>
+                    <template v-if="form1.cycleType == 0">
+                        <el-date-picker v-model="form1.nextExecuteTime" type="date" value-format="timestamp" placeholder="选择日期" :picker-options="pickerOptions0" style="width:70%;margin-left:20px">
+                        </el-date-picker>
+                    </template>
+                    <template v-if="form1.cycleType == 1">
+                        <span>每</span>
+                        <el-input type="number" v-model="form1.cycleNums" style="width:10%"></el-input>
+                        <span>月生成日期</span>
+                        <el-select v-model="dayData" style="width:40%;margin-right:20px">
+                        <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                        <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
+                    </template>
+                    <template v-if="form1.cycleType == 2">
+                        <span>每</span>
+                        <el-input type="number" v-model="form1.cycleNums" style="width:10%"></el-input>
+                        <span>年生成日期</span>
+                        <el-select v-model="monthData" style="width:10%;">
+                        <el-option v-for='item in months' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                        <span style="margin:0px 20px">月</span>
+                        <el-select v-model="daysData" style="width:10%;margin-right:20px">
+                        <el-option v-for='item in day' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                        </el-select>
+                        <span style="margin-right:20px">日</span>
+                        <el-checkbox v-model="isRightExcute1">立即执行</el-checkbox>
+                    </template>
+                    </el-form-item>
+                    <el-form-item label="任务到期时间">
+                    <span>任务发布日期后</span>
+                    <el-input type="number" v-model='form1.overTimeDays' style="width:40%; margin:0px 20px"></el-input>
+                    <span>天</span>
+                    </el-form-item>
+                    <el-form-item label="指定任务负责人">
+                    <el-button type="primary " @click="toggleSelections">添加</el-button>
+                    <p><span class="color">*计划生产的任务，可指定该任务负责人可见，由相关负责人处理该任务；</span></p>
+                    </el-form-item>
+                    <el-form-item>
+                    <el-tag v-for="item in selectedDeviceList" :key="item.id" :type="item.realName" style="margin:0px 10px">
+                        {{item.userName}}
+                    </el-tag>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="handleCancels">取消</el-button>
+                    <el-button type="primary" @click='addPlans'>确定</el-button>
+                </div>
+            </el-dialog>
     </div>
 </template>
 
 <script>
 import AMap from './AMap'
 
-import { selectGroups ,project ,maintenance ,projectAnalysis ,updateMateria ,queryJobMateriaLog ,exportMaintenance} from "@/api/alarm";
-
+import { 
+    selectGroups,
+    project,
+    maintenance,
+    projectAnalysis,
+    updateMateria,
+    queryJobMateriaLog,
+    exportMaintenance,
+    getCopyProjectPlan,
+    copyProjectPlan,
+    editPlan,
+    selectList,
+    selectModelDict,
+    selectByModelId,
+    select,
+    queryPlanModels,
+    selectProjectDict,
+    addPlan
+} from "@/api/alarm";
+import { getUserList } from '@/api/user'
 export default {
   components: {
       AMap
@@ -452,7 +749,53 @@ export default {
     }
   },
   data() {
+    const paymentList = []
+    for (let i = 1; i < 31; i++) {
+      paymentList.push({
+        id: i,
+        name: i,
+      })
+    }
+    const payment = []
+    for (let i = 1; i < 13; i++) {
+      payment.push({
+        id: i,
+        name: i,
+      })
+    }
     return {
+      day:paymentList, //天数
+      months:payment,  //月
+      monthData:0,
+      dayData:0,
+      daysData:0,
+      addEle: false,
+      plans:false,
+      templates:false,
+      alarmList:[],
+      selectedDeviceList: [],
+      selectedDeviceList1:[],
+      isRule: '',
+      form1: {
+        status: 1
+      },
+      isRightExcute1: false,
+      plan :false,
+      query: {
+        limit: 1000,
+        page: 1
+      },
+      projects: [],
+      devList: [],
+      devilist: [],
+      list: [],
+      selectLists: [],
+      pickerOptions0: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      },
+      ids: [],
       consumablesList1: [],
       activeTab: '1',
       activeTabT: '5',
@@ -460,6 +803,7 @@ export default {
       ChangeDetails: false,
       ChangeDetailsT: false,
       ChangeMaterial:false,
+      listings:false,
       form: {},
       material:[], //材料
       consumables:[], //耗材
@@ -474,10 +818,272 @@ export default {
       describeData:[],
       describe:{},
       projectAnalysi:{},
-      changeMaterial:{}
+      changeMaterial:{},
+      listing:[],
+      getListings: [],
+      selectedDeviceList2:[]
     }
   },
   methods: {
+    editor(val){
+      this.plan = true
+      console.log(val)
+      this.select(val.id)
+      this.getUserList(val.enableUserList) //客户列表
+    },
+    dele(val){
+
+    },
+    subList(){
+        if(this.selectedDeviceList2.length<2){
+            this.templates = false
+            this.plans = true
+            this.form1.description = this.selectedDeviceList2[0].description
+            this.form1.isRule = this.selectedDeviceList2[0].isRule
+            this.form1.name = this.selectedDeviceList2[0].name
+            this.form1.ruleId = this.selectedDeviceList2[0].ruleId
+            this.form1.linkType = 2
+            this.form1.linkProjectId = this.form.id
+        }else{
+             this.$message({
+                type: 'error',
+                message: '只能选择一个计划模板!'
+            })
+        }
+        // this.maintenances = this.maintenances.concat(this.selectedDeviceList2)
+    },
+    select(id) {
+      select(id).then(res => {
+        // this.selectedDeviceList = res.data.enableUserList
+        this.form1 = res.data
+        if (this.form1.linkType == 1) {
+        this.selectModelDict() // 查客户下模型
+        this.selectByModelId() // 根据id
+      } else if (this.form1.linkType == 2) {
+        this.selectProjectDict() //工程查询
+      }
+      if(this.form1.cycleType == 1){
+        this.dayData = this.form1.day 
+      }else if(this.form1.cycleType == 2){
+        this.daysData = this.form1.day 
+        this.monthData  = this.form1.month
+      }
+      })
+    },
+    queryPlanModels() {
+        this.templates = true
+      queryPlanModels().then(res => {
+        // this.devList = res.data
+        console.log(res.data)
+        const list = res.data
+        const mapList = {
+          '1': '一级告警',
+          '2': '二级告警',
+          '3': '三级告警'
+        }
+        const linkList = {
+          '0': '不关联',
+          '1': '关联设备',
+          '2': '关联工程'
+        }
+        for (var i = 0; i < list.length; i++) {
+          list[i].warnLevel = mapList[list[i].warnLevel]
+          list[i].linkType = linkList[list[i].linkType]
+          if (list[i].status == 1) {
+            list[i].status = '启用'
+          }
+          if (list[i].status == 3) {
+            list[i].status = '禁用'
+          }
+        }
+        this.alarmList = list
+      })
+    },
+    // 查客户下模型
+    selectModelDict() {
+      selectModelDict().then(res => {
+        this.devList = res.data
+      })
+    },
+    selectProjectDict() {
+      selectProjectDict().then(res => {
+        this.selectLists = res.data
+      })
+    },
+    selectList() {
+      selectList(this.query).then(res => {
+        this.list = res.data.ruleRspPoList
+        // console.log(this.)
+      })
+    },
+    // 根据id
+    selectByModelId() {
+      selectByModelId(this.form1.linkDeviceModelId).then(res => {
+        this.devilist = res.data
+      })
+    },
+    editPlan() {
+    //   console.log(this.selectedDeviceList)
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      if (this.form1.ruleId) {
+        this.form1.isRule = 1
+      }
+      if (this.form1.isRightExcute1) {
+        this.form1.isRightExcute = 1
+      } else {
+        this.form1.isRightExcute = 0
+      }
+      if(this.form1.cycleType == 1){
+        this.form1.day = this.dayData
+      }else if(this.form1.cycleType == 2){
+        this.form1.day = this.daysData
+        this.form1.month = this.monthData
+      }
+      console.log(this.ids)
+      this.form1.enableUserList = this.ids
+      editPlan(this.form1).then(res => {
+        if (res.code === 200) {
+          this.selectedDeviceList = []
+          this.ids = []
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.plan = false
+        //   this.$emit('updata-data', this.form1)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    addPlans() {
+    //   console.log(this.selectedDeviceList)
+      for (var i = 0; i < this.selectedDeviceList.length; i++) {
+        this.ids.push(this.selectedDeviceList[i].id)
+      }
+      if (this.form1.ruleId) {
+        this.form1.isRule = 1
+      }
+      if (this.form1.isRightExcute1) {
+        this.form1.isRightExcute = 1
+      } else {
+        this.form1.isRightExcute = 0
+      }
+      if(this.form1.cycleType == 1){
+        this.form1.day = this.dayData
+      }else if(this.form1.cycleType == 2){
+        this.form1.day = this.daysData
+        this.form1.month = this.monthData
+      }
+      console.log(this.ids)
+      this.form1.enableUserList = this.ids
+      addPlan(this.form1).then(res => {
+        if (res.code === 200) {
+          this.selectedDeviceList = []
+          this.ids = []
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+          this.plans = false
+          this.maintenance()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
+    handleSelectionChange1(selection) {
+      this.selectedDeviceList = selection
+    },
+    handleSelectionChange2(selection) {
+        if(selection.length>1){
+            this.$message({
+                type: 'error',
+                message: '只能选择一个计划模板!'
+            })
+        }
+      this.selectedDeviceList2 = selection
+    },
+    handleCancel() {
+        this.selectedDeviceList = []
+        this.ids = []
+        this.plan = false
+    },
+    handleCancels() {
+        this.selectedDeviceList2 = []
+        this.ids = []
+        this.plans = false
+    },
+    getUserList(val) {
+      getUserList().then(res => {
+        if (res.code === 200) {
+          this.projects = res.data
+          const list1 = []
+          this.selectedDeviceList1 = val
+        //   console.log(val)
+          if (this.selectedDeviceList1.length > 0) {
+            for (var i = 0; i < this.selectedDeviceList1.length; i++) {
+              for (var j = 0; j < this.projects.length; j++) {
+                if (this.selectedDeviceList1[i] == this.projects[j].id) {
+                  list1.push(this.projects[j])
+                }
+              }
+            }
+          }
+          this.selectedDeviceList = Object.assign([], list1, []);
+        //   console.log(this.selectedDeviceList)
+        }
+      })
+    },
+    toggleSelections(){
+        this.addEle = true
+        getUserList().then(res => {
+        if (res.code === 200) {
+          this.projects = res.data
+            }
+        })   
+    },
+    toggleSelection() {
+      this.addEle = true
+      this.$nextTick(function() {
+        if (this.selectedDeviceList) {
+          this.selectedDeviceList.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
+        }
+      })
+    },
+    // 工程类
+    getCopyProject(){
+        this.listings = true
+    },
+    getListing(){
+        if(this.getListings.length<2){
+            this.listings = false
+            copyProjectPlan({"currentProjectId":this.form.id,"sourceProjectId":this.getListings.id}).then(res=>{
+                if(res.code == 200){
+                   this.$message({
+                        type: 'success',
+                        message: '导入成功!'
+                    }) 
+                    this.maintenance()
+                }
+            })
+        }else{
+            this.$message({
+                type: 'error',
+                message: '只能选择一个工程!'
+            })
+        }
+    },
     editorMaterial(val){
         this.ChangeMaterial = true
         this.changeMaterial = val
@@ -592,6 +1198,21 @@ export default {
             }
         })
     },
+    getCopyProjectPlan(val){
+        getCopyProjectPlan(val).then(res=>{
+             this.listing = res.data
+        })
+    },
+    handleSelectionChange(selection) {
+        if(selection.length>1){
+            this.$message({
+                type: 'error',
+                message: '只能选择一个工程!'
+            })
+        }
+        this.getListings = selection
+        console.log(selection)
+    },
      handleSizeChange(val) {
       this.qurey.limit = val
       this.maintenance()
@@ -622,6 +1243,11 @@ export default {
           this.qurey.projectId = this.form.id
           this.maintenance()
           this.projectAnalysis(val.id)
+          this.getCopyProjectPlan(val.id)
+          this.selectList() // 查询规则列表
+          this.selectModelDict() // 查客户下模型
+      // } else if (val.linkType == 2) {
+          this.selectProjectDict() //工程查询
       }
   }
 }
