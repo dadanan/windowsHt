@@ -149,9 +149,9 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '设备数量',
-            min: 0,
-            max: 50,
-            interval: 10,
+            // min: 0,
+            // max: 50,
+            // interval: 10,
             axisLine: {
               lineStyle: {
                 color: '#fff'
@@ -169,9 +169,9 @@ export default {
             splitLine: { show: false },
             type: 'value',
             name: '增长率',
-            min: 0,
-            max: 600,
-            interval: 50,
+            // min: 0,
+            // max: 600,
+            // interval: 50,
             axisLabel: {
               formatter: '{value}%'
             },
@@ -404,11 +404,11 @@ export default {
     selectDeviceCount() {
       selectDeviceCount().then(res => {
         for (let i = 0; i < res.data.length; i++) {
-          this.devAddCount.push(res.data[i].addCount)
+           this.devAddCount.push(res.data[i].addCount)
           if (res.data[i].addPercent === '--') {
             this.devAddPercent.push(0)
           } else {
-            this.devAddPercent.push(res.data[i].addPercent.substring(0, 3))
+            this.devAddPercent.push(res.data[i].addPercent.substring(0, (res.data[i].addPercent.length-4)))
           }
           this.deviceCount.push(res.data[i].deviceCount)
         }
@@ -416,22 +416,22 @@ export default {
         this.chart1Options.series[1].data = this.devAddPercent
       })
     },
-    selectTypePercent() {
-      selectTypePercent().then(res => {
-        const chart3Options = this.chart3Options.series[0]
-        const chart2Options = this.chart2Options.series[0]
-        for (let i = 0; i < res.data.length; i++) {
-          chart3Options.data[i].value = res.data[i].typePercent.substring(0, 3)
-          chart3Options.data[i].name = res.data[i].typeName
-          chart2Options.data[i].value = res.data[i].typePercent.substring(0, 3)
-          chart2Options.data[i].name = res.data[i].typeName
-        }
-      })
-    }
+    // selectTypePercent() {
+    //   selectTypePercent().then(res => {
+    //     const chart3Options = this.chart3Options.series[0]
+    //     const chart2Options = this.chart2Options.series[0]
+    //     for (let i = 0; i < res.data.length; i++) {
+    //       chart3Options.data[i].value = res.data[i].typePercent.substring(0, 3)
+    //       chart3Options.data[i].name = res.data[i].typeName
+    //       chart2Options.data[i].value = res.data[i].typePercent.substring(0, 3)
+    //       chart2Options.data[i].name = res.data[i].typeName
+    //     }
+    //   })
+    // }
   },
   created() {
     this.selectDeviceCount()
-    this.selectTypePercent()
+    // this.selectTypePercent()
   }
 }
 </script>

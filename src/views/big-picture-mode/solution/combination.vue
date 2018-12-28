@@ -13,7 +13,7 @@
     bottom: 0;
     width: 1920px;
     height: 1080px;
-    background: url("./assets/bg.png");
+    background: url("./assets/combination.png");
     background-size:100% 100%; 
     &__back {
       position: absolute;

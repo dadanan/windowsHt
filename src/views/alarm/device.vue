@@ -62,15 +62,17 @@
         </el-table-column>
         <el-table-column prop="linkType" label="选择关联" show-overflow-tooltip sortable>
         </el-table-column>
-        <el-table-column prop="isRule" label="是否规则内" show-overflow-tooltip sortable>
-          <template slot-scope="scope">
+        <el-table-column prop="projectTypeName" label="所属系统" show-overflow-tooltip sortable>
+        </el-table-column>
+        <el-table-column prop="ruleName" label="维保项目名称" show-overflow-tooltip sortable>
+          <!-- <template slot-scope="scope">
             <template v-if='scope.row.isRule == 1'>
               是
             </template>
             <template v-else>
               否
             </template>
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>
         </el-table-column>

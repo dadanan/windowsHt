@@ -417,22 +417,22 @@ export default {
         this.chart1Options.series[1].data = this.addPercent
       })
     },
-    selectTypePercent() {
-      selectTypePercent().then(res => {
-        const chart2Options = this.chart2Options.series[0]
-        const chart3Options = this.chart3Options.series[0]
-        for (let i = 0; i < res.data.length; i++) {
-          chart2Options.data[i].value = res.data[i].typePercent.substring(0, 3)
-          chart2Options.data[i].name = res.data[i].typeName
-          chart3Options.data[i].value = res.data[i].typePercent.substring(0, 3)
-          chart3Options.data[i].name = res.data[i].typeName
-        }
-      })
-    }
+    // selectTypePercent() {
+    //   selectTypePercent().then(res => {
+    //     const chart2Options = this.chart2Options.series[0]
+    //     const chart3Options = this.chart3Options.series[0]
+    //     for (let i = 0; i < res.data.length; i++) {
+    //       chart2Options.data[i].value = res.data[i].typePercent.substring(0, 3)
+    //       chart2Options.data[i].name = res.data[i].typeName
+    //       chart3Options.data[i].value = res.data[i].typePercent.substring(0, 3)
+    //       chart3Options.data[i].name = res.data[i].typeName
+    //     }
+    //   })
+    // }
   },
   created() {
     this.selectCustomerUserCount()
-    this.selectTypePercent()
+    // this.selectTypePercent()
   }
 }
 </script>

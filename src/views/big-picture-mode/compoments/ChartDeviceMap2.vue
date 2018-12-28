@@ -1,7 +1,10 @@
 <template>
-  <chart ref="map" @click="onProvienceClick" :options="option" class="chart"></chart>
+  <chart ref="map" :options="option" class="chart"></chart>
 </template>
 <script>
+import {
+  deviceLocationCount
+} from '@/api/big-picture-mode/bigPictureMode'
 export default {
   data() {
     return {
@@ -198,233 +201,13 @@ export default {
         武汉: [114.31, 30.52],
         大庆: [125.03, 46.58]
       },
-      data: [
-        // { name: '海门', value: 1 },
-        // { name: '鄂尔多斯', value: 1 },
-        // { name: '招远', value: 1 },
-        // { name: '舟山', value: 1 },
-        // { name: '齐齐哈尔', value: 1 },
-        // { name: '盐城', value: 1 },
-        // { name: '赤峰', value: 1 },
-        // { name: '青岛', value: 1 },
-        // { name: '乳山', value: 1 },
-        // { name: '金昌', value: 1 },
-        // { name: '泉州', value: 1 },
-        // { name: '莱西', value: 1 },
-        // { name: '日照', value: 1 },
-        // { name: '胶南', value: 1 },
-        // { name: '南通', value: 1 },
-        // { name: '拉萨', value: 1 },
-        // { name: '云浮', value: 1 },
-        // { name: '梅州', value: 1 },
-        // { name: '文登', value: 1 },
-        // { name: '上海', value: 1 },
-        // { name: '攀枝花', value: 1 },
-        // { name: '威海', value: 1 },
-        // { name: '承德', value: 1 },
-        // { name: '厦门', value: 1 },
-        // { name: '汕尾', value: 1 },
-        // { name: '潮州', value: 1 },
-        // { name: '太仓', value: 1 },
-        // { name: '曲靖', value: 1 },
-        // { name: '烟台', value: 1 },
-        // { name: '福州', value: 1 },
-        // { name: '瓦房店', value: 1 },
-        // { name: '即墨', value: 1 },
-        // { name: '抚顺', value: 1 },
-        // { name: '玉溪', value: 1 },
-        // { name: '张家口', value: 1 },
-        // { name: '阳泉', value: 1 },
-        // { name: '莱州', value: 1 },
-        // { name: '湖州', value: 1 },
-        // { name: '汕头', value: 1 },
-        // { name: '昆山', value: 1 },
-        // { name: '宁波', value: 1 },
-        // { name: '湛江', value: 1 },
-        // { name: '揭阳', value: 1 },
-        // { name: '荣成', value: 1 },
-        // { name: '连云港', value: 1 },
-        // { name: '葫芦岛', value: 1 },
-        // { name: '常熟', value: 1 },
-        // { name: '东莞', value: 1 },
-        // { name: '河源', value: 1 },
-        // { name: '淮安', value: 1 },
-        // { name: '泰州', value: 1 },
-        // { name: '南宁', value: 1 },
-        // { name: '营口', value: 1 },
-        // { name: '惠州', value: 1 },
-        // { name: '江阴', value: 1 },
-        // { name: '蓬莱', value: 1 },
-        // { name: '韶关', value: 1 },
-        // { name: '嘉峪关', value: 1 },
-        // { name: '广州', value: 1 },
-        // { name: '延安', value: 1 },
-        // { name: '太原', value: 1 },
-        // { name: '清远', value: 1 },
-        // { name: '中山', value: 1 },
-        // { name: '昆明', value: 1 },
-        // { name: '寿光', value: 1 },
-        // { name: '盘锦', value: 1 },
-        // { name: '长治', value: 1 },
-        // { name: '深圳', value: 1 },
-        // { name: '珠海', value: 1 },
-        // { name: '宿迁', value: 1 },
-        // { name: '咸阳', value: 1 },
-        // { name: '铜川', value: 1 },
-        // { name: '平度', value: 1 },
-        // { name: '佛山', value: 1 },
-        // { name: '海口', value: 1 },
-        // { name: '江门', value: 1 },
-        // { name: '章丘', value: 1 },
-        // { name: '肇庆', value: 1 },
-        // { name: '大连', value: 1 },
-        // { name: '临汾', value: 1 },
-        // { name: '吴江', value: 1 },
-        // { name: '石嘴山', value: 1 },
-        // { name: '沈阳', value: 1 },
-        // { name: '苏州', value: 1 },
-        // { name: '茂名', value: 1 },
-        // { name: '嘉兴', value: 1 },
-        // { name: '长春', value: 1 },
-        // { name: '胶州', value: 1 },
-        // { name: '银川', value: 1 },
-        // { name: '张家港', value: 1 },
-        // { name: '三门峡', value: 1 },
-        // { name: '锦州', value: 1 },
-        // { name: '南昌', value: 1 },
-        // { name: '柳州', value: 1 },
-        // { name: '三亚', value: 1 },
-        // { name: '自贡', value: 1 },
-        // { name: '吉林', value: 1 },
-        // { name: '阳江', value: 1 },
-        // { name: '泸州', value: 1 },
-        // { name: '西宁', value: 1 },
-        // { name: '宜宾', value: 1 },
-        // { name: '呼和浩特', value: 1 },
-        // { name: '成都', value: 1 },
-        // { name: '大同', value: 1 },
-        // { name: '镇江', value: 1 },
-        // { name: '桂林', value: 1 },
-        // { name: '张家界', value: 1 },
-        // { name: '宜兴', value: 1 },
-        // { name: '北海', value: 1 },
-        // { name: '西安', value: 1 },
-        // { name: '金坛', value: 1 },
-        // { name: '东营', value: 1 },
-        // { name: '牡丹江', value: 1 },
-        // { name: '遵义', value: 1 },
-        // { name: '绍兴', value: 1 },
-        // { name: '扬州', value: 1 },
-        // { name: '常州', value: 1 },
-        // { name: '潍坊', value: 1 },
-        // { name: '重庆', value: 1 },
-        // { name: '台州', value: 1 },
-        // { name: '南京', value: 1 },
-        // { name: '滨州', value: 1 },
-        // { name: '贵阳', value: 1 },
-        // { name: '无锡', value: 1 },
-        // { name: '本溪', value: 1 },
-        // { name: '克拉玛依', value: 1 },
-        // { name: '渭南', value: 1 },
-        // { name: '马鞍山', value: 1 },
-        // { name: '宝鸡', value: 1 },
-        // { name: '焦作', value: 1 },
-        // { name: '句容', value: 1 },
-        // { name: '北京', value: 1 },
-        // { name: '徐州', value: 1 },
-        // { name: '衡水', value: 1 },
-        // { name: '包头', value: 1 },
-        // { name: '绵阳', value: 1 },
-        // { name: '乌鲁木齐', value: 1 },
-        // { name: '枣庄', value: 1 },
-        // { name: '杭州', value: 1 },
-        // { name: '淄博', value: 1 },
-        // { name: '鞍山', value: 1 },
-        // { name: '溧阳', value: 1 },
-        // { name: '库尔勒', value: 1 },
-        // { name: '安阳', value: 1 },
-        // { name: '开封', value: 1 },
-        // { name: '济南', value: 1 },
-        // { name: '德阳', value: 1 },
-        // { name: '温州', value: 1 },
-        // { name: '九江', value: 1 },
-        // { name: '邯郸', value: 1 },
-        // { name: '临安', value: 1 },
-        // { name: '兰州', value: 1 },
-        // { name: '沧州', value: 1 },
-        // { name: '临沂', value: 1 },
-        // { name: '南充', value: 1 },
-        // { name: '天津', value: 1 },
-        // { name: '富阳', value: 1 },
-        // { name: '泰安', value: 1 },
-        // { name: '诸暨', value: 1 },
-        // { name: '郑州', value: 1 },
-        // { name: '哈尔滨', value: 1 },
-        // { name: '聊城', value: 1 },
-        // { name: '芜湖', value: 1 },
-        // { name: '唐山', value: 1 },
-        // { name: '平顶山', value: 1 },
-        // { name: '邢台', value: 1 },
-        // { name: '德州', value: 1 },
-        // { name: '济宁', value: 1 },
-        // { name: '荆州', value: 1 },
-        // { name: '宜昌', value: 1 },
-        // { name: '义乌', value: 1 },
-        // { name: '丽水', value: 1 },
-        // { name: '洛阳', value: 1 },
-        // { name: '秦皇岛', value: 1 },
-        // { name: '株洲', value: 1 },
-        // { name: '石家庄', value: 1 },
-        // { name: '莱芜', value: 1 },
-        // { name: '常德', value: 1 },
-        // { name: '保定', value: 1 },
-        // { name: '湘潭', value: 1 },
-        // { name: '金华', value: 1 },
-        // { name: '岳阳', value: 1 },
-        // { name: '长沙', value: 1 },
-        // { name: '衢州', value: 1 },
-        // { name: '廊坊', value: 1 },
-        // { name: '菏泽', value: 1 },
-        // { name: '合肥', value: 1 },
-        // { name: '武汉', value: 1 },
-        // { name: '大庆', value: 1 }
+      datas:[
+        {name:"上海",value:20},
+        {name:"郑州",value:2},
+        {name:"开封",value:10},
       ],
-      provienceTable: [
-        { name: '安徽', code: 'anhui' },
-        { name: '澳门', code: 'aomen' },
-        { name: '北京', code: 'beijing' },
-        { name: '重庆', code: 'chongqing' },
-        { name: '福建', code: 'fujian' },
-        { name: '甘肃', code: 'gansu' },
-        { name: '山东', code: 'guangdong' },
-        { name: '广西', code: 'guangxi' },
-        { name: '贵州', code: 'guizhou' },
-        { name: '海南', code: 'hainan' },
-        { name: '河北', code: 'hebei' },
-        { name: '黑龙江', code: 'heilongjiang' },
-        { name: '河南', code: 'henan' },
-        { name: '湖北', code: 'hubei' },
-        { name: '湖南', code: 'hunan' },
-        { name: '江苏', code: 'jiangsu' },
-        { name: '江西', code: 'jiangxi' },
-        { name: '吉林', code: 'jilin' },
-        { name: '辽宁', code: 'liaoning' },
-        { name: '内蒙古', code: 'neimenggu' },
-        { name: '宁夏', code: 'ningxia' },
-        { name: '青海', code: 'qinghai' },
-        { name: '山东', code: 'shandong' },
-        { name: '上海', code: 'shanghai' },
-        { name: '山西', code: 'shanxi' },
-        { name: '陕西', code: 'shanxi1' },
-        { name: '四川', code: 'sichuan' },
-        { name: '台湾', code: 'taiwan' },
-        { name: '天津', code: 'tianjin' },
-        { name: '香港', code: 'xianggang' },
-        { name: '新疆', code: 'xinjiang' },
-        { name: '西藏', code: 'xizang' },
-        { name: '云南', code: 'yunnan' },
-        { name: '浙江', code: 'zhejiang' }
-      ]
+      ationCount:{},
+      listName : []
     }
   },
   mounted() {
@@ -445,7 +228,7 @@ export default {
         orient: 'vertical',
         y: 'bottom',
         x: 'right',
-        data: ['pm2.5'],
+        data: ['设备'],
         textStyle: {
           color: '#fff'
         }
@@ -474,13 +257,11 @@ export default {
       },
       series: [
         {
-          name: '地图',
-          type: 'map',
+          name: '设备',
+          type: 'scatter',
           coordinateSystem: 'geo',
-          data: this.data,
-          symbolSize: function(val) {
-            return val[2] / 10
-          },
+          data: this.convertData(this.datas),
+          symbolSize:5,
           label: {
             normal: {
               formatter: '{b}',
@@ -493,20 +274,26 @@ export default {
           },
           itemStyle: {
             normal: {
-              color: '#ddb926'
+              color: '#fff'
             }
-          }
+          },
+          tooltip:{
+                formatter: function(params) {
+                  var res = "地址" +'<br/>';
+                  res+=params.data.name+" : "
+                  res+=(params.data.value)[2]
+                  return res;
+              }
+            },
         },
         {
           name: '地点',
           type: 'effectScatter',
           coordinateSystem: 'geo',
-          data: this.convertData(
-            this.data.sort(function(a, b) {
-              return b.value - a.value
-            })
-          ),
-          symbolSize: 5,
+          data: this.convertData(this.datas.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 2)),
+          symbolSize: 10,
           showEffectOn: 'render',
           rippleEffect: {
             brushType: 'stroke'
@@ -526,13 +313,25 @@ export default {
               shadowColor: '#4DF997'
             }
           },
+          tooltip:{
+                formatter: function(params) {
+                  var res = "地址" +'<br/>';
+                  res+=params.data.name+" : "
+                  res+=(params.data.value)[2]
+                  return res;
+              }
+            },
           zlevel: 1
         }
       ]
     }
   },
+  created (){
+
+  },
   methods: {
     convertData: function(data) {
+      console.log(data)
       var res = []
       for (var i = 0; i < data.length; i++) {
         var geoCoord = this.geoCoordMap[data[i].name]
@@ -545,27 +344,25 @@ export default {
       }
       return res
     },
-
-    onProvienceClick(param) {
-      if (this.option.geo.map === 'china') {
-        this.option.geo.map = this.lookupProvienceTable(param.name)
-      } else {
-        this.option.geo.map = 'china'
-      }
-    },
-    lookupProvienceTable(provienceName) {
-      let result = 'null'
-      this.provienceTable.forEach(element => {
-        if (element.name === provienceName) {
-          result = element.code
+    deviceLocationCount() {
+      deviceLocationCount(this.ationCount).then(res => {
+        const list = res.data.provinces
+        for(var i = 0;i<list.length; i++){
+          // const citys = { "name" :(list[i].province).substring(0,(list[i].province.length)-1),'value': list[i].count }
+          // listName.push(citys)
+          var name = (list[i].province).substring(0,(list[i].province.length)-1)
+          this.$set(this.datas[i],'name',name)
+          this.$set(this.datas[i],'value',list[i].count)
         }
+        // this.datas = listName
+        this.$set(this.listName,"name",1)
+        // console.log(this.datas)
       })
-      console.log(result)
-      return result
     }
   },
   watch: {
       option() {
+        this.deviceLocationCount()
         this.$refs.map.mergeOptions(this.option)
       }
   },

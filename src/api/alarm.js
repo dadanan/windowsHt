@@ -443,3 +443,20 @@ export function queryPlanModels(data) {
     method: 'get'
   })
 }
+
+// 工程项目查设备
+export function devices(data) {
+  return request({
+    url: `/temp/api/dashboard/devices/${data}`,
+    method: 'get'
+  })
+}
+
+// 工程项目根据设备查传感器数值
+export function historyData(data) {
+  return request({
+    url: `/temp/api/dashboard/historyData/${data}`,
+    method: 'get'
+  })
+}
+

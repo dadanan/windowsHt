@@ -112,8 +112,38 @@ export const asyncRouterMap = [
   },
   {
     path: '/big-picture-mode/solution',
-    component: () => import('@/views/big-picture-mode/solution'),
-    name: 'big-picture-mode-solution',
+    component: () => import('@/views/big-picture-mode/solution/villa'),
+    name: 'big-picture-mode-villa',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution/floor'),
+    name: 'big-picture-mode-floor',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution/constant'),
+    name: 'big-picture-mode-constant',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution/air'),
+    name: 'big-picture-mode-air',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution/combination'),
+    name: 'big-picture-mode-combination',
+    hidden: true
+  },
+  {
+    path: '/big-picture-mode/solution',
+    component: () => import('@/views/big-picture-mode/solution/iaq'),
+    name: 'big-picture-mode-iaq',
     hidden: true
   },
   {

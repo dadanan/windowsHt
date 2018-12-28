@@ -172,55 +172,31 @@
                   <div class="bdp-sprite bdp-sprite--cog"></div>
                 </div> -->
               </div>
-              <div class="bdp__panel-body bdp__panel-body--mini">
-                <div class="bdp-solution-list">
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--bieshu"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">别墅</div>
+              <div class="bdp__panel-body">
+                <div class="bdp-message-list">
+                  <div class="bdp-message-list__item" @click="villa">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">别墅互联全品质新风</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--dafang"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">大房</div>
+                  <div class="bdp-message-list__item" @click="floor">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">楼宇空气质量监测方案       </div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--jujia"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">居家</div>
+                  <div class="bdp-message-list__item" @click="constant">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">五恒辐射空调智控系统        </div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--bangong"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">办公</div>
+                  <div class="bdp-message-list__item" @click="air">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">新风热泵三联供智控系统      </div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--xuexiao"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">学校</div>
+                  <div class="bdp-message-list__item" @click="combination">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">组合式新风机组互联智控系统   </div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--yiyuan"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">医院</div>
-                  </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--shangchang"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">商场</div>
-                  </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
-                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
-                      <div class="bdp-sprite bdp-sprite--zhantin"></div>
-                    </div>
-                    <div class="bdp-solution-list__item__text">展厅</div>
+                  <div class="bdp-message-list__item" @click="iap">
+                    <div class="bdp-sprite bdp-sprite--laba"></div>
+                    <div class="bdp-message-list__item__text">IAQ4.0空气质量云管理系统架构</div>
                   </div>
                 </div>
               </div>
@@ -914,6 +890,7 @@ export default {
       district:'朝阳区',
       city:'北京',
       prov:'北京',
+      chanId:0,
       query: {
         limit: 8,
         page: 1
@@ -938,12 +915,12 @@ export default {
     EngList() {
       EngList(this.query).then(res => {
         this.alarmList = res.data.projectRspPoList
-        console.log(this.alarmList)
+        // console.log(this.alarmList)
       })
     },
     queryWarnData() {
       queryWarnData().then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         const list = res.data
         for(var i = 0;i<list.length;i++){
           this.alarmInfoChartOptions.series[0].data[i].value = list[i].num
@@ -974,7 +951,7 @@ export default {
       })
     },
     weather(data){
-      console.log(data)
+      // console.log(data)
       this.datas = data.weathers
       this.datas.outerTem = this.datas.outerTem.substring(0,(this.datas.outerTem.length-1))
       this.prov = data.prov
@@ -1036,12 +1013,34 @@ export default {
     handleShowProjectDropdown() {
       this.showProjectDropdown = !this.showProjectDropdown
     },
-    handleSolution() {
-      this.$router.push({ name: 'big-picture-mode-solution' })
+    villa() {
+      this.$router.push({ name: 'big-picture-mode-villa' })
+    },
+    floor() {
+      this.$router.push({ name: 'big-picture-mode-floor' })
+    },
+    constant() {
+      this.$router.push({ name: 'big-picture-mode-constant' })
+    },
+    air() {
+      this.$router.push({ name: 'big-picture-mode-air' })
+    },
+    combination() {
+      this.$router.push({ name: 'big-picture-mode-combination' })
+    },
+    iap() {
+      this.$router.push({ name: 'big-picture-mode-iaq' })
     },
     handleProject(val) {
-      console.log(val)
-      this.$router.push({ name: 'big-picture-mode-project' })
+      // console.log(val)
+      // this.$router.push({ name: 'big-picture-mode-project'})
+      this.chanId = val
+      this.$router.push({
+        path: '/big-picture-mode/project',
+        query:{
+          ids:this.chanId
+        }
+      })
     }
   },
   created() {
@@ -1208,7 +1207,7 @@ export default {
       align-items: center;
     }
     &__text {
-      text-align: center;
+      text-align: left;
       font-size: 12px;
       font-family: 'Microsoft YaHei', serif;
       color: rgb(0, 180, 255);
