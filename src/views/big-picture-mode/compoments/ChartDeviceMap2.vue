@@ -204,13 +204,30 @@ export default {
       datas:[
         {name:"上海",value:20},
         {name:"郑州",value:2},
-        {name:"开封",value:10},
+        {name:"开封",value:1},
+        { name: '海门', value: 1 },
+        { name: '鄂尔多斯', value: 1 },
+        { name: '厦门', value: 1 },
+        { name: '合肥', value: 1 },
+        { name: '大庆', value: 1 },
+        { name: '武汉', value: 1 },
+        { name: '菏泽', value: 1 },
+        { name: '廊坊', value: 1 },
+        { name: '衢州', value: 1 },
+        { name: '长沙', value: 1 },
+        { name: '岳阳', value: 1 },
+        { name: '金华', value: 1 },
+        { name: '湘潭', value: 1 },
+        { name: '常德', value: 1 },
+        { name: '石家庄', value: 1 },
+        { name: '株洲', value: 1 },
       ],
       ationCount:{},
       listName : []
     }
   },
   mounted() {
+    this.deviceLocationCount()
     this.option = {
       title: {
         text: '智慧新风大数据',
@@ -279,7 +296,7 @@ export default {
           },
           tooltip:{
                 formatter: function(params) {
-                  var res = "地址" +'<br/>';
+                  var res ='';
                   res+=params.data.name+" : "
                   res+=(params.data.value)[2]
                   return res;
@@ -287,12 +304,12 @@ export default {
             },
         },
         {
-          name: '地点',
+          name: '',
           type: 'effectScatter',
           coordinateSystem: 'geo',
           data: this.convertData(this.datas.sort(function (a, b) {
                 return b.value - a.value;
-            }).slice(0, 2)),
+            }).slice(0, 1)),
           symbolSize: 10,
           showEffectOn: 'render',
           rippleEffect: {
@@ -315,7 +332,7 @@ export default {
           },
           tooltip:{
                 formatter: function(params) {
-                  var res = "地址" +'<br/>';
+                  var res = '';
                   res+=params.data.name+" : "
                   res+=(params.data.value)[2]
                   return res;
@@ -327,7 +344,7 @@ export default {
     }
   },
   created (){
-
+    this.deviceLocationCount()
   },
   methods: {
     convertData: function(data) {
@@ -355,7 +372,7 @@ export default {
           this.$set(this.datas[i],'value',list[i].count)
         }
         // this.datas = listName
-        this.$set(this.listName,"name",1)
+        // this.$set(this.listName,"name",1)
         // console.log(this.datas)
       })
     }

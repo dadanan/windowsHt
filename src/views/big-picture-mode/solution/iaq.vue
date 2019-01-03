@@ -1,9 +1,20 @@
 <template>
   <div class="solution">
     <div class="solution__back" @click="$router.back()"></div>
+    <img :src="img" class="img">
   </div>
 </template>
+<script>
+import img1 from "./assets/iaq.png"; 
 
+export default {
+  data() {
+    return {
+      img:img1
+    }
+  }
+}
+</script>  
 <style lang="scss" scoped>
   .solution {
     position: absolute;
@@ -13,7 +24,7 @@
     bottom: 0;
     width: 1920px;
     height: 1080px;
-    background: url("./assets/iaq.png");
+     background: url("./assets/bg.jpg");
     background-size:100% 100%; 
     &__back {
       position: absolute;
@@ -22,6 +33,10 @@
       top: 12px;
       left: 30px;
       cursor: pointer;
+    }
+    .img{
+      width: 1500px;
+      margin: 120px 210px 0px 210px;
     }
   }
 </style>

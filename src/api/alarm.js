@@ -436,6 +436,15 @@ export function editPlanModel(data) {
   })
 }
 
+// 修改任务告警等级
+export function editJobWarnLevel(data) {
+  return request({
+    url: '/temp/api/job/editJobWarnLevel',
+    method: 'post',
+    data
+  })
+}
+
 // 查工程维保（计划）模版
 export function queryPlanModels(data) {
   return request({

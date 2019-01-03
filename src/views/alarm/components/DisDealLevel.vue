@@ -15,7 +15,11 @@
                                 <el-input v-model='form.flowStatus'></el-input>
                             </el-form-item>
                             <el-form-item label="告警级别">
-                                <el-input v-model='form.warnLevel'></el-input>
+                                <el-select v-model="form.warnLevel" placeholder="请选择" style="width:100%" @change="alarms">
+                                    <el-option label="一级告警" :value="1"></el-option>
+                                    <el-option label="二级告警" :value="2"></el-option>
+                                    <el-option label="三级告警" :value="3"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="告警来源">
                                 <el-input v-model='form.sourceType'></el-input>
@@ -82,20 +86,26 @@
                                         </el-table-column>
                                     </el-table>
                                 </el-form-item>
+                               
                                 <el-form-item label="指定任务审核人">
                                     <el-button type="primary " @click="addEle = true">添加</el-button>
                                     <span class="color"> *指定该任务审核人，任务结果由审核人审查 </span>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
+                                    <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
                                         {{item.userName}}
                                     </el-tag>
                                 </el-form-item>
-                                <el-form-item label="客户确认单">
-                                    <file-uploader @get-url='setURL(arguments,circulation,"name")' :fileName='circulation.name'></file-uploader>
-                                    <span class="color">*上传任务执行过程中的客户确认单，格式（JPG\JPEG\PDF)单文件小于2M；</span>
+                                <el-form-item label="指定任务执行人">
+                                    <el-button type="primary " @click="addWork = true">添加</el-button>
+                                    <span class="color"> *指定该任务执行人 </span>
                                 </el-form-item>
-                                <el-form-item label="备注（可选）">
+                                <el-form-item>
+                                    <el-tag v-if="selectedDeviceList1.length >0" v-for="item in selectedDeviceList1" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
+                                        {{item.userName}}
+                                    </el-tag>
+                                </el-form-item>
+                                 <el-form-item label="备注（可选）">
                                     <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
                                     <span class="color"> *描述任务执行情况和结果</span>
                                 </el-form-item>
@@ -140,6 +150,7 @@
                 </div>
             </div>
         </el-dialog>
+        <!-- 审核人列表 -->
         <el-dialog top='4vh' :close-on-click-modal=false :visible.sync="addEle">
             <el-table :data="projects" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange">
                 <el-table-column type="selection"></el-table-column>
@@ -152,6 +163,21 @@
             <div slot="footer" class="dialog-footer">
                 <el-button @click="addEle = false">取消</el-button>
                 <el-button type="primary" @click="addEle =false ">确定</el-button>
+            </div>
+        </el-dialog>
+        <!-- 执行人列表 -->
+        <el-dialog top='4vh' :close-on-click-modal=false :visible.sync="addWork">
+            <el-table :data="projects" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange1">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="userName" label="名称" show-overflow-tooltip sortable>
+                </el-table-column>
+                <el-table-column prop="id" label="id" show-overflow-tooltip sortable>
+                </el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addWork = false">取消</el-button>
+                <el-button type="primary" @click="addWork =false ">确定</el-button>
             </div>
         </el-dialog>
         <!-- 材料耗材类 -->
@@ -181,7 +207,7 @@
 </template>
 
 <script>
-import { subselect, jobFlow , ifExistMateria} from '@/api/alarm'
+import { subselect, jobFlow , ifExistMateria ,editJobWarnLevel} from '@/api/alarm'
 import { getUserList } from '@/api/user'
 import FileUploader from '@/components/Upload/excel'
 
@@ -202,6 +228,7 @@ export default {
     return {
       addEle: false,
       IfExist:false,
+      addWork:false,
       form: {},
       consumablesList1: [],
       consumables:[],
@@ -218,10 +245,25 @@ export default {
         name: ''
       },
       ids: [],
-      userl:{}
+      selectedDeviceList1:[],
+      ids1: [],
     }
   },
   methods: {
+    alarms(val){
+        const list = {}
+        list.jobId = this.form.id
+        list.warnLevel = val
+        console.log(list)
+        editJobWarnLevel(list).then(res=>{
+            if(res.data.code == 200){
+                this.$message({
+                    type: 'success',
+                    message: '修改成功!'
+                })
+            }
+        })
+    },
     subselect(id) {
       subselect(id).then(res => {
         const list = res.data
@@ -241,17 +283,18 @@ export default {
           '3': '设备告警'
         }
         const flowStatus = {
-          '1': '待处理',
-          '2': '处理中',
-          '3': '待审核',
-          '4': '已完成',
-          '6': '已忽略'
+          '1': '待分配',
+          '2': '待审核',
+          '3': '待处理',
+          '4': '待归档',
+          '5': '完成',
+          '6': '忽略',
         }
         const isRule = {
           '0': '否',
           '1': '是'
         }
-        list.warnLevel = mapList[list.warnLevel]
+        // list.warnLevel = mapList[list.warnLevel]
         list.type = linkList[list.type]
         list.sourceType = sourceType[list.sourceType]
         list.flowStatus = flowStatus[list.flowStatus]
@@ -267,7 +310,7 @@ export default {
           '5': '提交审核',
           '6': '通过归档',
           '7': '不通过归档',
-          '8': '已忽略',
+          '8': '已忽略'
         }
         const historyDataList = this.form.historyDataList
         for (var i = 0; i < historyDataList.length; i++) {
@@ -279,7 +322,9 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
-      this.selectedDeviceList.push({id:this.userl.userId,userName:this.userl.userName})
+    },
+    handleSelectionChange1(selection) {
+      this.selectedDeviceList1 = selection
     },
     getUserList() {
       getUserList().then(res => {
@@ -325,9 +370,13 @@ export default {
       for (var i = 0; i < this.selectedDeviceList.length; i++) {
         this.ids.push(this.selectedDeviceList[i].id)
       }
+      for (var i = 0; i < this.selectedDeviceList1.length; i++) {
+        this.ids1.push(this.selectedDeviceList1[i].id)
+      }
       this.circulation.targetUsers = this.ids
+      this.circulation.workUsers = this.ids1
       this.circulation.jobId = this.form.id
-      this.circulation.operateType = 5
+      this.circulation.operateType = 2
       this.circulation.imgList.push(this.circulation.name)
       delete this.circulation.name
       for(var i = 0;i<this.showConsumables.length;i++){
@@ -340,9 +389,11 @@ export default {
         }
       this.circulation.materiaUpdateRequestList = this.consumables
       jobFlow(this.circulation).then(res => {
-        if (res.code === 200) {
-           this.selectedDeviceList = []
-           this.ids = []
+        if (res.data == "操作成功！") {
+            this.selectedDeviceList = []
+            this.selectedDeviceList1 = []
+            this.ids1 = []
+            this.ids = []
           this.$message({
             type: 'success',
             message: '提交成功!'
@@ -352,7 +403,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.msg
+            message: res.data
           })
         }
       })
@@ -360,7 +411,6 @@ export default {
   },
   watch: {
     data(val) {
-      this.userl = val.historyDataList[0]
       this.subselect(val.id)
       this.getUserList()
       this.ifExistMateria(val.id)

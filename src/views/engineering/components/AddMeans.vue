@@ -10,7 +10,7 @@
         <el-input type="textarea" :rows='3' placeholder="工程实施描述..." v-model='form.description'></el-input>
       </el-form-item>
       <el-form-item label="实施时间">
-        <el-date-picker type="date" placeholder="实施时间..." value-format="timestamp" v-model='form.implTime' :picker-options="pickerOptions0"></el-date-picker>
+        <el-date-picker type="date" placeholder="实施时间..." value-format="timestamp" v-model='form.implTime'></el-date-picker>
       </el-form-item>
       <el-form-item label="上传图册">
         <image-uploader :key='1' :urls='filterBg(form.imgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
@@ -83,11 +83,11 @@ export default {
       files: {
         appUrl: ''
       },
-      pickerOptions0: {
-        disabledDate(time) {
-          return time.getTime() < Date.now()
-        }
-      },
+      // pickerOptions0: {
+      //   disabledDate(time) {
+      //     return time.getTime() < Date.now()
+      //   }
+      // },
       query: {
         limit: 10000,
         page: 1,

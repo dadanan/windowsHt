@@ -12,8 +12,8 @@ function hasPermission(permission, permissionRoles) {
   if (!permissionRoles) return true
   return permission.some(role => permissionRoles.indexOf(role) >= 0)
 }
-
-const whiteList = ['/login', '/authredirect'] // no redirect whitelist
+console.log(window.location.host)
+const whiteList = ['/login', '/authredirect','/merge',] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar

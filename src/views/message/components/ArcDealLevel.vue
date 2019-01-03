@@ -65,10 +65,47 @@
                 </div>
                 <div class="flex-item">
                     <el-card class="el-card--solid map-container">
+                        <div style="border-bottom:1px solid #969696">
+                            <h3>处理</h3>
+                            <el-form label-width="130px" class="mb-22" :model="circulation">
+                                <el-form-item label="材料类别" v-if="ifExist">
+                                    <el-button type="primary " @click="IfExist = true">添加</el-button>
+                                    <p><span class="color"> *录入任务执行中对材料/耗材的使用情况</span></p>
+                                </el-form-item>
+                                <el-form-item v-if="ifExist">
+                                    <el-table :data="showConsumables" style="width: 100%" class="mb20" border>
+                                        <!-- <el-table-column prop="type" label="材料类别" show-overflow-tooltip>
+                                        </el-table-column> -->
+                                        <el-table-column prop="id" label="材料名称" show-overflow-tooltip>
+                                        </el-table-column>
+                                        <el-table-column prop="handerNums" label="材料数量" show-overflow-tooltip>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-form-item>
+                                <!-- <el-form-item label="任务指定人">
+                                    <el-button type="primary " @click="addEle = true">添加</el-button>
+                                    <span class="color"> *指定该任务审核人，任务结果由审核人审查 </span>
+                                </el-form-item> -->
+                                <!-- <el-form-item label="任务指定人 : ">
+                                    <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.id" style="margin:0px 10px">
+                                        {{item.userName}}
+                                    </el-tag>
+                                </el-form-item> -->
+                                <el-form-item label="备注（可选）">
+                                    <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
+                                    <span class="color"> *描述任务执行情况和结果</span>
+                                </el-form-item>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer" style="padding-bottom:30px;">
+                                <el-button type="primary" @click="jobFlow(1)">同意归档</el-button>
+                                <el-button type="primary" @click="jobFlow(2)">不同意归档</el-button>
+                                <el-button @click="handleCancel">取消</el-button>
+                            </div>
+                        </div>
                         <div>
                             <h3>历史数据</h3>
                             <el-table :data="historyDataList" style="width: 100%" class="mb20" border>
-                                <el-table-column prop="createTime" label="操作时间" show-overflow-tooltip>
+                                <el-table-column prop="name" label="操作时间" show-overflow-tooltip>
                                     <template slot-scope="scope">
                                         <template v-if='scope.row.createTime'>
                                             {{new Date(scope.row.createTime).toLocaleString()}}
@@ -86,7 +123,7 @@
                                 </el-table-column>
                                 <el-table-column prop="imgList" label="其他" show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <template v-if='scope.row.imgList[0]'>
+                                        <template v-if='(scope.row.imgList)[0]'>
                                             <a :href="scope.row.imgList[0]">客户单</a>
                                         </template>
                                         <template v-else>
@@ -100,14 +137,41 @@
                 </div>
             </div>
         </el-dialog>
+        <!-- 材料耗材类 -->
+        <el-dialog top='4vh' :close-on-click-modal=false :visible.sync="IfExist">
+            <el-form label-width="130px" class="mb-22" :model="categorys">
+                <el-form-item label="材料耗材类别">
+                    <el-select v-model="categorys.type" style="width:100%" @change = "categoryData">
+                        <el-option label="材料" value="1"></el-option>
+                        <el-option label="耗材" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+               <el-form-item label="材料名称">
+                    <el-select v-model="categorys.id" style="width:100%">
+                        <el-option v-for='item in list' :label="item.name" :value="item.id" :key='item.id'></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="数量">
+                    <el-input placeholder="请输入数量"  v-model="categorys.handerNums"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="IfExist = false">取消</el-button>
+                <el-button type="primary" @click="addDatas">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { subselect } from '@/api/alarm'
+import { subselect, jobFlow , ifExistMateria} from '@/api/alarm'
+import { getUserList } from '@/api/user'
+import FileUploader from '@/components/Upload/excel'
 
 export default {
-  components: {},
+  components: {
+    FileUploader
+  },
   props: {
     visible: {
       type: Boolean,
@@ -119,9 +183,23 @@ export default {
   },
   data() {
     return {
+      addEle: false,
+      IfExist:false,
       form: {},
       consumablesList1: [],
-      historyDataList: []
+      consumables:[],
+      historyDataList: [],
+      projects: [],
+      selectedDeviceList: [],
+      ifExist:false,
+      category:[],
+      categorys:{},
+      showConsumables:[],
+      list:[],
+      circulation: {
+        imgList: [],
+        name: ''
+      }
     }
   },
   methods: {
@@ -149,7 +227,7 @@ export default {
           '3': '待处理',
           '4': '待归档',
           '5': '完成',
-          '6': '忽略'
+          '6': '忽略',
         }
         const isRule = {
           '0': '否',
@@ -163,27 +241,117 @@ export default {
         list.finalTime = new Date(list.finalTime).toLocaleString()
         this.form = list
         this.consumablesList1 = this.form.deviceList
-        const historyList ={
-            '1': '生成',
-            '2': '分配',
-            '3': '同意生成',
-            '4': '不同意生成',
-            '5': '提交审核',
-            '6': '通过归档',
-            '7': '不通过归档',
-            '8': '已忽略'
+        const historyList = {
+          '1': '生成',
+          '2': '分配',
+          '3': '同意生成',
+          '4': '不同意生成',
+          '5': '提交审核',
+          '6': '通过归档',
+          '7': '不通过归档',
+          '8': '已忽略',
         }
         const historyDataList = this.form.historyDataList
-        for(var i = 0;i<historyDataList.length;i++){
-            historyDataList[i].operateType =historyList[historyDataList[i].operateType]
+        for (var i = 0; i < historyDataList.length; i++) {
+          historyDataList[i].operateType =
+            historyList[historyDataList[i].operateType]
         }
         this.historyDataList = historyDataList
+      })
+    },
+    handleSelectionChange(selection) {
+      this.selectedDeviceList = selection
+    },
+    getUserList(val) {
+      getUserList(val).then(res => {
+        if (res.code === 200) {
+          this.projects = res.data
+          for(var i = 0;i< val.length;i++){
+              for(var j = 0;j<this.projects.length;j++){
+                  if(val[i] == this.projects[j].id){
+                      this.selectedDeviceList.push({userName:this.projects[j].userName,id:this.projects[j].id})
+                  }
+              }
+          }
+        }
+      })
+    },
+    ifExistMateria(id){
+        ifExistMateria(id).then(res=>{
+            this.ifExist = res.data.ifExist
+            this.category = res.data.jobMateriaList
+        })
+    },
+    setURL(argu, data, name) {
+      data[name] = argu[0]
+    },
+    categoryData(val){
+        this.list = []
+        for(var i = 0;i<this.category.length;i++){
+            if( val == this.category[i].type){
+                this.list.push(this.category[i])
+            }
+        }
+    },
+    addDatas(){
+        this.IfExist = false
+        this.consumables.push(this.categorys)
+        this.showConsumables.push(this.categorys)
+        this.categorys = {}
+        for(var i = 0;i<this.showConsumables.length;i++){
+            for(var j = 0 ;j<this.category.length;j++){
+                if(this.showConsumables[i].id == this.category[j].id){
+                    this.showConsumables[i].id = this.category[j].name
+                }
+            }
+        }
+    },
+    handleCancel() {
+      this.$emit('update:visible', false)
+    },
+    jobFlow(val) {
+        if(val == 1){
+            this.circulation.operateType = 6
+        }else{
+            this.circulation.operateType = 7
+        }
+        this.circulation.jobId = this.form.id
+        this.circulation.targetUsers = this.ids
+      this.circulation.imgList.push(this.circulation.name)
+      delete this.circulation.name
+      for(var i = 0;i<this.showConsumables.length;i++){
+            for(var j = 0 ;j<this.category.length;j++){
+                if(this.showConsumables[i].id == this.category[j].name){
+                    this.showConsumables[i].id = this.category[j].id
+                }
+            }
+            this.showConsumables[i].type =5
+        }
+      this.circulation.materiaUpdateRequestList = this.consumables
+      jobFlow(this.circulation).then(res => {
+        if (res.code === 200) {
+           this.selectedDeviceList = []
+           this.ids = []
+          this.$message({
+            type: 'success',
+            message: '提交成功!'
+          })
+          this.$emit('update:visible', false)
+          this.$emit('add-data', this.circulation)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       })
     }
   },
   watch: {
     data(val) {
       this.subselect(val.id)
+      this.getUserList(val.workUsers)
+      this.ifExistMateria(val.id)
     }
   }
 }
@@ -204,7 +372,7 @@ export default {
 
 .map-container {
   width: 860px;
-  height: auto
+  height: auto;
 }
 .map-container1 {
   width: 760px;
@@ -232,6 +400,9 @@ export default {
 }
 .table-img {
   width: 100%;
+}
+.color{
+    color: #969696
 }
 </style>
 

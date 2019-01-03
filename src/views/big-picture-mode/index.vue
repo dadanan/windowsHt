@@ -85,7 +85,7 @@
             </div>
             <div class="bdp__panel">
               <div class="bdp__panel-title">
-                <div class="bdp__panel-title__text">设备类型</div>
+                <div class="bdp__panel-title__text">设备型号</div>
                 <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog" @click="deviceTypeDialogVisible = true"></div>
                 </div>
@@ -121,7 +121,7 @@
             <div class="bdp__project-panel">
               <div class="bdp__panel-title">
                 <div class="bdp__panel-title__text">工程案例</div>
-                <div class="bdp__panel-title__opt">
+                <!-- <div class="bdp__panel-title__opt">
                   <div class="bdp-sprite bdp-sprite--cog" @click="handleShowProjectDropdown"></div>
                   <div class="project-dropdown" :class="{ 'show': showProjectDropdown }">
                     <span>设置</span>
@@ -131,7 +131,7 @@
                     <span>订单分析</span>
                     <span>空气质量</span>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="bdp__panel-body advertisement">
                 <div class="bdp-project-list">
@@ -172,31 +172,55 @@
                   <div class="bdp-sprite bdp-sprite--cog"></div>
                 </div> -->
               </div>
-              <div class="bdp__panel-body">
-                <div class="bdp-message-list">
-                  <div class="bdp-message-list__item" @click="villa">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">别墅互联全品质新风</div>
+             <div class="bdp__panel-body bdp__panel-body--mini">
+                <div class="bdp-solution-list">
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--bieshu"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">方案概览</div>
                   </div>
-                  <div class="bdp-message-list__item" @click="floor">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">楼宇空气质量监测方案       </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--dafang"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">别墅大宅</div>
                   </div>
-                  <div class="bdp-message-list__item" @click="constant">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">五恒辐射空调智控系统        </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--jujia"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">独栋别墅</div>
                   </div>
-                  <div class="bdp-message-list__item" @click="air">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">新风热泵三联供智控系统      </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--bangong"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">建筑楼宇</div>
                   </div>
-                  <div class="bdp-message-list__item" @click="combination">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">组合式新风机组互联智控系统   </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--xuexiao"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">新风热泵</div>
                   </div>
-                  <div class="bdp-message-list__item" @click="iap">
-                    <div class="bdp-sprite bdp-sprite--laba"></div>
-                    <div class="bdp-message-list__item__text">IAQ4.0空气质量云管理系统架构</div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--yiyuan"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">辐射空调</div>
+                  </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--shangchang"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">空气监测</div>
+                  </div>
+                  <div class="bdp-solution-list__item" @click="handleSolution">
+                    <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
+                      <div class="bdp-sprite bdp-sprite--zhantin"></div>
+                    </div>
+                    <div class="bdp-solution-list__item__text">能源管理</div>
                   </div>
                 </div>
               </div>
@@ -1013,10 +1037,14 @@ export default {
     handleShowProjectDropdown() {
       this.showProjectDropdown = !this.showProjectDropdown
     },
-    villa() {
+    handleSolution() {
+      // let {href} = this.$router.resolve({path: `/big-picture-mode/solution/villa`,name: 'big-picture-mode-villa'});
+      // window.open(href, '_blank');
       this.$router.push({ name: 'big-picture-mode-villa' })
     },
     floor() {
+      // let {href} = this.$router.resolve({ name: 'big-picture-mode-floor' })
+      // window.open(href, '_blank');
       this.$router.push({ name: 'big-picture-mode-floor' })
     },
     constant() {
@@ -1186,6 +1214,9 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+  }
+  .text_ss{
+    cursor: pointer;
   }
 }
 
@@ -1445,7 +1476,9 @@ export default {
   background-image: url('/static/images/bdp_sprite.png');
 
   &--cog {
+
     background-position: -84px -59px;
+    // background: url(./solution/assets/fa.png) no-repeat center center;
     width: 22px;
     height: 22px;
   }
@@ -1475,49 +1508,58 @@ export default {
   }
 
   &--bieshu {
-    background-position: -1px -3px;
+    // background-position: -1px -3px;
+    background: url(./solution/assets/fa.png) no-repeat center center;
     width: 35px;
     height: 34px;
   }
 
   &--dafang {
-    background-position: -51px -2px;
+    background: url(./solution/assets/bss.png) no-repeat center center;
+    // background-position: -51px -2px;
     width: 35px;
     height: 35px;
   }
 
   &--jujia {
-    background-position: -101px -8px;
+    // background-position: -101px -8px;
+    background: url(./solution/assets/dd.png) no-repeat center center;
     width: 37px;
     height: 29px;
   }
 
   &--bangong {
-    background-position: -153px -4px;
+    // background-position: -153px -4px;
+    background: url(./solution/assets/ly.png) no-repeat center center;
     width: 33px;
     height: 33px;
   }
 
   &--xuexiao {
-    background-position: -300px 0;
+    // background-position: -300px 0;
+    background: url(./solution/assets/xf.png) no-repeat center center;
     width: 37px;
     height: 37px;
   }
 
   &--yiyuan {
-    background-position: -250px -2px;
+    // background-position: -250px -2px;
+    background: url(./solution/assets/fs.png) no-repeat center center;
     width: 35px;
     height: 35px;
   }
 
   &--shangchang {
-    background-position: -201px -2px;
+    // background-position: -201px -2px;
+    background: url(./solution/assets/kq.png) no-repeat center center;
     width: 34px;
     height: 35px;
   }
 
   &--zhantin {
-    background-position: -352px -3px;
+    // background-position: -352px -3px;
+    background: url(./solution/assets/ny.png) no-repeat center center;
+
     width: 33px;
     height: 34px;
   }
@@ -1540,7 +1582,12 @@ export default {
     height: 23px;
   }
 }
-
+.sd{
+  background: url(./project/assets/fanganzhizuo_huaban.png) no-repeat center center;
+  width:20px;
+  height: 20px;
+  background-size: 100% 100%;
+}
 .bdp-chart {
   height: 100%;
   width: 100%;

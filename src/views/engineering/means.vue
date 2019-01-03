@@ -111,11 +111,11 @@
                         </template>
                     </template>
                   </el-table-column>
-                  <!-- <el-table-column label="操作" show-overflow-tooltip>
+                  <el-table-column label="操作" show-overflow-tooltip>
                     <template slot-scope="scope">
                       <el-button type="text" @click="createMeans(scope.row)">修改</el-button>
                     </template>
-                  </el-table-column> -->
+                  </el-table-column>
             </el-table>
             <el-alert v-else title="该工程下没有对应的实施！" type="info" center show-icon :closable="false"></el-alert>
           </template>

@@ -70,6 +70,7 @@
                             <el-form label-width="130px" class="mb-22" :model="circulation">
                                 <el-form-item label="材料类别" v-if="ifExist">
                                     <el-button type="primary " @click="IfExist = true">添加</el-button>
+                                    <p><span class="color"> *录入任务执行中对材料/耗材的使用情况</span></p>
                                 </el-form-item>
                                 <el-form-item v-if="ifExist">
                                     <el-table :data="showConsumables" style="width: 100%" class="mb20" border>
@@ -81,19 +82,22 @@
                                         </el-table-column>
                                     </el-table>
                                 </el-form-item>
-                                <el-form-item label="处理说明">
-                                    <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
-                                </el-form-item>
-                                <el-form-item label="指定任务负责人">
+                                <el-form-item label="指定任务审核人">
                                     <el-button type="primary " @click="addEle = true">添加</el-button>
+                                    <span class="color"> *指定该任务审核人，任务结果由审核人审查 </span>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" closable :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
+                                    <el-tag v-if="selectedDeviceList.length >0" v-for="item in selectedDeviceList" :key="item.roleName" :type="item.type" @close="handleClose(item)" style="margin:0px 10px">
                                         {{item.userName}}
                                     </el-tag>
                                 </el-form-item>
                                 <el-form-item label="客户确认单">
                                     <file-uploader @get-url='setURL(arguments,circulation,"name")' :fileName='circulation.name'></file-uploader>
+                                    <span class="color">*上传任务执行过程中的客户确认单，格式（JPG\JPEG\PDF)单文件小于2M；</span>
+                                </el-form-item>
+                                <el-form-item label="备注（可选）">
+                                    <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
+                                    <span class="color"> *描述任务执行情况和结果</span>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer" style="padding-bottom:30px;">
@@ -122,7 +126,7 @@
                                 </el-table-column>
                                 <el-table-column prop="imgList" label="其他" show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <template v-if='scope.row.imgList'>
+                                        <template v-if='(scope.row.imgList)[0]'>
                                             <a :href="scope.row.imgList[0]">客户单</a>
                                         </template>
                                         <template v-else>
@@ -213,7 +217,8 @@ export default {
         imgList: [],
         name: ''
       },
-      ids: []
+      ids: [],
+      userl:{}
     }
   },
   methods: {
@@ -256,11 +261,13 @@ export default {
         this.consumablesList1 = this.form.deviceList
         const historyList = {
           '1': '生成',
-          '2': '处理',
-          '3': '提交审核',
-          '4': '通过',
-          '5': '驳回',
-          '6': '忽略'
+          '2': '分配',
+          '3': '同意生成',
+          '4': '不同意生成',
+          '5': '提交审核',
+          '6': '通过归档',
+          '7': '不通过归档',
+          '8': '已忽略',
         }
         const historyDataList = this.form.historyDataList
         for (var i = 0; i < historyDataList.length; i++) {
@@ -272,6 +279,7 @@ export default {
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection
+      this.selectedDeviceList.push({id:this.userl.userId,userName:this.userl.userName})
     },
     getUserList() {
       getUserList().then(res => {
@@ -319,7 +327,7 @@ export default {
       }
       this.circulation.targetUsers = this.ids
       this.circulation.jobId = this.form.id
-      this.circulation.operateType = 3
+      this.circulation.operateType = 5
       this.circulation.imgList.push(this.circulation.name)
       delete this.circulation.name
       for(var i = 0;i<this.showConsumables.length;i++){
@@ -333,6 +341,8 @@ export default {
       this.circulation.materiaUpdateRequestList = this.consumables
       jobFlow(this.circulation).then(res => {
         if (res.code === 200) {
+           this.selectedDeviceList = []
+           this.ids = []
           this.$message({
             type: 'success',
             message: '提交成功!'
@@ -350,6 +360,7 @@ export default {
   },
   watch: {
     data(val) {
+      this.userl = val.historyDataList[0]
       this.subselect(val.id)
       this.getUserList()
       this.ifExistMateria(val.id)
@@ -401,6 +412,9 @@ export default {
 }
 .table-img {
   width: 100%;
+}
+.color{
+    color: #969696
 }
 </style>
 

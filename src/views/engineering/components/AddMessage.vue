@@ -89,14 +89,6 @@
                 <el-table :data="form.materialInfoList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange" >
                   <el-table-column type="index"></el-table-column>
                   <el-table-column label="材料类别" show-overflow-tooltip >
-                    <!-- <template slot-scope="scope">
-                      <div v-if="scope.row.type == 1">
-                        材料类
-                      </div>
-                      <div v-else>
-                        耗材类
-                      </div>
-                    </template> -->
                     <template slot-scope="scope">
                       <el-select v-model="scope.row.type" style="width:100%" placeholder="请选择">
                         <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -198,6 +190,7 @@
         <el-button type="primary" @click="submitForms" >确定</el-button>
       </div>
     </el-dialog>
+    
     <el-dialog top='4vh' :close-on-click-modal=false title="添加耗材类" :visible.sync="consumablesDeve"  >
       <el-form label-width="80px" label-position="left" :model="consumablesList1" >
         <el-form-item label="材料类别">
@@ -356,9 +349,15 @@ export default {
             that.outputs = [];//清空接收数据
             for(var i = 0;i<ws.length;i++){
               const list = {}
+              if(ws[i].材料类别 == '材料类'){
+                list.type = 1
+              }
+              if(ws[i].材料类别 == '耗材类'){
+                list.type = 2
+              }
               list.name = ws[i].品名
-              list.model = ws[i].规格
-              list.factory = ws[i].库存数量
+              list.unit = ws[i].规格
+              list.nums = ws[i].库存数量
               that.form.materialInfoList.push(list)
             }
         } catch (e) {

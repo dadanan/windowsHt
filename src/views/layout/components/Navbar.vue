@@ -212,7 +212,6 @@ export default {
       this.keyword = ''
     },
     searchDevice() {
-      console.log(this.keyword)
       this.$router.push({
         path: '/device/list',
         query: {

@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       form: {
-        useType:"1",
+        useType:1,
         monitorValues:[]
       },
       rules: {
@@ -99,7 +99,9 @@ export default {
     },
     
     addRule() {
-      this.form.monitorValues.push(this.monitorValues)
+      if(this.monitorValues){
+          this.form.monitorValues.push(this.monitorValues)
+      }
       addRule(this.form).then(res => {
         if (res.code === 200) {
           this.$message({

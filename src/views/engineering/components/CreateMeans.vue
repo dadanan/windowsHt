@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="添加实施" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="修改实施" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
     <el-form label-width="130px" class="mb-22" :model="form">
       <el-form-item label="实施阶段">
         <el-select v-model="form.typeId" style="width:100%">
@@ -126,7 +126,7 @@ export default {
     setImg(file) {
       this.form.imgList = [...this.form.imgList, file.url]
     },
-    selectList() {
+    selectList(val) {
       selectList(this.query).then(res => {
         this.list = res.data.dictRspPoList
       })
@@ -170,11 +170,13 @@ export default {
     }
   },
   created() {
-    this.selectList()
+    // this.selectList()
     this.selectList1()
   },
   watch: {
     data(val){
+      console.log(val)
+      this.selectList(val)
       this.form.projectId = val.id
       this.form = val
     }

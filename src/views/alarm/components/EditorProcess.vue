@@ -88,12 +88,22 @@ export default {
       })
     },
     editRule() {
+      this.form.monitorValues = []
       this.form.monitorValues.push(this.monitorValues)
         if(this.form.status == '启用'){
             this.form.status = 1
           }
           if(this.form.status == '禁用'){
             this.form.status = 3
+          }
+          if(this.form.warnLevel == '一级告警'){
+            this.form.warnLevel = 1
+          }
+          if(this.form.warnLevel == '二级告警'){
+            this.form.warnLevel = 2
+          }
+          if(this.form.warnLevel == '三级告警'){
+            this.form.warnLevel = 3
           }
       editRule(this.form).then(res => {
         if (res.code === 200) {
@@ -118,7 +128,9 @@ export default {
   watch: {
     data(val) {
       console.log(val)
-      this.monitorValues = val.monitorValues[0]
+      if(val.monitorValues){
+        this.monitorValues = val.monitorValues[0]
+      }
       this.form = val
     }
   },

@@ -31,6 +31,11 @@ export const constantRouterMap = [
     hidden: true
   },
   {
+    path: '/merge',
+    component: () => import('@/views/merge/index'),
+    hidden: true
+  },
+  {
     path: '/authredirect',
     component: () => import('@/views/login/authredirect'),
     hidden: true

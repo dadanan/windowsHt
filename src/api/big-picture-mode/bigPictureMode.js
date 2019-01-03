@@ -108,3 +108,23 @@ export function queryWarnData() {
   })
 }
 
+// 查询任务数据看板
+export function queryJobDash() {
+  return request({
+    url: '/temp/api/dashboard/queryJobDash',
+    method: 'get',
+  })
+}
+
+
+// 查询单个工程下型号比例看板
+
+export function queryModelPercent() {
+  return request({
+    url: `/temp/api/dashboard/queryModelPercent/${projectId}`,
+    method: 'get',
+  })
+}
+
+
+

@@ -45,51 +45,75 @@
               </el-form-item>
               <el-form-item label="添加其他设备">
                 <el-button type="primary " @click="otherDeve = true" >添加</el-button>
+                <a href="javascript:;" class="upload">导入表格
+                    <input type="file" ref="upload" accept=".xls,.xlsx" class="change" @click="sd(1)">
+                </a>
                 <p><span class="color">*添加工程用第三方设备，如空调主机、锅炉等；</span></p>
               </el-form-item>
               <el-form-item>
                 <el-table :data="form.extraDeviceList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange" >
                   <el-table-column type="index"></el-table-column>
-                  <el-table-column prop="name" label="设备名称" show-overflow-tooltip >
+                  <el-table-column label="设备名称" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                      <el-input v-model='scope.row.name'></el-input>
+                    </template>
                   </el-table-column>
-                  <el-table-column prop="model" label="设备型号" show-overflow-tooltip >
+                  <el-table-column label="设备型号" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                      <el-input v-model='scope.row.model'></el-input>
+                    </template>
                   </el-table-column>
-                  <el-table-column prop="factory" label="厂家" show-overflow-tooltip >
+                  <el-table-column label="厂家" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                      <el-input v-model='scope.row.factory'></el-input>
+                    </template>
                   </el-table-column>
-                  <el-table-column prop='direction' label="说明书" show-overflow-tooltip >
+                  <el-table-column prop="direction" label="说明书" show-overflow-tooltip >
                   </el-table-column>
                   <el-table-column label="操作" show-overflow-tooltip >
-                  <template slot-scope="scope">
-                    <el-button type="text" @click="dele(scope.row)">删除</el-button>
-                  </template>
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="cres(scope.row)">编辑</el-button>
+                      <el-button type="text" @click="dele(scope.row)">删除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-form-item>
               <el-form-item label="添加材料耗材类">
                 <el-button type="primary " @click="consumablesDeve = true" >添加</el-button>
+                <a href="javascript:;" class="upload">导入表格
+                    <input type="file" ref="uploads" accept=".xls,.xlsx" class="change" @click="sd(2)">
+                </a>
                 <p><span class="color">导入工程相关材料/有料，表头格式为（序号、名称、规格、数量），名称需包括单位，如:（1管路（米)PVC 10CM100）</span></p>   
               </el-form-item>
               <el-form-item>
                 <el-table :data="form.materialInfoList" style="width: 100%" class="mb20" border @selection-change="handleSelectionChange"  >
                   <el-table-column type="index"></el-table-column>
-                  <el-table-column prop="type" label="材料类别" show-overflow-tooltip >
+                  <el-table-column label="材料类别" show-overflow-tooltip >
                     <template slot-scope="scope">
-                      <div v-if="scope.row.type == 1">
-                        材料类
-                      </div>
-                      <div v-else>
-                        耗材类
-                      </div>
+                      <el-select v-model="scope.row.type" style="width:100%" placeholder="请选择">
+                        <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                      </el-select>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="name" label="品名规格" show-overflow-tooltip >
+                  <el-table-column label="品名" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                        <el-input v-model='scope.row.name'></el-input>
+                      </template>
                   </el-table-column>
-                  <el-table-column prop="nums" label="库存数量" show-overflow-tooltip >
+                  <el-table-column label="规格" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                      <el-input v-model='scope.row.unit'></el-input>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="库存数量" show-overflow-tooltip >
+                    <template slot-scope="scope">
+                      <el-input v-model='scope.row.nums'></el-input>
+                    </template>
                   </el-table-column>
                   <el-table-column label="操作" show-overflow-tooltip >
-                  <template slot-scope="scope">
-                    <el-button type="text" @click="deletes(scope.row)">删除</el-button>
-                  </template>
+                    <template slot-scope="scope">
+                      <el-button type="text" @click="deletes(scope.row)">删除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-form-item>
@@ -143,6 +167,46 @@
       </el-form>
       <div slot="footer" class="dialog-footer" >
         <el-button @click="otherDeve = false">取消</el-button>
+        <el-button type="primary" @click="submitForm" >确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog top='4vh' :close-on-click-modal=false title="添加其他设备" :visible.sync="otherDeves" >
+      <el-form label-width="80px" label-position="left" :model="addDeve" :rules="rules" ref="addForm" >
+        <el-form-item label="设备名称" prop="name" >
+          <el-input v-model="addDeve.name"></el-input>
+        </el-form-item>
+        <el-form-item label="设备型号" prop="model" >
+          <el-input v-model="addDeve.model"></el-input>
+        </el-form-item>
+        <el-form-item label="厂家" prop="factory" >
+          <el-input v-model="addDeve.factory"></el-input>
+        </el-form-item>
+        <el-form-item label="说明书">
+          <file-uploader @get-url='setURL(arguments,addDeve,"direction")' :fileName='addDeve.direction'></file-uploader>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer" >
+        <el-button @click="otherDeves = false">取消</el-button>
+        <el-button type="primary" @click="submitForms" >确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog top='4vh' :close-on-click-modal=false title="添加其他设备" :visible.sync="otherDeve" >
+      <el-form label-width="80px" label-position="left" :model="addDeve" :rules="rules" ref="addForm" >
+        <el-form-item label="设备名称" prop="name" >
+          <el-input v-model="addDeve.name"></el-input>
+        </el-form-item>
+        <el-form-item label="设备型号" prop="model" >
+          <el-input v-model="addDeve.model"></el-input>
+        </el-form-item>
+        <el-form-item label="厂家" prop="factory" >
+          <el-input v-model="addDeve.factory"></el-input>
+        </el-form-item>
+        <el-form-item label="说明书">
+          <file-uploader @get-url='setURL(arguments,addDeve,"direction")' :fileName='addDeve.direction'></file-uploader>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer" >
+        <el-button @click="otherDeve = false">取消</el-button>
         <el-button type="primary" @click="submitForm()" >确定</el-button>
       </div>
     </el-dialog>
@@ -154,8 +218,11 @@
             <el-radio :label="2">耗材类</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="品名规格">
+        <el-form-item label="品名">
           <el-input v-model="consumablesList1.name"></el-input>
+        </el-form-item>
+        <el-form-item label="规格">
+          <el-input v-model="consumablesList1.unit"></el-input>
         </el-form-item>
         <el-form-item label="库存数量">
           <el-input v-model="consumablesList1.nums"></el-input>
@@ -163,7 +230,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" >
         <el-button @click="consumablesDeve =false">取消</el-button>
-        <el-button type="primary" @click="submitForm1()" >确定</el-button>
+        <el-button type="primary" @click="submitForm1" >确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -171,6 +238,7 @@
 
 <script>
 import AMap from "./AMap";
+import XLSX from 'xlsx'
 import ImageUploader from "@/components/Upload/image1";
 import FileUploader from "@/components/Upload/excel";
 import { queryAllGroup, editProject ,createselect ,existProjectNo } from "@/api/alarm";
@@ -187,8 +255,18 @@ export default {
   },
   data() {
     return {
+      outputs: [],
+      types:[{
+        value:1,
+        label:'材料类'
+      },
+      {
+        value:2,
+        label:'耗材类'
+      }],
       addEle: false,
       otherDeve: false,
+      otherDeves:false,
       consumablesDeve: false,
       materialDeve: false,
       selectedDeviceList: [],
@@ -220,11 +298,99 @@ export default {
     };
   },
   methods: {
+    sd(val){
+        if(val == 1){
+          this.$refs.upload.addEventListener('change', e => {//绑定监听表格导入事件
+          this.readExcel(e);
+          })
+        }
+        if(val == 2){
+          this.$refs.uploads.addEventListener('change', e => {//绑定监听表格导入事件
+          this.readExcels(e);
+          })
+        }
+      },
+     readExcel(e) {//表格导入
+        var that = this;
+        const files = e.target.files;
+        // console.log(files);
+        if(files.length<=0){//如果没有文件名
+        return false;
+        }else if(!/\.(xls|xlsx)$/.test(files[0].name.toLowerCase())){
+        this.$Message.error('上传格式不正确，请上传xls或者xlsx格式');
+        return false;
+        }
+        const fileReader = new FileReader();
+        fileReader.onload = (ev) => {
+        try {
+            const data = ev.target.result;
+            const workbook = XLSX.read(data, {
+            type: 'binary'
+            });
+            const wsname = workbook.SheetNames[0];//取第一张表
+            const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]);//生成json表格内容
+            console.log(ws);
+            
+            that.outputs = [];//清空接收数据
+            for(var i = 0;i<ws.length;i++){
+              const list = {}
+              list.name = ws[i].设备名称
+              list.model = ws[i].设备型号
+              list.factory = ws[i].厂家
+              that.form.extraDeviceList.push(list)
+            }
+        } catch (e) {
+ 
+            return false;
+        }
+        };
+        fileReader.readAsBinaryString(files[0]);
+    },
+    readExcels(e) {//表格导入
+        var that = this;
+        const files = e.target.files;
+        // console.log(files);
+        if(files.length<=0){//如果没有文件名
+        return false;
+        }else if(!/\.(xls|xlsx)$/.test(files[0].name.toLowerCase())){
+        this.$Message.error('上传格式不正确，请上传xls或者xlsx格式');
+        return false;
+        }
+        const fileReader = new FileReader();
+        fileReader.onload = (ev) => {
+        try {
+            const data = ev.target.result;
+            const workbook = XLSX.read(data, {
+            type: 'binary'
+            });
+            const wsname = workbook.SheetNames[0];//取第一张表
+            const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]);//生成json表格内容
+            console.log(ws);
+            
+            that.outputs = [];//清空接收数据
+            for(var i = 0;i<ws.length;i++){
+              const list = {}
+              list.name = ws[i].品名
+              list.model = ws[i].规格
+              list.factory = ws[i].库存数量
+              that.form.materialInfoList.push(list)
+            }
+        } catch (e) {
+ 
+            return false;
+        }
+        };
+        fileReader.readAsBinaryString(files[0]);
+    },
     dele(val){
      const list = this.form.extraDeviceList.filter(function(item) {
           return item != val
       });
       this.form.extraDeviceList = list
+    },
+    cres(val){
+      this.otherDeves = true
+      this.addDeve = val
     },
     deletes(val){
       console.log(val)
@@ -271,6 +437,16 @@ export default {
           });
         }
       });
+    },
+    // 编辑
+    submitForms() {
+      for(var i = 0;i<this.form.extraDeviceList.length;i++){
+        if(this.form.extraDeviceList[i].name == this.addDeve.name){
+          this.$set(this.form.extraDeviceList[i],'direction',this.addDeve.direction)
+        }
+      }
+      this.$set(this.form.extraDeviceList,'','')
+      this.otherDeves = false;
     },
     submitForm() {
       this.form.extraDeviceList.push(Object.assign({}, this.addDeve));

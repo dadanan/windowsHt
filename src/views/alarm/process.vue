@@ -108,10 +108,10 @@ export default {
   },
   methods: {
     addData(data) {
-      this.levelList.push(data)
       this.selectList()
+      this.levelList.push(data)
     },
-    updateData() {
+    updateData(data) {
       this.selectList()
     },
     reset(){
@@ -122,7 +122,6 @@ export default {
     },
     selectList() {
       selectList(this.query).then(res => {
-        // console.log(res)
         const list = res.data.ruleRspPoList
         const mapList = {
           '1': '一级告警',
