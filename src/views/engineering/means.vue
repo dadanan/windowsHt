@@ -319,12 +319,14 @@ export default {
     },
     createMeans(val){
       console.log(val)
-      // implId(val.typeId).then(res=>{
-      //   this.CreateMeans = true
-      //   this.editingDatasc = res.data
-      // })
-      this.CreateMeans = true
-      this.editingDatasc = val
+      implId(val.id).then(res=>{
+        this.CreateMeans = true
+        delete res.data.fileList;
+        delete res.data.as;
+        delete res.data.imgListStr;
+        this.editingDatasc = res.data
+        // console.log(res.data)
+      })
     },
     projectDetails(val){
       createselect(val.id).then(res=>{

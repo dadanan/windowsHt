@@ -1031,7 +1031,7 @@ export default {
     queryHomePageStatistic() {
       queryHomePageStatistic().then(res => {
         this.totalUserCount = res.data.totalUserCount
-        this.deviceOfflineCount = res.data.deviceOfflineCount
+        this.deviceOfflineCount = res.data.deviceTotalCount
       })
     },
     handleShowProjectDropdown() {
@@ -1060,8 +1060,6 @@ export default {
       this.$router.push({ name: 'big-picture-mode-iaq' })
     },
     handleProject(val) {
-      // console.log(val)
-      // this.$router.push({ name: 'big-picture-mode-project'})
       this.chanId = val
       this.$router.push({
         path: '/big-picture-mode/project',

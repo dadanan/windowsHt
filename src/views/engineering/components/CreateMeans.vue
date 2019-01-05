@@ -204,7 +204,7 @@ export default {
   watch: {
     data(val){
       this.sub = []
-      this.form.fileMap = {}
+      // this.form.fileMap = {}
       this.form = val
       this.accord(val)
       this.selectList(val)
