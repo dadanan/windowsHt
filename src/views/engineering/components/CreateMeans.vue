@@ -10,7 +10,7 @@
         <el-input type="textarea" :rows='3' placeholder="工程实施描述..." v-model='form.description'></el-input>
       </el-form-item>
       <el-form-item label="实施时间">
-        <el-date-picker type="date" placeholder="实施时间..." value-format="timestamp" v-model='form.implTime' :picker-options="pickerOptions0"></el-date-picker>
+        <el-date-picker type="date" placeholder="实施时间..." value-format="timestamp" v-model='form.implTime'></el-date-picker>
       </el-form-item>
       <el-form-item label="上传图册">
         <image-uploader :key='1' :urls='filterBg(form.imgList)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
@@ -83,11 +83,11 @@ export default {
       files: {
         appUrl: ''
       },
-      pickerOptions0: {
-        disabledDate(time) {
-          return time.getTime() < Date.now()
-        }
-      },
+      // pickerOptions0: {
+      //   disabledDate(time) {
+      //     return time.getTime() < Date.now()
+      //   }
+      // },
       query: {
         limit: 10000,
         page: 1,
@@ -109,12 +109,27 @@ export default {
          this.sub.splice(i,1)
         }
       }
+      console.log(this.sub)
     },
     setURL(argu, data) {
       // data[name] = argu[0]
       var index = argu[0].lastIndexOf('/')
       var urlName = argu[0].substring(index + 1, argu[0].length)
       this.sub.push({ url: argu[0], name: urlName })
+    },
+    accord(val){
+      this.sub = []
+      const list =  val.fileMap
+      for(var key in list){
+        const names = key
+        const va = list[key]
+        for(var i = 0;i<va.length;i++){
+          var index = va[i].lastIndexOf('/')
+          var urlName = va[i].substring(index + 1, va[i].length)
+          this.sub.push({name:urlName,value:names,url:va[i]})
+        }
+      }
+      console.log(this.sub);
     },
     filterBg(data) {
       return data
@@ -128,6 +143,14 @@ export default {
     },
     selectList(val) {
       selectList(this.query).then(res => {
+        console.log(val)
+        const list = res.data.dictRspPoList
+        for(var i = 0;i<list.length;i++){
+          if(val.typeName ==list[i].label){
+            // this.form.typeId = list[i].id
+            this.$set(this.form,"typeId",list[i].id)
+          }
+        }
         this.list = res.data.dictRspPoList
       })
     },
@@ -136,6 +159,7 @@ export default {
     },
     submitForm() {
       var arr = []
+      this.form.fileMap = {}     
       for (var i = 0; i < this.sub.length; i++) {
         var val = (this.sub[i].value).toString()
         if(this.form.fileMap[val] == null){
@@ -148,6 +172,10 @@ export default {
           this.form.fileMap[val]=list
         }
       }
+      // delete this.form.fileList;
+      // delete this.form.as;
+      // delete this.form.imgListStr;
+      console.log(this.form)
       addImpl(this.form).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -175,10 +203,12 @@ export default {
   },
   watch: {
     data(val){
-      console.log(val)
+      this.sub = []
+      this.form.fileMap = {}
+      this.form = val
+      this.accord(val)
       this.selectList(val)
       this.form.projectId = val.id
-      this.form = val
     }
   }
 }

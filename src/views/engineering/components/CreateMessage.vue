@@ -370,9 +370,15 @@ export default {
             that.outputs = [];//清空接收数据
             for(var i = 0;i<ws.length;i++){
               const list = {}
+              if(ws[i].材料类别 == '材料类'){
+                list.type = 1
+              }
+              if(ws[i].材料类别 == '耗材类'){
+                list.type = 2
+              }
               list.name = ws[i].品名
-              list.model = ws[i].规格
-              list.factory = ws[i].库存数量
+              list.unit = ws[i].规格
+              list.nums = ws[i].库存数量
               that.form.materialInfoList.push(list)
             }
         } catch (e) {

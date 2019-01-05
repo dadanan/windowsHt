@@ -119,7 +119,7 @@ export function queryJobDash() {
 
 // 查询单个工程下型号比例看板
 
-export function queryModelPercent() {
+export function queryModelPercent(projectId) {
   return request({
     url: `/temp/api/dashboard/queryModelPercent/${projectId}`,
     method: 'get',

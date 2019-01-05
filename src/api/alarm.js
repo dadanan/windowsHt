@@ -469,3 +469,12 @@ export function historyData(data) {
   })
 }
 
+// 查单个实施工程信息
+export function implId(implId) {
+  return request({
+    url: `/temp/api/implement/select/${implId}`,
+    method: 'get'
+  })
+}
+
+

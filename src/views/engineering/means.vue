@@ -143,7 +143,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="addMeans(scope.row)">实施</el-button>
+            <el-button type="text" @click="addMeans(scope.row)">归档</el-button>
             <el-button type="text" @click="createMessage(scope.row)">修改</el-button>
             <el-button type="text" @click="projectDetails(scope.row)">详情</el-button>
           </template>
@@ -162,7 +162,7 @@ import AddMessage from './components/AddMessage'
 import CreateMessage from './components/CreateMessage'
 import CreateMeans from './components/CreateMeans'
 import ProjectDetails from './components/ProjectDetails'
-import { EngList ,createselect ,deleteProject ,projectLocationCount ,projectTrendCount ,project} from '@/api/alarm'
+import { implId,EngList ,createselect ,deleteProject ,projectLocationCount ,projectTrendCount ,project} from '@/api/alarm'
 import { queryHomePageStatistic } from '@/api/big-picture-mode/bigPictureMode'
 export default {
   components: {
@@ -318,7 +318,11 @@ export default {
       })
     },
     createMeans(val){
-      // console.log(val)
+      console.log(val)
+      // implId(val.typeId).then(res=>{
+      //   this.CreateMeans = true
+      //   this.editingDatasc = res.data
+      // })
       this.CreateMeans = true
       this.editingDatasc = val
     },

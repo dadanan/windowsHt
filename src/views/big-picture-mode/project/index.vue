@@ -484,7 +484,6 @@ export default {
           for(var i = 0; i<list.length;i++){
             this.deviceTypeChartOptions.series[0].data[i].name = (list[i].modelName).substring(0,6)
             this.deviceTypeChartOptions.series[0].data[i].value = list[i].num
-
           }
           
       })
