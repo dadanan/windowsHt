@@ -174,7 +174,7 @@
               </div>
              <div class="bdp__panel-body bdp__panel-body--mini">
                 <div class="bdp-solution-list">
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--bieshu"></div>
                     </div>
@@ -186,37 +186,37 @@
                     </div>
                     <div class="bdp-solution-list__item__text">别墅大宅</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item" @click="single">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--jujia"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">独栋别墅</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item" @click="building">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--bangong"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">建筑楼宇</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item" @click="air">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--xuexiao"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">新风热泵</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item" @click="radiation">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--yiyuan"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">辐射空调</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--shangchang"></div>
                     </div>
                     <div class="bdp-solution-list__item__text">空气监测</div>
                   </div>
-                  <div class="bdp-solution-list__item" @click="handleSolution">
+                  <div class="bdp-solution-list__item">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--zhantin"></div>
                     </div>
@@ -1042,20 +1042,21 @@ export default {
       // window.open(href, '_blank');
       this.$router.push({ name: 'big-picture-mode-villa' })
     },
-    floor() {
+    single() {
       // let {href} = this.$router.resolve({ name: 'big-picture-mode-floor' })
       // window.open(href, '_blank');
       this.$router.push({ name: 'big-picture-mode-floor' })
     },
-    constant() {
+    building() {
       this.$router.push({ name: 'big-picture-mode-constant' })
     },
     air() {
       this.$router.push({ name: 'big-picture-mode-air' })
     },
-    combination() {
+    radiation() {
       this.$router.push({ name: 'big-picture-mode-combination' })
     },
+
     iap() {
       this.$router.push({ name: 'big-picture-mode-iaq' })
     },

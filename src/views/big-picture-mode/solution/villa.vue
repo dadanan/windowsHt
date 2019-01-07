@@ -28,7 +28,7 @@ export default {
     background-size:100% 100%; 
     &__back {
       position: absolute;
-      width: 105px;
+      width: 105px; 
       height: 33px;
       top: 12px;
       left: 30px;

@@ -472,9 +472,17 @@ export function historyData(data) {
 // 查单个实施工程信息
 export function implId(implId) {
   return request({
-    url: `/temp/api/implement/select/${implId}`,
+    url: `/temp/api/implement/selectDetail/${implId}`,
     method: 'get'
   })
 }
 
+// 修改实施工程信息
+export function editImpl(data) {
+  return request({
+    url: '/temp/api/implement/editImpl',
+    method: 'post',
+    data
+  })
+}
 

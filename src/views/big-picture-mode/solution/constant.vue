@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import img1 from "./assets/constant.png"; 
+import img1 from "./assets/jz.png"; 
 
 export default {
   data() {

@@ -53,7 +53,7 @@
 import ImageUploader from '@/components/Upload/image1'
 // import { selectList } from '@/api/alarm'
 import { selectList } from '@/api/rent'
-import { addImpl } from '@/api/alarm'
+import { addImpl ,editImpl } from '@/api/alarm'
 import FileUploader from '@/components/Upload/excel1'
 
 export default {
@@ -176,7 +176,7 @@ export default {
       // delete this.form.as;
       // delete this.form.imgListStr;
       console.log(this.form)
-      addImpl(this.form).then(res => {
+      editImpl(this.form).then(res => {
         if (res.code === 200) {
           this.$message({
             type: 'success',
@@ -208,7 +208,7 @@ export default {
       this.form = val
       this.accord(val)
       this.selectList(val)
-      this.form.projectId = val.id
+      this.form.projectId = val.projectId
     }
   }
 }

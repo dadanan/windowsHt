@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import img1 from "./assets/combination.png"; 
+import img1 from "./assets/constant.png"; 
 
 export default {
   data() {
@@ -35,8 +35,8 @@ export default {
       cursor: pointer;
     }
     .img{
-      width: 600px;
-      margin: 120px 660px 0px 660px;
+      width: 1200px;
+      margin: 120px 360px 0px 360px;
     }
   }
 </style>
