@@ -28,7 +28,7 @@
                       <div class="row col space-between">
                         <div>
                           <div class="bdp-weather__text1 bdp-weather__mb1">{{ prov }} {{city}}  {{district}}</div>
-                          <div class="bdp-weather__text2">2018-07-07 13:28 周三</div>
+                          <div class="bdp-weather__text2">{{dates}}</div>
                         </div>
                         <div>
                           <div class="bdp-weather__text6 bdp-weather__mb2">空气质量: <span class="bdp-weather__text7 bdp-sprite bdp-sprite--bad">良</span></div>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="bdp-solution-list__item__text">辐射空调</div>
                   </div>
-                  <div class="bdp-solution-list__item">
+                  <div class="bdp-solution-list__item"  @click="iap">
                     <div class="bdp-solution-list__item__img bdp-sprite bdp-sprite--iconbg">
                       <div class="bdp-sprite bdp-sprite--shangchang"></div>
                     </div>
@@ -285,6 +285,7 @@ import { EngList , queryWarnJob } from '@/api/alarm'
 export default {
   data() {
     return {
+      dates: this.times() ,
       deviceOfflineCount:0,
       totalUserCount:0,
       userCount: [],
@@ -936,6 +937,21 @@ export default {
     UserDialog
   },
   methods: {
+    times() {
+          var date = new Date();
+          var seperator1 = "-";
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          var currentdate = year + seperator1 + month + seperator1 + strDate;
+          return currentdate;
+    },
     EngList() {
       EngList(this.query).then(res => {
         this.alarmList = res.data.projectRspPoList

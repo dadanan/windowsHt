@@ -49,6 +49,8 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="name" label="保养项目名称" show-overflow-tooltip sortable>
         </el-table-column>
+        <el-table-column prop="typeName" label="工程系统分类" show-overflow-tooltip sortable>
+        </el-table-column>
         <el-table-column prop="description" label="保养内容" show-overflow-tooltip sortable>
         </el-table-column>
         <el-table-column prop="warnLevel" label="告警级别" show-overflow-tooltip sortable>

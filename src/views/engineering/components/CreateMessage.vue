@@ -44,7 +44,7 @@
                 </el-tag>
               </el-form-item>
               <el-form-item label="添加其他设备">
-                <el-button type="primary " @click="otherDeve = true" >添加</el-button>
+                <el-button type="primary " @click="subm" >添加</el-button>
                 <a href="javascript:;" class="upload">导入表格
                     <input type="file" ref="upload" accept=".xls,.xlsx" class="change" @click="sd(1)">
                 </a>
@@ -170,7 +170,7 @@
         <el-button type="primary" @click="submitForm" >确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog top='4vh' :close-on-click-modal=false title="添加其他设备" :visible.sync="otherDeves" >
+    <el-dialog top='4vh' :close-on-click-modal=false title="修改其他设备" :visible.sync="otherDeves" >
       <el-form label-width="80px" label-position="left" :model="addDeve" :rules="rules" ref="addForm" >
         <el-form-item label="设备名称" prop="name" >
           <el-input v-model="addDeve.name"></el-input>
@@ -186,7 +186,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" >
-        <el-button @click="otherDeves = false">取消</el-button>
+        <el-button @click="sss">取消</el-button>
         <el-button type="primary" @click="submitForms" >确定</el-button>
       </div>
     </el-dialog>
@@ -298,6 +298,10 @@ export default {
     };
   },
   methods: {
+    sss(){
+      this.otherDeves = false
+      this.addDeve = {}
+    },
     sd(val){
         if(val == 1){
           this.$refs.upload.addEventListener('change', e => {//绑定监听表格导入事件
@@ -365,7 +369,7 @@ export default {
             });
             const wsname = workbook.SheetNames[0];//取第一张表
             const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]);//生成json表格内容
-            console.log(ws);
+            // console.log(ws);
             
             that.outputs = [];//清空接收数据
             for(var i = 0;i<ws.length;i++){
@@ -388,6 +392,9 @@ export default {
         };
         fileReader.readAsBinaryString(files[0]);
     },
+    subm(){
+      this.otherDeve = true
+    },
     dele(val){
      const list = this.form.extraDeviceList.filter(function(item) {
           return item != val
@@ -399,7 +406,7 @@ export default {
       this.addDeve = val
     },
     deletes(val){
-      console.log(val)
+      // console.log(val)
       const list = this.form.materialInfoList.filter(function(item) {
           return item != val
       });
@@ -421,7 +428,7 @@ export default {
     },
      existProjectNo() {
       existProjectNo({ value: this.form.projectNo ,projectId:this.projectIds}).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.code === 200) {
           if (res.data) {
             this.$message({
@@ -450,12 +457,15 @@ export default {
         if(this.form.extraDeviceList[i].name == this.addDeve.name){
           this.$set(this.form.extraDeviceList[i],'direction',this.addDeve.direction)
         }
+       
       }
       this.$set(this.form.extraDeviceList,'','')
+      this.addDeve = {}
       this.otherDeves = false;
     },
     submitForm() {
       this.form.extraDeviceList.push(Object.assign({}, this.addDeve));
+      this.addDeve = {}
       this.otherDeve = false;
     },
     submitForm1() {

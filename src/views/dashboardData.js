@@ -999,6 +999,7 @@ export const userData = {
           text: '活跃用户趋势图'
         },
         tooltip: {},
+        color: ['#3398DB'],
         legend: {},
         xAxis: {
           data: [
