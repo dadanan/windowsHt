@@ -1,6 +1,6 @@
 <template>
   <div class="file-container">
-    <el-upload class="avatar-uploader" :action="host" :show-file-list="false"  :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :data='attachedData'>
+    <el-upload class="avatar-uploader"  :action="host" :show-file-list="false"  :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :data='attachedData'>
       <el-button size="small" type="primary">点击上传</el-button>
     </el-upload>
     <div>{{getName}}</div>
@@ -39,7 +39,8 @@ export default {
   },
   computed: {
     getName() {
-      return this.name || this.fileName
+      return  this.fileName || this.name
+
     }
   },
   methods: {

@@ -82,7 +82,7 @@
   </div>
 </template>
 <script>
-import Swiper from 'swiper';
+import Swiper from 'swiper'
 import echarts from 'echarts'
 import {createselect ,selectGroups ,devices ,historyData ,projectAnalysis} from '@/api/alarm'
 import {queryModelPercent ,queryJobDash} from '@/api/big-picture-mode/bigPictureMode'

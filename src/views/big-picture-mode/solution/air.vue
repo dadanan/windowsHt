@@ -35,8 +35,8 @@ export default {
       cursor: pointer;
     }
     .img{
-      width: 1500px;
-      margin: 120px 210px 0px 210px;
+      width: 1200px;
+      margin: 120px 360px 0px 360px;
     }
   }
 </style>

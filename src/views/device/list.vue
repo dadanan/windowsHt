@@ -18,7 +18,7 @@
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table @expand-change="expandChanged" :data="computeDeviceList" style="width: 100%" @select="sd"  class="mb20" border>
+      <el-table @expand-change="expandChanged" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-table v-if='scope.row.childCount!==0' :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
@@ -406,9 +406,6 @@ export default {
     }
   },
   methods: {
-    sd(val,name){
-      console.log(val,name)
-    },
     onAllocate(list) {
       const hasInclude = (device, data) => {
         // 当前设备包含在data数据里

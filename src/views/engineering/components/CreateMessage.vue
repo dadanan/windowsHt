@@ -182,7 +182,7 @@
           <el-input v-model="addDeve.factory"></el-input>
         </el-form-item>
         <el-form-item label="说明书">
-          <file-uploader @get-url='setURL(arguments,addDeve,"direction")' :fileName='addDeve.direction'></file-uploader>
+          <file-uploader  ref="uploadd" @get-url='setURL(arguments,addDeve,"direction")' :fileName='addDeve.direction'></file-uploader>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" >
@@ -454,10 +454,10 @@ export default {
     // 编辑
     submitForms() {
       for(var i = 0;i<this.form.extraDeviceList.length;i++){
-        if(this.form.extraDeviceList[i].name == this.addDeve.name){
+        if(this.form.extraDeviceList[i].model == this.addDeve.model){
           this.$set(this.form.extraDeviceList[i],'direction',this.addDeve.direction)
         }
-       
+      //  this.$refs.uploadd.clearFiles()
       }
       this.$set(this.form.extraDeviceList,'','')
       this.addDeve = {}
