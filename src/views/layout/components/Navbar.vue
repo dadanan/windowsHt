@@ -4,7 +4,7 @@
       <hamburger :toggleClick="toggleSideBar" :isActive="sidebar.opened" class="sidebar-btn"></hamburger>
       <div class="search">
         <div class="search__label">设备选择：</div>
-        <el-select v-model='filterKey' @change='filterOptionChanged' placeholder="请选择查询条件">
+        <el-select v-model='filterKey' @change='filterOptionChanged' placeholder="请选择查询条件" style="width:400px">
           <el-option v-for='item in filterData' :key='item.value' :label="item.label" :value="item.value"></el-option>
         </el-select>
         <el-input v-if='filterType !== 1' placeholder="请输入关键词" v-model="keyword" class="cascader-with-input">
@@ -88,6 +88,28 @@ export default {
     return {
       filterData: [
         {
+          label: 'ID',
+          value: 'id'
+        },{
+          label: 'MAC',
+          value: 'mac'
+        },{
+          label: '设备名称',
+          value: 'name'
+        },
+        {
+          label: '管理名称',
+          value: 'manageName'
+        },
+        {
+          label: '项目名',
+          value: 'groupName'
+        },
+        {
+          label: '型号名',
+          value: 'modelName'
+        },
+        {
           label: '分配状态',
           value: 'assignStatus',
           type: 1, // 表示用户的查询关键词只能是 1或者 0
@@ -162,18 +184,7 @@ export default {
             }
           ]
         },
-        {
-          label: '设备名称',
-          value: 'name'
-        },
-        {
-          label: '管理名称',
-          value: 'manageName'
-        },
-        {
-          label: 'MAC',
-          value: 'mac'
-        }
+        
       ],
       filterKey: '',
       filterType: 0,
@@ -266,6 +277,7 @@ export default {
     getUserInfo() {
       getCurrentUser().then(res => {
         if (res.code === 200) {
+          console.log()
           const data = res.data
           this.profileForm = data
           this.$store.commit('SET_USER', data)

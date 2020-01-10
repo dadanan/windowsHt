@@ -118,11 +118,19 @@ export function queryJobDash() {
 
 
 // 查询单个工程下型号比例看板
-
 export function queryModelPercent(projectId) {
   return request({
     url: `/temp/api/dashboard/queryModelPercent/${projectId}`,
     method: 'get',
+  })
+}
+
+// 保存当前的状态
+export function updataLocation(data) {
+  return request({
+    url: `/temp/user/updataLocation`,
+    method: 'post',
+    data
   })
 }
 

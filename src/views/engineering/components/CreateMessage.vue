@@ -34,7 +34,7 @@
           </div>
           <div v-if="createStep == 1">
             <el-form label-position="left" label-width="150px" >
-              <el-form-item label="关联设备项目">
+              <el-form-item label="关联设备群">
                 <el-button type="primary" @click="toggleSelection" >添加</el-button>
                 <p><span class="color">*选择该工程相关项目，从而导入该工程相关设备（指系统备案设备）</span></p>
               </el-form-item>
@@ -78,7 +78,7 @@
                   </el-table-column>
                 </el-table>
               </el-form-item>
-              <el-form-item label="添加材料耗材类">
+              <el-form-item label="添加耗材类">
                 <el-button type="primary " @click="consumablesDeve = true" >添加</el-button>
                 <a href="javascript:;" class="upload">导入表格
                     <input type="file" ref="uploads" accept=".xls,.xlsx" class="change" @click="sd(2)">
@@ -259,10 +259,6 @@ export default {
       types:[{
         value:1,
         label:'材料类'
-      },
-      {
-        value:2,
-        label:'耗材类'
       }],
       addEle: false,
       otherDeve: false,
@@ -489,7 +485,7 @@ export default {
       this.form.gps = gps.toString();
       this.form = Object.assign({}, this.form, {});
     },
-    //关联设备项目
+    //关联设备群
     queryAllGroup(val) {
       queryAllGroup().then(res => {
         // console.log(res.data);

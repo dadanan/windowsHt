@@ -117,13 +117,14 @@ export default {
         isValid =
           file.type === 'image/jpeg' ||
           file.type === 'image/jpg' ||
-          file.type === 'image/png'
+          file.type === 'image/png'  ||
+          file.type === 'application/pdf'
       }
 
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isValid) {
         this.$message.error(
-          `上传头像图片只能是 ${this.excel ? 'excel' : 'JPG、PNG'} 格式!`
+          `上传文件或者图片只能是 ${this.excel ? '图片' : 'JPG、PNG、pdf'} 格式!`
         )
       }
       if (!isLt2M) {
@@ -134,7 +135,7 @@ export default {
     handleExceed(a, b) {
 
       this.$message.warning(
-        `上传图片数量超出限制，最多可上传 ${this.limit} 张图片！`
+        `上传文件或者图片数量超出限制，最多可上传 ${this.limit} 张图片！`
       )
     },
     initFileList(val) {

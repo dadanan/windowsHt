@@ -8,15 +8,18 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 // permission judge function
 function hasPermission(permission, permissionRoles) {
+  // console.log(permission, permissionRoles)
+
   if (permission.indexOf('admin') >= 0) return true // admin permission passed directly
   if (!permissionRoles) return true
   return permission.some(role => permissionRoles.indexOf(role) >= 0)
 }
-console.log(window.location.host)
+// console.log(window.location.host)
 const whiteList = ['/login', '/authredirect','/merge',] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
+  // alert(getToken())
   if (getToken()) {
     // determine if there has token
     /* has token*/
@@ -38,6 +41,7 @@ router.beforeEach((to, from, next) => {
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
         if (hasPermission(store.getters.permission, to.meta.permission)) {
           next()
+          // alert(222)
         } else {
           next({ path: '/401', replace: true, query: { noGoBack: true }})
         }

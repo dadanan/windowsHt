@@ -68,12 +68,12 @@ export const deviceColumnData = [
 
 export const dialogDatas = {
   create: {
-    title: '添加设备项目'
+    title: '添加设备群'
   },
   detail: {
-    title: '查看设备项目详情'
+    title: '查看设备群详情'
   },
   edit: {
-    title: '编辑设备项目'
+    title: '编辑设备群'
   }
 }

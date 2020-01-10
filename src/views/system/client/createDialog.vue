@@ -111,25 +111,41 @@
             </el-form-item>
           </el-form>
         </div>
+
         <div v-else-if="createStep == 3">
           <el-form label-position="left" label-width="150px" :model='androidConfig' :rules='rules' ref='androidConfig'>
-            <el-form-item label="APP 名称" prop="name">
-              <el-input v-model='androidConfig.name'></el-input>
+            <!-- 第一个安装宝 -->
+            <el-form-item label="APP 名称1">              
+              <el-input v-model='androidConfig.appInfos[0].name'></el-input>
             </el-form-item>
-            <el-form-item label="APP Logo">
-              <image-uploader :key='3' :url='androidConfig.logo' @get-url='setURL(arguments,androidConfig,"logo")'></image-uploader>
+            <el-form-item label="APP Logo1">
+              <image-uploader :key='3' :url='androidConfig.appInfos[0].logo' @get-url='setURL(arguments,androidConfig.appInfos[0],"logo")'></image-uploader>
               <span class="color">*上传客户LOGO图片，格式PNG ，尺寸（ 自定义单张小于2M),APPLOGO，用于PAD/电视APP独立封装用</span>
-
             </el-form-item>
+            <el-form-item label="APP 软件版本1" prop="version">
+              <el-input v-model='androidConfig.appInfos[0].version'></el-input>
+            </el-form-item>
+            <el-form-item label="上传安装包1">
+              <file-uploader @get-url='setURL(arguments,androidConfig.appInfos[0],"appUrl")' :fileName='androidConfig.appInfos[0].appUrl' format='apk'></file-uploader>
+            </el-form-item>
+            <!-- 第二个 -->
+            <el-form-item label="APP 名称2">
+              <el-input v-model='androidConfig.appInfos[1].name'></el-input>
+            </el-form-item>
+            <el-form-item label="APP Logo2">
+              <image-uploader :key='111' :url='androidConfig.appInfos[1].logo' @get-url='setURL(arguments,androidConfig.appInfos[1],"logo")'></image-uploader>
+              <span class="color">*上传客户LOGO图片，格式PNG ，尺寸（ 自定义单张小于2M),APPLOGO，用于PAD/电视APP独立封装用</span>
+            </el-form-item>
+            <el-form-item label="APP 软件版本2" prop="version">
+              <el-input v-model='androidConfig.appInfos[1].version'></el-input>
+            </el-form-item>
+            <el-form-item label="上传安装包2">
+              <file-uploader @get-url='setURL(arguments,androidConfig.appInfos[1],"appUrl")' :fileName='androidConfig.appInfos[1].appUrl' format='apk'></file-uploader>
+            </el-form-item>
+            <!-- 截止 -->
             <el-form-item label="公众号二维码">
               <image-uploader :key='4' :url='androidConfig.qrcode' @get-url='setURL(arguments,androidConfig,"qrcode")'></image-uploader>
               <span class="color">*上传客户公众号二维码，格式(JPE\JPEG\PNG)，尺寸（ 自定义单张小于2M),用于APP上相应位置呈现</span>
-            </el-form-item>
-            <el-form-item label="APP 软件版本" prop="version">
-              <el-input v-model='androidConfig.version'></el-input>
-            </el-form-item>
-            <el-form-item label="上传安装包">
-              <file-uploader @get-url='setURL(arguments,androidConfig,"appUrl")' :fileName='androidConfig.appUrl' format='apk'></file-uploader>
             </el-form-item>
             <el-form-item label="设备切换密码" prop="deviceChangePassword">
               <el-input v-model='androidConfig.deviceChangePassword'></el-input>
@@ -221,6 +237,10 @@ export default {
           { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
+        name1: [
+          { max: 50, message: '最大长度为50个字符', trigger: 'blur' },
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
         publicName: [
           { max: 15, message: '最大长度为15个字符', trigger: 'blur' },
           { required: true, message: '请输入公众号名称', trigger: 'blur' }
@@ -292,13 +312,26 @@ export default {
           name: '',
           status: 0
         },
-        appUrl: '',
+        appInfos:[{
+          appUrl:'',
+          logo:'',
+          name:'',
+          version:'',
+          appNo:''
+        },{
+          appUrl:'',
+          logo:'',
+          name:'',
+          version:'',
+          appNo:''
+        }],
+        // appUrl: '',
         deviceChangePassword: '',
-        logo: '',
-        name: '',
+        // logo: '',
+        // name: '',
         qrcode: '',
         status: 0,
-        version: ''
+        // version: ''
       },
       backendConfig: {
         enableStatus: true,

@@ -47,7 +47,7 @@
 
 <script>
 import { assignDeviceToCustomer } from '@/api/device/list'
-import { selectAllCustomers, selectModelsByTypeIds } from '@/api/customer'
+import { selectAllCustomers, selectModelsByTypeIds ,queryTypeByCustomerId  } from '@/api/customer'
 
 export default {
   props: {
@@ -94,7 +94,7 @@ export default {
     customerChanged(id) {
       const customer = this.clientList.filter(item => item.id === id)[0]
       this.allocateForm.appid = customer.appid
-      this.selectModelsByTypeIds(customer.typeIds)
+      this.selectModelsByTypeIds(customer.id)
     },
     submitForm(formName, id) {
       //判断表单数据是否为空
@@ -116,7 +116,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     selectModelsByTypeIds(typeIds) {
-      selectModelsByTypeIds(typeIds).then(res => {
+      queryTypeByCustomerId(typeIds).then(res => {
         this.modelList = res.data
       })
     },

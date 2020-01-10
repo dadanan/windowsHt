@@ -2,6 +2,20 @@
   <div>
     <el-card>
       <div class="table-opts">
+        <el-form :inline="true" class="el-form--flex">
+          <el-form-item>
+            <el-input placeholder="请输入组名" v-model="query.name"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input placeholder="请输入创建人" v-model="query.createName"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" @click="queryTeamList">搜索</el-button>
+            <el-button @click="reset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>  
+      <div class="table-opts">  
         <el-button-group>
           <el-button type="primary" @click="getTrusteeship">托管</el-button>
           <el-button type="primary" @click="createDialogVisible = true">添加</el-button>
@@ -146,7 +160,9 @@ export default {
       query: {
         limit: 50,
         page: 1,
-        status: 1
+        status: 1,
+        createName:'',
+        name:''
       },
       selectionTable: [],
       total: 0
@@ -158,6 +174,11 @@ export default {
     }
   },
   methods: {
+    reset(){
+      this.query,createName = ''
+      this.query,name = ''
+      this.queryTeamList()
+    },
     formatDate(row) {
       let date = new Date(parseInt(row.createTime))
       let Y = date.getFullYear() + '-'

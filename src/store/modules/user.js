@@ -1,5 +1,5 @@
 import { logout, login } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, getCity , setCity , removeToken } from '@/utils/auth'
 import store from '../index'
 import router from '../../router'
 
@@ -65,6 +65,7 @@ const user = {
         login(username, userInfo.password)
           .then(response => {
             const data = response.data
+            console.log(data)
             /**
              * 当前后端分离项目使用Token时，Token有两个作用：
              * 1.添加到请求的header中供后端进行安全校验。
@@ -76,7 +77,9 @@ const user = {
             data['token'] = 'asdjc12eiajd2asd'
             commit('SET_TOKEN', data.token)
             setToken(data.token)
-
+            // console.log(data.user.location)
+            setCity(data.user.location)
+            // commit('location', data.user.location)
             // 手动增加权限（这几个页面路由配置有些特殊）
             data.permissions.unshift(
               'big-picture-mode/solution:1:get',

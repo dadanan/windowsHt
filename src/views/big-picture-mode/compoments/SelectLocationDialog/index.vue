@@ -130,7 +130,9 @@
 
 <script>
 import {dataa} from '../../bigData'
-import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
+import { queryWeather , updataLocation } from '@/api/big-picture-mode/bigPictureMode'
+import { getCity } from '@/utils/auth'
+
   export default {
     props: ['visible'],
     data() {
@@ -161,6 +163,11 @@ import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
              "district":this.district
           })
           this.$emit('update:visible', false)
+          const s = [this.city,this.prov,this.district]
+          const ss = s.toString()
+          updataLocation({value:ss}).then(res=>{
+            console.log(res.data)
+          })
         })
       },
       handleClose() {
@@ -193,7 +200,11 @@ import { queryWeather } from '@/api/big-picture-mode/bigPictureMode'
 	},
 	created () {
 		this.updateCity();
-		this.updateDistrict();
+    this.updateDistrict();
+    // console.log(getCity())
+    // if(getCity()){
+
+    // }
 	},
 	watch: {
 		prov(){

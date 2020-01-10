@@ -9,21 +9,27 @@
                 <el-form-item label="名称 :">
                   {{form.name}}
                 </el-form-item>
-                <el-form-item label="MAC :">
+                <!-- <el-form-item label="MAC :">
                   {{form.mac}}
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="设备归属 :">
                   {{form.customerName}}
                 </el-form-item>
-                <el-form-item label="分配状态 :">
+                <!-- <el-form-item label="分配状态 :">
                   {{form.assignStatus === 1 ? '已分配' : '未分配'}}
-                </el-form-item>
-                <el-form-item label="绑定状态 :">
+                </el-form-item> -->
+                <!-- <el-form-item label="绑定状态 :">
                   {{form.bindStatus === 1 ? '已绑定' : '未绑定'}}
-                </el-form-item>
+                </el-form-item> -->
                 <!-- <el-form-item label="启用状态">
                   {{form.enableStatus === 1 ? '启用' : '禁用'}}
                 </el-form-item> -->
+                <el-form-item label="modelNo :">
+                  {{form.modelNo}}
+                </el-form-item>
+                <el-form-item label="型号名称 :">
+                  {{form.modelName}}
+                </el-form-item>
                 <el-form-item label="项目名 :">
                   {{form.groupName}}
                 </el-form-item>
@@ -34,7 +40,7 @@
                   {{form.onlineStatus === 1 ? '在线' : '离线'}}
                 </el-form-item>
                 <el-form-item label="工作状态 :">
-                  <template v-if='form.onlineStatus'>
+                  <template v-if='form.powerStatus'>
                     {{form.powerStatus === 1 ? '开机' : '关机'}}
                   </template>
                   <template v-else>
@@ -46,12 +52,7 @@
                 <el-form-item label="创建人 :">
                   {{form.createUserName}}
                 </el-form-item>
-                <el-form-item label="modelNo :">
-                  {{form.modelNo}}
-                </el-form-item>
-                <el-form-item label="型号名称 :">
-                  {{form.modelName}}
-                </el-form-item>
+                
                 <el-form-item label="型号 :">
                   {{form.modelCode}}
                 </el-form-item>
@@ -70,7 +71,12 @@
                   </template>
                 </el-form-item>
                 <el-form-item label="注册时间 :">
-                  {{new Date(form.birthTime).toLocaleString()}}
+                  <template v-if='form.birthTime'>
+                    {{new Date(form.birthTime).toLocaleString()}}
+                  </template>
+                  <template v-else>
+                    - -
+                  </template>
                 </el-form-item>
                 <el-form-item label="最后上线时间">
                   <template v-if='form.lastUpdateTime'>
@@ -101,14 +107,14 @@
       <el-tab-pane label="设备操作" name="1">
         <operation :detailData='detailData'></operation>
       </el-tab-pane>
-      <el-tab-pane label="设备数据" name="2">
+      <el-tab-pane label="历史数据" name="2">
         <el-table style="width: 100%" border :data="deviceList1">
-          <el-table-column type="index"></el-table-column>
-          <!-- <el-table-column prop="name" label="设备管理名"  show-overflow-tooltip sortable>
-          </el-table-column> -->
-          <el-table-column prop="co2" label="co2" v-if="deviceModelAbility.co2" show-overflow-tooltip sortable>
+          <el-table-column v-for="(item,index) in heades" :key="index" :prop="item.datas" :label="item.label" show-overflow-tooltip sortable>
+            <!-- <template slot-scope="scope">
+              {{scope.row}}{{item.unit}}
+            </template> -->
           </el-table-column>
-          <el-table-column prop="hcho" label="甲醛" v-if="deviceModelAbility.hcho" show-overflow-tooltip sortable>
+          <!-- <el-table-column prop="hcho" label="甲醛" v-if="deviceModelAbility.hcho" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="hum" label="湿度" v-if="deviceModelAbility.hum" show-overflow-tooltip sortable>
           </el-table-column>
@@ -118,11 +124,19 @@
           </el-table-column>
           <el-table-column prop="tvoc" label="tvoc" v-if="deviceModelAbility.tvoc" show-overflow-tooltip sortable>
           </el-table-column>
+          <el-table-column prop="" label="侧回水温度" v-if="deviceModelAbility.temp1"  show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="" label="回水设定温度" v-if="deviceModelAbility.temp3"  show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="" label="侧出水温度"  v-if="deviceModelAbility.temp2" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="" label="出水设定温度" v-if="deviceModelAbility.temp4"  show-overflow-tooltip sortable>
+          </el-table-column>-->
           <el-table-column prop="startTime" label="状态时间" show-overflow-tooltip sortable>
             <template slot-scope="scope">
               {{new Date(scope.row.startTime).toLocaleString()}}
             </template>
-          </el-table-column>
+          </el-table-column> 
         </el-table>
         <el-pagination :current-page="queryDevice.page" :page-sizes="[50,100,200,300]" :page-size="queryDevice.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryDeviceSensorStatCound" @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
@@ -144,13 +158,13 @@
       <el-tab-pane label="操作日志" name="4">
         <el-table style="width: 100%" border :data="deviceList">
           <el-table-column type="index"></el-table-column>
-          <el-table-column prop="funcId" label="指令ID" show-overflow-tooltip sortable>
+          <el-table-column prop="funcId" label="指令" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcName" label="操作指令" show-overflow-tooltip sortable>
+          <el-table-column prop="funcName" label="功能项" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="opertye" label="操作来源" :formatter="opertye" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="funcValue" label="操作值" show-overflow-tooltip sortable>
+          <el-table-column prop="funcValue" label="操作指令" show-overflow-tooltip sortable>
           </el-table-column>
           <el-table-column prop="operName" label="修改人" show-overflow-tooltip sortable>
           </el-table-column>
@@ -173,18 +187,49 @@
         <el-pagination :current-page="queryOperLog.page" :page-sizes="[50,100,200,300]" :page-size="queryOperLog.limit" layout="total, sizes, prev, pager, next, jumper" :total="queryOperLogCound" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
         </el-pagination>
       </el-tab-pane>
-      <el-tab-pane label="设备告警" name="5">
-        <el-table style="width: 100%" border :data="deviceListJ">
-          <el-table-column type="index"></el-table-column>序号、告警时间、告警内容、告警等级、状态
-          <el-table-column prop="name" label="序号" show-overflow-tooltip sortable>
+      <el-tab-pane label="故障记录" name="5">
+        <el-table style="width: 100%" border :data="queryDeviceFailures">
+          <el-table-column type="index"></el-table-column>
+          <el-table-column prop="index" label="序号" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="告警时间" show-overflow-tooltip sortable>
+          <el-table-column prop="alarmTime" label="告警时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.alarmTime).toLocaleString()}}
+            </template>
           </el-table-column>
-          <el-table-column prop="name" label="告警内容" show-overflow-tooltip sortable>
+          <el-table-column prop="content" label="告警内容" show-overflow-tooltip sortable>
           </el-table-column>
-          <el-table-column prop="name" label="告警等级" show-overflow-tooltip sortable>
+          <el-table-column prop="level" label="告警等级" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <template v-if="scope.row.level == 1">
+                一级告警
+              </template>
+            </template>
           </el-table-column>
-          <el-table-column prop="name" label="状态" show-overflow-tooltip sortable>
+          <el-table-column prop="recoverTime" label="恢复时间" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              {{new Date(scope.row.recoverTime).toLocaleString()}}
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination :current-page="0" :page-sizes="[50,100,200,300]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="0" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
+        </el-pagination>
+      </el-tab-pane>
+      <el-tab-pane label="设备告警" name="6">
+        <el-table style="width: 100%" border :data="queryDeviceAlarms">
+          <el-table-column type="index"></el-table-column>
+          <el-table-column prop="content" label="故障内容" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="code" label="故障代码" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="status" label="当前状态" show-overflow-tooltip sortable>
+          </el-table-column>
+          <el-table-column prop="level" label="告警等级" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
+              <template v-if="scope.row.level == 1">
+                一级告警
+              </template>
+            </template>
           </el-table-column>
         </el-table>
         <el-pagination :current-page="0" :page-sizes="[50,100,200,300]" :page-size="1" layout="total, sizes, prev, pager, next, jumper" :total="0" @size-change="handleSizeChange1" @current-change="handleCurrentChange1">
@@ -198,13 +243,14 @@
 import Operation from './deviceDetail/Operation'
 import AMap from './deviceDetail/AMap'
 import ShareList from './deviceDetail/ShareList'
-import { selectById } from '@/api/device/model'
+import { selectById ,queryDeviceOperation ,queryDeviceAlarm, queryDeviceFailure} from '@/api/device/model'
 import {
   queryOperLog, //操作日志
   queryDeviceSensorStat, //查看设备数据
   updateDevice, //地理位置
   shareDeviceToken, //分享设备的token
-  queryDeviceWorkLog // 工作日志
+  queryDeviceWorkLog, // 工作日志
+  queryDeviceSensorStatHeades
 } from '@/api/device/list'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -226,6 +272,7 @@ export default {
       deviceList: [],
       deviceListJ: [],
       form: {},
+      heades:[],
       deviceId: 1,
       queryOperLogc: {
         limit: 50,
@@ -257,8 +304,14 @@ export default {
         temp: false,
         hum: false,
         pm25: false,
-        hcho: false
-      }
+        hcho: false,
+        temp1:false,
+        temp2:false,
+        temp3:false,
+        temp4:false,
+      },
+      queryDeviceFailures:[],
+      queryDeviceAlarms:[]
     }
   },
   watch: {
@@ -269,9 +322,34 @@ export default {
       this.init(val)
       this.valId = val.id
       this.selectById(val.modelId)
+      this.queryDeviceSensorStatHeades(val.id)
+      this.deviceModelAbility.co2 = false
+      this.deviceModelAbility.tvoc = false
+      this.deviceModelAbility.temp = false
+      this.deviceModelAbility.hum = false
+      this.deviceModelAbility.pm25 = false
+      this.deviceModelAbility.hcho = false
+      this.deviceModelAbility.temp1 = false
+      this.deviceModelAbility.temp2 = false
+      this.deviceModelAbility.temp3 = false
+      this.deviceModelAbility.temp4 = false
+      this.queryDeviceAlarm(val)
+      this.queryDeviceFailure(val)
     }
   },
   methods: {
+    queryDeviceAlarm(val){
+      queryDeviceAlarm({deviceId:val.id}).then(res=>{
+        // console.log(res,1111)
+        this.queryDeviceAlarms = res.data
+      })
+    },
+    queryDeviceFailure(val){
+      queryDeviceFailure({deviceId:val.id}).then(res=>{
+        // console.log(res,2222)
+        this.queryDeviceFailures = res.data
+      })
+    },
     opertye(row) {
       let opertye = row.operType
       if (opertye == 1) {
@@ -282,41 +360,15 @@ export default {
         return '管理端'
       }
     },
+    queryDeviceSensorStatHeades(id){
+      queryDeviceSensorStatHeades({deviceId:id}).then(res=>{
+        console.log(res.data)
+        this.heades = res.data
+      })
+    },
     selectById(id) {
       selectById(id).then(res => {
         this.deviceModelAbilitys = res.data.deviceModelAbilitys
-        for(var i = 0;i<this.deviceModelAbilitys.length;i++){
-          if(this.deviceModelAbilitys[i].dirValue == 120){
-            if(this.deviceModelAbilitys[i].status == 1){
-              this.deviceModelAbility.co2 = true 
-            }
-          }
-          if (this.deviceModelAbilitys[i].dirValue == 150) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.tvoc = true
-            }
-          }
-          if (this.deviceModelAbilitys[i].dirValue == 140) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.temp = true
-            }
-          }
-          if (this.deviceModelAbilitys[i].dirValue == 130) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.hum = true
-            }
-          }
-          if (this.deviceModelAbilitys[i].dirValue == 110) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.pm25 = true
-            }
-          }
-          if (this.deviceModelAbilitys[i].dirValue == 160) {
-            if (this.deviceModelAbilitys[i].status == 1) {
-              this.deviceModelAbility.hcho = true
-            }
-          }
-        }
       })
     },
     blur(){
@@ -400,15 +452,19 @@ export default {
         }
         this.deviceList1 = res.data.dataList
         for (var i = 0; i < this.deviceList1.length; i++) {
-          this.deviceList1[i].hcho = this.deviceList1[i].hcho / 100
+          this.deviceList1[i].hcho = this.deviceList1[i].hcho / 100 
           this.deviceList1[i].tvoc = this.deviceList1[i].tvoc / 100
+          this.deviceList1[i].tem = this.deviceList1[i].tem +'℃'
+          this.deviceList1[i].hum = this.deviceList1[i].hum +'%'
+          this.deviceList1[i].pm = this.deviceList1[i].pm +'ug/m3'
+          this.deviceList1[i].co2 = this.deviceList1[i].co2 +'ppm'
         }
         this.queryDeviceSensorStatCound = res.data.totalCount
       })
     },
     getSld() {
       // 获取二级域名
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      const sld = location.href.match(/:\/\/(.*?).silelai/)
       if (sld) {
         return sld[1]
       }
@@ -425,7 +481,7 @@ export default {
 
         const url = `http://${
           this.isDev() ? 'dev' : form.sld
-        }.hcocloud.com/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
+        }.sikelai.net/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
           form.id
         }&token=${res.data}&customerId=${form.customerId}`
 

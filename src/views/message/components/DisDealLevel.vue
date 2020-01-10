@@ -279,7 +279,7 @@ export default {
         }
         const sourceType = {
           '1': '计划维保',
-          '2': 'H5端反馈',
+          '2': '微信端反馈',
           '3': '设备告警'
         }
         const flowStatus = {

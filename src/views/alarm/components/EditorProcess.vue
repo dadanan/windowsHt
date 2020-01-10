@@ -10,7 +10,6 @@
             <el-form-item label="规则名称">
                 <el-input placeholder="规则名称..." v-model='form.name'></el-input>
           <span class="color">*填写规则名称，如滤网清洁、传感器校准；</span>
-
             </el-form-item>
             <el-form-item label="规则描述">
                 <el-input type="textarea" :rows='3' placeholder="规则描述..." v-model='form.description'></el-input>

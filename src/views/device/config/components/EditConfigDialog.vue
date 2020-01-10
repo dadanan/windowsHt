@@ -43,6 +43,12 @@
         <file @get-url='setURL(arguments,null,"software")' :file-name='getImageName(this.software)'></file>
         <span class="color">*上传该型号产品远程升级固件</span>
       </el-form-item>
+      <el-form-item label="帮助文件">
+          <!-- <image-uploader :urls='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader> -->
+         <image-uploader :key='13' :urls='filterBg1(form.helpFileUrlList)' @get-url='setImg1' @remove-url='removeImg1' :isList='true' :limit='5'></image-uploader>
+      </el-form-item>
+
+      
       <el-form-item label="适用从机型号">
         <el-checkbox-group v-model="childModelIds">
           <el-checkbox v-for="item in deviceModelData" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -86,6 +92,31 @@
             <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
+
+        <el-table-column label="后台操作" align='center'>
+          <template slot-scope="scope">
+              <el-switch style="display: block" v-model="scope.row.canAdminOper" active-color="#13ce66" inactive-color="#ff4949">
+              </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="后台展示" show-overflow-tooltip align='center'>
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.operStatus" active-color="#13ce66" inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否监测" show-overflow-tooltip align='center'>
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.isCheck" active-color="#13ce66" inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.remark'></el-input>
+          </template>
+        </el-table-column>
+
         <el-table-column label="是否使用" align='center'>
           <template slot-scope="scope">
             <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949" :disabled="scope.row.updateStatus === 3 || scope.row.updateStatus === -1 ">
@@ -95,6 +126,11 @@
         <el-table-column label="状态">
           <template slot-scope="scope">
             {{updateStatus[scope.row.updateStatus]}}
+          </template>
+        </el-table-column>
+        <el-table-column label="倍数">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.multipleAdjust'></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -123,6 +159,15 @@
           <el-form-item label='页面名称'>
             {{item.showName || item.name}}
           </el-form-item>
+          <el-form-item label='列表展示'>
+              <el-select clearable v-model="form.listShowModelAbilityId">
+                <el-option v-for="iItems in choose(deviceModelAbilitys)" :label="iItems.name" :value="iItems.id" :key='iItems.id'>
+                </el-option>
+              </el-select>
+          </el-form-item>
+
+
+          
           <d-title>配置页面功能项</d-title>
           <el-table :data="item.modelFormatItems" style="width: 100%" class="mb20" border>
             <el-table-column type="index" label='标号 ' width="50"></el-table-column>
@@ -136,12 +181,35 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <el-table-column label="是否显示" align='center' show-overflow-tooltip>
+            <el-table-column label="微信端展示" align='center' show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
+            <!-- <el-table-column label="后台操作" align='center'>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.canAdminOper" active-color="#13ce66" inactive-color="#ff4949" >
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="后台展示" align='center' show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.operStatus" active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否监测" align='center' show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.isCheck" active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注">
+              <template slot-scope="scope">
+                <el-input v-model='scope.row.remark'></el-input>
+              </template>
+            </el-table-column> -->
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select multiple collapse-tags clearable v-model="scope.row.abilityId">
@@ -227,6 +295,7 @@
 <script>
 import ImageUploader from "@/components/Upload/image1";
 import File from "@/components/Upload/file";
+import FileUploader from "@/components/Upload/excel";
 
 import { fetchList as getTypeList } from "@/api/device/type";
 import { selectAllCustomers as getCustomer } from "@/api/customer";
@@ -257,7 +326,9 @@ export default {
         modelCode: "",
         modelNo: "",
         remark: "",
-        icons:[]
+        listShowModelAbilityId:'',
+        icons:[],
+        helpFileUrlList:[]
       },
       createFunctionDialogVisible: false,
       childModelIds: [],
@@ -358,9 +429,21 @@ export default {
     deleteFormatConfig(index) {
       this.pageOfForamt[index].status = 2;
     },
+    choose(data){
+      var arrs = []
+      for(var i = 0; i<data.length;i++){
+        if(data[i].abilityType == 1){
+          arrs.push({
+            id:data[i].abilityId,
+            name:data[i].abilityName
+          })
+        }
+      }
+      return arrs
+    },
     getSld() {
       // 获取二级域名
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/);
+      const sld = location.href.match(/:\/\/(.*?).sikelai/);
       if (sld) {
         return sld[1];
       }
@@ -390,6 +473,11 @@ export default {
           maxVal: item.maxVal,
           minVal: item.minVal,
           status: item.isUsed ? 1 : 3,
+          canAdminOper: item.canAdminOper? 1 : 0,
+          operStatus: item.operStatus? 1 : 0,
+          isCheck: item.isCheck? 1 : 0,
+          remark: item.remark,
+          multipleAdjust:parseFloat(item.multipleAdjust),
           deviceModelAbilityOptions:
             item.deviceModelAbilityOptions &&
             item.deviceModelAbilityOptions.map(iItem => {
@@ -401,7 +489,13 @@ export default {
                 maxVal: iItem.maxVal,
                 defaultVal: iItem.defaultVal,
                 minVal: iItem.minVal,
-                status: iItem.status
+                status: iItem.status,
+                canAdminOper : iItem.canAdminOper,
+                remark: iItem.remark,
+                multipleAdjust:parseFloat(iItem.multipleAdjust),
+                operStatus: iItem.operStatus? 1 : 0,
+                isCheck: iItem.isCheck? 1 : 0,
+                
               };
             })
         };
@@ -416,7 +510,11 @@ export default {
             pageId: item.pageId || item.id,
             showName: item.showName || item.name,
             showStatus: item.showStatus ? 1 : 0,
+            // canAdminOper: item.canAdminOper ? 1 : 0,
+            // operStatus: item.operStatus ? 1 : 0,
+            // isCheck: item.isCheck ? 1 : 0,
             status: item.status,
+            // remark: item.remark,
             modelFormatItems:
               item.modelFormatItems &&
               item.modelFormatItems.map(iItem => {
@@ -425,7 +523,11 @@ export default {
                   abilityId: iItem.abilityId.join(","),
                   itemId: iItem.itemId,
                   showName: iItem.showName,
-                  showStatus: iItem.showStatus ? 1 : 0
+                  showStatus: iItem.showStatus ? 1 : 0,
+                  // canAdminOper: iItem.canAdminOper ? 1 : 0,
+                  // remark: iItem.remark,
+                  // operStatus: iItem.operStatus ? 1 : 0,
+                  // isCheck: iItem.isCheck ? 1 : 0,
                 };
               })
           };
@@ -456,7 +558,7 @@ export default {
         let url = `${this.formatSelected[0].htmlUrl}?customerId=${
           this.form.customerId
         }`;
-        const domain = window.origin.match("://(.*).hcocloud.com")[1];
+        const domain = window.origin.match("://(.*).sikelai.net")[1];
         url = url.replace("://pro", "://" + domain);
 
         this.$alert(
@@ -552,13 +654,26 @@ export default {
       // console.log(data)
       return data
     },
-     removeImg(file) {
+    filterBg1(data) {
+      // console.log(data)
+      return data
+    },
+    removeImg(file) {
       // const index = this.form.icons.findIndex(v => v.image === file.url)
       this.form.icons.splice((this.form.icons.indexOf(file.url)),1)
-
+    },
+    removeImg1(file) {
+      // const index = this.form.icons.findIndex(v => v.image === file.url)
+      this.form.helpFileUrlList.splice((this.form.helpFileUrlList.indexOf(file.url)),1)
     },
     setImg(file) {
       this.form.icons = [...this.form.icons, file.url]
+    },
+    setImg1(file) {
+      this.form.helpFileUrlList = [...this.form.helpFileUrlList, file.url]
+    },
+    setURL1(argu, data, name) {
+      data[name] = argu[0];
     },
     setURL(argu, data, name) {
       if (!data) {
@@ -592,6 +707,9 @@ export default {
         page.wxFormatItemVos.forEach(item => {
           item.showName = item.name;
           this.$set(item, "showStatus", true);
+          this.$set(item, "canAdminOper", true);
+          this.$set(item, "operStatus", true);
+          this.$set(item, "isCheck", true);
           this.$set(item, "itemId", item.id);
           delete item.id;
         });
@@ -653,7 +771,21 @@ export default {
           } else if (item.status === 3) {
             this.$set(item, "isUsed", false);
           }
-
+          if (item.canAdminOper == 1) {
+            this.$set(item, "canAdminOper", true);
+          } else if (item.canAdminOper == 0) {
+            this.$set(item, "canAdminOper", false);
+          }
+          if (item.operStatus == 1) {
+            this.$set(item, "operStatus", true);
+          } else if (item.operStatus == 0) {
+            this.$set(item, "operStatus", false);
+          }
+          if (item.isCheck == 1) {
+            this.$set(item, "isCheck", true);
+          } else if (item.isCheck == 0) {
+            this.$set(item, "isCheck", false);
+          }
           // 新增的选项默认设置为禁用状态
           item.deviceModelAbilityOptions &&
             item.deviceModelAbilityOptions.forEach(option => {
@@ -672,11 +804,18 @@ export default {
 
       // 如果用户上次配置了版式数据，那么转换一些参数
       if (this.pageOfForamt) {
+        console.log(this.pageOfForamt)
         this.pageOfForamt.forEach(item => {
           item.showStatus = item.showStatus ? true : false;
+          item.operStatus = item.operStatus ? true : false;
+          item.isCheck = item.isCheck ? true : false;
+          item.canAdminOper = item.canAdminOper ? true : false;
           Array.isArray(item.modelFormatItems) &&
             item.modelFormatItems.forEach(iItem => {
               iItem.showStatus = iItem.showStatus ? true : false;
+              iItem.operStatus = iItem.operStatus ? true : false;
+              iItem.canAdminOper = iItem.canAdminOper ? true : false;
+              iItem.isCheck = iItem.isCheck ? true : false;
               if (iItem.abilityId) {
                 // 如果存在挑选的功能项数据，转化为数组元素
                 this.$set(
@@ -699,8 +838,13 @@ export default {
       } else {
         // 如果用户上次没有配置版式数据的话
       }
-
-      this.form = newData;
+      if(newData.helpFileUrlList){
+        this.form = newData;
+      }else{
+        newData.helpFileUrlList = []
+         this.form = newData;
+      }
+      
     },
     visible(val) {
       if (val) {
@@ -711,6 +855,7 @@ export default {
   components: {
     ImageUploader,
     DTitle,
+    FileUploader,
     File
   }
 };

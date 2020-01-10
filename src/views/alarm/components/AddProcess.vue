@@ -3,7 +3,7 @@
       <el-form label-width="100px" class="mb-22" :model="form" :rules="rules" ref="form">
         <el-form-item label="工程系统分类">
           <el-select v-model="form.typeId"  style="width:100%">
-            <el-option v-for='item in list' :label="item.label" :value="item.id" :key='item.sort'></el-option>
+            <el-option v-for='item in list' :label="item.label" :value="item.id" :key="item.id"></el-option>
           </el-select>
           <span class="color">*选择本条规则适用工程系统</span>
         </el-form-item>

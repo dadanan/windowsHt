@@ -302,7 +302,7 @@ export default {
     },
     getSld() {
       // 获取二级域名
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      const sld = location.href.match(/:\/\/(.*?).sikelai/)
       if (sld) {
         return sld[1]
       }
@@ -320,10 +320,9 @@ export default {
 
         const url = `http://${
           this.isDev() ? 'dev' : form.sld
-        }.hcocloud.com/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
+        }.sikelai.net/h5/init?masterOpenId=${form.userOpenId}&deviceId=${
           form.id
         }&token=${res.data}&customerId=${form.customerId}`
-
         // console.log('分享URL: ', url)
         this.shareURL = url
       })

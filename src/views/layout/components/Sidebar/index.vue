@@ -14,7 +14,6 @@
     </el-menu>
   </el-scrollbar>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'

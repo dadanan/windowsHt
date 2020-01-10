@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top='4vh' :close-on-click-modal=false title="设备项目" :visible="visible" @update:visible="$emit('update:visible', $event)">
+  <el-dialog top='4vh' :close-on-click-modal=false title="设备群" :visible="visible" @update:visible="$emit('update:visible', $event)">
     <el-scrollbar class="main-scroll" wrap-class="scrollbar-wrap" view-class="scrollbar-view" tag="div">
       <el-row :gutter="20">
         <el-col :span="12">

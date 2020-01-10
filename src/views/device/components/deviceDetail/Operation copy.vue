@@ -2,59 +2,45 @@
   <div>
     <el-table :data="getFormatItemsList()" style="width: 100%" class="mb20" border>
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="definedName" label="功能名称" show-overflow-tooltip sortable>
+      <el-table-column prop="showName" label="功能名称" show-overflow-tooltip sortable>
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <template v-if="scope.row.canAdminOper == 1">
           <template v-if='scope.row.abilityType == 2 '>
-            <!-- <template v-if="scope.row.operStatus == 1"> -->
-              
-                <template v-if='windData'>
-                  <!-- 双风机 -->
-                  <el-select :disabled="scope.row.canAdminOper == 0" v-if='windData[0]' v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windData[0].abilityId)'>
-                    <el-option v-for='item in windData[0].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
-                  </el-select>
-                  <el-select v-if='windData[1]' v-model="windTwoSelectedId" @change='optionChangedHandler(arguments,windData[1].abilityId)' :disabled="isCircleSwitchOff()">
-                    <el-option v-for='item in windData[1].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
-                  </el-select>
-                </template>
-                <template v-else>
-                  <!-- 单风机或者其他普通单选型 -->
-                  <el-select v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
-                    <el-option v-for='item in getAbilityOption(scope.row.abilityId)' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
-                  </el-select>
-                </template>
-              </template>
-            <!-- </template> -->
-          <template v-else-if='scope.row.abilityType == 3'>
-            <template v-if = "scope.row.canAdminOper == 0">
-              
+            <template v-if='hasMultipleId(scope.row.abilityId) && windData'>
+              <!-- 双风机 -->
+              <el-select v-if='windData[0]' v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windData[0].abilityId)'>
+                <el-option v-for='item in windData[0].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
+              </el-select>
+              <el-select v-if='windData[1]' v-model="windTwoSelectedId" @change='optionChangedHandler(arguments,windData[1].abilityId)' :disabled="isCircleSwitchOff()">
+                <el-option v-for='item in windData[1].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
+              </el-select>
             </template>
-           <template v-else>
-              <el-select multiple collapse-tags  v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
+            <template v-else>
+              <!-- 单风机或者其他普通单选型 -->
+              <el-select v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
                 <el-option v-for='item in getAbilityOption(scope.row.abilityId)' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
               </el-select>
-           </template>
+            </template>
+          </template>
+          <template v-else-if='scope.row.abilityType == 3'>
+            <el-select multiple collapse-tags v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
+              <el-option v-for='item in getAbilityOption(scope.row.abilityId)' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
+            </el-select>
           </template>
           <template v-else-if='scope.row.abilityType == 1'>
-              <template v-if = "scope.row.canAdminOper == 0">
-                <!-- <el-input :disabled="scope.row.canAdminOper == 0" style="width:200px" v-model='(getAbilityDatas(scope.row.abilityId)).currValue ' @change="changes($event,scope.row)"></el-input>
-                {{(getAbilityDatas(scope.row.abilityId)).unit }} -->
-              </template>
-              <template v-else>
-                <el-input :disabled="scope.row.canAdminOper == 0" style="width:200px" v-model='(getAbilityDatas(scope.row.abilityId)).currValue ' @change="changes($event,scope.row)"></el-input>
+              <template v-if="scope.row.abilityId">
+                <el-input style="width:200px" v-model='(getAbilityDatas(scope.row.abilityId)).currValue ' @change="changes($event,scope.row)"></el-input>
                 {{(getAbilityDatas(scope.row.abilityId)).unit }}
               </template>
-          </template>
           </template>
         </template>
       </el-table-column>
       <el-table-column label="状态" show-overflow-tooltip sortable>
         <template slot-scope="scope">
-          <template v-if="scope.row.operStatus == 1">
+          <template>
             <template v-if='scope.row.abilityType == 2 '>
-              <template v-if='windData'>
+              <template v-if='hasMultipleId(scope.row.abilityId) && windData'>
                 <!-- 双风机 -->
                 <el-select disabled v-if='windData[0]' v-model="windOneSelectedId" @change='optionChangedHandler(arguments,windData[0].abilityId)'>
                   <el-option v-for='item in windData[0].deviceModelAbilityOptions' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
@@ -71,22 +57,14 @@
               </template>
             </template>
             <template v-else-if='scope.row.abilityType == 3'>
-              <el-select v-if="scope.row.operStatus == 1" disabled multiple collapse-tags v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
+              <el-select disabled multiple collapse-tags v-model="scope.row.selectedOptionId" @change='optionChangedHandler(arguments,scope.row.abilityId)'>
                 <el-option v-for='item in getAbilityOption(scope.row.abilityId)' :key='item.id' :label="item.definedName" :value="item.id"></el-option>
               </el-select>
-              <template v-else>
-
-              </template>
             </template>
             <template v-else-if='scope.row.abilityType == 1'>
                 <template v-if="scope.row.abilityId">
-                  <template v-if="scope.row.operStatus == 1">
-                    {{getAbilityDatas(scope.row.abilityId).currValue}}
-                    {{(getAbilityDatas(scope.row.abilityId)).unit}}
-                  </template>
-                   <template v-else>
-                  
-                  </template>
+                  {{getAbilityDatas(scope.row.abilityId).currValue}}
+                  {{(getAbilityDatas(scope.row.abilityId)).unit}}
                 </template>
             </template>
           </template>          
@@ -127,7 +105,7 @@ export default {
   methods: {
     queryDeviceOperation(id) {
       queryDeviceOperation(id).then(res => {
-        // console.log(res.data)
+        console.log(res.data)
       })
     },  
     changes(value,vals){
@@ -159,13 +137,13 @@ export default {
      * @param abilityId 版式配置项选择的功能项id
      * @param data 型号版式数据
      */
-    // hasMultipleId(abilityId, data) {
-    //   if (data) {
-    //     return data[2].abilityId.split(',').length !== 1
-    //   }
+    hasMultipleId(abilityId, data) {
+      if (data) {
+        return data[2].abilityId.split(',').length !== 1
+      }
 
-    //   return abilityId.split(',').length !== 1
-    // },
+      return abilityId.split(',').length !== 1
+    },
     /**
      * 下拉选择框数据变化监听器，然后发送对应指令
      * @param argu 用户选择的功能选项的id
@@ -264,7 +242,7 @@ export default {
       return this.formatItemsList.filter(
         item =>
           item.showStatus == 1 &&
-          (item.abilityType == 2 || item.abilityType == 3 || item.abilityType == 1) &&(item.canAdminOper == 1 || item.operStatus == 1 )
+          (item.abilityType == 2 || item.abilityType == 3 || item.abilityType == 1)
       )
       
     },
@@ -333,7 +311,6 @@ export default {
 
         data.abilitysList.forEach(item => {
           item['currValue'] = ''
-          item['showStatus'] = 1
           if (!item.deviceModelAbilityOptions) {
             return
           }
@@ -352,28 +329,27 @@ export default {
           item => item.updateStatus == 0 && item.status == 1
         )
 
-        // let list = data.deviceModelFormat.modelFormatPages
-        let list  = this.abilitysList
+        let list = data.deviceModelFormat.modelFormatPages
         if (list[0]) {
-          // list = list[0].modelFormatItems
-          // if (!list) {
-          //   return
-          // }
+          list = list[0].modelFormatItems
+          if (!list) {
+            return
+          }
 
-          // // 如果是双风机，单独将送/回风机的功能项加进来
+          // 如果是双风机，单独将送/回风机的功能项加进来
           const windData = []
-          // if (this.hasMultipleId(list[2].abilityId, list)) {
-          //   // 将功能集里的内外风机的数据加到版式集合中。为了后面持续刷新两个风机的数据
-          //   let ids = list[2].abilityId.split(',')
-          //   data.abilitysList.forEach(item => {
-          //     if (ids.includes(String(item.dirValue))) {
-          //       windData.push({
-          //         ...item,
-          //         showStatus: 1
-          //       })
-          //     }
-          //   })
-          // }
+          if (this.hasMultipleId(list[2].abilityId, list)) {
+            // 将功能集里的内外风机的数据加到版式集合中。为了后面持续刷新两个风机的数据
+            let ids = list[2].abilityId.split(',')
+            data.abilitysList.forEach(item => {
+              if (ids.includes(String(item.dirValue))) {
+                windData.push({
+                  ...item,
+                  showStatus: 1
+                })
+              }
+            })
+          }
 
           // 新增属性，表示用户选择的选项的id
           list.forEach(item => {
@@ -406,7 +382,7 @@ export default {
       ids.forEach(id => {
         tempIds.push(...String(id).split(','))
       })
-      // console.log(ids,tempIds,1212222)
+
       newQueryDetailByDeviceId({
         deviceId: this.detailData.id,
         abilityIds: tempIds
@@ -448,39 +424,39 @@ export default {
       formatItemsList.forEach(item => {
         const optionList = this.getAbilityOption(item.abilityId)
 
-        // if (
-        //   this.formatItemsList[2].abilityId === item.abilityId &&
-        //   this.hasMultipleId(item.abilityId)
-        // ) {
-        //   // 双风机初始化
-        //   this.windData = this.getAbilityOption(item.abilityId)
+        if (
+          this.formatItemsList[2].abilityId === item.abilityId &&
+          this.hasMultipleId(item.abilityId)
+        ) {
+          // 双风机初始化
+          this.windData = this.getAbilityOption(item.abilityId)
 
-        //   if (!this.windData) {
-        //     return []
-        //   }
-        //   // 找到用户选择的档位，初始化
-        //   // 回风风机
-        //   const tempLeft = this.windData[0].deviceModelAbilityOptions
-        //   if (!tempLeft) {
-        //     return
-        //   }
-        //   tempLeft.forEach(tempList => {
-        //     if (tempList.isSelect == 1) {
-        //       this.windOneSelectedId = tempList.id
-        //     }
-        //   })
+          if (!this.windData) {
+            return []
+          }
+          // 找到用户选择的档位，初始化
+          // 回风风机
+          const tempLeft = this.windData[0].deviceModelAbilityOptions
+          if (!tempLeft) {
+            return
+          }
+          tempLeft.forEach(tempList => {
+            if (tempList.isSelect == 1) {
+              this.windOneSelectedId = tempList.id
+            }
+          })
 
-        //   // 送风风机
-        //   const tempRight = this.windData[1].deviceModelAbilityOptions
-        //   if (!tempRight) {
-        //     return
-        //   }
-        //   tempRight.forEach(tempList => {
-        //     if (tempList.isSelect == 1) {
-        //       this.windTwoSelectedId = tempList.id
-        //     }
-        //   })
-        // }
+          // 送风风机
+          const tempRight = this.windData[1].deviceModelAbilityOptions
+          if (!tempRight) {
+            return
+          }
+          tempRight.forEach(tempList => {
+            if (tempList.isSelect == 1) {
+              this.windTwoSelectedId = tempList.id
+            }
+          })
+        }
 
         if (item.abilityType == 2) {
           // 单选

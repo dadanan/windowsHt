@@ -14,6 +14,13 @@ export function deleteModelById(id) {
     method: 'delete'
   })
 }
+// 复制型号http://pro.sikelai.net/temp/api/deviceModel/copy/190
+export function deviceModelCopy(id) {
+  return request({
+    url: `/temp/api/deviceModel/copy/${id}`,
+    method: 'get'
+  })
+}
 
 export function select(data) {
   return request({
@@ -26,6 +33,13 @@ export function select(data) {
 export function selectById(id) {
   return request({
     url: `/temp/api/deviceModel/selectById/${id}`,
+    method: 'get'
+  })
+}
+
+export function queryDeviceOperation(id) {
+  return request({
+    url: `/temp/api/deviceModel/queryDeviceOperation/${id}`,
     method: 'get'
   })
 }
@@ -58,5 +72,22 @@ export function selectCount(data) {
   return request({
     url: `/temp/api/deviceModel/selectCount/${data}`,
     method: 'post',
+  })
+}
+
+// 查看设备告警
+export function queryDeviceAlarm(data) {
+  return request({
+    url: `/temp/api/deviceData/queryDeviceAlarm`,
+    method: 'post',
+    data
+  })
+}
+// 查看故障记录
+export function queryDeviceFailure(data) {
+  return request({
+    url: `/temp/api/deviceData/queryDeviceFailure`,
+    method: 'post',
+    data
   })
 }

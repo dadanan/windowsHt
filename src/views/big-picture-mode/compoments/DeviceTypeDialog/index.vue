@@ -8,7 +8,6 @@
     </div>
   </div>
 </template>
-
 <style lang="scss" scoped>
   .modal {
     font-family: "Microsoft YaHei", serif;
@@ -68,6 +67,9 @@
 </style>
 
 <script>
+import {
+  typePercent,
+} from '@/api/big-picture-mode/bigPictureMode'
   export default {
     props: ['visible'],
     data() {
@@ -132,7 +134,54 @@
                       globalCoord: false // 缺省为 false
                     }
                   }
+                },{
+                value: 12,
+                name: '待处理',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ffd500' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#ff6b00' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
                 }
+              },
+              {
+                value: 20,
+                name: '其他',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ba9af0' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#7035d1' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
               ]
             }
           ]
@@ -174,20 +223,44 @@
               name: '开机数',
               type: 'bar',
               data: [18203, 23489, 29034, 104970]
-            },
-            {
-              name: '关机数',
-              type: 'bar',
-              data: [19325, 23438, 31000, 121594]
             }
           ]
         }
       }
     },
     methods: {
+      typePercent() {
+        typePercent().then(res => {
+          const deviceTypeChartOptions = this.chart1Options.series[0]
+          for (let i = 0; i < res.data.length; i++) {
+            deviceTypeChartOptions.data[i].value = res.data[i].typePercent.substring(0, (res.data[i].typePercent.length-4))
+            deviceTypeChartOptions.data[i].name = res.data[i].typeName
+          }
+        })
+    },
+    typePercents() {
+        typePercent().then(res => {
+          var datas1 = []
+          var datas2 = []
+          for (var i = 0; i < res.data.length; i++) {
+            if( i == '0' || i == '6' || i == '9' || i == '12' ){
+              datas1.push(res.data[i].typeName)
+              datas2.push(res.data[i].deviceCount)
+            }
+          }
+          this.chart2Options.yAxis.data = datas1
+          this.chart2Options.series[0].data = datas2
+
+        })
+    },
       handleClose() {
         this.$emit('update:visible', false)
       }
+    },
+    created() {
+      this.typePercent()
+      this.typePercents()
+
     }
   }
 </script>

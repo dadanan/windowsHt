@@ -72,7 +72,7 @@
       </div>
       <div class="">
         <div class="bdp__panel-body" style="float:left">
-         <chart :options="deviceTypeChartOptions" class="bdp-chart"></chart>
+         <chart :options="deviceTypeChartOptions" class="bdp-chart" style="width:450px"></chart>
         </div>
         <div class="bdp__panel-body" style="float:right">
           <chart :options="fixInfoChartOptions" class="bdp-chart"></chart>
@@ -238,11 +238,12 @@ export default {
         ]
       },
       deviceTypeChartOptions: {
+        color:['#F27507','#5084F2','#E7BF5F','#9266F6','#00FFFF'],
         legend: {
           orient: 'vertical',
-          right: 10,
-          top: 20,
-          bottom: 20,
+          right: 0,
+          top: 120,
+          // bottom: 20,
           textStyle: {
             color: '#fff'
           }
@@ -252,7 +253,7 @@ export default {
         },
         grid: {
           // show: false
-          left: 0,
+          left: 10,
           top: 0,
           right: 0,
           bottom: 0,
@@ -268,50 +269,50 @@ export default {
               {
                 value: 90,
                 name: '设备类型1',
-                itemStyle: {
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [
-                      {
-                        offset: 0,
-                        color: '#1fa6f7' // 0% 处的颜色
-                      },
-                      {
-                        offset: 1,
-                        color: '#5ee5d3' // 100% 处的颜色
-                      }
-                    ],
-                    globalCoord: false // 缺省为 false
-                  }
-                }
+                // itemStyle: {
+                //   color: {
+                //     type: 'linear',
+                //     x: 0,
+                //     y: 0,
+                //     x2: 0,
+                //     y2: 1,
+                //     colorStops: [
+                //       {
+                //         offset: 0,
+                //         color: '#1fa6f7' // 0% 处的颜色
+                //       },
+                //       {
+                //         offset: 1,
+                //         color: '#5ee5d3' // 100% 处的颜色
+                //       }
+                //     ],
+                //     globalCoord: false // 缺省为 false
+                //   }
+                // }
               },
               {
                 value: 10,
                 name: '设备类型2',
-                itemStyle: {
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [
-                      {
-                        offset: 0,
-                        color: '#ace296' // 0% 处的颜色
-                      },
-                      {
-                        offset: 1,
-                        color: '#23a400' // 100% 处的颜色
-                      }
-                    ],
-                    globalCoord: false // 缺省为 false
-                  }
-                }
+                // itemStyle: {
+                //   color: {
+                //     type: 'linear',
+                //     x: 0,
+                //     y: 0,
+                //     x2: 0,
+                //     y2: 1,
+                //     colorStops: [
+                //       {
+                //         offset: 0,
+                //         color: '#ace296' // 0% 处的颜色
+                //       },
+                //       {
+                //         offset: 1,
+                //         color: '#23a400' // 100% 处的颜色
+                //       }
+                //     ],
+                //     globalCoord: false // 缺省为 false
+                //   }
+                // }
               }
             ]
           }
@@ -481,11 +482,15 @@ export default {
       queryModelPercent(val).then(res=>{
           console.log(res.data)
           const list = res.data
+          var names = []
           for(var i = 0; i<list.length;i++){
-            this.deviceTypeChartOptions.series[0].data[i].name = (list[i].modelName).substring(0,6)
-            this.deviceTypeChartOptions.series[0].data[i].value = list[i].num
+            names.push({
+              name:list[i].modelName,
+              value:list[i].num
+            })
           }
-          
+
+          this.deviceTypeChartOptions.series[0].data = names
       })
     },
 

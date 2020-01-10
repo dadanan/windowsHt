@@ -760,7 +760,10 @@ export const realData = {
           tooltip: {
             formatter: '{b}: {c} ({d}%)'
           },
-          legend: {},
+          legend: {
+            x : '200',
+            y : 'top',
+          },
           series: [{
             type: 'pie',
             radius: ['50%', '70%'],

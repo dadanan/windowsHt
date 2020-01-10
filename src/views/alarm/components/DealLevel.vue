@@ -2,6 +2,10 @@
     <div>
         <el-dialog top='4vh' :close-on-click-modal=false title="标记处理中" :visible="visible" :before-close="handleCancel" @update:visible="$emit('update:visible', $event)">
             <el-form label-width="120px" class="mb-22" :model="form">
+                <el-form-item label="分配指定人">
+                    
+                    <span class="color"> *已安排人处理任务时，将任务标志为处理中</span>
+                </el-form-item>
                 <el-form-item label="处理说明">
                     <el-input type="textarea" :rows='3' placeholder="请输入处理说明..." v-model='form.description'></el-input>
                     <span class="color"> *已安排人处理任务时，将任务标志为处理中</span>
@@ -17,7 +21,7 @@
 </template>
 
 <script>
-import { jobFlow } from '@/api/alarm'
+import { jobFlow , queryAdmins } from '@/api/alarm'
 export default {
   props: {
     visible: {
@@ -37,6 +41,11 @@ export default {
     }
   },
   methods: {
+    queryAdmins(val){
+      queryAdmins(val).then(res=>{
+        console.log(res.data)
+      })
+    },
     handleCancel() {
       this.$emit('update:visible', false)
     },
@@ -62,6 +71,7 @@ export default {
   watch: {
     data(val) {
         this.list = val
+        // this.queryAdmins(val.id)
     }
   }
 }

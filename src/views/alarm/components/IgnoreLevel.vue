@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       form: {
-          operateType:6
+          operateType:8
       },
       list:{}
     }

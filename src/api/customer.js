@@ -109,3 +109,11 @@ export function updateOwnerBackendInfo(data) {
     data
   })
 }
+
+// 用户自己修改后台设置
+export function queryTypeByCustomerId(data) {
+  return request({
+    url: `/temp/api/deviceModel/queryTypeByCustomerId/${data}`,
+    method: 'get',
+  })
+}

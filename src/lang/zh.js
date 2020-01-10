@@ -12,13 +12,15 @@ export default {
     device: '设备管理',
     deviceList: '设备列表',
     deviceGroup: '设备组管理',
-    deviceCluster: '设备项目管理',
+    deviceCluster: '设备群管理',
     deviceConfig: '设备型号管理',
     deviceModel: '设备类型管理',
     deviceFunction: '设备功能管理',
+    deviceMaclist: '导出数据mac列表',
+
     // 售后管理
     alarm: '售后管理',
-    alarmProcess: '创建规则',
+    alarmProcess: '保养项目',
     alarmDevice: '保养计划',
     alarmConfig: '维保任务',
     order: '订单中心',

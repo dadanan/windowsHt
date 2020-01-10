@@ -1,7 +1,7 @@
 <template>
   <el-menu-item class="logo" index="logo">
     <img v-if='logo' :src="logo" alt="logo">
-    <img v-else src="/static/images/logo.svg" alt="logo">
+    <img v-else src="/static/images/logo1.png" alt="logo">
   </el-menu-item>
 </template>
 

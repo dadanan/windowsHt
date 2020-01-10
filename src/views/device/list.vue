@@ -18,10 +18,10 @@
           <el-button type="primary" @click="deviceColumnControlDialogVisible = true">自定义</el-button>
         </el-button-group>
       </div>
-      <el-table @expand-change="expandChanged" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
+      <el-table @expand-change="expandChanged" row-key="id" :expand-row-keys="expandKeys" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-table v-if='scope.row.childCount!==0' :data="scope.row.childDeviceList" style="width: 100%" class="mb20" border>
+            <el-table v-if='scope.row.childCount!==0' :data="childDeviceList" style="width: 100%" class="mb20" border>
               <el-table-column type="index"></el-table-column>
               <el-table-column prop="name" label="从设备名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
               </el-table-column>
@@ -37,11 +37,11 @@
                   {{scope.row.bindStatus === 1 ? '已绑定' : '未绑定'}}
                 </template>
               </el-table-column>
-              <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
+              <!-- <el-table-column label="启用状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.enableStatus">
                 <template slot-scope="scope">
                   {{scope.row.enableStatus === 1 ? '启用' : '禁用'}}
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="在线状态" show-overflow-tooltip sortable v-if="deviceColumnVisible.onlineStatus">
                 <template slot-scope="scope">
                   {{scope.row.onlineStatus === 1 ? '在线' : '离线'}}
@@ -94,7 +94,7 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="id" label="设备ID" show-overflow-tooltip sortable v-if="deviceColumnVisible.id">
         </el-table-column>
-        <el-table-column prop="name" label="名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
+        <el-table-column prop="name" label="设备名称" show-overflow-tooltip sortable v-if="deviceColumnVisible.name">
         </el-table-column>
         <el-table-column prop="mac" label="MAC" show-overflow-tooltip v-if="deviceColumnVisible.mac">
         </el-table-column>
@@ -338,6 +338,8 @@ export default {
   data() {
     return {
       deviceList: [],
+      expandKeys:[],
+      childDeviceList:[],
       deviceImportDialogVisible: false,
       deviceAddDialogVisible: false,
       deviceAllocateDialogVisible: false,
@@ -421,7 +423,7 @@ export default {
     expandChanged(data) {
       if (
         data.childCount === 0 ||
-        (data.childDeviceList && data.childDeviceList.length > 0)
+        (this.childDeviceList && this.childDeviceList.length > 0)
       ) {
         return
       }
@@ -454,7 +456,12 @@ export default {
     queryChildDevice(id, data) {
       queryChildDevice(id).then(res => {
         // 把获取到的从设备数据添加到主设备数据中
-        data.childDeviceList = res.data
+        this.childDeviceList = res.data
+        // data.childDeviceList= Object.assign([], data.childDeviceList, res.data)
+        // this.$set(data.childDeviceList, data.childDeviceList)
+        this.expandKeys.shift()          
+        this.expandKeys.push(id) 
+
       })
     },
     showDeviceDeletedChange() {
@@ -495,7 +502,7 @@ export default {
     },
     getSld() {
       // 获取二级域名
-      const sld = location.href.match(/:\/\/(.*?).hcocloud/)
+      const sld = location.href.match(/:\/\/(.*?).sikelai/)
       if (sld) {
         return sld[1]
       }

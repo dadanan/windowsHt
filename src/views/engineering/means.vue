@@ -279,18 +279,22 @@ export default {
       this.list = !this.list
     },
     expandChanged(data) {
+      console.log(data)
       if (data.describeData) {
         return
       }
       project(data.id).then(res=>{
             const list = res.data
+            data.describeData = []
             for(var i = 0;i<list.length;i++){
                 list[i].as = []
                 list[i].as.push(list[i].fileMap)
+                // data.describeData.push(list[i])
             }
             console.log(list)
-
+        // data.describeData = list
         data.describeData = Object.assign([], list, []);
+        this.$forceUpdate();
       })
     },
     EngList() {

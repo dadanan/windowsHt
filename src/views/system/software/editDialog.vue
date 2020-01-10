@@ -162,12 +162,13 @@ export default {
   methods: {
     deleteOption(data, scope) {
       data.splice(scope.$index, 1)
+      console.log(data)
     },
     submitForm() {
       this.pages.forEach((item, index) => {
         item.pageNo = index + 1
       })
-
+      console.log(this.pages)
       const addForm = Object.assign({}, this.addForm)
       addForm.typeIds = addForm.typeIds.join(',')
 
@@ -198,25 +199,35 @@ export default {
           thePageWxFormatItemVos = thePageWxFormatItemVos.filter(item =>
             item.hasOwnProperty('id')
           )
+          console.log(thePageWxFormatItemVos)
           item.wxFormatItemVos.forEach((iItem, iIndex) => {
+            console.log(iItem ,iIndex)
             if (
               thePageWxFormatItemVos.findIndex(temp => temp.id === iItem.id) ===
               -1
             ) {
               // 如果没找到，说明用户删除了
               iItem['status'] = 2
+              thePageWxFormatItemVos.push(iItem)
             }
             // 添加时，name和类型取自用户表单数据
-            newWxFormatItemVos.push({
-              ...iItem,
-              name: thePageWxFormatItemVos[iIndex].name,
-              abilityType: thePageWxFormatItemVos[iIndex].abilityType
-            })
+            // console.log(thePageWxFormatItemVos[iIndex],2121212121)
+            if(thePageWxFormatItemVos[iIndex]){
+              newWxFormatItemVos.push({
+                ...iItem,
+                name: thePageWxFormatItemVos[iIndex].name,
+                abilityType: thePageWxFormatItemVos[iIndex].abilityType
+              })
+            }
           })
+            console.log(newWxFormatItemVos,1111)
+
           newWxFormatItemVos.push(...tempArray)
 
           this.pages[index].wxFormatItemVos = newWxFormatItemVos
         })
+      console.log(addForm)
+      console.log(this.pages)
 
       const form = {
         ...addForm,

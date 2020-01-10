@@ -13,6 +13,12 @@
           <el-radio :label="0">不可运行</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="功能项类型">
+        <el-radio-group v-model="form.configType">
+          <el-radio :label="1">正常功能项</el-radio>
+          <el-radio :label="2">告警/故障功能项</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>

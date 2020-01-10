@@ -94,21 +94,23 @@
                                                     <el-table-column type="index"></el-table-column>
                                                     <el-table-column prop="name" label="设备名称" show-overflow-tooltip >
                                                     </el-table-column>
-                                                    <el-table-column prop="mac" label="mac" show-overflow-tooltip >
+                                                    <el-table-column prop="modelName" label="设备型号" show-overflow-tooltip >
                                                     </el-table-column>
-                                                    <el-table-column prop="belongTo" label="归属" show-overflow-tooltip >
+                                                    <el-table-column prop="mac" label="mac" show-overflow-tooltip >
                                                     </el-table-column>
                                                     <el-table-column prop="workStatus" label="工作状态" show-overflow-tooltip >
                                                         <template slot-scope="scope">
-                                                            <template v-if='scope.row.workStatus'>
+                                                            <template>
                                                                 {{scope.row.workStatus === 1 ? '开机' : '关机'}}
-                                                            </template>
-                                                            <template v-else>
-                                                                 - -
                                                             </template>
                                                         </template>
                                                     </el-table-column>
                                                     <el-table-column prop="lastOnlineTime" label="最后上线时间" show-overflow-tooltip >
+                                                        <template slot-scope="scope">
+                                                            <template v-if='scope.row.lastOnlineTime'>
+                                                                {{new Date(scope.row.lastOnlineTime).toLocaleString()}}
+                                                            </template>
+                                                        </template>
                                                     </el-table-column>
                                                 </el-table>
                                             </template>
@@ -175,7 +177,7 @@
                                         </el-table-column>
                                     </el-table>
                                 </el-tab-pane>
-                                <el-tab-pane label="材料类" name="10">
+                                <el-tab-pane label="耗材类" name="10">
                                     <el-table :data="material" style="width: 100%" class="mb20" border>
                                         <el-table-column type="index"></el-table-column>
                                         <el-table-column prop="name" label="品名规格" show-overflow-tooltip>
@@ -197,7 +199,7 @@
                                         </el-table-column>
                                     </el-table>
                                 </el-tab-pane>
-                                <el-tab-pane label="耗材类" name="11">
+                                <!-- <el-tab-pane label="耗材类" name="11">
                                     <el-table :data="consumables" style="width: 100%" class="mb20" border>
                                         <el-table-column type="index"></el-table-column>
                                         <el-table-column prop="name" label="品名规格" show-overflow-tooltip >
@@ -218,7 +220,7 @@
                                             </template>
                                         </el-table-column>
                                     </el-table>
-                                </el-tab-pane>
+                                </!-->
                             </el-tabs>
                         </el-card>
                     </div>
@@ -230,7 +232,7 @@
                                 <el-row>
                                     <el-col :span="8">
                                         <div class="grid-content bg-purple">
-                                            <img :src="describe.imgUrl" alt="" style="width:100%;min-height:244px">
+                                            <img :src="form.imgs[0]" alt="" style="width:100%;min-height:244px">
                                         </div>
                                     </el-col>
                                     <el-col :span="16">
@@ -429,15 +431,15 @@
             </el-table>
         </el-dialog>
         <!-- 工程材料变更 -->
-        <el-dialog top='4vh' :close-on-click-modal=false title="工程材料变更" :visible.sync="ChangeMaterial">
+        <el-dialog top='4vh' :close-on-click-modal=false title="库存数量变更" :visible.sync="ChangeMaterial">
             <el-form label-width="130px" class="mb-22">
-                <el-form-item label="材料ID">
+                <!-- <el-form-item label="材料ID">
                     <el-input v-model="changeMaterial.id"  disabled></el-input>
                 </el-form-item>
                 <el-form-item label="材料类">
                     <el-input v-model="changeMaterial.name"  disabled></el-input>
-                </el-form-item>
-                <el-form-item label="工程名称">
+                </el-form-item> -->
+                <el-form-item label="库存变更">
                     <template>
                         <el-radio v-model="changeMaterial.type" label="3">添加</el-radio>
                         <el-radio v-model="changeMaterial.type" label="4">减少</el-radio>
@@ -732,7 +734,8 @@ import {
     select,
     queryPlanModels,
     selectProjectDict,
-    addPlan
+    addPlan,
+    deleteMaintenance
 } from "@/api/alarm";
 import { getUserList } from '@/api/user'
 export default {
@@ -821,7 +824,8 @@ export default {
       changeMaterial:{},
       listing:[],
       getListings: [],
-      selectedDeviceList2:[]
+      selectedDeviceList2:[],
+      deleteMaintenanceId:[]
     }
   },
   methods: {
@@ -832,7 +836,17 @@ export default {
       this.getUserList(val.enableUserList) //客户列表
     },
     dele(val){
-
+        this.deleteMaintenanceId.push(val.id)
+        deleteMaintenance({ valueList: this.deleteMaintenanceId }).then(res=>{
+            if (res.code === 200) {
+                const index = this.maintenances.indexOf(val)
+                this.maintenances.splice(index, 1)
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                })
+            }
+        })
     },
     subList(){
         if(this.selectedDeviceList2.length<2){
@@ -1133,6 +1147,7 @@ export default {
     //工程资料
     project(val){
         project(val).then(res=>{
+            console.log(res.data)
             this.describeData = res.data
             if(this.describeData.length>0){
                 this.describe = (this.describeData)[0]

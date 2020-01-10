@@ -103,6 +103,13 @@ export function queryTeamInfo(data) {
     data
   })
 }
+export function queryDeviceSensorStatHeades(data) {
+  return request({
+    url: '/temp/api/deviceData/queryDeviceSensorStatHeades',
+    method: 'post',
+    data
+  })
+}
 
 export function queryChildDevice(id) {
   return request({
@@ -261,3 +268,31 @@ export function addParamConfig(data) {
     data
   })
 }
+
+//查询列表
+export function selectList(data) {
+  return request({
+    url: '/temp/api/deviceExport/selectList',
+    method: 'post',
+    data
+  })
+}
+
+//批量添加设备mac信息
+export function deviceExport(data) {
+  return request({
+    url: '/temp/api/deviceExport/add',
+    method: 'post',
+    data
+  })
+}
+
+//删除设备mac配置
+export function deviceExportDelete(data) {
+  return request({
+    url: '/temp/api/deviceExport/delete',
+    method: 'post',
+    data
+  })
+}
+

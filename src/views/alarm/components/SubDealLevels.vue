@@ -91,10 +91,10 @@
                                         {{item.userName}}
                                     </el-tag>
                                 </el-form-item>
-                                <el-form-item label="客户确认单">
+                                <!-- <el-form-item label="客户确认单">
                                     <file-uploader @get-url='setURL(arguments,circulation,"name")' :fileName='circulation.name'></file-uploader>
                                     <span class="color">*上传任务执行过程中的客户确认单，格式（JPG\JPEG\PDF)单文件小于2M；</span>
-                                </el-form-item>
+                                </el-form-item> -->
                                 <el-form-item label="备注（可选）">
                                     <el-input type="textarea" :rows='3' v-model='circulation.description'></el-input>
                                     <span class="color"> *描述任务执行情况和结果</span>
@@ -329,7 +329,7 @@ export default {
       }
       this.circulation.targetUsers = this.ids
       this.circulation.jobId = this.form.id
-      this.circulation.operateType = 5
+      this.circulation.operateType = 4
       this.circulation.imgList.push(this.circulation.name)
       delete this.circulation.name
       for(var i = 0;i<this.showConsumables.length;i++){

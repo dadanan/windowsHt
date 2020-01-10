@@ -34,7 +34,7 @@
           </div>
           <div v-if="createStep == 1">
             <el-form label-position="left" label-width="150px" >
-              <el-form-item label="关联设备项目">
+              <el-form-item label="关联设备群">
                 <el-button type="primary " @click="addEle = true" >添加</el-button>
               <p><span class="color">*选择该工程相关项目，从而导入该工程相关设备（指系统备案设备）</span></p>
               </el-form-item>
@@ -468,7 +468,7 @@ export default {
       this.form.gps = gps.toString();
       this.form = Object.assign({}, this.form, {});
     },
-    //关联设备项目
+    //关联设备群
     queryAllGroup() {
       queryAllGroup().then(res => {
         // console.log(res.data);

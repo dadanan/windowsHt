@@ -5,7 +5,7 @@
         <div class="login-header">
           <div class="login-header__logo">
             <img v-if='logo' :src="logo" alt="logo">
-            <img v-else src="/static/images/logo.svg" alt="logo">
+            <img v-else src="/static/images/logo.png" alt="logo">
           </div>
           <div v-if='siteName' class="login-header__title">{{siteName}}</div>
           <div v-else class="login-header__title">后台管理</div>

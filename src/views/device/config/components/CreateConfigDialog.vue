@@ -31,7 +31,6 @@
         <el-form-item label="缩图">
           <!-- <image-uploader :urls='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader> -->
          <image-uploader :key='3' :urls='filterBg(form.icons)' @get-url='setImg' @remove-url='removeImg' :isList='true' :limit='5'></image-uploader>
-
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
@@ -41,6 +40,13 @@
         <file @get-url='setURL(arguments,null,"software")' :file-name='getImageName(this.software)'></file>
         <span class="color">*上传该型号产品远程升级固件</span>
       </el-form-item>
+      
+      <el-form-item label="帮助文件">
+          <!-- <image-uploader :urls='form.icon' @get-url='setURL(arguments,form,"icon")'></image-uploader> -->
+         <image-uploader :key='20' :urls='filterBg1(form.helpFileUrlList)' @get-url='setImg1' @remove-url='removeImg1' :isList='true' :limit='5'></image-uploader>
+      </el-form-item>
+
+
       <el-form-item label="适用从机型号">
         <el-checkbox-group v-model="childModelIds">
           <el-checkbox v-for="item in deviceModelData" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -79,10 +85,39 @@
             <el-button v-if='scope.row.abilityType!==1' type="primary" @click='modifyAbilityItem(scope.row)'>自定义功能项</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="后台操作" align='center'>
+          <template slot-scope="scope">
+              <el-switch style="display: block" v-model="scope.row.canAdminOper" active-color="#13ce66" inactive-color="#ff4949">
+              </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="后台展示" show-overflow-tooltip align='center'>
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.operStatus" active-color="#13ce66" inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否监测" show-overflow-tooltip align='center'>
+          <template slot-scope="scope">
+            <el-switch style="display: block" v-model="scope.row.isCheck" active-color="#13ce66" inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.remark'></el-input>
+          </template>
+        </el-table-column>
+
         <el-table-column label="是否使用" align='center'>
           <template slot-scope="scope">
             <el-switch style="display: block" v-model="scope.row.isUsed" active-color="#13ce66" inactive-color="#ff4949">
             </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="倍数">
+          <template slot-scope="scope">
+            <el-input v-model='scope.row.multipleAdjust'></el-input>
           </template>
         </el-table-column>
       </el-table>
@@ -110,6 +145,14 @@
           <el-form-item label='页面名称'>
             {{item.name}}
           </el-form-item>
+          <!-- 添加页面的展示效果 -->
+          <el-form-item label='列表展示'>
+              <el-select clearable v-model="form.listShowModelAbilityId">
+                <el-option v-for="iItems in choose(deviceModelAbilitys)" :label="iItems.name" :value="iItems.id" :key='iItems.id'>
+                </el-option>
+              </el-select>
+          </el-form-item>
+
           <d-title>配置页面功能项</d-title>
           <el-table :data="item.wxFormatItemVos" style="width: 100%" class="mb20" border>
             <el-table-column type="index" label='标号 ' width="50"></el-table-column>
@@ -123,12 +166,35 @@
                 {{typeModel[scope.row.abilityType]}}
               </template>
             </el-table-column>
-            <el-table-column label="是否显示" show-overflow-tooltip align='center'>
+            <el-table-column label="微信端展示" show-overflow-tooltip align='center'>
               <template slot-scope="scope">
                 <el-switch style="display: block" v-model="scope.row.showStatus" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
+            <!-- <el-table-column label="后台操作" align='center'>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.canAdminOper" active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="后台展示" show-overflow-tooltip align='center'>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.operStatus" active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否监测" show-overflow-tooltip align='center'>
+              <template slot-scope="scope">
+                <el-switch style="display: block" v-model="scope.row.isCheck" active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+             <el-table-column label="备注">
+              <template slot-scope="scope">
+                <el-input v-model='scope.row.remark'></el-input>
+              </template>
+            </el-table-column> -->
             <el-table-column label="挑选功能项">
               <template slot-scope="scope">
                 <el-select multiple collapse-tags clearable v-model="scope.row.abilityId">
@@ -238,7 +304,9 @@ export default {
         name: '',
         modelCode: '',
         remark: '',
-        icons:[]
+        listShowModelAbilityId:'', //选择展示的id
+        icons:[],
+        helpFileUrlList:[]
       },
       childModelIds: [],
       formatId: '',
@@ -303,6 +371,18 @@ export default {
     ableConfigOption(data, i) {
       this.$set(data, 'status', 1)
     },
+    choose(data){
+      let arrs = []
+      for(var i = 0; i<data.length;i++){
+        if(data[i].abilityType == 1){
+          arrs.push({
+            id:data[i].abilityId,
+            name:data[i].abilityName
+          })
+        }
+      }
+      return arrs
+    },
     useableAbility(key) {
       if (key === 3) {
         key = 2
@@ -322,6 +402,11 @@ export default {
             maxVal: item.maxVal,
             minVal: item.minVal,
             status: item.isUsed ? 1 : 3,
+            canAdminOper: item.canAdminOper? 1 : 0,
+            operStatus: item.operStatus? 1 : 0,
+            isCheck: item.isCheck? 1 : 0,
+            remark: item.remark,
+            multipleAdjust:parseFloat(item.multipleAdjust),
             deviceModelAbilityOptions:
               item.deviceModelAbilityOptions &&
               item.deviceModelAbilityOptions.map(iItem => {
@@ -332,7 +417,13 @@ export default {
                   maxVal: iItem.maxVal,
                   defaultVal: iItem.defaultVal,
                   minVal: iItem.minVal,
-                  status: iItem.status
+                  status: iItem.status,
+                  canAdminOper : iItem.canAdminOper,
+                  remark: iItem.remark,
+                  multipleAdjust:parseFloat(iItem.multipleAdjust),
+                  operStatus: iItem.operStatus? 1 : 0,
+                  isCheck: iItem.isCheck? 1 : 0,
+                  // canAdminOper : iItem.canAdminOper,
                 }
               })
           }
@@ -345,6 +436,10 @@ export default {
             pageId: item.id,
             showName: item.name,
             showStatus: item.showStatus ? 1 : 0,
+            // canAdminOper: item.canAdminOper? 1 : 0,
+            // operStatus: item.operStatus? 1 : 0,
+            // isCheck: item.isCheck? 1 : 0,
+            // remark: item.remark,
             modelFormatItems:
               item.wxFormatItemVos &&
               item.wxFormatItemVos.map(iItem => {
@@ -352,7 +447,11 @@ export default {
                   abilityId: iItem.abilityId.join(','),
                   itemId: iItem.id,
                   showName: iItem.showName || iItem.name,
-                  showStatus: iItem.showStatus ? 1 : 0
+                  showStatus: iItem.showStatus ? 1 : 0,
+                  // canAdminOper : iItem.canAdminOper,
+                  // remark: iItem.remark,
+                  // operStatus: iItem.operStatus? 1 : 0,
+                  // isCheck: iItem.isCheck? 1 : 0,
                 }
               })
           }
@@ -366,7 +465,6 @@ export default {
           modelFormatPages
         }
       }
-      console.log(form)
       createDeviceModel(form).then(res => {
         this.$emit('update:visible', false)
         this.$emit('add-data', {
@@ -380,7 +478,7 @@ export default {
         let url = `${this.formatSelected[0].htmlUrl}?customerId=${
           this.form.customerId
         }`
-        let domain = window.origin.match('://(.*).hcocloud.com')
+        let domain = window.origin.match('://(.*).sikelai.net')
         if (domain) {
           domain = domain[0]
         }
@@ -404,7 +502,6 @@ export default {
     },
     handleTypeChange(id) {
       const theType = this.typeList.filter(item => item.id === id)[0]
-      console.log(theType)
       const form = this.form
       form.name = theType.name
       // form.icon = theType.icon
@@ -459,13 +556,25 @@ export default {
         }
       })
     },
-    filterBg(data) {},
+    filterBg(data) {
+      // return data
+    },
+    filterBg1(data) {
+      // return data
+    },
     removeImg(file) {
       // const index = this.form.icons.findIndex(v => v.image === file.url)
       this.form.icons.splice((this.form.icons.indexOf(file.url)),1)
     },
+    removeImg1(file) {
+      // const index = this.form.icons.findIndex(v => v.image === file.url)
+      this.form.helpFileUrlList.splice((this.form.helpFileUrlList.indexOf(file.url)),1)
+    },
     setImg(file) {
       this.form.icons = [...this.form.icons, file.url]
+    },
+    setImg1(file) {
+      this.form.helpFileUrlList = [...this.form.helpFileUrlList, file.url]
     },
     setURL(argu, data, name) {
       if (!data) {

@@ -114,7 +114,8 @@ import {
   selectById,
   deleteModelById,
   createWxDeviceIds,
-  createDeviceModel
+  createDeviceModel,
+  deviceModelCopy
 } from '@/api/device/model'
 import { selectById as selectFormatById } from '@/api/format'
 
@@ -222,36 +223,42 @@ export default {
         return
       }
 
-      this.$prompt('请输入型号的ProductID', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /^[0-9]*$/,
-        inputErrorMessage: '请输入数字'
-      })
-        .then(({ value }) => {
-          const number = value.trim()
-          if (!number) {
-            this.$message({
-              type: 'error',
-              message: '请输入型号的ProductID'
-            })
-            return
-          }
-
+      // this.$prompt('请输入型号的ProductID', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   inputPattern: /^[0-9]*$/,
+      //   inputErrorMessage: '请输入数字'
+      // })
+      //   .then(({ value }) => {
+      //     const number = value.trim()
+      //     if (!number) {
+      //       this.$message({
+      //         type: 'error',
+      //         message: '请输入型号的ProductID'
+      //       })
+      //       return
+      //     }
+          deviceModelCopy(this.selectedDeviceList[0].id).then(res=>{
+             this.$message({
+                type: 'success',
+                message: '复制型号成功'
+              })
+              this.getList()
+          })
           // 查询，创建新的型号
-          selectById(this.selectedDeviceList[0].id).then(res => {
-            const data = res.data
-            data.productId = number
-            delete data.id
-            this.createModel(data)
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          })
-        })
+          // selectById(this.selectedDeviceList[0].id).then(res => {
+          //   const data = res.data
+          //   data.productId = number
+          //   delete data.id
+          //   this.createModel(data)
+          // })
+        // })
+        // .catch(() => {
+        //   this.$message({
+        //     type: 'info',
+        //     message: '取消输入'
+        //   })
+        // })
     },
     handleSelectionChange(selection) {
       this.selectedDeviceList = selection

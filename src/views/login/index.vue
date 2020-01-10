@@ -39,26 +39,24 @@
 export default {
   data() {
     return {
-      
+
     }
   },
   methods: {
-    btnl(){
-      window.location.href = "http://linxiang.hiengine.cn:8081/Account/Login"
+    btnl() {
+      window.location.href = 'http://linxiang.hiengine.cn:8081/Account/Login'
     },
-    btn(){
+    btn() {
       this.$router.push({
         path: '/merge',
         query: {}
       })
     },
     // console.log(window.location.host)
-    ss(){
+    ss() {
       console.log(window.location.host)
-      if(window.location.host == "dasklima.hcocloud.com"){
-        console.log(11)
-      }else{
-        console.log(22)
+      if (window.location.host == 'dasklima.sikelai.net' || window.location.host == 'echvac.sikelai.net') {
+      } else{
         this.$router.push({
           path: '/merge',
           query: {}

@@ -6,8 +6,9 @@
       </el-form-item>
       <el-form-item label="项目内设备">
         <div class="addForm">
-          <el-input v-model="addForm.mac" placeholder="设备 MAC"></el-input>
-          <el-button type="primary" class="add" @click="addDevice">添加</el-button>
+          <el-input v-model="querys.name" placeholder="请输入组名"></el-input>
+          <el-input v-model="querys.createName" placeholder="请输入创建人"></el-input>
+          <el-button type="primary" class="add" @click="queryTeamList">添加</el-button>
         </div>
         <el-table :data="deviceList" @selection-change="handleSelectionChange" style="width: 100%" border highlight-current-row class="mb20">
           <el-table-column type="index"></el-table-column>
@@ -63,7 +64,9 @@ import VideoUploader from '@/components/Upload/VideoUpload'
 import { selectAllCustomers as select } from '@/api/customer'
 import { queryGroupById } from '@/api/device/cluster'
 import { addOrUpdateGroupAndDevice } from '@/api/device/cluster'
-
+import {
+  queryTeamList
+} from '@/api/device/team'
 export default {
   components: { ImageUploader, VideoUploader },
   props: {
@@ -87,6 +90,14 @@ export default {
         limit: 100,
         page: 1
       },
+      querys: {
+        limit: 50,
+        page: 1,
+        status: 1,
+        createName:'',
+        name:''
+      },
+      list:[],
       rules: {
         customerId: [
           { required: true, message: '请选择归属', trigger: 'change' }
@@ -113,6 +124,24 @@ export default {
     }
   },
   methods: {
+    queryTeamList() {
+      queryTeamList(this.querys).then(res => {
+        this.list = res.data.filter(item => item.status === 1)
+        if(this.list.length == 0){
+          this.$message({
+              type: 'success',
+              message: `请输入正确的组名或者创建人`
+          })
+        }
+        var datas = this.list[0].teamDeviceCreateRequestList
+        for(var i=0;i < datas.length;i++){
+          this.deviceList.push({
+            mac:datas[i].mac,
+            name:datas[i].name
+          })
+        }
+      })
+    },
     handleVideoSuccess(file, fileList) {
       this.form.videosList = [...this.form.videosList, { video: file.url }]
     },

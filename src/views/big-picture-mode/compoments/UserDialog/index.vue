@@ -3,10 +3,10 @@
     <div class="dialog">
       <div class="dialog__close" @click.self="handleClose"></div>
       <chart :options="chart1Options" class="dialog__chart1"></chart>
-      <div>
+      <!-- <div>
         <chart :options="chart2Options" class="dialog__chart2"></chart>
         <chart :options="chart3Options" class="dialog__chart3"></chart>
-      </div>
+      </div> -->
       <div class="dialog__wtf"></div>
     </div>
   </div>
@@ -51,8 +51,8 @@
   &__chart1,
   &__chart2,
   &__chart3 {
-    padding: 20px;
-    width: 629.5px;
+    padding: 20px 20px 46px 20px;
+    width: 1200px;
     height: 583px;
     flex: 1;
   }

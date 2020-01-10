@@ -485,4 +485,27 @@ export function editImpl(data) {
     data
   })
 }
+// 删除工程保养
+export function deleteMaintenance(data) {
+  return request({
+    url: '/temp/api/plan/deleteMaintenance',
+    method: 'post',
+    data
+  })
+}
 
+// 查指定人
+export function queryAdmins(data) {
+  return request({
+    url: `/temp/api/job/queryAdmins/${data}`,
+    method: 'get'
+  })
+}
+// 添加电话告警
+export function manageAddJob(data) {
+  return request({
+    url: '/temp/api/job/manageAddJob',
+    method: 'post',
+    data
+  })
+}

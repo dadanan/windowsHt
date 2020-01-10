@@ -14,6 +14,10 @@
         <el-radio v-model="form.runStatus" :label="1">可运行</el-radio>
         <el-radio v-model="form.runStatus" :label="0">不可运行</el-radio>
       </el-form-item>
+      <el-form-item label="功能项类型">
+        <el-radio v-model="form.configType" :label="1">正常功能项</el-radio>
+        <el-radio v-model="form.configType" :label="2">告警/故障功能项</el-radio>
+      </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 4 }"></el-input>
       </el-form-item>
@@ -115,7 +119,8 @@ export default {
         abilityType: 1,
         abilityType: 1,
         deviceAbilityOptions: [],
-        runStatus: 0
+        runStatus: 0,
+        configType:1
       },
       typeList: [
         {

@@ -109,7 +109,7 @@
                                 </el-table-column>
                                 <el-table-column prop="imgList" label="其他" show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <template v-if='scope.row.imgList'>
+                                        <template v-if='(scope.row.imgList)[0]'>
                                             <a :href="scope.row.imgList[0]">客户单</a>
                                         </template>
                                         <template v-else>
@@ -185,14 +185,16 @@ export default {
         }
         const sourceType = {
           '1': '计划维保',
-          '2': 'H5端反馈',
-          '3': '设备告警'
+          '2': '微信端反馈',
+          '3': '设备告警',
+          '4':'电话保修'
         }
         const flowStatus = {
-          '1': '待处理',
-          '2': '处理中',
-          '3': '待审核',
-          '4': '已完成',
+          '1': '待分配',
+          '2': '待审核',
+          '3': '待处理',
+          '4': '待归档',
+          '5': '已完成',
           '6': '已忽略'
         }
         const isRule = {
@@ -209,11 +211,13 @@ export default {
         this.consumablesList1 = this.form.deviceList
         const historyList = {
           '1': '生成',
-          '2': '处理',
-          '3': '提交审核',
-          '4': '通过',
-          '5': '驳回',
-          '6': '忽略'
+          '2': '分配',
+          '3': '同意生成',
+          '4': '不同意生成',
+          '5': '提交审核',
+          '6': '通过归档',
+          '7': '不通过归档',
+          '8': '已忽略',
         }
         const historyDataList = this.form.historyDataList
         for (var i = 0; i < historyDataList.length; i++) {
@@ -251,7 +255,7 @@ export default {
     },
     rejected() {
       this.circulation.jobId = this.form.id
-      this.circulation.operateType = 5
+      this.circulation.operateType = 7
       jobFlow(this.circulation).then(res => {
         if (res.code === 200) {
           this.$message({
@@ -270,7 +274,7 @@ export default {
     },
     audit() {
       this.circulation.jobId = this.form.id
-      this.circulation.operateType = 4
+      this.circulation.operateType = 6
       jobFlow(this.circulation).then(res => {
         if (res.code === 200) {
           this.$message({

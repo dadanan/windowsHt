@@ -6,13 +6,6 @@
           <el-form-item>
             <el-input placeholder="输入名称" v-model="query.name"></el-input>
           </el-form-item>
-          <!-- <el-form-item>
-            <el-select placeholder="选择关联" v-model="search.linkType">
-              <el-option label="不关联" value="1"></el-option>
-              <el-option label="关联设备" value="2"></el-option>
-              <el-option label="关联工程" value="3"></el-option>
-            </el-select>
-          </el-form-item> -->
           <el-form-item>
             <el-select placeholder="告警级别" v-model="query.warnLevel">
               <el-option label="一级告警" value="1"></el-option>

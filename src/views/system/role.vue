@@ -189,6 +189,7 @@ export default {
     getRoleDetail(id) {
       getRoleDetail(id).then(res => {
         const data = res.data
+        console.log(res.data)
         this.editingData = data.role
         // 初始化前，手动去除所有的父节点
         data.permissions = data.permissions.filter(item => item.parent)

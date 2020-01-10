@@ -269,6 +269,8 @@ import AlarmDialog from './compoments/AlarmDialog'
 import DeviceTypeDialog from './compoments/DeviceTypeDialog'
 import DeviceDialog from './compoments/DeviceDialog'
 import UserDialog from './compoments/UserDialog'
+import { getCity } from '@/utils/auth'
+
 import {
   selectCustomerUserCount,
   selectTypePercent,
@@ -662,6 +664,53 @@ export default {
                     globalCoord: false // 缺省为 false
                   }
                 }
+              },{
+                value: 12,
+                name: '待处理',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ffd500' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#ff6b00' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
+              },
+              {
+                value: 20,
+                name: '其他',
+                itemStyle: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#ba9af0' // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: '#7035d1' // 100% 处的颜色
+                      }
+                    ],
+                    globalCoord: false // 缺省为 false
+                  }
+                }
               }
             ]
           }
@@ -986,9 +1035,21 @@ export default {
     },
 
     queryWeather(){
-      queryWeather({"location":this.city}).then(res=>{
-        this.datas = res.data
-      })
+      if(unescape(getCity())){
+        const s = unescape(getCity())
+        const ss = s.split(',')
+        this.city = ss[0]
+        this.prov = ss[1]
+        this.district = ss[2]
+        queryWeather({"location":this.city}).then(res=>{
+            this.datas = res.data
+        })
+      }else{
+        queryWeather({"location":this.city}).then(res=>{
+            this.datas = res.data
+        })
+      }
+      
     },
     weather(data){
       // console.log(data)
@@ -997,7 +1058,6 @@ export default {
       this.prov = data.prov
       this.city = data.city
       this.district = data.district
-
     },
     back() {
       this.$router.back()
@@ -1091,8 +1151,8 @@ export default {
     this.typePercent()
     this.selectDeviceCount()
     this.queryHomePageStatistic()
-    this.queryWeather()
     this.EngList()
+    this.queryWeather()
     this.queryWarnJob()
     this.queryMaintenance(),
     this.queryWarnData()
@@ -1210,7 +1270,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  // height: 100%;
   &__item {
     display: flex;
     /*justify-content: center;*/

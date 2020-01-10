@@ -168,14 +168,14 @@ export const asyncRouterMap = [
       icon: 'chart-bar'
     },
     children: [
-      {
-        path: 'order',
-        component: () => import('@/views/analytics/order'),
-        name: 'orderAnalytics',
-        meta: {
-          title: 'orderAnalytics'
-        }
-      },
+      // {
+      //   path: 'order',
+      //   component: () => import('@/views/analytics/order'),
+      //   name: 'orderAnalytics',
+      //   meta: {
+      //     title: 'orderAnalytics'
+      //   }
+      // },
       {
         path: 'user',
         component: () => import('@/views/analytics/user'),
@@ -192,14 +192,14 @@ export const asyncRouterMap = [
           title: 'deviceAnalytics'
         }
       },
-      {
-        path: 'system',
-        component: () => import('@/views/blank'),
-        name: 'systemAnalytics',
-        meta: {
-          title: 'systemAnalytics'
-        }
-      }
+      // {
+      //   path: 'system',
+      //   component: () => import('@/views/blank'),
+      //   name: 'systemAnalytics',
+      //   meta: {
+      //     title: 'systemAnalytics'
+      //   }
+      // }
       // {
       //   path: 'bigDataPanel',
       //   component: () => import('@/views/analytics/bigDataPanel'),
@@ -221,7 +221,7 @@ export const asyncRouterMap = [
   // device: '设备管理',
   // deviceList: '设备列表',
   // deviceGroup: '设备组管理',
-  // deviceCluster: '设备项目管理',
+  // deviceCluster: '设备群管理',
   // deviceConfig: '设备配置管理',
   // deviceModel: '设备备案管理',
   // deviceFunction: '设备功能管理',
@@ -283,6 +283,14 @@ export const asyncRouterMap = [
         meta: {
           title: 'deviceFunction'
         }
+      },
+      {
+        path: 'maclist',
+        component: () => import('@/views/device/maclist'),
+        name: 'deviceMaclist',
+        meta: {
+          title: 'deviceMaclist'
+        }
       }
     ]
   },
@@ -323,80 +331,80 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/order',
-    component: Layout,
-    name: 'order',
-    redirect: 'noredirect',
-    alwaysShow: true,
-    meta: {
-      title: 'order',
-      icon: 'file-invoice'
-    },
-    children: [
-      {
-        path: 'rent',
-        component: () => import('@/views/order/rent'),
-        name: 'rentOrder',
-        meta: {
-          title: 'rentOrder'
-        }
-      },
-      {
-        path: 'payment',
-        component: () => import('@/views/order/payment'),
-        name: 'paymentOrder',
-        meta: {
-          title: 'paymentOrder'
-        }
-      },
-      {
-        path: 'sales',
-        component: () => import('@/views/blank'),
-        name: 'salesOrder',
-        meta: {
-          title: 'salesOrder'
-        }
-      },
-      {
-        path: 'after-sale',
-        component: () => import('@/views/blank'),
-        name: 'afterSaleOrder',
-        meta: {
-          title: 'afterSaleOrder'
-        }
-      }
-    ]
-  },
-  {
-    path: '/income',
-    component: Layout,
-    name: 'income',
-    redirect: 'noredirect',
-    alwaysShow: true,
-    meta: {
-      title: 'income',
-      icon: 'bezier-curve'
-    },
-    children: [
-      {
-        path: 'rule',
-        component: () => import('@/views/blank'),
-        name: 'incomeRule',
-        meta: {
-          title: 'incomeRule'
-        }
-      },
-      {
-        path: 'bill',
-        component: () => import('@/views/blank'),
-        name: 'incomeBill',
-        meta: {
-          title: 'incomeBill'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/order',
+  //   component: Layout,
+  //   name: 'order',
+  //   redirect: 'noredirect',
+  //   alwaysShow: true,
+  //   meta: {
+  //     title: 'order',
+  //     icon: 'file-invoice'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'rent',
+  //       component: () => import('@/views/order/rent'),
+  //       name: 'rentOrder',
+  //       meta: {
+  //         title: 'rentOrder'
+  //       }
+  //     },
+  //     {
+  //       path: 'payment',
+  //       component: () => import('@/views/order/payment'),
+  //       name: 'paymentOrder',
+  //       meta: {
+  //         title: 'paymentOrder'
+  //       }
+  //     },
+  //     {
+  //       path: 'sales',
+  //       component: () => import('@/views/blank'),
+  //       name: 'salesOrder',
+  //       meta: {
+  //         title: 'salesOrder'
+  //       }
+  //     },
+  //     {
+  //       path: 'after-sale',
+  //       component: () => import('@/views/blank'),
+  //       name: 'afterSaleOrder',
+  //       meta: {
+  //         title: 'afterSaleOrder'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/income',
+  //   component: Layout,
+  //   name: 'income',
+  //   redirect: 'noredirect',
+  //   alwaysShow: true,
+  //   meta: {
+  //     title: 'income',
+  //     icon: 'bezier-curve'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'rule',
+  //       component: () => import('@/views/blank'),
+  //       name: 'incomeRule',
+  //       meta: {
+  //         title: 'incomeRule'
+  //       }
+  //     },
+  //     {
+  //       path: 'bill',
+  //       component: () => import('@/views/blank'),
+  //       name: 'incomeBill',
+  //       meta: {
+  //         title: 'incomeBill'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/rent',
     component: Layout,
@@ -575,22 +583,22 @@ export const asyncRouterMap = [
           title: 'userMessage'
         }
       },
-      {
-        path: 'alarm',
-        component: () => import('@/views/message/message'),
-        name: 'alarmMessage',
-        meta: {
-          title: 'alarmMessage'
-        }
-      },
-      {
-        path: 'after-sale',
-        component: () => import('@/views/message/NoticeMessage'),
-        name: 'afterSaleMessage',
-        meta: {
-          title: 'afterSaleMessage'
-        }
-      }
+      // {
+      //   path: 'alarm',
+      //   component: () => import('@/views/message/message'),
+      //   name: 'alarmMessage',
+      //   meta: {
+      //     title: 'alarmMessage'
+      //   }
+      // },
+      // {
+      //   path: 'after-sale',
+      //   component: () => import('@/views/message/NoticeMessage'),
+      //   name: 'afterSaleMessage',
+      //   meta: {
+      //     title: 'afterSaleMessage'
+      //   }
+      // }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

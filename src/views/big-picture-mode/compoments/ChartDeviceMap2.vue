@@ -202,7 +202,8 @@ export default {
         大庆: [125.03, 46.58]
       },
       datas:[
-        {name:"上海",value:20},
+        { name: '杭州', value: 30},
+        {name:"上海",value:2},
         {name:"郑州",value:2},
         {name:"开封",value:1},
         { name: '海门', value: 1 },
