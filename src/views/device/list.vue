@@ -19,7 +19,7 @@
         </el-button-group>
       </div>
       <el-table @expand-change="expandChanged" row-key="id" :expand-row-keys="expandKeys" :data="computeDeviceList" style="width: 100%" @selection-change="handleSelectionChange" class="mb20" border>
-        <el-table-column type="expand"> 
+        <el-table-column type="expand">
           <template slot-scope="scope">
             <el-table v-if='scope.row.childCount!==0' :data="childDeviceList" style="width: 100%" class="mb20" border>
               <el-table-column type="index"></el-table-column>
